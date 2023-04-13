@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
@@ -80,6 +79,7 @@ public class ContestService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ContestService.class);
 
 	private static final int MINIMAL_REQUIRED_LANGUAGES = 4;
+	private static final int DEFAULT_VALUE = 0;
 
 	public ContestService() {
 		//Intentionally left blank
@@ -305,7 +305,7 @@ public class ContestService {
 				.flatMap(vi -> vi.getVote().getBallot().stream())
 				.forEach(b -> {
 					if (b.getStandardBallot() != null && StringUtils.isEmpty(b.getStandardBallot().getQuestionNumber())) {
-						b.getStandardBallot().setQuestionNumber(b.getBallotPosition().toString(10));
+						b.getStandardBallot().setQuestionNumber(String.format("%d", b.getBallotPosition()));
 					}
 					if (b.getVariantBallot() != null) {
 						AtomicInteger counter = new AtomicInteger(0);
@@ -349,42 +349,39 @@ public class ContestService {
 
 	private void addElectionGroupPositionIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
 
-		List<Long> usedPositions = electionGroups.stream()
+		List<Integer> usedPositions = electionGroups.stream()
 				.map(ElectionGroupBallotType::getElectionGroupPosition)
-				.filter(Objects::nonNull)
-				.map(BigInteger::longValueExact)
+				.filter(val -> val > 0)
 				.toList();
 
-		final AtomicLong counter = new AtomicLong(1);
+		final AtomicInteger counter = new AtomicInteger(1);
 		electionGroups.forEach(electionGroup -> {
-			if (electionGroup.getElectionGroupPosition() == null) {
+			if (electionGroup.getElectionGroupPosition() == DEFAULT_VALUE) {
 				while (usedPositions.contains(counter.get())) {
 					counter.getAndIncrement();
 				}
-				electionGroup.setElectionGroupPosition(BigInteger.valueOf(counter.getAndIncrement()));
+				electionGroup.setElectionGroupPosition(counter.getAndIncrement());
 			}
 		});
 	}
 
 	private void addElectionPositionIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
 
-		electionGroups.forEach(electionGroup -> {
-			List<Long> usedPositions = electionGroup.getElectionInformation().stream()
+		electionGroups.forEach(eg -> {
+			List<Integer> usedPositions = eg.getElectionInformation().stream()
 					.map(ei -> ei.getElection().getElectionPosition())
-					.filter(Objects::nonNull)
-					.map(BigInteger::longValueExact)
+					.filter(val -> val > 0)
 					.toList();
 
-			final AtomicLong counter = new AtomicLong(1);
-			electionGroup.getElectionInformation().forEach(ei -> {
-				if (ei.getElection().getElectionPosition() == null) {
+			final AtomicInteger counter = new AtomicInteger(1);
+			eg.getElectionInformation().forEach(ei -> {
+				if (ei.getElection().getElectionPosition() == DEFAULT_VALUE) {
 					while (usedPositions.contains(counter.get())) {
 						counter.getAndIncrement();
 					}
-					ei.getElection().setElectionPosition(BigInteger.valueOf(counter.getAndIncrement()));
+					ei.getElection().setElectionPosition(counter.getAndIncrement());
 				}
 			});
-
 		});
 	}
 
@@ -414,9 +411,9 @@ public class ContestService {
 	}
 
 	private String determineElectionGroupIdentification(final List<ElectionInformationType> electionInformation) {
-			return StringUtil.generateUUIDFromString(
-					electionInformation.stream().map(ei -> ei.getElection().getElectionIdentification()).reduce("", (s1, s2) -> s1 + s2)
-			);
+		return StringUtil.generateUUIDFromString(
+				electionInformation.stream().map(ei -> ei.getElection().getElectionIdentification()).reduce("", (s1, s2) -> s1 + s2)
+		);
 	}
 
 	private Map<String, BigInteger> getParametersMinimalCandidateSelectionInList(final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
@@ -434,15 +431,15 @@ public class ContestService {
 		electionGroups.stream()
 				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.map(ElectionInformationType::getElection).forEach(e -> e.setMinimalCandidateSelectionInList(
-						parametersMinimalCandidateSelectionInList.getOrDefault(e.getElectionIdentification(), BigInteger.ONE)));
+						parametersMinimalCandidateSelectionInList.getOrDefault(e.getElectionIdentification(), BigInteger.ONE).intValueExact()));
 	}
 
 	private void addCandidatePositionInCandidateOnlyElections(final List<ElectionGroupBallotType> electionGroups) {
 		electionGroups.stream()
 				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.filter(this::isCandidateOnlyElection).forEach(e -> {
-					final AtomicLong pos = new AtomicLong(1);
-					e.getCandidate().forEach(c -> c.setPosition(BigInteger.valueOf(pos.getAndIncrement())));
+					final AtomicInteger pos = new AtomicInteger(1);
+					e.getCandidate().forEach(c -> c.setPosition(pos.getAndIncrement()));
 				});
 	}
 
@@ -512,7 +509,7 @@ public class ContestService {
 
 		electionType.withList(new ListType().withListEmpty(true)
 				.withListIdentification(StringUtil.generateUUIDFromString(electionType.getElection().getElectionIdentification()))
-				.withListIndentureNumber("99").withListDescription(description).withListOrderOfPrecedence(BigInteger.valueOf(99)));
+				.withListIndentureNumber("99").withListDescription(description).withListOrderOfPrecedence(99));
 
 	}
 
@@ -521,7 +518,7 @@ public class ContestService {
 		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.forEach(e -> e.getList().stream()
 						.filter(l -> l.isListEmpty() && (l.getCandidatePosition() == null || l.getCandidatePosition().isEmpty()))
-						.forEach(l -> appendCandidates(l, e.getElection().getNumberOfMandates().intValue(), contestParameters)));
+						.forEach(l -> appendCandidates(l, e.getElection().getNumberOfMandates(), contestParameters)));
 	}
 
 	private void appendCandidates(final ListType l, final int numberOfMandates, final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
@@ -542,7 +539,7 @@ public class ContestService {
 			}
 
 			final CandidatePositionType candidate = new CandidatePositionType().withCandidateReferenceOnPosition(refOnPosition)
-					.withPositionOnList(BigInteger.valueOf(i)).withCandidateTextOnPosition(text);
+					.withPositionOnList(i).withCandidateTextOnPosition(text);
 
 			l.getCandidatePosition().add(candidate);
 		}
@@ -562,17 +559,17 @@ public class ContestService {
 	private void addElectionsOrderOfPrecedenceIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
 		if (electionGroups.stream()
 				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
-				.flatMap(e -> e.getList().stream()).anyMatch(l -> l.getListOrderOfPrecedence() == null)) {
+				.flatMap(e -> e.getList().stream()).anyMatch(l -> l.getListOrderOfPrecedence() == DEFAULT_VALUE)) {
 			LOGGER.info("All fields listOrderOfPrecedence are not set, re-setting all with default value");
 
 			electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream()).forEach(e -> {
-				final AtomicLong counter = new AtomicLong();
+				final AtomicInteger counter = new AtomicInteger();
 				final boolean allAreNumeric = e.getList().stream().allMatch(l -> StringUtils.isNumeric(l.getListIndentureNumber()));
 				if (allAreNumeric) {
 					e.getList().stream().sorted(Comparator.comparing(list -> Integer.valueOf(list.getListIndentureNumber())))
-							.forEach(l -> l.setListOrderOfPrecedence(BigInteger.valueOf(counter.incrementAndGet())));
+							.forEach(l -> l.setListOrderOfPrecedence(counter.incrementAndGet()));
 				} else {
-					e.getList().forEach(l -> l.setListOrderOfPrecedence(BigInteger.valueOf(counter.incrementAndGet())));
+					e.getList().forEach(l -> l.setListOrderOfPrecedence(counter.incrementAndGet()));
 				}
 			});
 		}
@@ -595,10 +592,12 @@ public class ContestService {
 					final boolean useWriteIns = writeInsMap.getOrDefault(e.getElection().getElectionIdentification(), false);
 					e.getElection().setWriteInsAllowed(useWriteIns);
 					if (useWriteIns) {
-						final long numberOfMandates = e.getElection().getNumberOfMandates().longValue();
-						for (int i = 0; i < numberOfMandates; i++) {
-							e.getWriteInCandidate().add(new WriteInCandidateType().withWriteInCandidateIdentification(
-									StringUtil.generateUUIDFromString(e.getElection().getElectionIdentification() + i)));
+						final int numberOfMandates = e.getElection().getNumberOfMandates();
+						for (int i = 1; i <= numberOfMandates; i++) {
+							e.getWriteInCandidate().add(new WriteInCandidateType()
+									.withWriteInCandidateIdentification(
+											StringUtil.generateUUIDFromString(e.getElection().getElectionIdentification() + i))
+									.withPosition(i));
 						}
 					}
 				});
@@ -648,16 +647,16 @@ public class ContestService {
 			return hm;
 		}).forEach(h -> {
 			final VariantBallotType vb = h.values().stream().findFirst().get();
-			if (vb.getStandardQuestion().stream().anyMatch(b -> b.getQuestionPosition() == null)) {
-				final AtomicLong counter = new AtomicLong();
+			if (vb.getStandardQuestion().stream().anyMatch(b -> b.getQuestionPosition() == DEFAULT_VALUE)) {
+				final AtomicInteger counter = new AtomicInteger();
 				LOGGER.info("Variant ballot '{}' : missing standard question positions; resetting all values", h.keySet().stream().findFirst().get());
-				vb.getStandardQuestion().forEach(q -> q.setQuestionPosition(BigInteger.valueOf(counter.incrementAndGet())));
+				vb.getStandardQuestion().forEach(q -> q.setQuestionPosition(counter.incrementAndGet()));
 			}
-			if (vb.getTieBreakQuestion().stream().anyMatch(b -> b.getQuestionPosition() == null)) {
-				final AtomicLong counter = new AtomicLong();
+			if (vb.getTieBreakQuestion().stream().anyMatch(b -> b.getQuestionPosition() == DEFAULT_VALUE)) {
+				final AtomicInteger counter = new AtomicInteger();
 				LOGGER.info("Variant ballot '{}' : missing tie-break question positions; resetting all values",
 						h.keySet().stream().findFirst().get());
-				vb.getTieBreakQuestion().forEach(q -> q.setQuestionPosition(BigInteger.valueOf(counter.incrementAndGet())));
+				vb.getTieBreakQuestion().forEach(q -> q.setQuestionPosition(counter.incrementAndGet()));
 			}
 		});
 	}

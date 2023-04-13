@@ -22,7 +22,7 @@ public class HeaderService {
 
 			final GregorianCalendar gc = new GregorianCalendar();
 			result.setFileDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
-			result.setVoterTotal(BigInteger.valueOf(voterCount));
+			result.setVoterTotal(voterCount.intValue());
 			return result;
 		} catch (final DatatypeConfigurationException e) {
 			throw new IllegalArgumentException("Unable to build the header", e);

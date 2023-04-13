@@ -443,7 +443,7 @@ class ECH015xv4MapperTest {
 		assertEquals(source.getList().size(), destination.getList().size());
 		if (null != electionSource && null != electionDestination) {
 			assertEquals(electionSource.getElectionIdentification(), electionDestination.getElectionIdentification());
-			assertEquals(electionSource.getNumberOfMandates(), electionDestination.getNumberOfMandates());
+			assertEquals(electionSource.getNumberOfMandates().intValue(), electionDestination.getNumberOfMandates());
 			assertEquals(electionSource.getReferencedElection().size(), electionDestination.getReferencedElection().size());
 		}
 	}

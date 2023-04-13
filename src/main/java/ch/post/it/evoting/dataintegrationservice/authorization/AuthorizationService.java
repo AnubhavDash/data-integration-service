@@ -49,7 +49,7 @@ import reactor.util.function.Tuples;
 public class AuthorizationService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationService.class);
 
-	private static final BigInteger GRACE_PERIOD = new BigInteger(PropertyProvider.getPropertyValue("authorization.gracePeriod", "900"));
+	private static final int GRACE_PERIOD = Integer.valueOf(PropertyProvider.getPropertyValue("authorization.gracePeriod", "900"));
 
 	private static final Integer MIN_TEST_CONTROL_VALUE = Integer.parseInt(PropertyProvider.getPropertyValue("countingCircle.testControl.minValue"));
 

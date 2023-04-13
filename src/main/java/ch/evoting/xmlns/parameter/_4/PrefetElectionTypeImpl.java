@@ -38,7 +38,7 @@ public class PrefetElectionTypeImpl extends PrefetElectionType {
 					});
 					final int[] position = new int[] { 1 };
 					e.getCandidate().stream().sorted(Comparator.comparing(CandidateType::getReferenceOnPosition))
-							.forEach(c -> c.setPosition(BigInteger.valueOf(position[0]++)));
+							.forEach(c -> c.setPosition(position[0]++));
 				});
 
 		//remove the non-empty lists

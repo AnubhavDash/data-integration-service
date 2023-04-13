@@ -409,7 +409,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 	@And("^an election named \"([^\"]*)\" within \"([^\"]*)\"$")
 	public void andElectionNamedWithin(final String election, final String elections) {
 		final ElectionInformationType e = new ElectionInformationType().withElection(
-						new ElectionType().withNumberOfMandates(BigInteger.valueOf(5L)).withTypeOfElection(BigInteger.valueOf(1L)))
+						new ElectionType().withNumberOfMandates(5).withTypeOfElection(BigInteger.valueOf(1L)))
 				.withCandidate(new ArrayList<>());
 		ElectionGroupBallotType eg = new ElectionGroupBallotType().withElectionInformation(e);
 		electionMap.put(elections + "." + election, eg);
@@ -477,7 +477,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 
 	@Given("^the vote \"([^\"]*)\".\"([^\"]*)\" has a \"([^\"]*)\" ballot \"([^\"]*)\"$")
 	public void givenVoteHasBallot(final String votes, final String vote, final String type, final String name) {
-		final BallotType ballot = new BallotType().withBallotPosition(BigInteger.valueOf(1L))
+		final BallotType ballot = new BallotType().withBallotPosition(1)
 				.withBallotDescription(new BallotDescriptionInformationType().withBallotDescriptionInfo(new ArrayList<>()));
 		if (type.equals("standard")) {
 			ballot.setStandardBallot(new StandardBallotType().withQuestionNumber("1")
@@ -534,17 +534,17 @@ public class ContestPhaseSteps extends PhaseSteps {
 
 	@And("^the standard question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has position (\\d+)$")
 	public void andStandardQuestionHasPosition(final String votes, final String vote, final String ballot, final String question, final Integer pos) {
-		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(BigInteger.valueOf(pos));
+		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(pos);
 	}
 
 	@And("^the standard question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has position cleared out$")
 	public void andStandardQuestionHasPositionClearedOut(final String votes, final String vote, final String ballot, final String question) {
-		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(null);
+		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(0);
 	}
 
 	@And("^the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has position (\\d+)$")
 	public void andTiebreakQuestionHasPosition(final String votes, final String vote, final String ballot, final String question, final Integer pos) {
-		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(BigInteger.valueOf(pos));
+		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(pos);
 	}
 
 	@And("^the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer type (\\d+)$")
@@ -567,7 +567,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 
 	@And("^the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has position cleared out$")
 	public void andTiebreakQuestionHasPositionClearedOut(final String votes, final String vote, final String ballot, final String question) {
-		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(null);
+		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(0);
 	}
 
 	@And("^the standard question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer type (\\d+)$")
@@ -724,13 +724,13 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has listOrderOfPrecedence (\\d+)$")
-	public void andListHasListOrderOfPrecedence(final String elections, final String election, final String name, final BigInteger order) {
+	public void andListHasListOrderOfPrecedence(final String elections, final String election, final String name, final Integer order) {
 		listMap.get(elections + "." + election + "." + name).setListOrderOfPrecedence(order);
 	}
 
 	@Given("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has no listOrderOfPrecedence$")
-	public void gibenListHasNoListOrderOfPrecedence(final String elections, final String election, final String name) {
-		listMap.get(elections + "." + election + "." + name).setListOrderOfPrecedence(null);
+	public void givenListHasNoListOrderOfPrecedence(final String elections, final String election, final String name) {
+		listMap.get(elections + "." + election + "." + name).setListOrderOfPrecedence(0);
 	}
 
 	@And("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has description \"([^\"]*)\" \"([^\"]*)\"$")
@@ -759,7 +759,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 
 	@And("^position \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has position in list (\\d+)$")
 	public void andPositionHasPositionOnList(final String elections, final String election, final String list, final String pos,
-			final BigInteger posInList) {
+			final Integer posInList) {
 		candidatePositionMap.get(elections + "." + election + "." + list + "." + pos).setPositionOnList(posInList);
 	}
 
@@ -887,7 +887,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 		final StandardQuestionType question = from(contest).find(StandardQuestionType.class)
 				.filter(q -> q.getQuestionIdentification().equals(questionId))
 				.stream().findFirst().get();
-		assertEquals(question.getQuestionPosition(), BigInteger.valueOf(pos));
+		assertEquals(question.getQuestionPosition(), pos);
 	}
 
 	@Then("^the variant ballot tiebreak question \"([^\"]*)\" should have position (\\d+)$")
@@ -895,7 +895,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 		final TieBreakQuestionType question = from(contest).find(TieBreakQuestionType.class)
 				.filter(q -> q.getQuestionIdentification().equals(questionId))
 				.stream().findFirst().get();
-		assertEquals(question.getQuestionPosition(), BigInteger.valueOf(pos));
+		assertEquals(question.getQuestionPosition(), pos);
 	}
 
 	@Then("^a log with text \"([^\"]*)\" must exist$")
@@ -923,7 +923,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@Then("^election identified by \"([^\"]*)\" should have minimalCandidateSelection ([^\"]*)$")
-	public void thenElectionShouldHaveMinimalCandidateSelection(final String id, final BigInteger minimalValue) {
+	public void thenElectionShouldHaveMinimalCandidateSelection(final String id, final Integer minimalValue) {
 		final ElectionType election = from(contest).find(ElectionType.class).filter(e -> e.getElectionIdentification().equals(id)).stream()
 				.findFirst()
 				.get();
@@ -980,7 +980,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@Then("^the list identified by \"([^\"]*)\" should have listOrderOfPrecedence (\\d+)$")
-	public void thenListShouldHaveListOrderOfPrecedence(final String listId, final BigInteger order) {
+	public void thenListShouldHaveListOrderOfPrecedence(final String listId, final Integer order) {
 		final ListType l = from(contest).find(ListType.class).stream().filter(list -> list.getListIdentification().equals(listId)).findFirst().get();
 		assertEquals(l.getListOrderOfPrecedence(), order);
 	}

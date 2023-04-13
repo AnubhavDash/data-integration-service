@@ -190,7 +190,9 @@ ECH015xv4Mapper {
 		electionGroupBallotType.withDomainOfInfluence(e.getDomainOfInfluenceIdentification());
 		electionGroupBallotType.setElectionGroupDescription(
 				electionGroupDescriptionTypeToElectionGroupDescriptionInformationType(e.getElectionGroupDescription()));
-		electionGroupBallotType.setElectionGroupPosition(e.getElectionGroupPosition());
+		if (e.getElectionGroupPosition() != null) {
+			electionGroupBallotType.setElectionGroupPosition(e.getElectionGroupPosition().intValueExact());
+		}
 		electionGroupBallotType.setElectionInformation(electionInformationListToElectionInformationTypeList(e.getElectionInformation()));
 
 		return electionGroupBallotType;

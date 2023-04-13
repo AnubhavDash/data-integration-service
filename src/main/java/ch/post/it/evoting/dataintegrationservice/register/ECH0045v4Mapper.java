@@ -227,6 +227,7 @@ public interface ECH0045v4Mapper {
 	@Mapping(target = "zipCode", ignore = true)
 	@Mapping(target = "town", source = "addressInformation.town")
 	@Mapping(target = "country", source = "addressInformation.country.countryIdISO2")
+	@Mapping(target = "countryNameShort", source = "addressInformation.country.countryNameShort")
 	@Mapping(target = "belowTitleLine", ignore = true)
 	@Mapping(target = "belowNameLine", ignore = true)
 	@Mapping(target = "belowStreetLine", ignore = true)

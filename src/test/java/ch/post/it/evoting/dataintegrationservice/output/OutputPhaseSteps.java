@@ -62,7 +62,7 @@ import reactor.core.publisher.Flux;
 public class OutputPhaseSteps extends PhaseSteps {
 
 	private HeaderType header = new HeaderType().withFileDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 12:34:00"))
-			.withVoterTotal(BigInteger.valueOf(3));
+			.withVoterTotal(3);
 
 	private ContestType contest = new ContestType().withContestDefaultLanguage(LanguageType.DE).withContestIdentification("111-222-abc")
 			.withContestDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
@@ -80,7 +80,7 @@ public class OutputPhaseSteps extends PhaseSteps {
 									.withContestDescription("Desc RM")))
 			.withAdminBoard(new AdminBoardType()
 					.withAdminBoardIdentification("AB")
-					.withAdminBoardThresholdValue(BigInteger.TWO)
+					.withAdminBoardThresholdValue(2)
 					.withAdminBoardName("AB")
 					.withAdminBoardDescription("AB")
 					.withAdminBoardMembers(new AdminBoardMembersType().withAdminBoardMemberName("AB1", "AB2")))
@@ -94,7 +94,7 @@ public class OutputPhaseSteps extends PhaseSteps {
 			new AuthorizationType().withAuthorizationIdentification("auth-000-abc").withAuthorizationAlias("auth-000-abc-alias")
 					.withAuthorizationName("auth-000-abc-name").withAuthorizationFromDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
 					.withAuthorizationToDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00")).withAuthorizationTest(false)
-					.withAuthorizationGracePeriod(BigInteger.valueOf(900L)).withAuthorizationObject(
+					.withAuthorizationGracePeriod(900).withAuthorizationObject(
 							new AuthorizationObjectType().withCountingCircle(new CountingCircleType().withCountingCircleIdentification("cc-000-abc").withCountingCircleName("cc-000-abc"))
 									.withDomainOfInfluence(
 											new DomainOfInfluenceType().withDomainOfInfluenceIdentification("doi-000-abc").withDomainOfInfluenceName("CT-CH-1234").withDomainOfInfluenceType("CH"))

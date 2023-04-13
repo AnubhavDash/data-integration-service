@@ -204,6 +204,7 @@ public interface ECH0045v3Mapper {
 	@Mapping(target = "zipCode", ignore = true)
 	@Mapping(target = "town", source = "addressInformation.town")
 	@Mapping(target = "country", source = "addressInformation.country")
+	@Mapping(target = "countryNameShort", constant = "--")
 	@Mapping(target = "belowTitleLine", ignore = true)
 	@Mapping(target = "belowNameLine", ignore = true)
 	@Mapping(target = "belowStreetLine", ignore = true)
