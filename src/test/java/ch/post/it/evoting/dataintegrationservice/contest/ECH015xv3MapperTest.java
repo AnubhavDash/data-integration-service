@@ -42,6 +42,8 @@ import ch.ech.xmlns.ech_0159._3.EventInitialDelivery;
 import ch.evoting.xmlns.parameter._4.ContestType;
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
 import ch.post.it.evoting.dataintegrationservice.parameter.ParameterMapper;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
@@ -364,9 +366,10 @@ class ECH015xv3MapperTest {
 	@Test
 	void testElection() throws Exception {
 		final ch.ech.xmlns.ech_0157._3.EventInitialDelivery.ElectionInformation echElection = createEchElection();
-		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType election = mapper.convert(echElection);
+		final ElectionGroupBallotType electionGroup = mapper.convert(echElection);
+		final ElectionInformationType election = electionGroup.getElectionInformation().get(0);
 		assertEquals("elec-1", election.getElection().getElectionIdentification());
-		assertEquals("doi-1", election.getElection().getDomainOfInfluence());
+		assertEquals("doi-1", electionGroup.getDomainOfInfluence());
 		assertEquals(1L, election.getElection().getTypeOfElection().longValue());
 		assertEquals(ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType.DE,
 				election.getElection().getElectionDescription().getElectionDescriptionInfo().get(0).getLanguage());
@@ -511,7 +514,8 @@ class ECH015xv3MapperTest {
 
 		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotType ballot1 = vote.getVote().getBallot().stream()
 				.filter(b -> b.getBallotPosition().intValue() == 1).findFirst().get();
-		final ch.ech.xmlns.ech_0155._3.BallotType echBallot1 = echVote.getBallot().stream().filter(b -> b.getBallotPosition().intValue() == 1).findFirst()
+		final ch.ech.xmlns.ech_0155._3.BallotType echBallot1 = echVote.getBallot().stream().filter(b -> b.getBallotPosition().intValue() == 1)
+				.findFirst()
 				.get();
 		assertEquals("BAL-000-432556", ballot1.getBallotIdentification());
 		echDescriptions = echBallot1.getBallotDescription().getBallotDescriptionInfo()
@@ -537,7 +541,8 @@ class ECH015xv3MapperTest {
 
 		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotType ballot2 = vote.getVote().getBallot().stream()
 				.filter(b -> b.getBallotPosition().intValue() == 2).findFirst().get();
-		final ch.ech.xmlns.ech_0155._3.BallotType echBallot2 = echVote.getBallot().stream().filter(b -> b.getBallotPosition().intValue() == 2).findFirst()
+		final ch.ech.xmlns.ech_0155._3.BallotType echBallot2 = echVote.getBallot().stream().filter(b -> b.getBallotPosition().intValue() == 2)
+				.findFirst()
 				.get();
 		assertEquals("BAL-000-A325156", ballot2.getBallotIdentification());
 		echDescriptions = echBallot2.getBallotDescription().getBallotDescriptionInfo()
@@ -586,7 +591,8 @@ class ECH015xv3MapperTest {
 				.collect(Collectors.toSet());
 		assertEquals(echDescriptions, descriptions);
 
-		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionType tiebreakQuestion1 = ballot2.getVariantBallot().getTieBreakQuestion()
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionType tiebreakQuestion1 = ballot2.getVariantBallot()
+				.getTieBreakQuestion()
 				.stream().filter(v -> v.getQuestionPosition().intValue() == 3).findFirst().get();
 		final TieBreakInformationType echTiebreakQuestion1 = echBallot2.getVariantBallot().getTieBreakInformation().stream()
 				.filter(v -> v.getQuestionPosition().intValue() == 3).findFirst().get();
@@ -604,7 +610,8 @@ class ECH015xv3MapperTest {
 				.collect(Collectors.toSet());
 		assertEquals(echDescriptions, descriptions);
 
-		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionType tiebreakQuestion2 = ballot2.getVariantBallot().getTieBreakQuestion()
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionType tiebreakQuestion2 = ballot2.getVariantBallot()
+				.getTieBreakQuestion()
 				.stream().filter(v -> v.getQuestionPosition().intValue() == 4).findFirst().get();
 		final TieBreakInformationType echTiebreakQuestion2 = echBallot2.getVariantBallot().getTieBreakInformation().stream()
 				.filter(v -> v.getQuestionPosition().intValue() == 4).findFirst().get();
@@ -630,7 +637,9 @@ class ECH015xv3MapperTest {
 
 		final ch.ech.xmlns.ech_0157._3.EventInitialDelivery.ElectionInformation echElection = createEchElection();
 		echElection.getCandidate().get(0).withIncumbentYesNo(true);
-		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType election = mapper.convert(echElection);
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType election = mapper.convert(echElection)
+				.getElectionInformation()
+				.get(0);
 
 		assertTrue(election.getCandidate().get(0).getIncumbent().isIncumbent());
 		assertEquals(election.getCandidate().get(0).getIncumbent().getIncumbentText(),

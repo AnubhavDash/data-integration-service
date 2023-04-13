@@ -11,10 +11,10 @@ Feature: Contest Phase
 
     # PARAMETERS - writeIns and accumulation
     And user parameters "my params" has election named "election 1"
-    And election "my params"."election 1" has id "election A id"
+    And election "my params"."election 1" has id "election-A-id"
     And election "my params"."election 1" has accumulation 2
     And user parameters "my params" has election named "election 2"
-    And election "my params"."election 2" has id "election B id"
+    And election "my params"."election 2" has id "election-B-id"
     And election "my params"."election 2" has writeIns "true"
     And election "my params"."election 2" has accumulation 1
     And election "my params"."election 2" has minimalCandidateSelection 0
@@ -65,7 +65,7 @@ Feature: Contest Phase
 
     # PARAMETERS - specific answers for one of the question
     And user parameters "my params" has question "question variant C"
-    And parameter question "my params"."question variant C" has questionIdentification "V.B_B.1_Q.proposal_C"
+    And parameter question "my params"."question variant C" has questionIdentification "V-B_B-1_Q-proposal_C"
     And parameter question "my params"."question variant C" has standardAnswer named "answer 1"
     And standardAnswer "my params"."question variant C"."answer 1" has answer position 1
     And standardAnswer "my params"."question variant C"."answer 1" has answer description "DE" "Ja Ja"
@@ -82,49 +82,49 @@ Feature: Contest Phase
     And standardAnswer "my params"."question variant C"."answer 2" has answer standardAnswerType = "NO"
     # PARAMETERS - specific answers for tiebreak questions
     And user parameters "my params" has question "tiebreak question 1"
-    And parameter question "my params"."tiebreak question 1" has questionIdentification "V.B_B.1_TQ.1"
+    And parameter question "my params"."tiebreak question 1" has questionIdentification "V-B_B-1_TQ-1"
     And parameter question "my params"."tiebreak question 1" has tiebreakAnswer named "answer 1"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 1" has answer position 1
-    And tiebreakAnswer "my params"."tiebreak question 1"."answer 1" has answer questionReference "V.B_B.1_Q.proposal_A"
+    And tiebreakAnswer "my params"."tiebreak question 1"."answer 1" has answer questionReference "V-B_B-1_Q-proposal_A"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 1" has answer description "DE" "I prefer A (DE)"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 1" has answer description "FR" "I prefer A (FR)"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 1" has answer description "IT" "I prefer A (IT)"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 1" has answer description "RM" "I prefer A (RM)"
     And parameter question "my params"."tiebreak question 1" has tiebreakAnswer named "answer 2"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer position 2
-    And tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer questionReference "V.B_B.1_Q.proposal_B"
+    And tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer questionReference "V-B_B-1_Q-proposal_B"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer description "DE" "I prefer B (DE)"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer description "FR" "I prefer B (FR)"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer description "IT" "I prefer B (IT)"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer description "RM" "I prefer B (RM)"
     And user parameters "my params" has question "tiebreak question 2"
-    And parameter question "my params"."tiebreak question 2" has questionIdentification "V.B_B.1_TQ.2"
+    And parameter question "my params"."tiebreak question 2" has questionIdentification "V-B_B-1_TQ-2"
     And parameter question "my params"."tiebreak question 2" has tiebreakAnswer named "answer 1"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 1" has answer position 1
-    And tiebreakAnswer "my params"."tiebreak question 2"."answer 1" has answer questionReference "V.B_B.1_Q.proposal_A"
+    And tiebreakAnswer "my params"."tiebreak question 2"."answer 1" has answer questionReference "V-B_B-1_Q-proposal_A"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 1" has answer description "DE" "I prefer A (DE)"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 1" has answer description "FR" "I prefer A (FR)"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 1" has answer description "IT" "I prefer A (IT)"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 1" has answer description "RM" "I prefer A (RM)"
     And parameter question "my params"."tiebreak question 2" has tiebreakAnswer named "answer 2"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 2" has answer position 2
-    And tiebreakAnswer "my params"."tiebreak question 2"."answer 2" has answer questionReference "V.B_B.1_Q.proposal_C"
+    And tiebreakAnswer "my params"."tiebreak question 2"."answer 2" has answer questionReference "V-B_B-1_Q-proposal_C"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 2" has answer description "DE" "I prefer C (DE)"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 2" has answer description "FR" "I prefer C (FR)"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 2" has answer description "IT" "I prefer C (IT)"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 2" has answer description "RM" "I prefer C (RM)"
     And user parameters "my params" has question "tiebreak question 3"
-    And parameter question "my params"."tiebreak question 3" has questionIdentification "V.B_B.1_TQ.3"
+    And parameter question "my params"."tiebreak question 3" has questionIdentification "V-B_B-1_TQ-3"
     And parameter question "my params"."tiebreak question 3" has tiebreakAnswer named "answer 1"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer position 1
-    And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer questionReference "V.B_B.1_Q.proposal_B"
+    And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer questionReference "V-B_B-1_Q-proposal_B"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer description "DE" "I prefer B (DE)"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer description "FR" "I prefer B (FR)"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer description "IT" "I prefer B (IT)"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer description "RM" "I prefer B (RM)"
     And parameter question "my params"."tiebreak question 3" has tiebreakAnswer named "answer 2"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" has answer position 2
-    And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" has answer questionReference "V.B_B.1_Q.proposal_C"
+    And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" has answer questionReference "V-B_B-1_Q-proposal_C"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" has answer description "DE" "I prefer C (DE)"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" has answer description "FR" "I prefer C (FR)"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" has answer description "IT" "I prefer C (IT)"
@@ -144,7 +144,7 @@ Feature: Contest Phase
 
     # VOTE A
     And a vote named "vote A" within "my votes"
-    And the vote "my votes"."vote A" has id "vote A id"
+    And the vote "my votes"."vote A" has id "vote-A-id"
     And the vote "my votes"."vote A" has domain of influence "DOI-voteA"
     And the vote "my votes"."vote A" has description "DE" "Test vote A (DE)"
     And the vote "my votes"."vote A" has description "FR" "Test vote A (FR)"
@@ -153,13 +153,13 @@ Feature: Contest Phase
 
     # VOTE A -standard ballot
     Given the vote "my votes"."vote A" has a "standard" ballot "vote A ballot 1"
-    And the ballot "my votes"."vote A"."vote A ballot 1" has id "vote A ballot 1 id"
+    And the ballot "my votes"."vote A"."vote A ballot 1" has id "vote-A-ballot-1-id"
     And the ballot "my votes"."vote A"."vote A ballot 1" has description "DE" "vote A ballot 1 description (DE)"
     And the ballot "my votes"."vote A"."vote A ballot 1" has description "FR" "vote A ballot 1 description (FR)"
     And the ballot "my votes"."vote A"."vote A ballot 1" has description "IT" "vote A ballot 1 description (IT)"
     And the ballot "my votes"."vote A"."vote A ballot 1" has description "RM" "vote A ballot 1 description (RM)"
     # VOTE A -standard ballot - simple question
-    And the ballot "my votes"."vote A"."vote A ballot 1" has question id  "V.A_B.1_Q.0"
+    And the ballot "my votes"."vote A"."vote A ballot 1" has question id  "V-A_B-1_Q-0"
     And the ballot "my votes"."vote A"."vote A ballot 1" has answer type 1
     And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "DE" "Do you accept this proposal (DE)"
     And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Do you accept this proposal (FR)"
@@ -168,7 +168,7 @@ Feature: Contest Phase
 
     # VOTE B -variant ballot
     And a vote named "vote B" within "my votes"
-    And the vote "my votes"."vote B" has id "vote B id"
+    And the vote "my votes"."vote B" has id "vote-B-id"
     And the vote "my votes"."vote B" has domain of influence "DOI-voteB"
     And the vote "my votes"."vote B" has description "DE" "Test vote B (DE)"
     And the vote "my votes"."vote B" has description "FR" "Test vote B (FR)"
@@ -176,14 +176,14 @@ Feature: Contest Phase
     And the vote "my votes"."vote B" has description "RM" "Test vote B (RM)"
     # VOTE B -variant ballot
     Given the vote "my votes"."vote B" has a "variant" ballot "vote B ballot 1"
-    And the ballot "my votes"."vote B"."vote B ballot 1" has id "vote B ballot 1 id"
+    And the ballot "my votes"."vote B"."vote B ballot 1" has id "vote-B-ballot-1-id"
     And the ballot "my votes"."vote B"."vote B ballot 1" has description "DE" "vote B ballot 1 description (DE)"
     And the ballot "my votes"."vote B"."vote B ballot 1" has description "FR" "vote B ballot 1 description (FR)"
     And the ballot "my votes"."vote B"."vote B ballot 1" has description "IT" "vote B ballot 1 description (IT)"
     And the ballot "my votes"."vote B"."vote B ballot 1" has description "RM" "vote B ballot 1 description (RM)"
     # VOTE B -variant ballot - question with answer type 2 (3 answers)
     And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot standard question "vote B ballot 1 question 1"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has id "V.B_B.1_Q.proposal_A"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has id "V-B_B-1_Q-proposal_A"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has position 3
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has answer type 2
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "DE" "Do you accept proposal A (DE)"
@@ -192,7 +192,7 @@ Feature: Contest Phase
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "RM" "Do you accept proposal A (RM)"
     # VOTE B -variant ballot - question with answer type 1 (2 answers)
     And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot standard question "vote B ballot 1 question 2"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has id "V.B_B.1_Q.proposal_B"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has id "V-B_B-1_Q-proposal_B"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has position 2
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has answer type 1
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has info "DE" "Do you accept proposal B (DE)"
@@ -201,7 +201,7 @@ Feature: Contest Phase
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has info "RM" "Do you accept proposal B (RM)"
     # VOTE B -variant ballot - question with answer type 1 (2 answers - and override in parameters)
     And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot standard question "vote B ballot 1 question 3"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has id "V.B_B.1_Q.proposal_C"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has id "V-B_B-1_Q-proposal_C"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has position 1
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has answer type 1
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has info "DE" "Do you accept proposal C (DE)"
@@ -210,9 +210,9 @@ Feature: Contest Phase
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has info "RM" "Do you accept proposal C (RM)"
     # VOTE B -variant ballot - tiebreak question 1 with mandatory specific answers in parameters
     And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot tiebreak question "vote B ballot 1 tb question 1"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has id "V.B_B.1_TQ.1"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion1 "V.B_B.1_Q.proposal_A"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion2 "V.B_B.1_Q.proposal_B"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has id "V-B_B-1_TQ-1"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion1 "V-B_B-1_Q-proposal_A"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion2 "V-B_B-1_Q-proposal_B"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has position 1
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has info "DE" "Do you prefer A or B (DE)"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has info "FR" "Do you prefer A or B (FR)"
@@ -220,9 +220,9 @@ Feature: Contest Phase
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has info "RM" "Do you prefer A or B (RM)"
    # VOTE B -variant ballot - tiebreak question 2 with mandatory specific answers in parameters
     And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot tiebreak question "vote B ballot 1 tb question 2"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has id "V.B_B.1_TQ.2"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion1 "V.B_B.1_Q.proposal_A"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion2 "V.B_B.1_Q.proposal_C"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has id "V-B_B-1_TQ-2"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion1 "V-B_B-1_Q-proposal_A"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion2 "V-B_B-1_Q-proposal_C"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has position 3
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "DE" "Do you prefer A or C (DE)"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Do you prefer A or C (FR)"
@@ -230,9 +230,9 @@ Feature: Contest Phase
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "RM" "Do you prefer A or C (RM)"
    # VOTE B -variant ballot - tiebreak question 3 with mandatory specific answers in parameters
     And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot tiebreak question "vote B ballot 1 tb question 3"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has id "V.B_B.1_TQ.3"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion1 "V.B_B.1_Q.proposal_B"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion2 "V.B_B.1_Q.proposal_C"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has id "V-B_B-1_TQ-3"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion1 "V-B_B-1_Q-proposal_B"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion2 "V-B_B-1_Q-proposal_C"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has position 2
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has info "DE" "Do you prefer B or C (DE)"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has info "FR" "Do you prefer B or C (FR)"
@@ -241,7 +241,7 @@ Feature: Contest Phase
 
     # VOTE B -variant ballot - tiebreak question 4 with an answer type 1
     #And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot tiebreak question "vote B ballot 1 tb question 4"
-    #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has id "V.B_B.1_TQ.4"
+    #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has id "V-B_B-1_TQ-4"
     #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has position 4
     #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has answer type 1
     #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has info "DE" "In this case, do you agree ? (DE)"
@@ -252,14 +252,14 @@ Feature: Contest Phase
     # ELECTIONS
     Given a list of elections named "my elections"
     And an election named "election A" within "my elections"
-    And the election "my elections"."election A" has id "election A id"
+    And the election "my elections"."election A" has id "election-A-id"
     And the election "my elections"."election A" has domain of influence "DOI-electionA"
     And the election "my elections"."election A" has description "DE" "Test election A (DE)"
     And the election "my elections"."election A" has description "FR" "Test election A (FR)"
     And the election "my elections"."election A" has description "IT" "Test election A (IT)"
     And the election "my elections"."election A" has description "RM" "Test election A (RM)"
     And an election named "election B" within "my elections"
-    And the election "my elections"."election B" has id "election B id"
+    And the election "my elections"."election B" has id "election-B-id"
     And the election "my elections"."election B" has domain of influence "DOI-electionB"
     And the election "my elections"."election B" has description "DE" "Test election B (DE)"
     And the election "my elections"."election B" has description "FR" "Test election B (FR)"
@@ -267,7 +267,7 @@ Feature: Contest Phase
     And the election "my elections"."election B" has description "RM" "Test election B (RM)"
 
     Given a candidate named "candidate 1 for A" within "my elections"."election A"
-    And candidate "my elections"."election A"."candidate 1 for A" has id "candidate 1 for A id"
+    And candidate "my elections"."election A"."candidate 1 for A" has id "candidate-1-for-A-id"
     And candidate "my elections"."election A"."candidate 1 for A" has name "first-name-1" "last-name-1"
     And candidate "my elections"."election A"."candidate 1 for A" has text "DE" "Candidate 1 for A text (DE)"
     And candidate "my elections"."election A"."candidate 1 for A" has text "FR" "Candidate 1 for A text (FR)"
@@ -279,7 +279,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 1 for A" has occupational title "RM" "Candidate 1 for A title (RM)"
 
     Given a candidate named "candidate 2 for A" within "my elections"."election A"
-    And candidate "my elections"."election A"."candidate 2 for A" has id "candidate 2 for A id"
+    And candidate "my elections"."election A"."candidate 2 for A" has id "candidate-2-for-A-id"
     And candidate "my elections"."election A"."candidate 2 for A" has name "first-name-2" "last-name-2"
     And candidate "my elections"."election A"."candidate 2 for A" has text "DE" "Candidate 2 for A text (DE)"
     And candidate "my elections"."election A"."candidate 2 for A" has text "FR" "Candidate 2 for A text (FR)"
@@ -291,7 +291,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 2 for A" has occupational title "RM" "Candidate 2 for A title (RM)"
 
     Given a candidate named "candidate 3 for A" within "my elections"."election A"
-    And candidate "my elections"."election A"."candidate 3 for A" has id "candidate 3 for A id"
+    And candidate "my elections"."election A"."candidate 3 for A" has id "candidate-3-for-A-id"
     And candidate "my elections"."election A"."candidate 3 for A" has name "first-name-3" "last-name-3"
     And candidate "my elections"."election A"."candidate 3 for A" has text "DE" "candidate 3 for A text (DE)"
     And candidate "my elections"."election A"."candidate 3 for A" has text "FR" "candidate 3 for A text (FR)"
@@ -303,7 +303,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 3 for A" has occupational title "RM" "candidate 3 for A title (RM)"
 
     Given a candidate named "candidate 4 for A" within "my elections"."election A"
-    And candidate "my elections"."election A"."candidate 4 for A" has id "candidate 4 for A id"
+    And candidate "my elections"."election A"."candidate 4 for A" has id "candidate-4-for-A-id"
     And candidate "my elections"."election A"."candidate 4 for A" has name "first-name-4" "last-name-4"
     And candidate "my elections"."election A"."candidate 4 for A" has text "DE" "candidate 4 for A text (DE)"
     And candidate "my elections"."election A"."candidate 4 for A" has text "FR" "candidate 4 for A text (FR)"
@@ -315,7 +315,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 4 for A" has occupational title "RM" "candidate 4 for A title (RM)"
 
     Given a candidate named "candidate 5 for A" within "my elections"."election A"
-    And candidate "my elections"."election A"."candidate 5 for A" has id "candidate 5 for A id"
+    And candidate "my elections"."election A"."candidate 5 for A" has id "candidate-5-for-A-id"
     And candidate "my elections"."election A"."candidate 5 for A" has name "first-name-5" "last-name-5"
     And candidate "my elections"."election A"."candidate 5 for A" has text "DE" "candidate 5 for A text (DE)"
     And candidate "my elections"."election A"."candidate 5 for A" has text "FR" "candidate 5 for A text (FR)"
@@ -327,7 +327,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 5 for A" has occupational title "RM" "candidate 5 for A title (RM)"
 
     Given a list named "list 1 for A" within "my elections"."election A"
-    And list "my elections"."election A"."list 1 for A" has id "list 1 for election A id"
+    And list "my elections"."election A"."list 1 for A" has id "list-1-for-election-A-id"
     And list "my elections"."election A"."list 1 for A" has indentureNumber "5"
     And list "my elections"."election A"."list 1 for A" has listOrderOfPrecedence 1
     And list "my elections"."election A"."list 1 for A" has description "DE" "list 1 for election A (DE)"
@@ -336,7 +336,7 @@ Feature: Contest Phase
     And list "my elections"."election A"."list 1 for A" has description "RM" "list 1 for election A (RM)"
 
     Given a list named "list 2 for A" within "my elections"."election A"
-    And list "my elections"."election A"."list 2 for A" has id "list 2 for election A id"
+    And list "my elections"."election A"."list 2 for A" has id "list-2-for-election-A-id"
     And list "my elections"."election A"."list 2 for A" has indentureNumber "4"
     And list "my elections"."election A"."list 2 for A" has listOrderOfPrecedence 2
     And list "my elections"."election A"."list 2 for A" has description "DE" "list 2 for election A (DE)"
@@ -345,7 +345,7 @@ Feature: Contest Phase
     And list "my elections"."election A"."list 2 for A" has description "RM" "list 2 for election A (RM)"
 
     Given a list named "list 3 for A" within "my elections"."election A"
-    And list "my elections"."election A"."list 3 for A" has id "list 3 for election A id"
+    And list "my elections"."election A"."list 3 for A" has id "list-3-for-election-A-id"
     And list "my elections"."election A"."list 3 for A" has indentureNumber "3"
     And list "my elections"."election A"."list 3 for A" has listOrderOfPrecedence 3
     And list "my elections"."election A"."list 3 for A" has description "DE" "list 3 for election A (DE)"
@@ -360,8 +360,8 @@ Feature: Contest Phase
     And list-union  "my elections"."election A"."list-union 1" has description "FR" "list-union-1 text (FR)"
     And list-union  "my elections"."election A"."list-union 1" has description "IT" "list-union-1 text (IT)"
     And list-union  "my elections"."election A"."list-union 1" has description "RM" "list-union-1 text (RM)"
-    And list-union  "my elections"."election A"."list-union 1" has referenced list "list 2 for election A id"
-    And list-union  "my elections"."election A"."list-union 1" has referenced list "list 3 for election A id"
+    And list-union  "my elections"."election A"."list-union 1" has referenced list "list-2-for-election-A-id"
+    And list-union  "my elections"."election A"."list-union 1" has referenced list "list-3-for-election-A-id"
 
     Given a list-union named "list-union 2" within "my elections"."election A"
     And list-union  "my elections"."election A"."list-union 2" has id "list-union-2-id"
@@ -370,36 +370,36 @@ Feature: Contest Phase
     And list-union  "my elections"."election A"."list-union 2" has description "FR" "list-union-2 text (FR)"
     And list-union  "my elections"."election A"."list-union 2" has description "IT" "list-union-2 text (IT)"
     And list-union  "my elections"."election A"."list-union 2" has description "RM" "list-union-2 text (RM)"
-    And list-union  "my elections"."election A"."list-union 2" has referenced list "list 1 for election A id"
-    And list-union  "my elections"."election A"."list-union 2" has referenced list "list 3 for election A id"
+    And list-union  "my elections"."election A"."list-union 2" has referenced list "list-1-for-election-A-id"
+    And list-union  "my elections"."election A"."list-union 2" has referenced list "list-3-for-election-A-id"
 
     And a position named "pos 1 list 1 for A" within "my elections"."election A"."list 1 for A"
     And a position named "pos 2 list 1 for A" within "my elections"."election A"."list 1 for A"
     And a position named "pos 3 list 1 for A" within "my elections"."election A"."list 1 for A"
     And a position named "pos 4 list 1 for A" within "my elections"."election A"."list 1 for A"
 
-    And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has id "candidate 2 for A id"
+    And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has id "candidate-2-for-A-id"
     And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has position in list 1
     And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has text "DE" "candidate 2 for A list text (DE)"
     And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has text "FR" "candidate 2 for A list text (FR)"
     And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has text "IT" "candidate 2 for A list text (IT)"
     And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has text "RM" "candidate 2 for A list text (RM)"
 
-    And position "my elections"."election A"."list 1 for A"."pos 2 list 1 for A" has id "candidate 1 for A id"
+    And position "my elections"."election A"."list 1 for A"."pos 2 list 1 for A" has id "candidate-1-for-A-id"
     And position "my elections"."election A"."list 1 for A"."pos 2 list 1 for A" has position in list 2
     And position "my elections"."election A"."list 1 for A"."pos 2 list 1 for A" has text "DE" "candidate 1 for A list text (DE)"
     And position "my elections"."election A"."list 1 for A"."pos 2 list 1 for A" has text "FR" "candidate 1 for A list text (FR)"
     And position "my elections"."election A"."list 1 for A"."pos 2 list 1 for A" has text "IT" "candidate 1 for A list text (IT)"
     And position "my elections"."election A"."list 1 for A"."pos 2 list 1 for A" has text "RM" "candidate 1 for A list text (RM)"
 
-    And position "my elections"."election A"."list 1 for A"."pos 3 list 1 for A" has id "candidate 4 for A id"
+    And position "my elections"."election A"."list 1 for A"."pos 3 list 1 for A" has id "candidate-4-for-A-id"
     And position "my elections"."election A"."list 1 for A"."pos 3 list 1 for A" has position in list 3
     And position "my elections"."election A"."list 1 for A"."pos 3 list 1 for A" has text "DE" "candidate 4 for A list text (DE)"
     And position "my elections"."election A"."list 1 for A"."pos 3 list 1 for A" has text "FR" "candidate 4 for A list text (FR)"
     And position "my elections"."election A"."list 1 for A"."pos 3 list 1 for A" has text "IT" "candidate 4 for A list text (IT)"
     And position "my elections"."election A"."list 1 for A"."pos 3 list 1 for A" has text "RM" "candidate 4 for A list text (RM)"
 
-    And position "my elections"."election A"."list 1 for A"."pos 4 list 1 for A" has id "candidate 3 for A id"
+    And position "my elections"."election A"."list 1 for A"."pos 4 list 1 for A" has id "candidate-3-for-A-id"
     And position "my elections"."election A"."list 1 for A"."pos 4 list 1 for A" has position in list 4
     And position "my elections"."election A"."list 1 for A"."pos 4 list 1 for A" has text "DE" "candidate 3 for A list text (DE)"
     And position "my elections"."election A"."list 1 for A"."pos 4 list 1 for A" has text "FR" "candidate 3 for A list text (FR)"
@@ -409,14 +409,14 @@ Feature: Contest Phase
     And a position named "pos 1 list 2 for A" within "my elections"."election A"."list 2 for A"
     And a position named "pos 2 list 2 for A" within "my elections"."election A"."list 2 for A"
 
-    And position "my elections"."election A"."list 2 for A"."pos 1 list 2 for A" has id "candidate 4 for A id"
+    And position "my elections"."election A"."list 2 for A"."pos 1 list 2 for A" has id "candidate-4-for-A-id"
     And position "my elections"."election A"."list 2 for A"."pos 1 list 2 for A" has position in list 1
     And position "my elections"."election A"."list 2 for A"."pos 1 list 2 for A" has text "DE" "candidate 4 for A list text (DE)"
     And position "my elections"."election A"."list 2 for A"."pos 1 list 2 for A" has text "FR" "candidate 4 for A list text (FR)"
     And position "my elections"."election A"."list 2 for A"."pos 1 list 2 for A" has text "IT" "candidate 4 for A list text (IT)"
     And position "my elections"."election A"."list 2 for A"."pos 1 list 2 for A" has text "RM" "candidate 4 for A list text (RM)"
 
-    And position "my elections"."election A"."list 2 for A"."pos 2 list 2 for A" has id "candidate 3 for A id"
+    And position "my elections"."election A"."list 2 for A"."pos 2 list 2 for A" has id "candidate-3-for-A-id"
     And position "my elections"."election A"."list 2 for A"."pos 2 list 2 for A" has position in list 2
     And position "my elections"."election A"."list 2 for A"."pos 2 list 2 for A" has text "DE" "candidate 3 for A list text (DE)"
     And position "my elections"."election A"."list 2 for A"."pos 2 list 2 for A" has text "FR" "candidate 3 for A list text (FR)"
@@ -477,94 +477,94 @@ Feature: Contest Phase
     Then it outputs an exception with text "answerType '1' not unique within the parameters"
 
   Scenario: Throw an exception when parameters contains duplicate question ids
-    Given parameter question "my params"."tiebreak question 2" has questionIdentification "V.B_B.1_TQ.1"
+    Given parameter question "my params"."tiebreak question 2" has questionIdentification "V-B_B-1_TQ-1"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "question id 'V.B_B.1_TQ.1' not unique within the parameters"
+    Then it outputs an exception with text "question id 'V-B_B-1_TQ-1' not unique within the parameters"
 
   Scenario: Throw an exception when no answer exists for a question with a given type
     Given default answer type "my params"."answer type 1" has type 7
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "Process stopped. answerType 1 in question V.A_B.1_Q.0 is not supported"
+    Then it outputs an exception with text "Process stopped. answerType 1 in question V-A_B-1_Q-0 is not supported"
 
   Scenario: Throw an exception when no answer exists for a question without type
     Given parameter question "my params"."tiebreak question 2" has questionIdentification "xyz"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "Process stopped. answerType 4 in question V.B_B.1_TQ.2 is not supported"
+    Then it outputs an exception with text "Process stopped. answerType 4 in question V-B_B-1_TQ-2 is not supported"
 
   Scenario: Throw an exception when duplicated vote identifiers exist
-    Given the vote "my votes"."vote B" has id "vote A id"
+    Given the vote "my votes"."vote B" has id "vote-A-id"
     When executing the contest phase and catching exceptions
     Then it outputs an exception with text "voteIdentification must be unique"
 
   Scenario: Throw an exception when duplicated election identifiers exist
-    Given the election "my elections"."election B" has id "election A id"
+    Given the election "my elections"."election B" has id "election-A-id"
     And the elections parameters in "my params" are cleared out
     When executing the contest phase and catching exceptions
     Then it outputs an exception with text "electionIdentification must be unique"
 
   Scenario: Throw an exception when duplicated ballot identifiers exist
-    Given the ballot "my votes"."vote B"."vote B ballot 1" has id "vote A ballot 1 id"
+    Given the ballot "my votes"."vote B"."vote B ballot 1" has id "vote-A-ballot-1-id"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "ballot identifier 'vote A ballot 1 id' is not unique within the contest"
+    Then it outputs an exception with text "ballot identifier 'vote-A-ballot-1-id' is not unique within the contest"
 
   Scenario: Throw an exception when duplicated question identifiers exist
-    Given the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has id "V.B_B.1_TQ.1"
+    Given the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has id "V-B_B-1_TQ-1"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "question identifier 'V.B_B.1_TQ.1' is not unique within the contest"
+    Then it outputs an exception with text "question identifier 'V-B_B-1_TQ-1' is not unique within the contest"
 
   Scenario: Throw an exception when duplicated answer identifiers exist, setting duplicate specific answer position
     Given tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer position 1
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer identifier '918ba74e-9411-362d-b86b-2f3c8c1e760c' is not unique within the contest"
+    Then it outputs an exception with text "answer identifier 'df57dfcb-7934-37a8-a3fc-0f40630e1432' is not unique within the contest"
 
   Scenario: Throw an exception when duplicated answer identifiers exist, setting duplicate default answer position
     Given standardAnswer "my params"."answer type 2"."answer 2" has answer position 3
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer identifier 'd59f4d09-3ef6-3bae-b38b-eb4c431e1d36' is not unique within the contest"
+    Then it outputs an exception with text "answer identifier '0a851e9f-1d04-3adc-9ea0-455015e78e95' is not unique within the contest"
 
   Scenario: For variant ballot, all the standard questions positions are given (background scenario)
     When executing the contest phase
-    Then the variant ballot standard question "V.B_B.1_Q.proposal_A" should have position 3
-    And the variant ballot standard question "V.B_B.1_Q.proposal_B" should have position 2
-    And the variant ballot standard question "V.B_B.1_Q.proposal_C" should have position 1
+    Then the variant ballot standard question "V-B_B-1_Q-proposal_A" should have position 3
+    And the variant ballot standard question "V-B_B-1_Q-proposal_B" should have position 2
+    And the variant ballot standard question "V-B_B-1_Q-proposal_C" should have position 1
 
   Scenario: For a variant ballot, all the standard questions positions are missing
     Given the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has position cleared out
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has position cleared out
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has position cleared out
     When executing the contest phase
-    Then the variant ballot standard question "V.B_B.1_Q.proposal_A" should have position 1
-    And the variant ballot standard question "V.B_B.1_Q.proposal_B" should have position 2
-    And the variant ballot standard question "V.B_B.1_Q.proposal_C" should have position 3
+    Then the variant ballot standard question "V-B_B-1_Q-proposal_A" should have position 1
+    And the variant ballot standard question "V-B_B-1_Q-proposal_B" should have position 2
+    And the variant ballot standard question "V-B_B-1_Q-proposal_C" should have position 3
 
   Scenario: For a variant ballot, one the standard questions position is missing
     Given the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has position cleared out
     When executing the contest phase
-    Then the variant ballot standard question "V.B_B.1_Q.proposal_A" should have position 1
-    And the variant ballot standard question "V.B_B.1_Q.proposal_B" should have position 2
-    And the variant ballot standard question "V.B_B.1_Q.proposal_C" should have position 3
+    Then the variant ballot standard question "V-B_B-1_Q-proposal_A" should have position 1
+    And the variant ballot standard question "V-B_B-1_Q-proposal_B" should have position 2
+    And the variant ballot standard question "V-B_B-1_Q-proposal_C" should have position 3
 
   Scenario: For a variant ballot, all the tiebreak questions positions are given (background scenario)
     When executing the contest phase
-    Then the variant ballot tiebreak question "V.B_B.1_TQ.1" should have position 1
-    And the variant ballot tiebreak question "V.B_B.1_TQ.2" should have position 3
-    And the variant ballot tiebreak question "V.B_B.1_TQ.3" should have position 2
+    Then the variant ballot tiebreak question "V-B_B-1_TQ-1" should have position 1
+    And the variant ballot tiebreak question "V-B_B-1_TQ-2" should have position 3
+    And the variant ballot tiebreak question "V-B_B-1_TQ-3" should have position 2
 
   Scenario: For a variant ballot, all the tiebreak questions positions are missing
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has position cleared out
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has position cleared out
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has position cleared out
     When executing the contest phase
-    Then the variant ballot tiebreak question "V.B_B.1_TQ.1" should have position 1
-    And the variant ballot tiebreak question "V.B_B.1_TQ.2" should have position 2
-    And the variant ballot tiebreak question "V.B_B.1_TQ.3" should have position 3
+    Then the variant ballot tiebreak question "V-B_B-1_TQ-1" should have position 1
+    And the variant ballot tiebreak question "V-B_B-1_TQ-2" should have position 2
+    And the variant ballot tiebreak question "V-B_B-1_TQ-3" should have position 3
 
   Scenario: For a variant ballot, one of the tiebreak questions position is missing
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has position cleared out
     When executing the contest phase
-    Then the variant ballot tiebreak question "V.B_B.1_TQ.1" should have position 1
-    And the variant ballot tiebreak question "V.B_B.1_TQ.2" should have position 2
-    And the variant ballot tiebreak question "V.B_B.1_TQ.3" should have position 3
+    Then the variant ballot tiebreak question "V-B_B-1_TQ-1" should have position 1
+    And the variant ballot tiebreak question "V-B_B-1_TQ-2" should have position 2
+    And the variant ballot tiebreak question "V-B_B-1_TQ-3" should have position 3
 
   Scenario: Throw an exception when some contest descriptions languages are missing
     Given the descriptions of the contest "my contest" are cleared out
@@ -586,19 +586,19 @@ Feature: Contest Phase
     Given the descriptions of the vote "my votes"."vote A" are cleared out
     And the vote "my votes"."vote A" has description "IT" "Test vote A (IT)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "vote 'vote A id' : voteDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "vote 'vote-A-id' : voteDescription must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some vote descriptions languages are duplicated
     Given the descriptions of the vote "my votes"."vote A" are cleared out
     And the vote "my votes"."vote A" has description "IT" "Test vote A (IT) 1"
     And the vote "my votes"."vote A" has description "IT" "Test vote A (IT) 2"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "vote 'vote A id' : voteDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "vote 'vote-A-id' : voteDescription must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some ballot descriptions languages are missing
     Given the descriptions of the ballot "my votes"."vote B"."vote B ballot 1" are cleared out
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "ballot 'vote B ballot 1 id' : ballotDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "ballot 'vote-B-ballot-1-id' : ballotDescription must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some ballot descriptions languages are duplicated
     Given the descriptions of the ballot "my votes"."vote B"."vote B ballot 1" are cleared out
@@ -606,13 +606,13 @@ Feature: Contest Phase
     And the ballot "my votes"."vote B"."vote B ballot 1" has description "FR" "vote B ballot 1 description (FR) 1"
     And the ballot "my votes"."vote B"."vote B ballot 1" has description "FR" "vote B ballot 1 description (FR) 2"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "ballot 'vote B ballot 1 id' : ballotDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "ballot 'vote-B-ballot-1-id' : ballotDescription must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some standard ballot question information languages are missing
     Given the descriptions of the ballot question of ballot "my votes"."vote A"."vote A ballot 1" are cleared out
     And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Do you accept this proposal (FR)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "question 'V.A_B.1_Q.0' : ballotQuestion must contain at least 4 distinct languages"
+    Then it outputs an exception with text "question 'V-A_B-1_Q-0' : ballotQuestion must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some standard ballot question information languages are duplicated
     Given the descriptions of the ballot question of ballot "my votes"."vote A"."vote A ballot 1" are cleared out
@@ -621,14 +621,14 @@ Feature: Contest Phase
     And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Do you accept this proposal (FR) 1"
     And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Do you accept this proposal (FR) 2"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "question 'V.A_B.1_Q.0' : ballotQuestion must contain at least 4 distinct languages"
+    Then it outputs an exception with text "question 'V-A_B-1_Q-0' : ballotQuestion must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some variant ballot question information languages are missing
     Given the descriptions of the standard question  "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" are cleared out
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "DE" "Question 1 info (DE)"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "RM" "Question 1 info (RM)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "question 'V.B_B.1_Q.proposal_A' : ballotQuestion must contain at least 4 distinct languages"
+    Then it outputs an exception with text "question 'V-B_B-1_Q-proposal_A' : ballotQuestion must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some variant ballot question information languages are duplicated
     Given the descriptions of the standard question  "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" are cleared out
@@ -637,13 +637,13 @@ Feature: Contest Phase
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "RM" "Question 1 info (RM) 2"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "IT" "Question 1 info (IT)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "question 'V.B_B.1_Q.proposal_A' : ballotQuestion must contain at least 4 distinct languages"
+    Then it outputs an exception with text "question 'V-B_B-1_Q-proposal_A' : ballotQuestion must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some variant ballot tiebreak information languages are missing
     Given the descriptions of the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" are cleared out
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Do you prefer A or C (FR)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "question 'V.B_B.1_TQ.2' : ballotQuestion must contain at least 4 distinct languages"
+    Then it outputs an exception with text "question 'V-B_B-1_TQ-2' : ballotQuestion must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some variant ballot tiebreak information languages are duplicated
     Given the descriptions of the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" are cleared out
@@ -652,13 +652,13 @@ Feature: Contest Phase
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Do you prefer A or C (FR) 2"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Do you prefer A or C (FR) 3"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "question 'V.B_B.1_TQ.2' : ballotQuestion must contain at least 4 distinct languages"
+    Then it outputs an exception with text "question 'V-B_B-1_TQ-2' : ballotQuestion must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some default answers descriptions languages are missing
     Given the descriptions of the answer "my params"."answer type 2"."answer 2" are cleared out
     And standardAnswer "my params"."answer type 2"."answer 2" has answer description "DE" "Ja"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer 'b3f0a8e4-1a3d-3d5f-bf78-6f19862a522b' : answer must contain at least 4 distinct languages"
+    Then it outputs an exception with text "answer '463caf46-4f2b-3893-a956-c7b21feca3d1' : answer must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some default answers descriptions languages are duplicated
     Given the descriptions of the answer "my params"."answer type 2"."answer 2" are cleared out
@@ -667,13 +667,13 @@ Feature: Contest Phase
     And standardAnswer "my params"."answer type 2"."answer 2" has answer description "FR" "Oui"
     And standardAnswer "my params"."answer type 2"."answer 2" has answer description "IT" "Si"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer 'b3f0a8e4-1a3d-3d5f-bf78-6f19862a522b' : answer must contain at least 4 distinct languages"
+    Then it outputs an exception with text "answer '463caf46-4f2b-3893-a956-c7b21feca3d1' : answer must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some specific answers descriptions languages are missing
     Given the descriptions of the answer "my params"."question variant C"."answer 2" are cleared out
     And standardAnswer "my params"."question variant C"."answer 2" has answer description "DE" "Nein Nein"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer '488b2b36-f935-3405-83f6-6e629ad75657' : answer must contain at least 4 distinct languages"
+    Then it outputs an exception with text "answer '20edcbea-8bd1-32b0-9e82-ea624ed4beb5' : answer must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some specific answers descriptions languages are duplicated
     Given the descriptions of the answer "my params"."question variant C"."answer 2" are cleared out
@@ -682,14 +682,14 @@ Feature: Contest Phase
     And standardAnswer "my params"."question variant C"."answer 2" has answer description "FR" "Oui Oui 2"
     And standardAnswer "my params"."question variant C"."answer 2" has answer description "IT" "Si Si"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer '488b2b36-f935-3405-83f6-6e629ad75657' : answer must contain at least 4 distinct languages"
+    Then it outputs an exception with text "answer '20edcbea-8bd1-32b0-9e82-ea624ed4beb5' : answer must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some tiebreak answers descriptions languages are missing
     Given the descriptions of the answer "my params"."tiebreak question 3"."answer 1" are cleared out
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer description "RM" "I prefer B (RM)"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer description "IT" "I prefer B (IT)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer '27ff8f70-011d-3e10-a7c7-2fd37a2a0e27' : answer must contain at least 4 distinct languages"
+    Then it outputs an exception with text "answer '2a0f687a-83cb-3ceb-98eb-5a5c27d07361' : answer must contain at least 4 distinct languages"
 
   Scenario:Throw an exception when some tiebreak answers descriptions languages are duplicated
     Given the descriptions of the answer "my params"."tiebreak question 3"."answer 1" are cleared out
@@ -698,7 +698,7 @@ Feature: Contest Phase
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer description "IT" "I prefer B (IT) 2"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer description "FR" "I prefer B (FR)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer '27ff8f70-011d-3e10-a7c7-2fd37a2a0e27' : answer must contain at least 4 distinct languages"
+    Then it outputs an exception with text "answer '2a0f687a-83cb-3ceb-98eb-5a5c27d07361' : answer must contain at least 4 distinct languages"
 
 
   Scenario: Throw an exception when some election descriptions languages are missing
@@ -706,7 +706,7 @@ Feature: Contest Phase
     And the election "my elections"."election A" has description "DE" "Test election A (DE)"
     And the election "my elections"."election A" has description "FR" "Test election A (FR)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "election 'election A id' : electionDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "election 'election-A-id' : electionDescription must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some election descriptions languages are duplicated
     Given the descriptions of the election "my elections"."election B" are cleared out
@@ -715,14 +715,14 @@ Feature: Contest Phase
     And the election "my elections"."election B" has description "RM" "Test election B (RM) 1"
     And the election "my elections"."election B" has description "RM" "Test election B (RM) 2"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "election 'election B id' : electionDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "election 'election-B-id' : electionDescription must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some candidate descriptions languages are missing
     Given the text descriptions of the candidate "my elections"."election A"."candidate 1 for A" are cleared out
     And candidate "my elections"."election A"."candidate 1 for A" has text "FR" "Candidate 1 for A text (FR)"
     And candidate "my elections"."election A"."candidate 1 for A" has text "IT" "Candidate 1 for A text (IT)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "candidate 'candidate 1 for A id' : candidateText must contain at least 4 distinct languages"
+    Then it outputs an exception with text "candidate 'candidate-1-for-A-id' : candidateText must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some candidate descriptions languages are duplicated
     Given the text descriptions of the candidate "my elections"."election A"."candidate 2 for A" are cleared out
@@ -731,13 +731,13 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 2 for A" has text "IT" "Candidate 2 for A text (IT) 2"
     And candidate "my elections"."election A"."candidate 2 for A" has text "RM" "Candidate 2 for A text (RM)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "candidate 'candidate 2 for A id' : candidateText must contain at least 4 distinct languages"
+    Then it outputs an exception with text "candidate 'candidate-2-for-A-id' : candidateText must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some candidates occupational title descriptions languages are missing
     Given the title descriptions of the candidate "my elections"."election A"."candidate 1 for A" are cleared out
     And candidate "my elections"."election A"."candidate 1 for A" has occupational title "FR" "Candidate 1 for A title (FR)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "candidate 'candidate 1 for A id' : occupationalTitle must contain at least 4 distinct languages"
+    Then it outputs an exception with text "candidate 'candidate-1-for-A-id' : occupationalTitle must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some candidates occupational title descriptions languages are duplicated
     Given the title descriptions of the candidate "my elections"."election A"."candidate 2 for A" are cleared out
@@ -746,14 +746,14 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 2 for A" has occupational title "FR" "Candidate 2 for A title (FR) 2"
     And candidate "my elections"."election A"."candidate 2 for A" has occupational title "IT" "Candidate 2 for A title (IT)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "candidate 'candidate 2 for A id' : occupationalTitle must contain at least 4 distinct languages"
+    Then it outputs an exception with text "candidate 'candidate-2-for-A-id' : occupationalTitle must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some list descriptions languages are missing
     Given the list descriptions of the list "my elections"."election A"."list 2 for A" are cleared out
     And list "my elections"."election A"."list 2 for A" has description "IT" "list 2 for election A (IT)"
     And list "my elections"."election A"."list 2 for A" has description "RM" "list 2 for election A (RM)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "list 'list 2 for election A id' : listDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "list 'list-2-for-election-A-id' : listDescription must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some list descriptions languages are duplicated
     Given the list descriptions of the list "my elections"."election A"."list 1 for A" are cleared out
@@ -762,17 +762,17 @@ Feature: Contest Phase
     And list "my elections"."election A"."list 1 for A" has description "IT" "list 1 for election A (IT) 3"
     And list "my elections"."election A"."list 1 for A" has description "RM" "list 1 for election A (RM)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "list 'list 1 for election A id' : listDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "list 'list-1-for-election-A-id' : listDescription must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when a candidate identification in election is not unique
-    Given candidate "my elections"."election A"."candidate 4 for A" has id "candidate 3 for A id"
+    Given candidate "my elections"."election A"."candidate 4 for A" has id "candidate-3-for-A-id"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "election 'election A id' : candidateIdentification must be unique"
+    Then it outputs an exception with text "election 'election-A-id' : candidateIdentification must be unique"
 
   Scenario: Throw an exception when position in a list is not unique
     Given position "my elections"."election A"."list 2 for A"."pos 2 list 2 for A" has position in list 1
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "the position 1 in the list 'list 2 for election A id' is not unique"
+    Then it outputs an exception with text "the position 1 in the list 'list-2-for-election-A-id' is not unique"
 
   Scenario: Throw an exception when a candidate identification in a list is not found in the list of candidate(s)
     Given position "my elections"."election A"."list 1 for A"."pos 4 list 1 for A" has id "wrong-id"
@@ -784,7 +784,7 @@ Feature: Contest Phase
     And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has text "FR" "candidate 2 for A list text (FR)"
     And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has text "IT" "candidate 2 for A list text (IT)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "candidate 'candidate 2 for A id' : candidateTextOnPosition must contain at least 4 distinct languages"
+    Then it outputs an exception with text "candidate 'candidate-2-for-A-id' : candidateTextOnPosition must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some candidate text descriptions languages are duplicated
     Given the candidate text descriptions at position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" are cleared out
@@ -793,7 +793,7 @@ Feature: Contest Phase
     And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has text "IT" "candidate 2 for A list text (IT) 1"
     And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has text "IT" "candidate 2 for A list text (IT) 2"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "candidate 'candidate 2 for A id' : candidateTextOnPosition must contain at least 4 distinct languages"
+    Then it outputs an exception with text "candidate 'candidate-2-for-A-id' : candidateTextOnPosition must contain at least 4 distinct languages"
 
   Scenario: No writeIns in parameter will produce elections with default values (=false)
     Given the elections parameters in "my params" are cleared out
@@ -803,48 +803,48 @@ Feature: Contest Phase
   Scenario: writeIns configured in parameter will produce elections with corresponding values
     Given the elections parameters in "my params" are cleared out
     And user parameters "my params" has election named "election 1"
-    And election "my params"."election 1" has id "election A id"
+    And election "my params"."election 1" has id "election-A-id"
     And election "my params"."election 1" has writeIns "true"
     And user parameters "my params" has election named "election 2"
-    And election "my params"."election 2" has id "election B id"
+    And election "my params"."election 2" has id "election-B-id"
     When executing the contest phase
-    Then election identified by "election A id" should have writeIns "true"
-    And election identified by "election B id" should have writeIns "false"
+    Then election identified by "election-A-id" should have writeIns "true"
+    And election identified by "election-B-id" should have writeIns "false"
 
   Scenario: minimalCandidateSelectionInList configured from parameter
     Given the elections parameters in "my params" are cleared out
     And user parameters "my params" has election named "election 1"
-    And election "my params"."election 1" has id "election A id"
+    And election "my params"."election 1" has id "election-A-id"
     And election "my params"."election 1" has minimalCandidateSelection 0
     And user parameters "my params" has election named "election 2"
-    And election "my params"."election 2" has id "election B id"
+    And election "my params"."election 2" has id "election-B-id"
     When executing the contest phase
-    Then election identified by "election A id" should have minimalCandidateSelection 0
-    And election identified by "election B id" should have minimalCandidateSelection 1
+    Then election identified by "election-A-id" should have minimalCandidateSelection 0
+    And election identified by "election-B-id" should have minimalCandidateSelection 1
 
   Scenario: Throw an exception when the number of accumulated candidates in list exceed the accumulation parameter value (=1) of the election
     Given election "my params"."election 1" has accumulation 1
-    And position "my elections"."election A"."list 1 for A"."pos 2 list 1 for A" has id "candidate 2 for A id"
+    And position "my elections"."election A"."list 1 for A"."pos 2 list 1 for A" has id "candidate-2-for-A-id"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "same candidate found more than 1 time(s). [listIdentification : list 1 for election A id]"
+    Then it outputs an exception with text "same candidate found more than 1 time(s). [listIdentification : list-1-for-election-A-id]"
 
   Scenario: Throw an exception when the number of accumulated candidates in list exceed the accumulation parameter value (=3) of the election
     Given election "my params"."election 1" has accumulation 3
-    And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has id "candidate 4 for A id"
-    And position "my elections"."election A"."list 1 for A"."pos 2 list 1 for A" has id "candidate 4 for A id"
-    And position "my elections"."election A"."list 1 for A"."pos 3 list 1 for A" has id "candidate 4 for A id"
-    And position "my elections"."election A"."list 1 for A"."pos 4 list 1 for A" has id "candidate 4 for A id"
+    And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has id "candidate-4-for-A-id"
+    And position "my elections"."election A"."list 1 for A"."pos 2 list 1 for A" has id "candidate-4-for-A-id"
+    And position "my elections"."election A"."list 1 for A"."pos 3 list 1 for A" has id "candidate-4-for-A-id"
+    And position "my elections"."election A"."list 1 for A"."pos 4 list 1 for A" has id "candidate-4-for-A-id"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "same candidate found more than 3 time(s). [listIdentification : list 1 for election A id]"
+    Then it outputs an exception with text "same candidate found more than 3 time(s). [listIdentification : list-1-for-election-A-id]"
 
   Scenario: An accumulated candidate in a list must have the same candidateListIdentification
     Given election "my params"."election 1" has accumulation 3
-    And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has id "candidate 1 for A id"
-    And position "my elections"."election A"."list 1 for A"."pos 2 list 1 for A" has id "candidate 2 for A id"
-    And position "my elections"."election A"."list 1 for A"."pos 3 list 1 for A" has id "candidate 2 for A id"
-    And position "my elections"."election A"."list 1 for A"."pos 4 list 1 for A" has id "candidate 2 for A id"
+    And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has id "candidate-1-for-A-id"
+    And position "my elections"."election A"."list 1 for A"."pos 2 list 1 for A" has id "candidate-2-for-A-id"
+    And position "my elections"."election A"."list 1 for A"."pos 3 list 1 for A" has id "candidate-2-for-A-id"
+    And position "my elections"."election A"."list 1 for A"."pos 4 list 1 for A" has id "candidate-2-for-A-id"
     When executing the contest phase
-    Then the list identified by "list 1 for election A id" should contain 3 occurrences of the candidateListIdentification "ddd75adb-2a68-362c-928a-2a7decde9eb9"
+    Then the list identified by "list-1-for-election-A-id" should contain 3 occurrences of the candidateListIdentification "f532dee3-1088-33d0-b471-8f7a257a80bd"
 
   Scenario: Throw an exception when a list-union identifier is not unique
     Given list-union  "my elections"."election A"."list-union 2" has id "list-union-1-id"
@@ -852,9 +852,9 @@ Feature: Contest Phase
     Then it outputs an exception with text "the list-union identifier 'list-union-1-id' is not unique"
 
   Scenario: Throw an exception when a referenced list is found multiple times in a list-union
-    Given list-union  "my elections"."election A"."list-union 2" has referenced list "list 1 for election A id"
+    Given list-union  "my elections"."election A"."list-union 2" has referenced list "list-1-for-election-A-id"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "the referenced list 'list 1 for election A id' in the list-union 'list-union-2-id' is not unique"
+    Then it outputs an exception with text "the referenced list 'list-1-for-election-A-id' in the list-union 'list-union-2-id' is not unique"
 
   Scenario: Throw an exception when a referenced list in list-union does not exist
     Given list-union  "my elections"."election A"."list-union 2" has referenced list "--?--"
@@ -879,7 +879,7 @@ Feature: Contest Phase
   Scenario: Warn if a candidate name is found multiple times in an election
     Given candidate "my elections"."election A"."candidate 3 for A" has name "first-name-4" "last-name-4"
     When executing the contest phase
-    Then a log with text "same candidate 'first-name-4' 'last-name-4' name found multiple times. [ElectionId : election A id]" must exist
+    Then a log with text "same candidate 'first-name-4' 'last-name-4' name found multiple times. [ElectionId : election-A-id]" must exist
 
   Scenario: Merging all contest formats
     When executing the contest phase with parameters "my params" and contest "my contest" and votes "my votes" and elections "my elections"
@@ -890,23 +890,23 @@ Feature: Contest Phase
     Given list "my elections"."election A"."list 1 for A" has no listOrderOfPrecedence
     Given list "my elections"."election A"."list 3 for A" has no listOrderOfPrecedence
     When executing the contest phase
-    Then the list identified by "list 1 for election A id" should have listOrderOfPrecedence 3
-    And the list identified by "list 2 for election A id" should have listOrderOfPrecedence 2
-    And the list identified by "list 3 for election A id" should have listOrderOfPrecedence 1
+    Then the list identified by "list-1-for-election-A-id" should have listOrderOfPrecedence 3
+    And the list identified by "list-2-for-election-A-id" should have listOrderOfPrecedence 2
+    And the list identified by "list-3-for-election-A-id" should have listOrderOfPrecedence 1
 
   Scenario: Throw an exception when a standard ballot question has two blank responses
     Given standardAnswer "my params"."answer type 2"."answer 2" has answer standardAnswerType = "EMPTY"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "vote 'vote B id' variant ballot standard question 3 has more than one blank answer"
+    Then it outputs an exception with text "vote 'vote-B-id' variant ballot standard question 3 has more than one blank answer"
 
   Scenario: Throw an exception when variant ballot standard question has two blank responses
     Given standardAnswer "my params"."question variant C"."answer 1" has answer standardAnswerType = "EMPTY"
     Given standardAnswer "my params"."question variant C"."answer 2" has answer standardAnswerType = "EMPTY"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "vote 'vote B id' variant ballot standard question 1 has more than one blank answer"
+    Then it outputs an exception with text "vote 'vote-B-id' variant ballot standard question 1 has more than one blank answer"
 
   Scenario: Throw an exception when variant ballot tiebreak question has two blank responses
     Given tiebreakAnswer "my params"."tiebreak question 3"."answer 1" is as blank defined
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" is as blank defined
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "vote 'vote B id' variant ballot tiebreak question 2 has more than one blank answer"
+    Then it outputs an exception with text "vote 'vote-B-id' variant ballot tiebreak question 2 has more than one blank answer"

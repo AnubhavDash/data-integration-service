@@ -5,14 +5,12 @@ package pipes;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
 import ch.evoting.xmlns.parameter._4.ContestType;
 import ch.evoting.xmlns.parameter._4.Parameter;
-import ch.evoting.xmlns.parameter._4.PostVotePhaseType;
 import ch.post.it.evoting.dataintegrationservice.parameter.ParameterLoader;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.AuthorizationPlugin;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.ContestMapper;
@@ -51,10 +49,6 @@ public class ParameterPhaseComponent {
 
 	public Function<Parameter, ContestType> getContestParameters() {
 		return Parameter::getContest;
-	}
-
-	public Function<Parameter, Optional<PostVotePhaseType>> getPostVotePhaseParameters() {
-		return p -> Optional.ofNullable(p.getPostVotePhase());
 	}
 
 	public Function<String, Parameter> loadParameterV1() {

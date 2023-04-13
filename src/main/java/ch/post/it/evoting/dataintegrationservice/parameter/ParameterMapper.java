@@ -11,16 +11,16 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AdminBoardMembersType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AdminBoardType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectoralAuthorityMembersType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectoralAuthorityType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectoralBoardMembersType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectoralBoardType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentTextInfoType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentTextType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PropertyType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswerType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TiebreakAnswerType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.UiPropertiesType;
 
 @Mapper(imports = UUID.class)
 public interface ParameterMapper {
@@ -50,15 +50,13 @@ public interface ParameterMapper {
 
 	LanguageType map(ch.evoting.xmlns.parameter._4.LanguageType value);
 
-	ElectoralAuthorityType map(ch.evoting.xmlns.parameter._4.ElectoralAuthorityType oea);
+	AdminBoardType map(ch.evoting.xmlns.parameter._4.AdminBoardType oea);
 
-	ElectoralAuthorityMembersType map(ch.evoting.xmlns.parameter._4.ElectoralAuthorityMembersType emt);
+	AdminBoardMembersType map(ch.evoting.xmlns.parameter._4.AdminBoardMembersType emt);
 
-	UiPropertiesType map(ch.evoting.xmlns.parameter._4.UiPropertiesType value);
+	ElectoralBoardType map(ch.evoting.xmlns.parameter._4.ElectoralBoardType oea);
 
-	@Mapping(target = "key", source = "key")
-	@Mapping(target = "value", source = "value")
-	PropertyType map(ch.evoting.xmlns.parameter._4.PropertyType value);
+	ElectoralBoardMembersType map(ch.evoting.xmlns.parameter._4.ElectoralBoardMembersType emt);
 
 	IncumbentTextType map(ch.evoting.xmlns.parameter._4.ContestType.IncumbentText value);
 

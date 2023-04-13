@@ -3,6 +3,7 @@
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -26,6 +27,8 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestDescri
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.DwellingAddressType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionDescriptionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
@@ -54,10 +57,10 @@ public interface ECH015xv3Mapper {
 	@Mapping(target = "evotingFromDate", ignore = true)
 	@Mapping(target = "evotingToDate", ignore = true)
 	@Mapping(target = "contestDefaultLanguage", ignore = true)
-	@Mapping(target = "electionInformation", ignore = true)
+	@Mapping(target = "electionGroupBallot", ignore = true)
 	@Mapping(target = "voteInformation", ignore = true)
 	@Mapping(target = "extendedAuthenticationKeys", ignore = true)
-	@Mapping(target = "electoralAuthority", ignore = true)
+	@Mapping(target = "electoralBoard", ignore = true)
 	ContestType convert(ch.ech.xmlns.ech_0155._3.ContestType contest);
 
 	ContestDescriptionInformationType convert(ch.ech.xmlns.ech_0155._3.ContestDescriptionInformationType value);
@@ -65,7 +68,22 @@ public interface ECH015xv3Mapper {
 	ContestDescriptionInformationType.ContestDescriptionInfo convert(
 			ch.ech.xmlns.ech_0155._3.ContestDescriptionInformationType.ContestDescriptionInfo value);
 
-	ElectionInformationType convert(ch.ech.xmlns.ech_0157._3.EventInitialDelivery.ElectionInformation ei);
+	default ElectionGroupBallotType convert(ch.ech.xmlns.ech_0157._3.EventInitialDelivery.ElectionInformation ei) {
+		return new ElectionGroupBallotType()
+				.withElectionGroupIdentification(ei.getElection().getElectionIdentification())
+				.withDomainOfInfluence(ei.getElection().getDomainOfInfluence())
+				.withElectionGroupDescription(mapElectionDescriptionToGroupDescription(ei.getElection().getElectionDescription()))
+				.withElectionInformation(convertElectionInformation(ei));
+	}
+	@Mapping(target = "electionGroupDescriptionInfo", source = "electionDescriptionInfo")
+	ElectionGroupDescriptionInformationType mapElectionDescriptionToGroupDescription(ch.ech.xmlns.ech_0155._3.ElectionDescriptionInformationType electionDescription);
+
+	@Mapping(target = "electionGroupDescription", source = "electionDescription")
+	@Mapping(target = "electionGroupDescriptionShort", source = "electionDescriptionShort")
+	ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo electionDescriptionInfoToElectionGroupDescriptionInfo(
+			ch.ech.xmlns.ech_0155._3.ElectionDescriptionInformationType.ElectionDescriptionInfo electionDescriptionInfo);
+
+	ElectionInformationType convertElectionInformation(ch.ech.xmlns.ech_0157._3.EventInitialDelivery.ElectionInformation ei);
 
 	@Mapping(target = "writeInsAllowed", ignore = true)
 	@Mapping(target = "candidateAccumulation", ignore = true)

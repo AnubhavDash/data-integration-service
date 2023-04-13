@@ -19,10 +19,11 @@ public class PrefetElectionTypeImpl extends PrefetElectionType {
 	@Override
 	public ContestType apply(final ContestType contestType) {
 		//add referenceOnPosition to candidate and then set position
-		contestType.getElectionInformation().stream().filter(e -> this.getElectionId().contains(e.getElection().getElectionIdentification()))
+		contestType.getElectionGroupBallot().stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+				.filter(e -> this.getElectionId().contains(e.getElection().getElectionIdentification()))
 				.forEach(e ->
 				{
-					e.getCandidate().stream().forEach(c ->
+					e.getCandidate().forEach(c ->
 					{
 						final Optional<ListType> list = e.getList().stream().filter(l -> !l.isListEmpty() && l.getCandidatePosition().stream()
 								.anyMatch(cp -> cp.getCandidateIdentification().equals(c.getCandidateIdentification()))).findFirst();
@@ -41,7 +42,8 @@ public class PrefetElectionTypeImpl extends PrefetElectionType {
 				});
 
 		//remove the non-empty lists
-		contestType.getElectionInformation().stream().filter(e -> this.getElectionId().contains(e.getElection().getElectionIdentification()))
+		contestType.getElectionGroupBallot().stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+				.filter(e -> this.getElectionId().contains(e.getElection().getElectionIdentification()))
 				.forEach(e -> e.setList(e.getList().stream()
 						.filter(ListType::isListEmpty)
 						.collect(Collectors.toList())));

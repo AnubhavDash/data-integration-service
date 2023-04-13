@@ -27,11 +27,6 @@ def contestParameters = pipe {
     map parameterPhaseComponent.getContestParameters() \
 }
 
-def postVotePhaseParameters = pipe {
-    from loadParameterFile \
-    map parameterPhaseComponent.getPostVotePhaseParameters() \
-}
-
 def configSplitPlugins = pipe {
     from loadParameterFile \
     map parameterPhaseComponent.getConfigSplitPlugins() \
@@ -57,5 +52,4 @@ ParameterPhase.exports.afterReadContestPlugins = afterReadContestPlugins
 ParameterPhase.exports.afterReadVoterAuthorizationPlugins = afterReadVoterAuthorizationPlugins
 ParameterPhase.exports.configSplitterPlugins = configSplitPlugins
 ParameterPhase.exports.contestParameters = contestParameters
-ParameterPhase.exports.postVotePhaseParameters = postVotePhaseParameters
 ParameterPhase.exports.buildAuthorizationPlugins = buildAuthorizationPlugins

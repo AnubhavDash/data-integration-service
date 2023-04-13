@@ -26,6 +26,8 @@ import javax.xml.transform.stream.StreamSource;
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
 import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.pipes.PhaseSteps;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AdminBoardMembersType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AdminBoardType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationObjectType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
@@ -34,6 +36,8 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestDescri
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CountingCircleType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.DomainOfInfluenceType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectoralBoardMembersType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectoralBoardType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.HeaderType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PersonType;
@@ -63,7 +67,8 @@ public class OutputPhaseSteps extends PhaseSteps {
 	private ContestType contest = new ContestType().withContestDefaultLanguage(LanguageType.DE).withContestIdentification("111-222-abc")
 			.withContestDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
 			.withEvotingFromDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
-			.withEvotingToDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00")).withContestDescription(
+			.withEvotingToDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
+			.withContestDescription(
 					new ContestDescriptionInformationType().withContestDescriptionInfo(
 							new ContestDescriptionInformationType.ContestDescriptionInfo().withLanguage(LanguageType.DE)
 									.withContestDescription("Desc DE")).withContestDescriptionInfo(
@@ -72,16 +77,27 @@ public class OutputPhaseSteps extends PhaseSteps {
 							new ContestDescriptionInformationType.ContestDescriptionInfo().withLanguage(LanguageType.IT)
 									.withContestDescription("Desc IT")).withContestDescriptionInfo(
 							new ContestDescriptionInformationType.ContestDescriptionInfo().withLanguage(LanguageType.RM)
-									.withContestDescription("Desc RM")));
+									.withContestDescription("Desc RM")))
+			.withAdminBoard(new AdminBoardType()
+					.withAdminBoardIdentification("AB")
+					.withAdminBoardThresholdValue(BigInteger.TWO)
+					.withAdminBoardName("AB")
+					.withAdminBoardDescription("AB")
+					.withAdminBoardMembers(new AdminBoardMembersType().withAdminBoardMemberName("AB1", "AB2")))
+			.withElectoralBoard(new ElectoralBoardType()
+					.withElectoralBoardIdentification("EB")
+					.withElectoralBoardName("EB")
+					.withElectoralBoardDescription("EB")
+					.withElectoralBoardMembers(new ElectoralBoardMembersType().withElectoralBoardMemberName("EB1", "EB2")));
 
 	private AuthorizationsType authorization = new AuthorizationsType().withAuthorization(
 			new AuthorizationType().withAuthorizationIdentification("auth-000-abc").withAuthorizationAlias("auth-000-abc-alias")
 					.withAuthorizationName("auth-000-abc-name").withAuthorizationFromDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
 					.withAuthorizationToDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00")).withAuthorizationTest(false)
 					.withAuthorizationGracePeriod(BigInteger.valueOf(900L)).withAuthorizationObject(
-							new AuthorizationObjectType().withCountingCircle(new CountingCircleType().withId("cc-000-abc").withName("cc-000-abc"))
+							new AuthorizationObjectType().withCountingCircle(new CountingCircleType().withCountingCircleIdentification("cc-000-abc").withCountingCircleName("cc-000-abc"))
 									.withDomainOfInfluence(
-											new DomainOfInfluenceType().withId("doi-000-abc").withCantonCode("CT").withType("CH").withLocalId("1234"))
+											new DomainOfInfluenceType().withDomainOfInfluenceIdentification("doi-000-abc").withDomainOfInfluenceName("CT-CH-1234").withDomainOfInfluenceType("CH"))
 
 					));
 	private RuntimeException processException = null;

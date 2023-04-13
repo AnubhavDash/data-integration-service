@@ -16,6 +16,7 @@ import java.util.List;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
@@ -31,7 +32,7 @@ import reactor.core.publisher.Flux;
 public class Ech015xv3ContestPhaseSteps extends PhaseSteps {
 
 	private List<ContestType> contests;
-	private List<ElectionInformationType> elections;
+	private List<ElectionGroupBallotType> elections;
 	private List<VoteInformationType> votes;
 
 	@Given("^\"([^\"]*)\" file as input$")
@@ -84,6 +85,7 @@ public class Ech015xv3ContestPhaseSteps extends PhaseSteps {
 	@And("^candidate with callName \"([^\"]*)\" has a candidateText")
 	public void andCandidateWithCallnameHasCandidateText(final String candidateCallName) {
 		final List<CandidateType> candidateList = elections.stream()
+				.map(eg -> eg.getElectionInformation().get(0))
 				.map(ElectionInformationType::getCandidate)
 				.flatMap(Collection::stream)
 				.filter(c -> c.getCallName().equals(candidateCallName))
@@ -97,6 +99,7 @@ public class Ech015xv3ContestPhaseSteps extends PhaseSteps {
 	@And("^candidate with callName \"([^\"]*)\" has \"([^\"]*)\" as candidateTextInformation")
 	public void andCandidateWithCallnameHasCandidateTextInformation(final String candidateCallName, final String value) {
 		final List<CandidateType> candidateList = elections.stream()
+				.map(eg -> eg.getElectionInformation().get(0))
 				.map(ElectionInformationType::getCandidate)
 				.flatMap(Collection::stream)
 				.filter(c -> c.getCallName().equals(candidateCallName)).toList();

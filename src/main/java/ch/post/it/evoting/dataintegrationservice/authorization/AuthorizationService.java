@@ -55,8 +55,8 @@ public class AuthorizationService {
 
 	private HashMap<String, Integer> authorizationTypePriority;
 	private final Comparator<AuthorizationObjectType> authorizationObjectTypeComparator = (o1, o2) -> {
-		Integer prio1 = authorizationTypePriority.get(o1.getDomainOfInfluence().getType());
-		Integer prio2 = authorizationTypePriority.get(o2.getDomainOfInfluence().getType());
+		Integer prio1 = authorizationTypePriority.get(o1.getDomainOfInfluence().getDomainOfInfluenceType());
+		Integer prio2 = authorizationTypePriority.get(o2.getDomainOfInfluence().getDomainOfInfluenceType());
 		if (prio1 == null) {
 			prio1 = Integer.MAX_VALUE;
 		}
@@ -177,7 +177,7 @@ public class AuthorizationService {
 					for (final DomainOfInfluenceId id : cc.getDomainOfInfluenceIds()) {
 						final DomainOfInfluenceId doiId = parseTree(id, voterdoiInfo.getDomainOfInfluence());
 						if (doiId != null && usedDOIids.contains(doiId.getId()) && result.getAuthorizationObject().stream()
-								.noneMatch(ao -> ao.getDomainOfInfluence().getId().equals(doiId.getId()))) {
+								.noneMatch(ao -> ao.getDomainOfInfluence().getDomainOfInfluenceIdentification().equals(doiId.getId()))) {
 							final AuthorizationObjectType ao = new AuthorizationObjectType();
 
 							final CountingCircle ccToLink = filterCC != null ? filterCC : cc;
@@ -188,11 +188,12 @@ public class AuthorizationService {
 										"Cannot change the countingCircle to a non test/control one [voterId: %s", voter.getVoterIdentification());
 							}
 
-							ao.setCountingCircle(new CountingCircleType().withId(ccToLink.getCcId()).withName(ccToLink.getCcName()));
-							ao.setDomainOfInfluence(new DomainOfInfluenceType().withId(doiId.getId())
-									.withCantonCode(doiId.getRelatedDomainOfInfluence().getCantonAbbreviation())
-									.withType(doiId.getRelatedDomainOfInfluence().getType())
-									.withLocalId(doiId.getRelatedDomainOfInfluence().getLocalId()));
+							ao.setCountingCircle(new CountingCircleType().withCountingCircleIdentification(ccToLink.getCcId())
+									.withCountingCircleName(ccToLink.getCcName()));
+							ao.setDomainOfInfluence(new DomainOfInfluenceType().withDomainOfInfluenceIdentification(doiId.getId())
+									.withDomainOfInfluenceName(String.format("%s-%s-%s", doiId.getRelatedDomainOfInfluence().getCantonAbbreviation(),
+											doiId.getRelatedDomainOfInfluence().getType(), doiId.getRelatedDomainOfInfluence().getLocalId()))
+									.withDomainOfInfluenceType(doiId.getRelatedDomainOfInfluence().getType()));
 
 							usedCountingCircles.add(ccToLink);
 							authAlias.add(Tuples.of(doiId.getRelatedDomainOfInfluence(), ccToLink));
@@ -205,7 +206,6 @@ public class AuthorizationService {
 
 			result.setAuthorizationName(usedCountingCircles.stream().distinct().map(CountingCircle::getCcName)
 					.reduce("", (cc1, cc2) -> StringUtil.concat(cc1, cc2, " | ")));
-
 
 			result.setAuthorizationIdentification(StringUtil.generateUUIDFromString(authAlias.stream().sorted((o1, o2) -> {
 						Integer prio1 = authorizationTypePriority.get(o1.getT1().getType());
@@ -281,14 +281,13 @@ public class AuthorizationService {
 		final AuthorizationObjectType ao = new AuthorizationObjectType();
 
 		final DomainOfInfluenceType doi = new DomainOfInfluenceType();
-		doi.setId(voterDomainOfInfluenceInfo.getDomainOfInfluence().getLocalId());
-		doi.setType(voterDomainOfInfluenceInfo.getDomainOfInfluence().getType().name());
-		doi.setCantonCode("NA");
-		doi.setLocalId("0");
+		doi.setDomainOfInfluenceIdentification(voterDomainOfInfluenceInfo.getDomainOfInfluence().getLocalId());
+		doi.setDomainOfInfluenceType(voterDomainOfInfluenceInfo.getDomainOfInfluence().getType().name());
+		doi.setDomainOfInfluenceName(doi.getDomainOfInfluenceIdentification());
 
 		final CountingCircleType cc = new CountingCircleType();
-		cc.setId(voterDomainOfInfluenceInfo.getCountingCircle().getId());
-		cc.setName(voterDomainOfInfluenceInfo.getCountingCircle().getName());
+		cc.setCountingCircleIdentification(voterDomainOfInfluenceInfo.getCountingCircle().getId());
+		cc.setCountingCircleName(voterDomainOfInfluenceInfo.getCountingCircle().getName());
 
 		ao.setDomainOfInfluence(doi);
 		ao.setCountingCircle(cc);
@@ -323,14 +322,14 @@ public class AuthorizationService {
 	public List<String> mapDomainOfInfluenceIds(final ContestType contest) {
 		final ArrayList<String> result = new ArrayList<>();
 
-		contest.getElectionInformation().forEach(e -> result.add(e.getElection().getDomainOfInfluence()));
+		contest.getElectionGroupBallot().forEach(e -> result.add(e.getDomainOfInfluence()));
 		contest.getVoteInformation().forEach(v -> result.add(v.getVote().getDomainOfInfluence()));
 		return result;
 	}
 
 	public void checkAuthorizations(final AuthorizationsType authorizations, final List<String> usedDOIIds) {
 		final List<String> doiInAuthorizations = authorizations.getAuthorization().stream().flatMap(a -> a.getAuthorizationObject().stream())
-				.map(ao -> ao.getDomainOfInfluence().getId()).toList();
+				.map(ao -> ao.getDomainOfInfluence().getDomainOfInfluenceIdentification()).toList();
 
 		checkState(!doiInAuthorizations.isEmpty(), "No validVoters are defined !");
 

@@ -24,8 +24,8 @@ class AuthorizationBuilderTest {
 				.withAuthorizationIdentification("id")
 				.withAuthorizationAlias("1234").withAuthorizationName("Toto").withAuthorizationObject(
 						new AuthorizationObjectType()
-								.withDomainOfInfluence(new DomainOfInfluenceType().withId("doi"))
-								.withCountingCircle(new CountingCircleType().withId("cc"))
+								.withDomainOfInfluence(new DomainOfInfluenceType().withDomainOfInfluenceIdentification("doi"))
+								.withCountingCircle(new CountingCircleType().withCountingCircleIdentification("cc"))
 				);
 
 		authorizations = authorizationBuilder.appendAuthorization(authorizations, auth);

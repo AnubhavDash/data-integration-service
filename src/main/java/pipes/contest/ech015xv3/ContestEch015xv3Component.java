@@ -11,6 +11,7 @@ import ch.ech.xmlns.ech_0155._3.ContestType;
 import ch.ech.xmlns.ech_0157._3.EventInitialDelivery;
 import ch.post.it.evoting.dataintegrationservice.contest.ECH015xv3Mapper;
 import ch.post.it.evoting.dataintegrationservice.contest.ECHv3FileContestLoader;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
@@ -34,7 +35,7 @@ public class ContestEch015xv3Component {
 		return Tuple2::getT2;
 	}
 
-	Function<EventInitialDelivery.ElectionInformation, ElectionInformationType> fromECHv3Election() {
+	Function<EventInitialDelivery.ElectionInformation, ElectionGroupBallotType> fromECHv3Election() {
 		return ECH015xv3Mapper.INSTANCE::convert;
 	}
 

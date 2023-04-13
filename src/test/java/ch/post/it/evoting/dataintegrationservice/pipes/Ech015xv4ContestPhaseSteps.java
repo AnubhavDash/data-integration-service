@@ -17,6 +17,7 @@ import java.util.Optional;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
@@ -32,7 +33,7 @@ import reactor.core.publisher.Flux;
 public class Ech015xv4ContestPhaseSteps extends PhaseSteps {
 
 	private List<ContestType> contests;
-	private List<ElectionInformationType> elections;
+	private List<ElectionGroupBallotType> elections;
 	private List<VoteInformationType> votes;
 
 	@Given("^\"([^\"]*)\" v4 file as input$")
@@ -84,7 +85,8 @@ public class Ech015xv4ContestPhaseSteps extends PhaseSteps {
 	public void andContestContainsElection(final String electionId) {
 		assertTrue(
 				contests.stream()
-						.flatMap(c -> c.getElectionInformation().stream())
+						.flatMap(c -> c.getElectionGroupBallot().stream())
+						.flatMap(eg -> eg.getElectionInformation().stream())
 						.anyMatch(e -> e.getElection().getElectionIdentification().equalsIgnoreCase(electionId)));
 	}
 
@@ -92,19 +94,20 @@ public class Ech015xv4ContestPhaseSteps extends PhaseSteps {
 	public void andElectionHasDOI(final String electionId, final String doi) {
 		assertTrue(
 				elections.stream()
-						.map(eit -> eit.getElection())
-						.filter(e -> e.getElectionIdentification().equals(electionId))
-						.anyMatch(e -> e.getDomainOfInfluence().equalsIgnoreCase(doi)));
+						.filter(eg -> eg.getElectionInformation().stream()
+								.anyMatch(ei -> ei.getElection().getElectionIdentification().equals(electionId)))
+						.anyMatch(eg -> eg.getDomainOfInfluence().equalsIgnoreCase(doi)));
 	}
 
 	@And("^it outputs election has (\\d*) candidates")
 	public void andElectionsHasCandidates(final Integer numberOfCandidates) {
-		assertEquals((int) numberOfCandidates, elections.stream().flatMap(e -> e.getCandidate().stream()).count());
+		assertEquals((int) numberOfCandidates, elections.stream().map(eg -> eg.getElectionInformation().get(0)).flatMap(e -> e.getCandidate().stream()).count());
 	}
 
 	@And("^candidate v4 with callName \"([^\"]*)\" has a candidateText")
 	public void andCandidateHasCandidateText(final String candidateCallName) {
 		final List<CandidateType> candidateList = elections.stream()
+				.flatMap(eg -> eg.getElectionInformation().stream())
 				.map(ElectionInformationType::getCandidate)
 				.flatMap(Collection::stream)
 				.filter(c -> c.getCallName().equals(candidateCallName)).toList();
@@ -117,6 +120,7 @@ public class Ech015xv4ContestPhaseSteps extends PhaseSteps {
 	@And("^candidate v4 with callName \"([^\"]*)\" has \"([^\"]*)\" as candidateTextInformation")
 	public void andCandidateHasCandidateTextInformation(final String candidateCallName, final String value) {
 		final List<CandidateType> candidateList = elections.stream()
+				.flatMap(eg -> eg.getElectionInformation().stream())
 				.map(ElectionInformationType::getCandidate)
 				.flatMap(Collection::stream)
 				.filter(c -> c.getCallName().equals(candidateCallName)).toList();
