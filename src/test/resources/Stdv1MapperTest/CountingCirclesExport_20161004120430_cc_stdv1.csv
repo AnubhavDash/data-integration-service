@@ -1,0 +1,179 @@
+CODE;BEZEICHNUNG;BFS_NR;KANTON
+FR-MU-2004;Bussy;2004;FR
+FR-MU-2005;Ch�bles;2005;FR
+FR-MU-2008;Ch�tillon;2008;FR
+FR-MU-2009;Cheiry;2009;FR
+FR-MU-2010;Cheyres;2010;FR
+FR-MU-2011;Cugy;2011;FR
+FR-MU-2013;Domdidier;2013;FR
+FR-MU-2014;Dompierre;2014;FR
+FR-MU-2015;Estavayer-le-Lac;2015;FR
+FR-MU-2016;F�tigny;2016;FR
+FR-MU-2022;Gletterens;2022;FR
+FR-MU-2024;L�chelles;2024;FR
+FR-MU-2025;Lully;2025;FR
+FR-MU-2027;M�ni�res;2027;FR
+FR-MU-2029;Montagny;2029;FR
+FR-MU-2033;Morens;2033;FR
+FR-MU-2034;Murist;2034;FR
+FR-MU-2035;Nuvilly;2035;FR
+FR-MU-2038;Pr�vondavaux;2038;FR
+FR-MU-2039;Rueyres-les-Pr�s;2039;FR
+FR-MU-2040;Russy;2040;FR
+FR-MU-2041;Saint-Aubin;2041;FR
+FR-MU-2043;S�vaz;2043;FR
+FR-MU-2044;Surpierre;2044;FR
+FR-MU-2045;Vallon;2045;FR
+FR-MU-2047;Villeneuve;2047;FR
+FR-MU-2049;Vuissens;2049;FR
+FR-MU-2050;Les Montets;2050;FR
+FR-MU-2051;Delley-Portalban;2051;FR
+FR-MU-2052;Vernay;2052;FR
+FR-MU-2053;Belmont-Broye;2053;FR
+FR-MU-2061;Auboranges;2061;FR
+FR-MU-2063;Billens-Hennens;2063;FR
+FR-MU-2066;Chapelle;2066;FR
+FR-MU-2067;Le Ch�telard;2067;FR
+FR-MU-2068;Ch�tonnaye;2068;FR
+FR-MU-2072;Ecublens;2072;FR
+FR-MU-2079;Grangettes;2079;FR
+FR-MU-2086;Massonnens;2086;FR
+FR-MU-2087;M�zi�res;2087;FR
+FR-MU-2089;Montet;2089;FR
+FR-MU-2096;Romont;2096;FR
+FR-MU-2097;Rue;2097;FR
+FR-MU-2099;Siviriez;2099;FR
+FR-MU-2102;Ursy;2102;FR
+FR-MU-2111;Villaz-St-Pierre;2111;FR
+FR-MU-2113;Vuisternens-devant-Romont;2113;FR
+FR-MU-2114;Villorsonnens;2114;FR
+FR-MU-2115;Torny;2115;FR
+FR-MU-2116;La Folliaz;2116;FR
+FR-MU-2121;Haut-Intyamon;2121;FR
+FR-MU-2122;Pont-en-Ogoz;2122;FR
+FR-MU-2123;Botterens;2123;FR
+FR-MU-2124;Broc;2124;FR
+FR-MU-2125;Bulle;2125;FR
+FR-MU-2128;Ch�tel-sur-Montsalvens;2128;FR
+FR-MU-2129;Corbi�res;2129;FR
+FR-MU-2130;Cr�suz;2130;FR
+FR-MU-2131;Echarlens;2131;FR
+FR-MU-2134;Grandvillard;2134;FR
+FR-MU-2135;Gruy�res;2135;FR
+FR-MU-2137;Hauteville;2137;FR
+FR-MU-2138;Jaun;2138;FR
+FR-MU-2140;Marsens;2140;FR
+FR-MU-2143;Morlon;2143;FR
+FR-MU-2145;Le P�quier;2145;FR
+FR-MU-2147;Pont-la-Ville;2147;FR
+FR-MU-2148;Riaz;2148;FR
+FR-MU-2149;La Roche;2149;FR
+FR-MU-2152;S�les;2152;FR
+FR-MU-2153;Sorens;2153;FR
+FR-MU-2155;Vaulruz;2155;FR
+FR-MU-2160;Vuadens;2160;FR
+FR-MU-2162;Bas-Intyamon;2162;FR
+FR-MU-2163;Val-de-Charmey;2163;FR
+FR-MU-2171;Arconciel;2171;FR
+FR-MU-2172;Autafond;2172;FR
+FR-MU-2173;Autigny;2173;FR
+FR-MU-2174;Avry;2174;FR
+FR-MU-2175;Belfaux;2175;FR
+FR-MU-2177;Ch�nens;2177;FR
+FR-MU-2179;Ch�sopelloz;2179;FR
+FR-MU-2183;Corminboeuf;2183;FR
+FR-MU-2184;Corpataux-Magnedens;2184;FR
+FR-MU-2185;Corserey;2185;FR
+FR-MU-2186;Cottens;2186;FR
+FR-MU-2189;Ependes;2189;FR
+FR-MU-2192;Farvagny;2192;FR
+FR-MU-2194;Ferpicloz;2194;FR
+FR-MU-2196;Ville de Fribourg;2196;FR
+FR-MU-2197;Givisiez;2197;FR
+FR-MU-2198;Granges-Paccot;2198;FR
+FR-MU-2200;Grolley;2200;FR
+FR-MU-2206;Marly;2206;FR
+FR-MU-2208;Matran;2208;FR
+FR-MU-2211;Neyruz;2211;FR
+FR-MU-2213;Nor�az;2213;FR
+FR-MU-2216;Pierrafortscha;2216;FR
+FR-MU-2217;Ponthaux;2217;FR
+FR-MU-2220;Le Mouret;2220;FR
+FR-MU-2221;Prez-vers-Nor�az;2221;FR
+FR-MU-2222;Rossens;2222;FR
+FR-MU-2223;Le Gl�be;2223;FR
+FR-MU-2225;Sen�des;2225;FR
+FR-MU-2226;Treyvaux;2226;FR
+FR-MU-2228;Villars-sur-Gl�ne;2228;FR
+FR-MU-2230;Villarsel-sur-Marly;2230;FR
+FR-MU-2231;Vuisternens-en-Ogoz;2231;FR
+FR-MU-2233;Hauterive;2233;FR
+FR-MU-2234;La Brillaz;2234;FR
+FR-MU-2235;La Sonnaz;2235;FR
+FR-MU-2236;Gibloux;2236;FR
+FR-MU-2243;Barber�che;2243;FR
+FR-MU-2250;Courgevaux;2250;FR
+FR-MU-2251;Courlevon;2251;FR
+FR-MU-2254;Courtepin;2254;FR
+FR-MU-2257;Cressier;2257;FR
+FR-MU-2258;Fr�schels;2258;FR
+FR-MU-2259;Galmiz;2259;FR
+FR-MU-2260;Gempenach;2260;FR
+FR-MU-2261;Greng;2261;FR
+FR-MU-2262;Gurmels;2262;FR
+FR-MU-2264;Jeuss;2264;FR
+FR-MU-2265;Kerzers;2265;FR
+FR-MU-2266;Kleinb�singen;2266;FR
+FR-MU-2270;Lurtigen;2270;FR
+FR-MU-2271;Meyriez;2271;FR
+FR-MU-2272;Misery-Courtion;2272;FR
+FR-MU-2274;Muntelier;2274;FR
+FR-MU-2275;Murten / Morat;2275;FR
+FR-MU-2276;Ried bei Kerzers;2276;FR
+FR-MU-2277;Salvenach;2277;FR
+FR-MU-2278;Ulmiz;2278;FR
+FR-MU-2279;Villarepos;2279;FR
+FR-MU-2280;Bas-Vully;2280;FR
+FR-MU-2281;Haut-Vully;2281;FR
+FR-MU-2283;Wallenried;2283;FR
+FR-MU-2284;Mont-Vully;2284;FR
+FR-MU-2291;Alterswil;2291;FR
+FR-MU-2292;Br�nisried;2292;FR
+FR-MU-2293;D�dingen;2293;FR
+FR-MU-2294;Giffers;2294;FR
+FR-MU-2295;B�singen;2295;FR
+FR-MU-2296;Heitenried;2296;FR
+FR-MU-2298;Oberschrot;2298;FR
+FR-MU-2299;Plaffeien;2299;FR
+FR-MU-2300;Plasselb;2300;FR
+FR-MU-2301;Rechthalten;2301;FR
+FR-MU-2302;St. Antoni;2302;FR
+FR-MU-2303;St. Silvester;2303;FR
+FR-MU-2304;St. Ursen;2304;FR
+FR-MU-2305;Schmitten;2305;FR
+FR-MU-2306;Tafers;2306;FR
+FR-MU-2307;Tentlingen;2307;FR
+FR-MU-2308;Ueberstorf;2308;FR
+FR-MU-2309;W�nnewil-Flamatt;2309;FR
+FR-MU-2310;Zumholz;2310;FR
+FR-MU-2321;Attalens;2321;FR
+FR-MU-2323;Bossonnens;2323;FR
+FR-MU-2325;Ch�tel-St-Denis;2325;FR
+FR-MU-2328;Granges;2328;FR
+FR-MU-2333;Remaufens;2333;FR
+FR-MU-2335;Saint-Martin;2335;FR
+FR-MU-2336;Semsales;2336;FR
+FR-MU-2337;Le Flon;2337;FR
+FR-MU-2338;La Verrerie;2338;FR
+FR-MU-7771;Cercle Rueyres-les-Pr�s / Bussy / Morens;7771;FR
+FR-MU-7772;Cercle Murist / Vuissens;7772;FR
+FR-MU-9901;CH de l'�tranger Broye;9901;FR
+FR-MU-9902;CH de l'�tranger Gl�ne;9902;FR
+FR-MU-9903;CH de l'�tranger Gruy�re;9903;FR
+FR-MU-9904;CH de l'�tranger Sarine;9904;FR
+FR-MU-9905;CH de l'�tranger Sarine-Campagne;9905;FR
+FR-MU-9906;CH de l'�tranger See / Lac;9906;FR
+FR-MU-9907;CH de l'�tranger Sense / Singine;9907;FR
+FR-MU-9908;CH de l'�tranger Veveyse;9908;FR
+FR-MU-9909;CH de l'�tranger Fribourg-Ville;9909;FR
+FR-MU-9999;CH de l'�tranger;9999;FR

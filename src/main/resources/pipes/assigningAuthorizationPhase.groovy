@@ -1,0 +1,60 @@
+/*
+ * (c) Copyright 2023 Swiss Post Ltd.
+ */
+package pipes
+
+import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
+import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterType
+import org.apache.commons.lang3.StringUtils
+
+import static pipes.Tools.*
+
+def assigningAuthorizationPhaseComponent = DataIntegrationServiceApplication.context.getBean(AssigningAuthorizationPhaseComponent.class)
+
+def voters = tube {
+    from AssigningAuthorizationPhase.registerPhase.voters \
+}
+
+def authorizations = pipe {
+    from AssigningAuthorizationPhase.authorizationPhase.authorizations \
+}
+
+def usedDOIs = pipe {
+    from AssigningAuthorizationPhase.authorizationPhase.contestUsedDOIs
+}
+
+def canton = pipe {
+    from AssigningAuthorizationPhase.cantonalTreePhase.cantonalTree
+}
+
+def buildAuthorizationPlugins = pipe {
+    from AssigningAuthorizationPhase.parameterPhase.buildAuthorizationPlugins
+}
+
+def contestParameters = pipe {
+    from AssigningAuthorizationPhase.parameterPhase.contestParameters
+}
+
+def assignedVoters = tube {
+    from zip(voters, value(authorizations), value(canton), value(usedDOIs), value(AssigningAuthorizationPhase.contestPhase.contest), zip(value(buildAuthorizationPlugins), value(contestParameters))) \
+    transformDeferred logAsInfo("Assigning authorization to voters...") \
+    map assigningAuthorizationPhaseComponent.assignAuthorization()
+}
+
+def allVoters = pipe {
+    from assignedVoters
+}
+
+def validVoters = tube {
+    from allVoters \
+    filter {VoterType v -> !StringUtils.isEmpty(v.getAuthorization())}
+}
+
+def invalidVoters = tube {
+    from allVoters \
+    filter {VoterType v -> StringUtils.isEmpty(v.getAuthorization())}
+}
+
+AssigningAuthorizationPhase.exports.assignedVoters = assignedVoters
+AssigningAuthorizationPhase.exports.validVoters = validVoters
+AssigningAuthorizationPhase.exports.invalidVoters = invalidVoters

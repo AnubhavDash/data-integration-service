@@ -1,0 +1,37 @@
+/*
+ * (c) Copyright 2023 Swiss Post Ltd.
+ */
+package ch.post.it.evoting.dataintegrationservice.authorization;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
+
+import ch.post.it.evoting.dataintegrationservice.authorization.AuthorizationService;
+import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationObjectType;
+import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationType;
+import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationsType;
+import ch.post.it.evoting.domain.xmlns.evotingconfig.CountingCircleType;
+import ch.post.it.evoting.domain.xmlns.evotingconfig.DomainOfInfluenceType;
+
+class AuthorizationBuilderTest {
+
+	AuthorizationService authorizationBuilder = new AuthorizationService();
+
+	@Test
+	void appendAuthorization() {
+		AuthorizationsType authorizations = new AuthorizationsType();
+		AuthorizationType auth = new AuthorizationType()
+				.withAuthorizationIdentification("id")
+				.withAuthorizationAlias("1234").withAuthorizationName("Toto").withAuthorizationObject(
+						new AuthorizationObjectType()
+								.withDomainOfInfluence(new DomainOfInfluenceType().withId("doi"))
+								.withCountingCircle(new CountingCircleType().withId("cc"))
+				);
+
+		authorizations = authorizationBuilder.appendAuthorization(authorizations, auth);
+		authorizations = authorizationBuilder.appendAuthorization(authorizations, auth);
+		assertEquals(1, authorizations.getAuthorization().size());
+	}
+
+}

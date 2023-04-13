@@ -1,0 +1,23 @@
+/*
+ * (c) Copyright 2023 Swiss Post Ltd.
+ */
+package ch.evoting.xmlns.parameter._4;
+
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+
+public class QuantitySplitterTypeImpl extends QuantitySplitterType {
+
+	private final HashMap<String, AtomicInteger> counter = new HashMap<>();
+
+	private int getCounterValue(final String key) {
+		return counter.computeIfAbsent(key, k -> new AtomicInteger()).getAndIncrement();
+	}
+
+	@Override
+	public String apply(final VoterTypeWithRole voterTypeWithRole, final String previousSplit) {
+		return String.format("%s", getCounterValue(previousSplit) / maxPerFile);
+	}
+}
