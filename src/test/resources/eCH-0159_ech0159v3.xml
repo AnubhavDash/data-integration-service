@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  ~ Copyright 2019 by Swiss Post, Information Technology
+  -->
+
+<eCH-0159:delivery xmlns:eCH-0159="http://www.ech.ch/xmlns/eCH-0159/3" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ech.ch/xmlns/eCH-0159/3 http://www.ech.ch/xmlns/eCH-0159/3/eCH-0159-3-0.xsd">
+    <eCH-0159:deliveryHeader>
+        <eCH-0058:senderId>9</eCH-0058:senderId>
+        <eCH-0058:messageId>F106AA8C-8A19-11E6-A85E-00155D28151F</eCH-0058:messageId>
+        <eCH-0058:messageType>eCH-0058-MessageType</eCH-0058:messageType>
+        <eCH-0058:sendingApplication>
+            <eCH-0058:manufacturer>eCH-0058-Manufacturer</eCH-0058:manufacturer>
+            <eCH-0058:product>eCH-0058-Product</eCH-0058:product>
+            <eCH-0058:productVersion>1.0.0</eCH-0058:productVersion>
+        </eCH-0058:sendingApplication>
+        <eCH-0058:messageDate>2016-10-04T12:04:30.394+02:00</eCH-0058:messageDate>
+        <eCH-0058:action>1</eCH-0058:action>
+        <eCH-0058:testDeliveryFlag>false</eCH-0058:testDeliveryFlag>
+    </eCH-0159:deliveryHeader>
+    <eCH-0159:initialDelivery>
+        <eCH-0159:contest>
+            <eCH-0155:contestIdentification>B127C2C1-8A18-11E6-BA28-00155D28151E</eCH-0155:contestIdentification>
+            <eCH-0155:contestDate>2016-11-27+01:00</eCH-0155:contestDate>
+            <eCH-0155:contestDescription>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>de</eCH-0155:language>
+                    <eCH-0155:contestDescription>Eidgenössische Volksabstimmung </eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>fr</eCH-0155:language>
+                    <eCH-0155:contestDescription>Votation populaire fédérale</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>it</eCH-0155:language>
+                    <eCH-0155:contestDescription>Votazione popolare federale</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+                <eCH-0155:contestDescriptionInfo>
+                    <eCH-0155:language>rm</eCH-0155:language>
+                    <eCH-0155:contestDescription>Votaziun federala dal pievel</eCH-0155:contestDescription>
+                </eCH-0155:contestDescriptionInfo>
+            </eCH-0155:contestDescription>
+        </eCH-0159:contest>
+        <eCH-0159:voteInformation>
+            <eCH-0159:vote>
+                <eCH-0155:voteIdentification>VOTE_F108F47D-8A19-11E6-A85E-00155D28151F</eCH-0155:voteIdentification>
+                <eCH-0155:domainOfInfluence>21611090-4DB4-11E6-89C7-00155D28151E</eCH-0155:domainOfInfluence>
+                <eCH-0155:voteDescription>
+                    <eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:language>de</eCH-0155:language>
+                        <eCH-0155:voteDescription>Eidgenossenschaft</eCH-0155:voteDescription>
+                    </eCH-0155:voteDescriptionInfo>
+                    <eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:language>fr</eCH-0155:language>
+                        <eCH-0155:voteDescription>Confédération</eCH-0155:voteDescription>
+                    </eCH-0155:voteDescriptionInfo>
+                    <eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:language>it</eCH-0155:language>
+                        <eCH-0155:voteDescription>Confederazione</eCH-0155:voteDescription>
+                    </eCH-0155:voteDescriptionInfo>
+                    <eCH-0155:voteDescriptionInfo>
+                        <eCH-0155:language>rm</eCH-0155:language>
+                        <eCH-0155:voteDescription>Confederazium</eCH-0155:voteDescription>
+                    </eCH-0155:voteDescriptionInfo>
+                </eCH-0155:voteDescription>
+            </eCH-0159:vote>
+            <eCH-0159:ballot>
+                <eCH-0155:ballotIdentification>417B8B97-8A19-11E6-BA28-00155D28151E</eCH-0155:ballotIdentification>
+                <eCH-0155:ballotPosition>1</eCH-0155:ballotPosition>
+                <eCH-0155:standardBallot>
+                    <eCH-0155:questionIdentification>417B8B99-8A19-11E6-BA28-00155D28151E</eCH-0155:questionIdentification>
+                    <eCH-0155:answerType>
+                        <eCH-0155:answerType>2</eCH-0155:answerType>
+                    </eCH-0155:answerType>
+                    <eCH-0155:ballotQuestion>
+                        <eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:language>de</eCH-0155:language>
+                            <eCH-0155:ballotQuestionTitle>Für den geordneten Ausstieg aus der Atomenergie (Atomausstiegsinitiative)</eCH-0155:ballotQuestionTitle>
+                            <eCH-0155:ballotQuestion>Wollen Sie die Volksinitiative «Für den geordneten Ausstieg aus der Atomenergie (Atomausstiegsinitiative)» annehmen?</eCH-0155:ballotQuestion>
+                        </eCH-0155:ballotQuestionInfo>
+                        <eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:language>fr</eCH-0155:language>
+                            <eCH-0155:ballotQuestionTitle>Initiative «Sortir du nucléaire»</eCH-0155:ballotQuestionTitle>
+                            <eCH-0155:ballotQuestion>Acceptez-vous l’initiative populaire «Pour la sortie programmée de l’énergie nucléaire (Initiative «Sortir du nucléaire»)»?</eCH-0155:ballotQuestion>
+                        </eCH-0155:ballotQuestionInfo>
+                        <eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:language>it</eCH-0155:language>
+                            <eCH-0155:ballotQuestionTitle>Per un abbandono pianificato dell’energia nucleare (Iniziativa per l’abbandono del nucleare)»</eCH-0155:ballotQuestionTitle>
+                            <eCH-0155:ballotQuestion>Volete accettare l'iniziativa popolare «Per un abbandono pianificato dell’energia nucleare (Iniziativa per l’abbandono del nucleare)»?</eCH-0155:ballotQuestion>
+                        </eCH-0155:ballotQuestionInfo>
+                        <eCH-0155:ballotQuestionInfo>
+                            <eCH-0155:language>rm</eCH-0155:language>
+                            <eCH-0155:ballotQuestionTitle>Per l'abandun programmà da l'energia nucleara (Iniziativa per l'abandun da l'energia nucleara)</eCH-0155:ballotQuestionTitle>
+                            <eCH-0155:ballotQuestion>Vulais Vus acceptar l’iniziativa dal pievel «Per l'abandun programmà da l'energia nucleara (Iniziativa per l'abandun da l'energia nucleara)»?</eCH-0155:ballotQuestion>
+                        </eCH-0155:ballotQuestionInfo>
+                    </eCH-0155:ballotQuestion>
+                </eCH-0155:standardBallot>
+            </eCH-0159:ballot>
+        </eCH-0159:voteInformation>
+    </eCH-0159:initialDelivery>
+</eCH-0159:delivery>

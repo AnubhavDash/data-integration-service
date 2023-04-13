@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ (c) Copyright 2023 Swiss Post Ltd.
+  -->
+<delivery xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4" xsi:schemaLocation="http://www.ech.ch/xmlns/eCH-0157/4 http://www.ech.ch/xmlns/eCH-0157/4/eCH-0157-4-0.xsd" xmlns="http://www.ech.ch/xmlns/eCH-0157/4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<deliveryHeader>
+		<eCH-0058:senderId>1234</eCH-0058:senderId>
+		<eCH-0058:declarationLocalReference>test</eCH-0058:declarationLocalReference>
+		<eCH-0058:recipientId>5678</eCH-0058:recipientId>
+		<eCH-0058:messageId>89069</eCH-0058:messageId>
+		<eCH-0058:messageType>test</eCH-0058:messageType>
+		<eCH-0058:sendingApplication>
+			<eCH-0058:manufacturer>eCH-0058-Manufacturer</eCH-0058:manufacturer>
+			<eCH-0058:product>eCH-0058-Product</eCH-0058:product>
+			<eCH-0058:productVersion>170212</eCH-0058:productVersion>
+		</eCH-0058:sendingApplication>
+		<eCH-0058:messageDate>2017-02-21T09:30:47Z</eCH-0058:messageDate>
+		<eCH-0058:eventDate>2017-03-22</eCH-0058:eventDate>
+		<eCH-0058:modificationDate>2017-03-22</eCH-0058:modificationDate>
+		<eCH-0058:action>1</eCH-0058:action>
+		<eCH-0058:testDeliveryFlag>true</eCH-0058:testDeliveryFlag>
+		<eCH-0058:responseExpected>true</eCH-0058:responseExpected>
+		<eCH-0058:businessCaseClosed>true</eCH-0058:businessCaseClosed>
+	</deliveryHeader>
+	<initialDelivery>
+		<contest>
+			<eCH-0155:contestIdentification>st_gallen_nr_sr</eCH-0155:contestIdentification>
+			<eCH-0155:contestDate>2018-12-20</eCH-0155:contestDate>
+			<eCH-0155:contestDescription>
+				<eCH-0155:contestDescriptionInfo>
+					<eCH-0155:language>de</eCH-0155:language>
+					<eCH-0155:contestDescription>St. Gallen National Elections</eCH-0155:contestDescription>
+				</eCH-0155:contestDescriptionInfo>
+				<eCH-0155:contestDescriptionInfo>
+					<eCH-0155:language>fr</eCH-0155:language>
+					<eCH-0155:contestDescription>St. Gallen National Elections</eCH-0155:contestDescription>
+				</eCH-0155:contestDescriptionInfo>
+				<eCH-0155:contestDescriptionInfo>
+					<eCH-0155:language>it</eCH-0155:language>
+					<eCH-0155:contestDescription>St. Gallen National Elections</eCH-0155:contestDescription>
+				</eCH-0155:contestDescriptionInfo>
+				<eCH-0155:contestDescriptionInfo>
+					<eCH-0155:language>rm</eCH-0155:language>
+					<eCH-0155:contestDescription>St. Gallen National Elections</eCH-0155:contestDescription>
+				</eCH-0155:contestDescriptionInfo>
+			</eCH-0155:contestDescription>
+		</contest>
+		<electionGroupBallot>
+			<electionGroupIdentification>1235</electionGroupIdentification>
+			<electionGroupDescription>
+				<eCH-0155:electionDescriptionInfo>
+					<eCH-0155:language>de</eCH-0155:language>
+					<eCH-0155:electionDescription>Election_Group</eCH-0155:electionDescription>
+				</eCH-0155:electionDescriptionInfo>
+			</electionGroupDescription>
+			<domainOfInfluenceIdentification>4543465476</domainOfInfluenceIdentification>
+			<electionInformation>
+				<election>
+					<eCH-0155:electionIdentification>staenderat_sg</eCH-0155:electionIdentification>
+					<eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+					<eCH-0155:electionDescription>
+						<eCH-0155:electionDescriptionInfo>
+							<eCH-0155:language>de</eCH-0155:language>
+							<eCH-0155:electionDescriptionShort>Ständerat</eCH-0155:electionDescriptionShort>
+							<eCH-0155:electionDescription>Ständeratswahlen Kanton St. Gallen 2015 (1. Wahlgang)</eCH-0155:electionDescription>
+						</eCH-0155:electionDescriptionInfo>
+						<eCH-0155:electionDescriptionInfo>
+							<eCH-0155:language>fr</eCH-0155:language>
+							<eCH-0155:electionDescriptionShort>Conseil des Etats</eCH-0155:electionDescriptionShort>
+							<eCH-0155:electionDescription>Election du Conseil des Etats Canton St. Gallen 2015 (1. Wahlgang)</eCH-0155:electionDescription>
+						</eCH-0155:electionDescriptionInfo>
+						<eCH-0155:electionDescriptionInfo>
+							<eCH-0155:language>it</eCH-0155:language>
+							<eCH-0155:electionDescriptionShort>Conseil des Etats</eCH-0155:electionDescriptionShort>
+							<eCH-0155:electionDescription>Election du Conseil des Etats Canton St. Gallen 2015 (1. Wahlgang)</eCH-0155:electionDescription>
+						</eCH-0155:electionDescriptionInfo>
+						<eCH-0155:electionDescriptionInfo>
+							<eCH-0155:language>rm</eCH-0155:language>
+							<eCH-0155:electionDescriptionShort>Ständerat</eCH-0155:electionDescriptionShort>
+							<eCH-0155:electionDescription>Ständeratswahl Kanton St. Gallen 2015 (1. Wahlgang)</eCH-0155:electionDescription>
+						</eCH-0155:electionDescriptionInfo>
+					</eCH-0155:electionDescription>
+					<eCH-0155:numberOfMandates>2</eCH-0155:numberOfMandates>
+				</election>
+				<candidate>
+					<eCH-0155:candidateIdentification>CAND-7101</eCH-0155:candidateIdentification>
+					<eCH-0155:BfSNumberCanton>7</eCH-0155:BfSNumberCanton>
+					<eCH-0155:familyName>Keller-Sutter</eCH-0155:familyName>
+					<eCH-0155:firstName>Karin</eCH-0155:firstName>
+					<eCH-0155:callName>Keller Karin</eCH-0155:callName>
+					<eCH-0155:dateOfBirth>1960-03-01</eCH-0155:dateOfBirth>
+					<eCH-0155:sex>2</eCH-0155:sex>
+					<eCH-0155:dwellingAddress>
+						<eCH-0010:street>Street</eCH-0010:street>
+						<eCH-0010:town>Town</eCH-0010:town>
+						<eCH-0010:swissZipCode>1000</eCH-0010:swissZipCode>
+						<eCH-0010:country>
+							<eCH-0010:countryNameShort>CH</eCH-0010:countryNameShort>
+						</eCH-0010:country>
+					</eCH-0155:dwellingAddress>
+					<eCH-0155:swiss>
+						<eCH-0155:origin>Origin</eCH-0155:origin>
+					</eCH-0155:swiss>
+					<eCH-0155:languageOfCorrespondence>de</eCH-0155:languageOfCorrespondence>
+					<eCH-0155:incumbentYesNo>true</eCH-0155:incumbentYesNo>
+					<eCH-0155:candidateReference>01</eCH-0155:candidateReference>
+				</candidate>
+				<candidate>
+					<eCH-0155:candidateIdentification>CAND-7102</eCH-0155:candidateIdentification>
+					<eCH-0155:BfSNumberCanton>7</eCH-0155:BfSNumberCanton>
+					<eCH-0155:familyName>Rechsteiner</eCH-0155:familyName>
+					<eCH-0155:firstName>Paul</eCH-0155:firstName>
+					<eCH-0155:callName>Paul</eCH-0155:callName>
+					<eCH-0155:candidateText>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>de</eCH-0155:language>
+							<eCH-0155:candidateText>St. Gallen (SP) (bisher)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>fr</eCH-0155:language>
+							<eCH-0155:candidateText>St. Gallen (SP) (bisher)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>it</eCH-0155:language>
+							<eCH-0155:candidateText>St. Gallen (SP) (bisher)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>rm</eCH-0155:language>
+							<eCH-0155:candidateText>St. Gallen (SP) (bisher)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+					</eCH-0155:candidateText>
+					<eCH-0155:dateOfBirth>1959-08-05</eCH-0155:dateOfBirth>
+					<eCH-0155:sex>1</eCH-0155:sex>
+					<eCH-0155:dwellingAddress>
+						<eCH-0010:street>Street</eCH-0010:street>
+						<eCH-0010:town>Town</eCH-0010:town>
+						<eCH-0010:swissZipCode>1000</eCH-0010:swissZipCode>
+						<eCH-0010:country>
+							<eCH-0010:countryNameShort>CH</eCH-0010:countryNameShort>
+						</eCH-0010:country>
+					</eCH-0155:dwellingAddress>
+					<eCH-0155:swiss>
+						<eCH-0155:origin>Origin</eCH-0155:origin>
+					</eCH-0155:swiss>
+					<eCH-0155:languageOfCorrespondence>de</eCH-0155:languageOfCorrespondence>
+					<eCH-0155:incumbentYesNo>true</eCH-0155:incumbentYesNo>
+					<eCH-0155:candidateReference>02</eCH-0155:candidateReference>
+				</candidate>
+				<candidate>
+					<eCH-0155:candidateIdentification>CAND-7103</eCH-0155:candidateIdentification>
+					<eCH-0155:BfSNumberCanton>7</eCH-0155:BfSNumberCanton>
+					<eCH-0155:familyName>Ammann</eCH-0155:familyName>
+					<eCH-0155:firstName>Richard</eCH-0155:firstName>
+					<eCH-0155:callName>Richard</eCH-0155:callName>
+					<eCH-0155:candidateText>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>de</eCH-0155:language>
+							<eCH-0155:candidateText>Abtwil (BDP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>fr</eCH-0155:language>
+							<eCH-0155:candidateText>Abtwil (BDP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>it</eCH-0155:language>
+							<eCH-0155:candidateText>Abtwil (BDP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>rm</eCH-0155:language>
+							<eCH-0155:candidateText>Abtwil (BDP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+					</eCH-0155:candidateText>
+					<eCH-0155:dateOfBirth>1959-08-05</eCH-0155:dateOfBirth>
+					<eCH-0155:sex>1</eCH-0155:sex>
+					<eCH-0155:dwellingAddress>
+						<eCH-0010:street>Street</eCH-0010:street>
+						<eCH-0010:town>Town</eCH-0010:town>
+						<eCH-0010:swissZipCode>1000</eCH-0010:swissZipCode>
+						<eCH-0010:country>
+							<eCH-0010:countryNameShort>CH</eCH-0010:countryNameShort>
+						</eCH-0010:country>
+					</eCH-0155:dwellingAddress>
+					<eCH-0155:swiss>
+						<eCH-0155:origin>Origin</eCH-0155:origin>
+					</eCH-0155:swiss>
+					<eCH-0155:languageOfCorrespondence>de</eCH-0155:languageOfCorrespondence>
+					<eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+					<eCH-0155:candidateReference>03</eCH-0155:candidateReference>
+				</candidate>
+				<candidate>
+					<eCH-0155:candidateIdentification>CAND-7104</eCH-0155:candidateIdentification>
+					<eCH-0155:BfSNumberCanton>7</eCH-0155:BfSNumberCanton>
+					<eCH-0155:familyName>Ammann</eCH-0155:familyName>
+					<eCH-0155:firstName>Thomas</eCH-0155:firstName>
+					<eCH-0155:callName>Ammann Thomas</eCH-0155:callName>
+					<eCH-0155:candidateText>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>de</eCH-0155:language>
+							<eCH-0155:candidateText>Rüthi (CVP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>fr</eCH-0155:language>
+							<eCH-0155:candidateText>Rüthi (CVP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>it</eCH-0155:language>
+							<eCH-0155:candidateText>Rüthi (CVP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>rm</eCH-0155:language>
+							<eCH-0155:candidateText>Rüthi (CVP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+					</eCH-0155:candidateText>
+					<eCH-0155:dateOfBirth>1959-08-05</eCH-0155:dateOfBirth>
+					<eCH-0155:sex>1</eCH-0155:sex>
+					<eCH-0155:dwellingAddress>
+						<eCH-0010:street>Street</eCH-0010:street>
+						<eCH-0010:town>Town</eCH-0010:town>
+						<eCH-0010:swissZipCode>1000</eCH-0010:swissZipCode>
+						<eCH-0010:country>
+							<eCH-0010:countryNameShort>CH</eCH-0010:countryNameShort>
+						</eCH-0010:country>
+					</eCH-0155:dwellingAddress>
+					<eCH-0155:swiss>
+						<eCH-0155:origin>Origin</eCH-0155:origin>
+					</eCH-0155:swiss>
+					<eCH-0155:languageOfCorrespondence>de</eCH-0155:languageOfCorrespondence>
+					<eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+					<eCH-0155:candidateReference>04</eCH-0155:candidateReference>
+				</candidate>
+				<candidate>
+					<eCH-0155:candidateIdentification>CAND-7105</eCH-0155:candidateIdentification>
+					<eCH-0155:BfSNumberCanton>7</eCH-0155:BfSNumberCanton>
+					<eCH-0155:familyName>Gilli</eCH-0155:familyName>
+					<eCH-0155:firstName>Yvonne</eCH-0155:firstName>
+					<eCH-0155:callName>Yvonne</eCH-0155:callName>
+					<eCH-0155:candidateText>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>de</eCH-0155:language>
+							<eCH-0155:candidateText>Wil (GRÜNE)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>fr</eCH-0155:language>
+							<eCH-0155:candidateText>Wil (GRÜNE)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>it</eCH-0155:language>
+							<eCH-0155:candidateText>Wil (GRÜNE)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>rm</eCH-0155:language>
+							<eCH-0155:candidateText>Wil (GRÜNE)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+					</eCH-0155:candidateText>
+					<eCH-0155:dateOfBirth>1959-08-05</eCH-0155:dateOfBirth>
+					<eCH-0155:sex>1</eCH-0155:sex>
+					<eCH-0155:dwellingAddress>
+						<eCH-0010:street>Street</eCH-0010:street>
+						<eCH-0010:town>Town</eCH-0010:town>
+						<eCH-0010:swissZipCode>1000</eCH-0010:swissZipCode>
+						<eCH-0010:country>
+							<eCH-0010:countryNameShort>CH</eCH-0010:countryNameShort>
+						</eCH-0010:country>
+					</eCH-0155:dwellingAddress>
+					<eCH-0155:swiss>
+						<eCH-0155:origin>Origin</eCH-0155:origin>
+					</eCH-0155:swiss>
+					<eCH-0155:languageOfCorrespondence>de</eCH-0155:languageOfCorrespondence>
+					<eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+					<eCH-0155:candidateReference>05</eCH-0155:candidateReference>
+				</candidate>
+				<candidate>
+					<eCH-0155:candidateIdentification>CAND-7106</eCH-0155:candidateIdentification>
+					<eCH-0155:BfSNumberCanton>7</eCH-0155:BfSNumberCanton>
+					<eCH-0155:familyName>Graf</eCH-0155:familyName>
+					<eCH-0155:firstName>Andreas</eCH-0155:firstName>
+					<eCH-0155:callName>Andreas</eCH-0155:callName>
+					<eCH-0155:candidateText>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>de</eCH-0155:language>
+							<eCH-0155:candidateText>Steinach (Parteifrei)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>fr</eCH-0155:language>
+							<eCH-0155:candidateText>Steinach (Parteifrei)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>it</eCH-0155:language>
+							<eCH-0155:candidateText>Steinach (Parteifrei)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>rm</eCH-0155:language>
+							<eCH-0155:candidateText>Steinach (Parteifrei)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+					</eCH-0155:candidateText>
+					<eCH-0155:dateOfBirth>1959-08-05</eCH-0155:dateOfBirth>
+					<eCH-0155:sex>1</eCH-0155:sex>
+					<eCH-0155:dwellingAddress>
+						<eCH-0010:street>Street</eCH-0010:street>
+						<eCH-0010:town>Town</eCH-0010:town>
+						<eCH-0010:swissZipCode>1000</eCH-0010:swissZipCode>
+						<eCH-0010:country>
+							<eCH-0010:countryNameShort>CH</eCH-0010:countryNameShort>
+						</eCH-0010:country>
+					</eCH-0155:dwellingAddress>
+					<eCH-0155:swiss>
+						<eCH-0155:origin>Origin</eCH-0155:origin>
+					</eCH-0155:swiss>
+					<eCH-0155:languageOfCorrespondence>de</eCH-0155:languageOfCorrespondence>
+					<eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+					<eCH-0155:candidateReference>06</eCH-0155:candidateReference>
+				</candidate>
+				<candidate>
+					<eCH-0155:candidateIdentification>CAND-7107</eCH-0155:candidateIdentification>
+					<eCH-0155:BfSNumberCanton>7</eCH-0155:BfSNumberCanton>
+					<eCH-0155:familyName>Kessler</eCH-0155:familyName>
+					<eCH-0155:firstName>Margrit</eCH-0155:firstName>
+					<eCH-0155:callName>Margrit</eCH-0155:callName>
+					<eCH-0155:candidateText>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>de</eCH-0155:language>
+							<eCH-0155:candidateText>Altstätten (glp)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>fr</eCH-0155:language>
+							<eCH-0155:candidateText>Altstätten (glp)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>it</eCH-0155:language>
+							<eCH-0155:candidateText>Altstätten (glp)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>rm</eCH-0155:language>
+							<eCH-0155:candidateText>Altstätten (glp)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+					</eCH-0155:candidateText>
+					<eCH-0155:dateOfBirth>1959-08-05</eCH-0155:dateOfBirth>
+					<eCH-0155:sex>1</eCH-0155:sex>
+					<eCH-0155:dwellingAddress>
+						<eCH-0010:street>Street</eCH-0010:street>
+						<eCH-0010:town>Town</eCH-0010:town>
+						<eCH-0010:swissZipCode>1000</eCH-0010:swissZipCode>
+						<eCH-0010:country>
+							<eCH-0010:countryNameShort>CH</eCH-0010:countryNameShort>
+						</eCH-0010:country>
+					</eCH-0155:dwellingAddress>
+					<eCH-0155:swiss>
+						<eCH-0155:origin>Origin</eCH-0155:origin>
+					</eCH-0155:swiss>
+					<eCH-0155:languageOfCorrespondence>de</eCH-0155:languageOfCorrespondence>
+					<eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+					<eCH-0155:candidateReference>07</eCH-0155:candidateReference>
+				</candidate>
+				<candidate>
+					<eCH-0155:candidateIdentification>CAND-7108</eCH-0155:candidateIdentification>
+					<eCH-0155:BfSNumberCanton>7</eCH-0155:BfSNumberCanton>
+					<eCH-0155:familyName>Müller</eCH-0155:familyName>
+					<eCH-0155:firstName>Thomas</eCH-0155:firstName>
+					<eCH-0155:callName>Thomas</eCH-0155:callName>
+					<eCH-0155:candidateText>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>de</eCH-0155:language>
+							<eCH-0155:candidateText>Rorschach (SVP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>fr</eCH-0155:language>
+							<eCH-0155:candidateText>Rorschach (SVP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>it</eCH-0155:language>
+							<eCH-0155:candidateText>Rorschach (SVP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>rm</eCH-0155:language>
+							<eCH-0155:candidateText>Rorschach (SVP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+					</eCH-0155:candidateText>
+					<eCH-0155:dateOfBirth>1959-08-05</eCH-0155:dateOfBirth>
+					<eCH-0155:sex>1</eCH-0155:sex>
+					<eCH-0155:dwellingAddress>
+						<eCH-0010:street>Street</eCH-0010:street>
+						<eCH-0010:town>Town</eCH-0010:town>
+						<eCH-0010:swissZipCode>1000</eCH-0010:swissZipCode>
+						<eCH-0010:country>
+							<eCH-0010:countryNameShort>CH</eCH-0010:countryNameShort>
+						</eCH-0010:country>
+					</eCH-0155:dwellingAddress>
+					<eCH-0155:swiss>
+						<eCH-0155:origin>Origin</eCH-0155:origin>
+					</eCH-0155:swiss>
+					<eCH-0155:languageOfCorrespondence>de</eCH-0155:languageOfCorrespondence>
+					<eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+					<eCH-0155:candidateReference>08</eCH-0155:candidateReference>
+				</candidate>
+				<candidate>
+					<eCH-0155:candidateIdentification>CAND-7109</eCH-0155:candidateIdentification>
+					<eCH-0155:BfSNumberCanton>7</eCH-0155:BfSNumberCanton>
+					<eCH-0155:familyName>Oppliger</eCH-0155:familyName>
+					<eCH-0155:firstName>Hans</eCH-0155:firstName>
+					<eCH-0155:callName>Hans</eCH-0155:callName>
+					<eCH-0155:candidateText>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>de</eCH-0155:language>
+							<eCH-0155:candidateText>Frümsen (EVP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>fr</eCH-0155:language>
+							<eCH-0155:candidateText>Frümsen (EVP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>it</eCH-0155:language>
+							<eCH-0155:candidateText>Frümsen (EVP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+						<eCH-0155:candidateTextInfo>
+							<eCH-0155:language>rm</eCH-0155:language>
+							<eCH-0155:candidateText>Frümsen (EVP)</eCH-0155:candidateText>
+						</eCH-0155:candidateTextInfo>
+					</eCH-0155:candidateText>
+					<eCH-0155:dateOfBirth>1959-08-05</eCH-0155:dateOfBirth>
+					<eCH-0155:sex>1</eCH-0155:sex>
+					<eCH-0155:dwellingAddress>
+						<eCH-0010:street>Street</eCH-0010:street>
+						<eCH-0010:town>Town</eCH-0010:town>
+						<eCH-0010:swissZipCode>1000</eCH-0010:swissZipCode>
+						<eCH-0010:country>
+							<eCH-0010:countryNameShort>CH</eCH-0010:countryNameShort>
+						</eCH-0010:country>
+					</eCH-0155:dwellingAddress>
+					<eCH-0155:swiss>
+						<eCH-0155:origin>Origin</eCH-0155:origin>
+					</eCH-0155:swiss>
+					<eCH-0155:languageOfCorrespondence>de</eCH-0155:languageOfCorrespondence>
+					<eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+					<eCH-0155:candidateReference>09</eCH-0155:candidateReference>
+				</candidate>
+				<list>
+					<eCH-0155:listIdentification>List99</eCH-0155:listIdentification>
+					<eCH-0155:listIndentureNumber>99</eCH-0155:listIndentureNumber>
+					<eCH-0155:listDescription>
+						<eCH-0155:listDescriptionInfo>
+							<eCH-0155:language>de</eCH-0155:language>
+							<eCH-0155:listDescriptionShort>Leer</eCH-0155:listDescriptionShort>
+							<eCH-0155:listDescription>Leer</eCH-0155:listDescription>
+						</eCH-0155:listDescriptionInfo>
+						<eCH-0155:listDescriptionInfo>
+							<eCH-0155:language>fr</eCH-0155:language>
+							<eCH-0155:listDescriptionShort>Blanc</eCH-0155:listDescriptionShort>
+							<eCH-0155:listDescription>Blanc</eCH-0155:listDescription>
+						</eCH-0155:listDescriptionInfo>
+						<eCH-0155:listDescriptionInfo>
+							<eCH-0155:language>it</eCH-0155:language>
+							<eCH-0155:listDescriptionShort>Bianco</eCH-0155:listDescriptionShort>
+							<eCH-0155:listDescription>Bianco</eCH-0155:listDescription>
+						</eCH-0155:listDescriptionInfo>
+						<eCH-0155:listDescriptionInfo>
+							<eCH-0155:language>rm</eCH-0155:language>
+							<eCH-0155:listDescriptionShort>Vid</eCH-0155:listDescriptionShort>
+							<eCH-0155:listDescription>Vid</eCH-0155:listDescription>
+						</eCH-0155:listDescriptionInfo>
+					</eCH-0155:listDescription>
+					<eCH-0155:isEmptyList>false</eCH-0155:isEmptyList>
+					<eCH-0155:totalPositionsOnList>2</eCH-0155:totalPositionsOnList>
+					<eCH-0155:emptyListPositions>2</eCH-0155:emptyListPositions>
+				</list>
+			</electionInformation>
+		</electionGroupBallot>
+	</initialDelivery>
+</delivery>

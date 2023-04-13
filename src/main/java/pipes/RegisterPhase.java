@@ -1,0 +1,31 @@
+/*
+ * (c) Copyright 2023 Swiss Post Ltd.
+ */
+package pipes;
+
+import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+
+import pipes.register.ech0045v3.RegisterEch0045v3;
+import pipes.register.ech0045v4.RegisterEch0045v4;
+import reactor.core.publisher.Flux;
+
+public abstract class RegisterPhase extends Tools {
+
+	public static final Exports exports = new Exports();
+	static RegisterEch0045v3.Exports registerEch0045v3 = RegisterEch0045v3.exports;
+	static RegisterEch0045v4.Exports registerEch0045v4 = RegisterEch0045v4.exports;
+	static ParameterPhase.Exports parameterPhase = ParameterPhase.exports;
+	static CantonalTreePhase.Exports cantonalTreePhase = CantonalTreePhase.exports;
+
+	public static class Exports {
+		private Flux<VoterTypeWithRole> voters;
+
+		public Flux<VoterTypeWithRole> getVoters() {
+			return voters;
+		}
+
+		public void setVoters(final Flux<VoterTypeWithRole> voters) {
+			this.voters = voters;
+		}
+	}
+}
