@@ -27,7 +27,7 @@ public class CantonalTreePhaseSteps extends PhaseSteps {
 
 	@Given("^a Stdv1CantonalTree$")
 	public void given() {
-		CantonalTree ct = new CantonalTree();
+		final CantonalTree ct = new CantonalTree();
 
 		DomainOfInfluence doi = new DomainOfInfluence();
 		doi.setCantonAbbreviation("NE");
@@ -73,7 +73,7 @@ public class CantonalTreePhaseSteps extends PhaseSteps {
 		assertEquals("CH", doi.getType());
 		assertEquals("1", doi.getLocalId());
 
-		CountingCircle cc = cantonalTree.getAllCountingCircles().stream().findFirst().get();
+		final CountingCircle cc = cantonalTree.getAllCountingCircles().stream().findFirst().get();
 		assertEquals("NE", cc.getCantonAbbreviation());
 		assertEquals("9832", cc.getCcId());
 		assertEquals("ccName", cc.getCcName());

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!--
-  ~ (c) Copyright 2023 Swiss Post Ltd.
-  -->
+
 <configuration>
 
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">

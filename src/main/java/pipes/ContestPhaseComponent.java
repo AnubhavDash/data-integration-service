@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.dataintegrationservice.contest.ContestService;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.ExtendedAuthenticationKeyPlugin;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ElectionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoteInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuple4;
@@ -23,13 +23,13 @@ import reactor.util.function.Tuple4;
 public class ContestPhaseComponent {
 	private final ContestService contestService;
 
-	public ContestPhaseComponent(ContestService contestService) {
+	public ContestPhaseComponent(final ContestService contestService) {
 		this.contestService = contestService;
 	}
 
 	public BiFunction<List<String>, ExtendedAuthenticationKeyPlugin, List<String>> addAll() {
 		return (list, plugin) -> {
-			for (String keyName : plugin.getKeyNames()) {
+			for (final String keyName : plugin.getKeyNames()) {
 				if (!list.contains(keyName)) {
 					list.add(keyName);
 				}
@@ -50,7 +50,7 @@ public class ContestPhaseComponent {
 		return contestService::checkSame;
 	}
 
-	public Function<Tuple4<ContestType, List<VoteInformationType>, List<ElectionInformationType>, ch.evoting.xmlns.parameter._4.ContestType>, ContestType> buildContest() {
+	public Function<Tuple4<ContestType, List<VoteInformationType>, List<ElectionGroupBallotType>, ch.evoting.xmlns.parameter._4.ContestType>, ContestType> buildContest() {
 		return tuple -> contestService.build(tuple.getT1(), tuple.getT2(), tuple.getT3(), tuple.getT4());
 	}
 }

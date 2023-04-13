@@ -6,8 +6,8 @@ package ch.evoting.xmlns.parameter._4;
 import com.google.common.base.Strings;
 
 import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.FrankingAreaType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.FrankingAreaType;
 
 public class FrankingAreaSplitterTypeImpl extends FrankingAreaSplitterType {
 	@Override

@@ -8,21 +8,19 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.dataintegrationservice.common.ReflexionUtil;
-
 class ReflexionUtilTest {
 
 	@Test
 	void getFieldValue() {
-		A a = new A();
+		final A a = new A();
 
-		String value = ReflexionUtil.getFieldValue(a, "b.f");
+		final String value = ReflexionUtil.getFieldValue(a, "b.f");
 		assertNotNull(value);
 		assertEquals("toto", value);
 	}
 
 	class A {
-		private B b;
+		private final B b;
 
 		public A() {
 			b = new B();

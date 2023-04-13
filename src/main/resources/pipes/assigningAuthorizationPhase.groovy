@@ -4,10 +4,12 @@
 package pipes
 
 import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterType
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType
 import org.apache.commons.lang3.StringUtils
 
-import static pipes.Tools.*
+import static li.chee.reactive.plumber.Plumbing.*
+import static pipes.Tools.logAsInfo
+import static reactor.core.publisher.Flux.zip
 
 def assigningAuthorizationPhaseComponent = DataIntegrationServiceApplication.context.getBean(AssigningAuthorizationPhaseComponent.class)
 

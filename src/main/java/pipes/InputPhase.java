@@ -7,7 +7,7 @@ import reactor.core.publisher.Flux;
 
 public abstract class InputPhase extends Tools {
 
-	public static Exports exports = new Exports();
+	public static final Exports exports = new Exports();
 
 	public static class Exports {
 		private Flux<String> files;

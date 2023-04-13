@@ -3,7 +3,7 @@
  */
 package pipes;
 
-import ch.post.it.evoting.domain.xmlns.evotingconfig.HeaderType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.HeaderType;
 
 import reactor.core.publisher.Flux;
 

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2012 sp1 (http://www.altova.com) by Die Schweizerische Post (Die Schweizerische Post) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:config="http://www.evoting.ch/xmlns/config/4"
-					 targetNamespace="http://www.evoting.ch/xmlns/config/4" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:config="http://www.evoting.ch/xmlns/config/5" targetNamespace="http://www.evoting.ch/xmlns/config/5" elementFormDefault="qualified" attributeFormDefault="unqualified" version="5.0">
 	<xs:simpleType name="languageType">
 		<xs:restriction base="xs:string">
 			<xs:length value="2"/>
@@ -15,6 +13,7 @@
 		<xs:restriction base="xs:token">
 			<xs:maxLength value="50"/>
 			<xs:minLength value="1"/>
+			<xs:pattern value="[\w\-_]{1,50}"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="mrMrsType">
@@ -24,17 +23,10 @@
 			<xs:enumeration value="3"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:complexType name="electoralAuthorityType">
+	<xs:complexType name="adminBoardType">
 		<xs:sequence>
-			<xs:element name="electoralAuthorityIdentification">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:maxLength value="50"/>
-						<xs:minLength value="1"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element name="electoralAuthorityName">
+			<xs:element name="adminBoardIdentification" type="config:identifierType"/>
+			<xs:element name="adminBoardName">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
 						<xs:minLength value="1"/>
@@ -42,7 +34,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="electoralAuthorityDescription">
+			<xs:element name="adminBoardDescription">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
 						<xs:minLength value="1"/>
@@ -50,13 +42,54 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="electoralAuthorityThresholdValue" type="xs:nonNegativeInteger" default="2"/>
-			<xs:element name="electoralAuthorityMembers" type="config:electoralAuthorityMembersType"/>
+			<xs:element name="adminBoardThresholdValue" default="2">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="10"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="adminBoardMembers" type="config:adminBoardMembersType"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="electoralAuthorityMembersType">
+	<xs:complexType name="adminBoardMembersType">
 		<xs:sequence>
-			<xs:element name="electoralAuthorityMemberName" maxOccurs="unbounded">
+			<xs:element name="adminBoardMemberName" maxOccurs="unbounded">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="electoralBoardType">
+		<xs:sequence>
+			<xs:element name="electoralBoardIdentification" type="config:identifierType"/>
+			<xs:element name="electoralBoardName">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="electoralBoardDescription">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="electoralBoardMembers" type="config:electoralBoardMembersType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="electoralBoardMembersType">
+		<xs:sequence>
+			<xs:element name="electoralBoardMemberName" maxOccurs="unbounded">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
 						<xs:minLength value="1"/>
@@ -266,21 +299,26 @@
 	<xs:complexType name="headerType">
 		<xs:sequence>
 			<xs:element name="fileDate" type="xs:dateTime"/>
-			<xs:element name="voterTotal" type="xs:nonNegativeInteger"/>
+			<xs:element name="voterTotal" type="config:voterQuantityType"/>
 			<xs:element name="partialDelivery" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="voterFrom" type="xs:nonNegativeInteger"/>
-						<xs:element name="voterTo" type="xs:nonNegativeInteger"/>
+						<xs:element name="voterFrom" type="config:voterQuantityType"/>
+						<xs:element name="voterTo" type="config:voterQuantityType"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:simpleType name="voterQuantityType">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="10000000"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:complexType name="electionType">
 		<xs:sequence>
 			<xs:element name="electionIdentification" type="config:identifierType"/>
-			<xs:element name="domainOfInfluence" type="config:identifierType"/>
 			<xs:element name="typeOfElection">
 				<xs:simpleType>
 					<xs:restriction base="xs:nonNegativeInteger">
@@ -290,20 +328,41 @@
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="electionDescription" type="config:electionDescriptionInformationType"/>
-			<xs:element name="numberOfMandates" type="xs:nonNegativeInteger"/>
+			<xs:element name="electionPosition">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="numberOfMandates">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="120"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 			<xs:element name="writeInsAllowed" type="xs:boolean"/>
 			<xs:element name="candidateAccumulation">
 				<xs:simpleType>
-					<xs:restriction base="xs:nonNegativeInteger">
+					<xs:restriction base="xs:integer">
 						<xs:enumeration value="1"/>
 						<xs:enumeration value="2"/>
 						<xs:enumeration value="3"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="minimalCandidateSelectionInList" type="xs:nonNegativeInteger"/>
+			<xs:element name="minimalCandidateSelectionInList">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 			<xs:element name="referencedElection" type="config:referencedElectionInformationType" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="uiProperties" type="config:uiPropertiesType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="electionInformationType">
@@ -312,6 +371,7 @@
 			<xs:element name="candidate" type="config:candidateType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="list" type="config:listType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="listUnion" type="config:listUnionType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="writeInCandidate" type="config:writeInCandidateType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="incumbentTextInfoType">
@@ -402,7 +462,14 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="occupationalTitle" type="config:occupationalTitleInformationType" minOccurs="0"/>
-			<xs:element name="position" type="xs:nonNegativeInteger" minOccurs="0"/>
+			<xs:element name="position" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="120"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 			<xs:element name="referenceOnPosition" minOccurs="0">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
@@ -444,7 +511,14 @@
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="listDescription" type="config:listDescriptionInformationType"/>
-			<xs:element name="listOrderOfPrecedence" type="xs:nonNegativeInteger"/>
+			<xs:element name="listOrderOfPrecedence">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="120"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 			<xs:element name="listEmpty" type="xs:boolean"/>
 			<xs:element name="candidatePosition" type="config:candidatePositionType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="varListText1" type="config:varListTextType" minOccurs="0"/>
@@ -499,7 +573,14 @@
 	<xs:complexType name="candidatePositionType">
 		<xs:sequence>
 			<xs:element name="candidateListIdentification" type="config:identifierType"/>
-			<xs:element name="positionOnList" type="xs:nonNegativeInteger"/>
+			<xs:element name="positionOnList">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="120"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 			<xs:element name="candidateReferenceOnPosition">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
@@ -515,7 +596,14 @@
 	<xs:complexType name="ballotType">
 		<xs:sequence>
 			<xs:element name="ballotIdentification" type="config:identifierType"/>
-			<xs:element name="ballotPosition" type="xs:nonNegativeInteger"/>
+			<xs:element name="ballotPosition">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="120"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 			<xs:element name="ballotDescription" type="config:ballotDescriptionInformationType" minOccurs="0"/>
 			<xs:choice>
 				<xs:element name="standardBallot" type="config:standardBallotType"/>
@@ -526,7 +614,15 @@
 	<xs:complexType name="standardBallotType">
 		<xs:sequence>
 			<xs:element name="questionIdentification" type="config:identifierType"/>
-			<xs:element name="answerType" minOccurs="0">
+			<xs:element name="questionNumber">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="15"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="answerType">
 				<xs:simpleType>
 					<xs:restriction base="xs:nonNegativeInteger">
 						<xs:enumeration value="1"/>
@@ -579,8 +675,15 @@
 	<xs:complexType name="standardQuestionType">
 		<xs:sequence>
 			<xs:element name="questionIdentification" type="config:identifierType"/>
-			<xs:element name="questionPosition" type="xs:nonNegativeInteger"/>
-			<xs:element name="questionNumber" minOccurs="0">
+			<xs:element name="questionPosition">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="120"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="questionNumber">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
 						<xs:minLength value="1"/>
@@ -588,7 +691,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="answerType" minOccurs="0">
+			<xs:element name="answerType">
 				<xs:simpleType>
 					<xs:restriction base="xs:nonNegativeInteger">
 						<xs:enumeration value="1"/>
@@ -608,8 +711,15 @@
 	<xs:complexType name="tieBreakQuestionType">
 		<xs:sequence>
 			<xs:element name="questionIdentification" type="config:identifierType"/>
-			<xs:element name="questionPosition" type="xs:nonNegativeInteger"/>
-			<xs:element name="questionNumber" minOccurs="0">
+			<xs:element name="questionPosition">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="120"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="questionNumber">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
 						<xs:minLength value="1"/>
@@ -617,7 +727,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="answerType" minOccurs="0">
+			<xs:element name="answerType">
 				<xs:simpleType>
 					<xs:restriction base="xs:nonNegativeInteger">
 						<xs:enumeration value="1"/>
@@ -637,7 +747,14 @@
 	<xs:complexType name="standardAnswerType">
 		<xs:sequence>
 			<xs:element name="answerIdentification" type="config:identifierType"/>
-			<xs:element name="answerPosition" type="xs:nonNegativeInteger"/>
+			<xs:element name="answerPosition">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 			<xs:element name="standardAnswerType">
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
@@ -654,7 +771,14 @@
 	<xs:complexType name="tiebreakAnswerType">
 		<xs:sequence>
 			<xs:element name="answerIdentification" type="config:identifierType"/>
-			<xs:element name="answerPosition" type="xs:nonNegativeInteger"/>
+			<xs:element name="answerPosition">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 			<xs:element name="standardQuestionReference" minOccurs="0" maxOccurs="1">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
@@ -672,6 +796,7 @@
 			<xs:element name="voteIdentification" type="config:identifierType"/>
 			<xs:element name="domainOfInfluence" type="config:identifierType"/>
 			<xs:element name="voteDescription" type="config:voteDescriptionInformationType"/>
+			<xs:element name="votePosition" type="xs:nonNegativeInteger"/>
 			<xs:element name="ballot" type="config:ballotType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -688,11 +813,54 @@
 			<xs:element name="contestDescription" type="config:contestDescriptionInformationType"/>
 			<xs:element name="evotingFromDate" type="xs:dateTime"/>
 			<xs:element name="evotingToDate" type="xs:dateTime"/>
-			<xs:element name="electoralAuthority" type="config:electoralAuthorityType" minOccurs="0"/>
+			<xs:element name="adminBoard" type="config:adminBoardType"/>
+			<xs:element name="electoralBoard" type="config:electoralBoardType"/>
 			<xs:element name="extendedAuthenticationKeys" type="config:extendedAuthenticationKeysDefinitionType" minOccurs="0"/>
-			<xs:element name="electionInformation" type="config:electionInformationType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="electionGroupBallot" type="config:electionGroupBallotType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="voteInformation" type="config:voteInformationType" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="uiProperties" type="config:uiPropertiesType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="electionGroupBallotType">
+		<xs:sequence>
+			<xs:element name="electionGroupIdentification" type="config:identifierType"/>
+			<xs:element name="domainOfInfluence" type="config:identifierType"/>
+			<xs:element name="electionGroupDescription" type="config:electionGroupDescriptionInformationType"/>
+			<xs:element name="electionGroupPosition">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="electionInformation" type="config:electionInformationType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="electionGroupDescriptionInformationType">
+		<xs:sequence>
+			<xs:element name="electionGroupDescriptionInfo" minOccurs="4" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="language" type="config:languageType"/>
+						<xs:element name="electionGroupDescriptionShort" minOccurs="0">
+							<xs:simpleType>
+								<xs:restriction base="xs:token">
+									<xs:maxLength value="100"/>
+									<xs:minLength value="1"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="electionGroupDescription">
+							<xs:simpleType>
+								<xs:restriction base="xs:token">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="255"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="extendedAuthenticationKeyType">
@@ -859,6 +1027,13 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
+			<xs:element name="countryNameShort">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 			<xs:element name="belowTitleLine" type="xs:token" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="belowNameLine" type="xs:token" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="belowStreetLine" type="xs:token" minOccurs="0" maxOccurs="unbounded"/>
@@ -871,7 +1046,6 @@
 	<xs:simpleType name="frankingAreaType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="SWITZERLAND"/>
-			<xs:enumeration value="GERMANY"/>
 			<xs:enumeration value="EUROPE"/>
 			<xs:enumeration value="OVERSEA"/>
 			<xs:enumeration value="OTHER"/>
@@ -918,7 +1092,7 @@
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
 						<xs:minLength value="1"/>
-						<xs:maxLength value="100"/>
+						<xs:maxLength value="250"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -926,14 +1100,21 @@
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
 						<xs:minLength value="1"/>
-						<xs:maxLength value="100"/>
+						<xs:maxLength value="250"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="authorizationTest" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="authorizationFromDate" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="authorizationToDate" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
-			<xs:element name="authorizationGracePeriod" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="authorizationGracePeriod" minOccurs="1" maxOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3600"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 			<xs:element name="authorizationObject" type="config:authorizationObjectType" minOccurs="1" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -955,6 +1136,19 @@
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="referencedList" type="config:identifierType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="writeInCandidateType">
+		<xs:sequence>
+			<xs:element name="writeInCandidateIdentification" type="config:identifierType"/>
+			<xs:element name="position">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="120"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="listUnionDescriptionType">
@@ -1010,28 +1204,36 @@
 	</xs:complexType>
 	<xs:complexType name="domainOfInfluenceType">
 		<xs:sequence>
-			<xs:element name="id" type="config:identifierType"/>
-			<xs:element name="cantonCode">
+			<xs:element name="domainOfInfluenceIdentification" type="config:identifierType"/>
+			<xs:element name="domainOfInfluenceType">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
-						<xs:minLength value="2"/>
-						<xs:maxLength value="2"/>
+						<xs:enumeration value="CH"/>
+						<xs:enumeration value="CT"/>
+						<xs:enumeration value="BZ"/>
+						<xs:enumeration value="MU"/>
+						<xs:enumeration value="SC"/>
+						<xs:enumeration value="KI"/>
+						<xs:enumeration value="OG"/>
+						<xs:enumeration value="KO"/>
+						<xs:enumeration value="SK"/>
+						<xs:enumeration value="AN"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="type">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="2"/>
-						<xs:maxLength value="2"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element name="localId">
+			<xs:element name="domainOfInfluenceName">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
 						<xs:minLength value="1"/>
-						<xs:maxLength value="4"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="domainOfInfluenceShortname" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="5"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1039,40 +1241,12 @@
 	</xs:complexType>
 	<xs:complexType name="countingCircleType">
 		<xs:sequence>
-			<xs:element name="id">
+			<xs:element name="countingCircleIdentification" type="config:identifierType"/>
+			<xs:element name="countingCircleName">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
 						<xs:minLength value="1"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element name="name">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="uiPropertiesType">
-		<xs:sequence>
-			<xs:element name="property" type="config:propertyType" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="propertyType">
-		<xs:sequence>
-			<xs:element name="key">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element name="value">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1085,8 +1259,7 @@
 				<xs:element name="contest" type="config:contestType"/>
 				<xs:element name="authorizations" type="config:authorizationsType"/>
 				<xs:element name="register" type="config:registerType"/>
-				<xs:element name="signature" type="xs:base64Binary"
-										minOccurs="0" maxOccurs="1"/> <!-- Unsigned as input, signed as output. -->
+				<xs:element name="signature" type="xs:base64Binary"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

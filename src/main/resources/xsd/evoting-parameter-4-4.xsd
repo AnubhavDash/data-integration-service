@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.evoting.ch/xmlns/parameter/4" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.evoting.ch/xmlns/parameter/4" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.1" xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb file:///C:/work/projects/data-integration-service/src/main/resources/xsd/bindingschema_2_0.xsd" jaxb:version="2.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.evoting.ch/xmlns/parameter/4" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.evoting.ch/xmlns/parameter/4" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.1" xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb bindingschema_2_0.xsd" jaxb:version="2.0">
 	<xs:simpleType name="languageType">
 		<xs:restriction base="xs:string">
 			<xs:length value="2"/>
@@ -9,9 +9,9 @@
 			<xs:enumeration value="rm"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:complexType name="electoralAuthorityMembersType">
+	<xs:complexType name="adminBoardMembersType">
 		<xs:sequence>
-			<xs:element name="electoralAuthorityMemberName" maxOccurs="unbounded">
+			<xs:element name="adminBoardMemberName" maxOccurs="unbounded">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
 						<xs:minLength value="1"/>
@@ -21,9 +21,9 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="electoralAuthorityType">
+	<xs:complexType name="adminBoardType">
 		<xs:sequence>
-			<xs:element name="electoralAuthorityIdentification">
+			<xs:element name="adminBoardIdentification">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
 						<xs:maxLength value="50"/>
@@ -31,7 +31,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="electoralAuthorityName">
+			<xs:element name="adminBoardName">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
 						<xs:minLength value="1"/>
@@ -39,7 +39,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="electoralAuthorityDescription">
+			<xs:element name="adminBoardDescription">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
 						<xs:minLength value="1"/>
@@ -47,8 +47,49 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="electoralAuthorityThresholdValue" type="xs:nonNegativeInteger" default="2"/>
-			<xs:element name="electoralAuthorityMembers" type="electoralAuthorityMembersType"/>
+			<xs:element name="adminBoardThresholdValue" type="xs:nonNegativeInteger" default="2"/>
+			<xs:element name="adminBoardMembers" type="adminBoardMembersType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="electoralBoardMembersType">
+		<xs:sequence>
+			<xs:element name="electoralBoardMemberName" maxOccurs="unbounded">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="electoralBoardType">
+		<xs:sequence>
+			<xs:element name="electoralBoardIdentification">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:maxLength value="50"/>
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="electoralBoardName">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="electoralBoardDescription">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="electoralBoardMembers" type="electoralBoardMembersType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="answerInformationType">
@@ -270,6 +311,22 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="votePositionSetterType">
+		<xs:complexContent>
+			<xs:extension base="contestMapper">
+				<xs:sequence>
+					<xs:element name="vote" minOccurs="1" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="voteIdentification" type="xs:token" minOccurs="1" maxOccurs="1"/>
+								<xs:element name="position" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="afterReadContestType">
 		<xs:choice minOccurs="1" maxOccurs="unbounded">
 			<xs:annotation>
@@ -278,6 +335,7 @@
 				</xs:appinfo>
 			</xs:annotation>
 			<xs:element name="prefetElection" type="prefetElectionType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="vote" type="votePositionSetterType" minOccurs="0" maxOccurs="1"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="voterAuthorizationMapper" abstract="true">
@@ -311,29 +369,6 @@
 			<xs:element name="afterReadContest" type="afterReadContestType" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="configSplitter" type="configSplitterType" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="buildAuthorization" type="buildAuthorizationType" minOccurs="0"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="uiPropertiesType">
-		<xs:sequence>
-			<xs:element name="property" type="propertyType" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="propertyType">
-		<xs:sequence>
-			<xs:element name="key">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element name="value">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="sortingType">
@@ -411,7 +446,8 @@
 					</xs:choice>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="electoralAuthority" type="electoralAuthorityType" minOccurs="0"/>
+			<xs:element name="adminBoard" type="adminBoardType"/>
+			<xs:element name="electoralBoard" type="electoralBoardType"/>
 			<xs:element name="elections" type="electionsType" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="sorting" type="sortingType" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="defaultAnswerTranslations" type="defaultAnswerTranslationType" minOccurs="0" maxOccurs="1"/>
@@ -431,7 +467,6 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="uiProperties" type="uiPropertiesType" minOccurs="0" maxOccurs="1"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="defaultAnswerTranslationType">
@@ -540,23 +575,16 @@
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="minimalCandidateSelectionInList" type="xs:nonNegativeInteger" minOccurs="0"/>
-			<xs:element name="uiProperties" type="uiPropertiesType" minOccurs="0" maxOccurs="1"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="parameter">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="contest" type="contestType"/>
-                <xs:element name="postVotePhase" type="postVotePhaseType" minOccurs="0" maxOccurs="1" />
 				<xs:element name="plugins" type="pluginsType"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-    <xs:complexType name="postVotePhaseType">
-    <xs:sequence>
-        <xs:element name="removeTestControlFromDecryptEnabled" type="xs:boolean" minOccurs="0"/>
-    </xs:sequence>
-    </xs:complexType>
 	<xs:complexType name="emptyCandidateTextInfo">
 		<xs:sequence>
 			<xs:element name="language" type="languageType"/>
@@ -565,19 +593,19 @@
 					<xs:restriction base="xs:token">
 						<xs:maxLength value="50"/>
 						<xs:minLength value="1"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="incumbentTextInfo">
-        <xs:sequence>
-            <xs:element name="language" type="languageType"/>
-            <xs:element name="text">
-                <xs:simpleType>
-                    <xs:restriction base="xs:token">
-                        <xs:minLength value="1"/>
-                        <xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="incumbentTextInfo">
+		<xs:sequence>
+			<xs:element name="language" type="languageType"/>
+			<xs:element name="text">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>

@@ -6,7 +6,7 @@ package ch.evoting.xmlns.parameter._4;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
 public class QuantitySplitterTypeImpl extends QuantitySplitterType {
 

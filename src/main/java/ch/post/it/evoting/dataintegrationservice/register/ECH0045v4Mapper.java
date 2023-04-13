@@ -27,14 +27,14 @@ import ch.ech.xmlns.ech_0045._4.LanguageType;
 import ch.ech.xmlns.ech_0045._4.SwissPersonType;
 import ch.ech.xmlns.ech_0045._4.VotingPersonType;
 import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ElectronicAddressType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.PersonType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.PhysicalAddressType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.SexType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterCountingCircle;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterDomainOfInfluence;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterDomainOfInfluenceInfo;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterCountingCircle;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluence;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluenceInfo;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectronicAddressType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PersonType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PhysicalAddressType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.SexType;
 
 @Mapper
 public interface ECH0045v4Mapper {
@@ -135,7 +135,7 @@ public interface ECH0045v4Mapper {
 	@Mapping(target = "authorization", ignore = true)
 	@Mapping(target = "extendedAuthenticationKeys", ignore = true)
 	@Mapping(target = "person.electronicAddress", source = "v.email")
-	@Mapping(target = "voterType", expression = "java( ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeType.SWISSABROAD )")
+	@Mapping(target = "voterType", expression = "java( ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType.SWISSABROAD )")
 	void appendAbroadVoter(
 			@MappingTarget
 			VoterTypeWithRole voter, ch.ech.xmlns.ech_0045._4.VotingPersonType v, SwissPersonType swissAbroadPerson);
@@ -152,7 +152,7 @@ public interface ECH0045v4Mapper {
 	@Mapping(target = "authorization", ignore = true)
 	@Mapping(target = "extendedAuthenticationKeys", ignore = true)
 	@Mapping(target = "person.electronicAddress", source = "v.email")
-	@Mapping(target = "voterType", expression = "java( ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeType.SWISSRESIDENT )")
+	@Mapping(target = "voterType", expression = "java( ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType.SWISSRESIDENT )")
 	void appendSwissVoter(
 			@MappingTarget
 			VoterTypeWithRole voter, VotingPersonType v, SwissPersonType swissDomesticPerson);
@@ -169,7 +169,7 @@ public interface ECH0045v4Mapper {
 	@Mapping(target = "authorization", ignore = true)
 	@Mapping(target = "extendedAuthenticationKeys", ignore = true)
 	@Mapping(target = "person.electronicAddress", source = "v.email")
-	@Mapping(target = "voterType", expression = "java( ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeType.FOREIGNER )")
+	@Mapping(target = "voterType", expression = "java( ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType.FOREIGNER )")
 	void appendForeignerVoter(
 			@MappingTarget
 			VoterTypeWithRole voter, ch.ech.xmlns.ech_0045._4.VotingPersonType v, ForeignerPersonType foreignerPerson);
@@ -227,6 +227,7 @@ public interface ECH0045v4Mapper {
 	@Mapping(target = "zipCode", ignore = true)
 	@Mapping(target = "town", source = "addressInformation.town")
 	@Mapping(target = "country", source = "addressInformation.country.countryIdISO2")
+	@Mapping(target = "countryNameShort", source = "addressInformation.country.countryNameShort")
 	@Mapping(target = "belowTitleLine", ignore = true)
 	@Mapping(target = "belowNameLine", ignore = true)
 	@Mapping(target = "belowStreetLine", ignore = true)

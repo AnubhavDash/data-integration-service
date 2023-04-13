@@ -7,9 +7,9 @@ import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.domain.xmlns.evotingconfig.RegisterType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.RegisterTypeWithVoterStream;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterType;
+import ch.post.it.evoting.dataintegrationservice.domain.RegisterTypeWithVoterStream;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RegisterType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType;
 
 @Service
 public class InvalidVoterService {

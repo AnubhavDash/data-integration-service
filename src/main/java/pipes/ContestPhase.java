@@ -3,7 +3,7 @@
  */
 package pipes;
 
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 
 import pipes.contest.ech015xv3.ContestEch015xv3;
 import pipes.contest.ech015xv4.ContestEch015xv4;

@@ -27,7 +27,7 @@ public class ParameterPhaseSteps extends PhaseSteps {
 	private ContestType contest;
 
 	@Given("^\"([^\"]*)\" as input file")
-	public void givenInputFile(String fileName) {
+	public void givenInputFile(final String fileName) {
 		InputPhase.exports.setFiles(Flux.just("src/test/resources/ParameterPhaseSteps/" + fileName));
 	}
 
@@ -44,12 +44,12 @@ public class ParameterPhaseSteps extends PhaseSteps {
 	}
 
 	@Then("^it outputs a contest with question \"([^\"]*)\"$")
-	public void thenItOutputsAContestWithQuestion(String questionId) {
+	public void thenItOutputsAContestWithQuestion(final String questionId) {
 		assertTrue(marshall(new Parameter().withContest(contest)).contains(questionId));
 	}
 
 	@And("^it outputs a plugin of type \"([^\"]*)\"$")
-	public void andItOutputsAPluginType(String type) {
+	public void andItOutputsAPluginType(final String type) {
 		assertTrue(plugins.stream().anyMatch(p -> p.getClass().getSimpleName().equals(type)));
 	}
 }

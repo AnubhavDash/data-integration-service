@@ -5,7 +5,7 @@ package ch.post.it.evoting.dataintegrationservice.parameter.plugin;
 
 import java.util.function.UnaryOperator;
 
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 
 public class ContestMapper implements UnaryOperator<ContestType> {
 	@Override
