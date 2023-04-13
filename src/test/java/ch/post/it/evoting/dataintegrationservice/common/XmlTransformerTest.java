@@ -19,8 +19,7 @@ import javax.xml.bind.JAXBException;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.dataintegrationservice.common.XmlTransformer;
-import ch.post.it.evoting.domain.XsdConstants;
+import ch.post.it.evoting.domain.xml.XsdConstants;
 import ch.post.it.evoting.domain.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.domain.xmlns.evotingconfig.ObjectFactory;
 

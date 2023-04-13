@@ -1,0 +1,4 @@
+WAHLKREIS_ID;WAHLKREIS_CODE;BEZEICHNUNG;WAHLKREIS_PARENT_ID;WAHLKREIS_PARENT_CODE;KANTON_CODE
+doid-ct1-mu;BE-CT-1;Bern;doid-ch1-mu;BE-CH-1;BE
+doid-mu3000-mu;BE-MU-3000;Municipality Bern 3000;doid-ct1-mu;BE-CT-1;BE
+doid-mu9170-mu;BE-MU-9170;Virtual Municipality ACH;doid-ch1-mu;BE-CH-1;BE

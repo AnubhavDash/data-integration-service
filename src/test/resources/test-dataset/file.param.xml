@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ (c) Copyright 2023 Swiss Post Ltd.
+  -->
+<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/4" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/4 file:///C:/Users/hepplerl/Documents/E-Voting/DIS_2_0_final/evoting-parameter-4-0.xsd">
+	<contest>
+		<defaultLanguage>de</defaultLanguage>
+		<evotingFromDate>2022-12-14T07:00:00+01:00</evotingFromDate>
+		<evotingToDate>2023-12-14T23:00:00+01:00</evotingToDate>
+		<evotingTestBallotBoxesFromDate>2022-12-14T07:00:00+01:00</evotingTestBallotBoxesFromDate>
+		<swissAbroadCountingMode>
+			<specificCountingCircle>
+				<configuration>
+					<countingCircleId>BE-MU-9170</countingCircleId>
+					<voteTypes>
+						<voteType>CH</voteType>
+					</voteTypes>
+				</configuration>
+			</specificCountingCircle>
+		</swissAbroadCountingMode>
+		<electoralAuthority>
+			<electoralAuthorityIdentification>Post_E2E_DEV</electoralAuthorityIdentification>
+			<electoralAuthorityName>Post_E2E_DEV</electoralAuthorityName>
+			<electoralAuthorityDescription>Post_E2E_DEV</electoralAuthorityDescription>
+			<electoralAuthorityThresholdValue>1</electoralAuthorityThresholdValue>
+			<electoralAuthorityMembers>
+				<electoralAuthorityMemberName>EA1</electoralAuthorityMemberName>
+				<electoralAuthorityMemberName>EA2</electoralAuthorityMemberName>
+			</electoralAuthorityMembers>
+		</electoralAuthority>
+		<elections>
+			<election>
+				<electionIdentification>nrw_test</electionIdentification>
+				<candidateAccumulation>2</candidateAccumulation>
+				<uiProperties>
+					<property>
+						<key>list.attribute.1.text</key>
+						<value>%listIndentureNumber% %listDescription%</value>
+					</property>
+					<property>
+						<key>list.attribute.1.text.translation.de</key>
+						<value>%listIndentureNumber% %listDescription%</value>
+					</property>
+					<property>
+						<key>list.attribute.1.text.translation.fr</key>
+						<value>%listIndentureNumber% %listDescription%</value>
+					</property>
+					<property>
+						<key>list.attribute.1.text.translation.it</key>
+						<value>%listIndentureNumber% %listDescription%</value>
+					</property>
+					<property>
+						<key>list.attribute.1.text.translation.rm</key>
+						<value>%listIndentureNumber% %listDescription%</value>
+					</property>
+					<property>
+						<key>list.attribute.1.header.translation.de</key>
+						<value>Party Name</value>
+					</property>
+					<property>
+						<key>list.attribute.1.header.translation.fr</key>
+						<value>Party Name</value>
+					</property>
+					<property>
+						<key>list.attribute.1.header.translation.it</key>
+						<value>Party Name</value>
+					</property>
+					<property>
+						<key>list.attribute.1.header.translation.rm</key>
+						<value>Party Name</value>
+					</property>
+					<property>
+						<key>list.attribute.4.text</key>
+						<value>%listUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.4.text.translation.de</key>
+						<value>%listUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.4.text.translation.fr</key>
+						<value>%listUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.4.text.translation.it</key>
+						<value>%listUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.4.text.translation.rm</key>
+						<value>%listUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.4.header.translation.de</key>
+						<value>Listenverbindung</value>
+					</property>
+					<property>
+						<key>list.attribute.4.header.translation.fr</key>
+						<value>Apparentment</value>
+					</property>
+					<property>
+						<key>list.attribute.4.header.translation.it</key>
+						<value>Apparentamento di liste</value>
+					</property>
+					<property>
+						<key>list.attribute.4.header.translation.rm</key>
+						<value>Colliaziun da glistas</value>
+					</property>
+					<property>
+						<key>list.attribute.5.text</key>
+						<value>%subListUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.5.text.translation.de</key>
+						<value>%subListUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.5.text.translation.fr</key>
+						<value>%subListUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.5.text.translation.it</key>
+						<value>%subListUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.5.text.translation.rm</key>
+						<value>%subListUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.5.header.translation.de</key>
+						<value>Unterlistenverbindung</value>
+					</property>
+					<property>
+						<key>list.attribute.5.header.translation.fr</key>
+						<value>Sous-apparentement</value>
+					</property>
+					<property>
+						<key>list.attribute.5.header.translation.it</key>
+						<value>Sottocongiunzione di liste</value>
+					</property>
+					<property>
+						<key>list.attribute.5.header.translation.rm</key>
+						<value>Sutcolliaziun da glistas</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.text</key>
+						<value>%candidateReferenceOnPosition% %candidateFamilyName% %candidateCallName%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.text.translation.de</key>
+						<value>%candidateReferenceOnPosition% %candidateFamilyName% %candidateCallName%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.text.translation.fr</key>
+						<value>%candidateReferenceOnPosition% %candidateFamilyName% %candidateCallName%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.text.translation.it</key>
+						<value>%candidateReferenceOnPosition% %candidateFamilyName% %candidateCallName%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.text.translation.rm</key>
+						<value>%candidateReferenceOnPosition% %candidateFamilyName% %candidateCallName%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.header.translation.de</key>
+						<value>Candidate text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.header.translation.fr</key>
+						<value>Candidate text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.header.translation.it</key>
+						<value>Candidate text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.header.translation.rm</key>
+						<value>Candidate text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.text</key>
+						<value>%candidateText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.text.translation.de</key>
+						<value>%candidateText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.text.translation.fr</key>
+						<value>%candidateText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.text.translation.it</key>
+						<value>%candidateText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.text.translation.rm</key>
+						<value>%candidateText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.header.translation.de</key>
+						<value>Candidat Text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.header.translation.fr</key>
+						<value>Candidate Text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.header.translation.it</key>
+						<value>Candidate Text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.header.translation.rm</key>
+						<value>Candidate Text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.text</key>
+						<value>%incumbentText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.text.translation.de</key>
+						<value>%incumbentText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.text.translation.fr</key>
+						<value>%incumbentText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.text.translation.it</key>
+						<value>%incumbentText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.text.translation.rm</key>
+						<value>%incumbentText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.header.translation.de</key>
+						<value>Incumbent</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.header.translation.fr</key>
+						<value>Incumbent</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.header.translation.it</key>
+						<value>Incumbent</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.header.translation.rm</key>
+						<value>Incumbent</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.text</key>
+						<value>%initialAccumulation%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.text.translation.de</key>
+						<value>%initialAccumulation%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.text.translation.fr</key>
+						<value>%initialAccumulation%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.text.translation.it</key>
+						<value>%initialAccumulation%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.text.translation.rm</key>
+						<value>%initialAccumulation%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.header.translation.de</key>
+						<value>Initiales Kumulieren</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.header.translation.fr</key>
+						<value>Cumul initial</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.header.translation.it</key>
+						<value>Cumulo iniziale</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.header.translation.rm</key>
+						<value>Cumular inizial</value>
+					</property>
+					<property>
+						<key>candidate.attribute.5.text</key>
+						<value>%positionOnList%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.5.header.translation.de</key>
+						<value>Initiale Position</value>
+					</property>
+					<property>
+						<key>candidate.attribute.5.header.translation.fr</key>
+						<value>Position initiale</value>
+					</property>
+					<property>
+						<key>candidate.attribute.5.header.translation.it</key>
+						<value>Posizione initiale</value>
+					</property>
+					<property>
+						<key>candidate.attribute.5.header.translation.rm</key>
+						<value>Posiziun inizial</value>
+					</property>
+				</uiProperties>
+			</election>
+			<election>
+				<electionIdentification>majorz_test</electionIdentification>
+				<writeInsAllowed>true</writeInsAllowed>
+				<candidateAccumulation>1</candidateAccumulation>
+				<uiProperties>
+					<property>
+						<key>list.attribute.1.text</key>
+						<value>%listIndentureNumber% %listDescription%</value>
+					</property>
+					<property>
+						<key>list.attribute.1.text.translation.de</key>
+						<value>%listIndentureNumber% %listDescription%</value>
+					</property>
+					<property>
+						<key>list.attribute.1.text.translation.fr</key>
+						<value>%listIndentureNumber% %listDescription%</value>
+					</property>
+					<property>
+						<key>list.attribute.1.text.translation.it</key>
+						<value>%listIndentureNumber% %listDescription%</value>
+					</property>
+					<property>
+						<key>list.attribute.1.text.translation.rm</key>
+						<value>%listIndentureNumber% %listDescription%</value>
+					</property>
+					<property>
+						<key>list.attribute.1.header.translation.de</key>
+						<value>Party Name</value>
+					</property>
+					<property>
+						<key>list.attribute.1.header.translation.fr</key>
+						<value>Party Name</value>
+					</property>
+					<property>
+						<key>list.attribute.1.header.translation.it</key>
+						<value>Party Name</value>
+					</property>
+					<property>
+						<key>list.attribute.1.header.translation.rm</key>
+						<value>Party Name</value>
+					</property>
+					<property>
+						<key>list.attribute.4.text</key>
+						<value>%listUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.4.text.translation.de</key>
+						<value>%listUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.4.text.translation.fr</key>
+						<value>%listUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.4.text.translation.it</key>
+						<value>%listUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.4.text.translation.rm</key>
+						<value>%listUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.4.header.translation.de</key>
+						<value>Listenverbindung</value>
+					</property>
+					<property>
+						<key>list.attribute.4.header.translation.fr</key>
+						<value>Apparentment</value>
+					</property>
+					<property>
+						<key>list.attribute.4.header.translation.it</key>
+						<value>Apparentamento di liste</value>
+					</property>
+					<property>
+						<key>list.attribute.4.header.translation.rm</key>
+						<value>Colliaziun da glistas</value>
+					</property>
+					<property>
+						<key>list.attribute.5.text</key>
+						<value>%subListUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.5.text.translation.de</key>
+						<value>%subListUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.5.text.translation.fr</key>
+						<value>%subListUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.5.text.translation.it</key>
+						<value>%subListUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.5.text.translation.rm</key>
+						<value>%subListUnion%</value>
+					</property>
+					<property>
+						<key>list.attribute.5.header.translation.de</key>
+						<value>Unterlistenverbindung</value>
+					</property>
+					<property>
+						<key>list.attribute.5.header.translation.fr</key>
+						<value>Sous-apparentement</value>
+					</property>
+					<property>
+						<key>list.attribute.5.header.translation.it</key>
+						<value>Sottocongiunzione di liste</value>
+					</property>
+					<property>
+						<key>list.attribute.5.header.translation.rm</key>
+						<value>Sutcolliaziun da glistas</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.text</key>
+						<value>%candidateReferenceOnPosition% %candidateFamilyName% %candidateCallName%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.text.translation.de</key>
+						<value>%candidateReferenceOnPosition% %candidateFamilyName% %candidateCallName%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.text.translation.fr</key>
+						<value>%candidateReferenceOnPosition% %candidateFamilyName% %candidateCallName%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.text.translation.it</key>
+						<value>%candidateReferenceOnPosition% %candidateFamilyName% %candidateCallName%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.text.translation.rm</key>
+						<value>%candidateReferenceOnPosition% %candidateFamilyName% %candidateCallName%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.header.translation.de</key>
+						<value>Candidate text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.header.translation.fr</key>
+						<value>Candidate text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.header.translation.it</key>
+						<value>Candidate text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.1.header.translation.rm</key>
+						<value>Candidate text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.text</key>
+						<value>%candidateText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.text.translation.de</key>
+						<value>%candidateText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.text.translation.fr</key>
+						<value>%candidateText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.text.translation.it</key>
+						<value>%candidateText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.text.translation.rm</key>
+						<value>%candidateText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.header.translation.de</key>
+						<value>Candidat Text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.header.translation.fr</key>
+						<value>Candidate Text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.header.translation.it</key>
+						<value>Candidate Text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.2.header.translation.rm</key>
+						<value>Candidate Text</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.text</key>
+						<value>%incumbentText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.text.translation.de</key>
+						<value>%incumbentText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.text.translation.fr</key>
+						<value>%incumbentText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.text.translation.it</key>
+						<value>%incumbentText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.text.translation.rm</key>
+						<value>%incumbentText%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.header.translation.de</key>
+						<value>Incumbent</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.header.translation.fr</key>
+						<value>Incumbent</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.header.translation.it</key>
+						<value>Incumbent</value>
+					</property>
+					<property>
+						<key>candidate.attribute.3.header.translation.rm</key>
+						<value>Incumbent</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.text</key>
+						<value>%initialAccumulation%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.text.translation.de</key>
+						<value>%initialAccumulation%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.text.translation.fr</key>
+						<value>%initialAccumulation%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.text.translation.it</key>
+						<value>%initialAccumulation%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.text.translation.rm</key>
+						<value>%initialAccumulation%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.header.translation.de</key>
+						<value>Initiales Kumulieren</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.header.translation.fr</key>
+						<value>Cumul initial</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.header.translation.it</key>
+						<value>Cumulo iniziale</value>
+					</property>
+					<property>
+						<key>candidate.attribute.4.header.translation.rm</key>
+						<value>Cumular inizial</value>
+					</property>
+					<property>
+						<key>candidate.attribute.5.text</key>
+						<value>%positionOnList%</value>
+					</property>
+					<property>
+						<key>candidate.attribute.5.header.translation.de</key>
+						<value>Initiale Position</value>
+					</property>
+					<property>
+						<key>candidate.attribute.5.header.translation.fr</key>
+						<value>Position initiale</value>
+					</property>
+					<property>
+						<key>candidate.attribute.5.header.translation.it</key>
+						<value>Posizione initiale</value>
+					</property>
+					<property>
+						<key>candidate.attribute.5.header.translation.rm</key>
+						<value>Posiziun inizial</value>
+					</property>
+				</uiProperties>
+			</election>
+		</elections>
+	</contest>
+	<plugins>
+		<afterReadVoter>
+			<birthDateAuthenticationKey/>
+		</afterReadVoter>
+	</plugins>
+</parameter>

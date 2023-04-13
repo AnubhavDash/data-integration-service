@@ -43,7 +43,7 @@ public class DataIntegrationService {
 
 					DataIntegrationServiceApplication.class.getResource("/pipes/parameterPhase.groovy").toURI(),
 
-					DataIntegrationServiceApplication.class.getResource("/pipes/cantonalTree/stdv1/cantonalTreeStdv1.groovy").toURI(),
+					DataIntegrationServiceApplication.class.getResource("/pipes/cantonaltree/stdv1/cantonalTreeStdv1.groovy").toURI(),
 					DataIntegrationServiceApplication.class.getResource("/pipes/cantonalTreePhase.groovy").toURI(),
 
 					DataIntegrationServiceApplication.class.getResource("/pipes/contest/ech015xv3/contestEch015xv3.groovy").toURI(),

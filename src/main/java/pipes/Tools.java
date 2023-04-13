@@ -25,11 +25,11 @@ import org.slf4j.LoggerFactory;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureKeystore;
 import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication;
 import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
-import ch.post.it.evoting.dataintegrationservice.input.DirectoryScanner;
-import ch.post.it.evoting.dataintegrationservice.common.XmlTransformer;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
-import ch.post.it.evoting.domain.XsdConstants;
+import ch.post.it.evoting.dataintegrationservice.common.XmlTransformer;
+import ch.post.it.evoting.dataintegrationservice.input.DirectoryScanner;
 import ch.post.it.evoting.domain.hashable.ConfigurationSignerListener;
+import ch.post.it.evoting.domain.xml.XsdConstants;
 import ch.post.it.evoting.domain.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.domain.xmlns.evotingconfig.RegisterTypeWithVoterStream;
 
