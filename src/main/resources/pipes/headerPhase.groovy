@@ -4,10 +4,13 @@
 package pipes
 
 import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterType
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType
 import org.apache.commons.lang3.StringUtils
 
-import static pipes.Tools.*
+import static li.chee.reactive.plumber.Plumbing.from
+import static li.chee.reactive.plumber.Plumbing.pipe
+import static pipes.Tools.logAsInfo
+import static pipes.Tools.logItemAsInfo
 
 def headerPhaseComponent = DataIntegrationServiceApplication.context.getBean(HeaderPhaseComponent.class)
 

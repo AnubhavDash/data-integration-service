@@ -3,7 +3,7 @@
  */
 package ch.evoting.xmlns.parameter._4;
 
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
 public class TestAndControlSplitterTypeImpl extends TestAndControlSplitterType {
 

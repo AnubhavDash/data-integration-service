@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
 public class VoterFieldModifierTypeImpl extends VoterFieldModifierPluginType {
 
@@ -63,7 +63,7 @@ public class VoterFieldModifierTypeImpl extends VoterFieldModifierPluginType {
 				} else if (field.getType().isAssignableFrom(XMLGregorianCalendar.class)) {
 					value = DatatypeFactory.newInstance().newXMLGregorianCalendar(getFieldValue());
 				} else {
-					final Method parseMethod = field.getType().getMethod("valueOf", new Class[] { String.class });
+					final Method parseMethod = field.getType().getMethod("valueOf", String.class);
 					value = parseMethod.invoke(field, getFieldValue());
 				}
 			}

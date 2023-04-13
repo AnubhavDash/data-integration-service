@@ -93,7 +93,7 @@ public class DataIntegrationService {
 	private void ensureTargetDirectoryExists() {
 		final File targetDir = new File(targetDirectory);
 		if (!targetDir.exists()) {
-			boolean success = targetDir.mkdirs();
+			final boolean success = targetDir.mkdirs();
 			checkState(success, "Unable to create the target directory [directory: %s]", targetDirectory);
 		}
 	}

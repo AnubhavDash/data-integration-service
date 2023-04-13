@@ -82,4 +82,9 @@ public class PluginObjectFactory extends ObjectFactory {
 	public VoterIdPrefixerType createVoterIdPrefixerType() {
 		return new VoterIdPrefixerTypeImpl();
 	}
+
+	@Override
+	public VotePositionSetterType createVotePositionSetterType() {
+		return new VotePositionSetterTypeImpl();
+	}
 }

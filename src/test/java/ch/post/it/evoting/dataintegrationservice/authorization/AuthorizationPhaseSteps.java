@@ -12,21 +12,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.CountingCircle;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.DomainOfInfluence;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.DomainOfInfluenceId;
+import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluence;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluenceInfo;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.dataintegrationservice.pipes.PhaseSteps;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestDescriptionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.LanguageType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.PersonType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoteInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoteType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterDomainOfInfluence;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterDomainOfInfluenceInfo;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestDescriptionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PersonType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteType;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -71,10 +71,10 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 	private CantonalTree cantonalTree;
 	private List<VoterTypeWithRole> voters;
 
-	private void setDoiId(String code, String id, String parentId, String parentCode) {
-		DomainOfInfluenceId parentDoiId = cantonalTree.getDomainOfInfluence(parentCode).getDomainOfInfluenceIds().stream()
+	private void setDoiId(final String code, final String id, final String parentId, final String parentCode) {
+		final DomainOfInfluenceId parentDoiId = cantonalTree.getDomainOfInfluence(parentCode).getDomainOfInfluenceIds().stream()
 				.filter(i -> i.getId().equals(parentId)).findFirst().get();
-		DomainOfInfluenceId doiId = new DomainOfInfluenceId();
+		final DomainOfInfluenceId doiId = new DomainOfInfluenceId();
 		doiId.setId(id);
 		doiId.setParent(parentDoiId);
 		doiId.setRelatedDomainOfInfluence(cantonalTree.getDomainOfInfluence(code));
@@ -121,7 +121,7 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 					AuthorizationPhase.exports.getContestUsedDOIs().doOnNext(dois -> {
 					}));
 			fail();
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			processException = e;
 		}
 	}
@@ -131,13 +131,13 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^cantonal tree has domain of influence \"([^\"]*)\",\"([^\"]*)\",(\\d+)$")
-	public void andCantonalTreeHasDOI(String arg0, String arg1, Integer arg2) {
+	public void andCantonalTreeHasDOI(final String arg0, final String arg1, final Integer arg2) {
 
 	}
 
 	@And("^cantonal tree has domain of influence \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
-	public void andCantonalTreeHasDOI(String canton, String type, String localId) {
-		DomainOfInfluence doi = new DomainOfInfluence();
+	public void andCantonalTreeHasDOI(final String canton, final String type, final String localId) {
+		final DomainOfInfluence doi = new DomainOfInfluence();
 		doi.setCantonAbbreviation(canton);
 		doi.setType(type);
 		doi.setLocalId(localId);
@@ -145,14 +145,14 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^cantonal tree has counting circle \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
-	public void andCantonalTreeHasCountingCricle(String canton, String type, String localId) {
-		CountingCircle cc = new CountingCircle(canton, type, localId, "dummy", new ArrayList<>(), "ccId", "ccName", 1111);
+	public void andCantonalTreeHasCountingCricle(final String canton, final String type, final String localId) {
+		final CountingCircle cc = new CountingCircle(canton, type, localId, "dummy", new ArrayList<>(), "ccId", "ccName", 1111);
 		cantonalTree.putDomainOfInfluence(cc);
 	}
 
 	@And("^domain of influence \"([^\"]*)\" has ID \"([^\"]*)\"$")
-	public void andDomainOfInfluenceHasId(String code, String id) {
-		DomainOfInfluenceId doiId = new DomainOfInfluenceId();
+	public void andDomainOfInfluenceHasId(final String code, final String id) {
+		final DomainOfInfluenceId doiId = new DomainOfInfluenceId();
 		doiId.setRelatedDomainOfInfluence(cantonalTree.getDomainOfInfluence(code));
 		doiId.setId(id);
 		if (cantonalTree.getDomainOfInfluence(code).getDomainOfInfluenceIds() == null) {
@@ -162,12 +162,12 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^domain of influence \"([^\"]*)\" has ID \"([^\"]*)\" and parent ID \"([^\"]*)\" in \"([^\"]*)\"$")
-	public void andDomainOfInfluenceHasIdAndParentId(String code, String id, String parentId, String parentCode) {
+	public void andDomainOfInfluenceHasIdAndParentId(final String code, final String id, final String parentId, final String parentCode) {
 		setDoiId(code, id, parentId, parentCode);
 	}
 
 	@And("^counting circle \"([^\"]*)\" has ID \"([^\"]*)\" and parent ID \"([^\"]*)\" in \"([^\"]*)\"$")
-	public void andCountingCircleHasIdAndParentId(String code, String id, String parentId, String parentCode) {
+	public void andCountingCircleHasIdAndParentId(final String code, final String id, final String parentId, final String parentCode) {
 		setDoiId(code, id, parentId, parentCode);
 	}
 
@@ -178,13 +178,13 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 
 	@And("^the list of voters has a valid voter$")
 	public void andListOfVotersHasAValidVoter() {
-		VoterDomainOfInfluence voterDoi = new VoterDomainOfInfluence();
+		final VoterDomainOfInfluence voterDoi = new VoterDomainOfInfluence();
 		voterDoi.setLocalId("1111");
 		voterDoi.setType(VoterDomainOfInfluence.VoterDomainOfInfluenceType.MU);
-		VoterDomainOfInfluenceInfo voterDomainOfInfluenceInfo = new VoterDomainOfInfluenceInfo();
+		final VoterDomainOfInfluenceInfo voterDomainOfInfluenceInfo = new VoterDomainOfInfluenceInfo();
 		voterDomainOfInfluenceInfo.setDomainOfInfluence(voterDoi);
 
-		VoterTypeWithRole voter = new VoterTypeWithRole();
+		final VoterTypeWithRole voter = new VoterTypeWithRole();
 		voter.setDomainOfInfluenceInfos(new ArrayList<>());
 		voter.withPerson(new PersonType().withMunicipality(new PersonType.Municipality().withMunicipalityId(1111)));
 
@@ -198,7 +198,7 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 	}
 
 	@Then("^an exception \"([^\"]*)\" should occur$")
-	public void thenAnExceptionOccurs(String message) {
+	public void thenAnExceptionOccurs(final String message) {
 		assertTrue(processException.getMessage().endsWith(message));
 	}
 }

@@ -14,11 +14,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import ch.post.it.evoting.domain.xmlns.evotingconfig.CandidateTextInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.CandidateType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ElectionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoteInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -32,11 +33,11 @@ import reactor.core.publisher.Flux;
 public class Ech015xv4ContestPhaseSteps extends PhaseSteps {
 
 	private List<ContestType> contests;
-	private List<ElectionInformationType> elections;
+	private List<ElectionGroupBallotType> elections;
 	private List<VoteInformationType> votes;
 
 	@Given("^\"([^\"]*)\" v4 file as input$")
-	public void givenV4File(String path) {
+	public void givenV4File(final String path) {
 		InputPhase.exports.setFiles(Flux.just(path));
 	}
 
@@ -58,7 +59,7 @@ public class Ech015xv4ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@Then("^it outputs (\\d+) v4 contests$")
-	public void thenItOutputsV4Contests(Integer number) {
+	public void thenItOutputsV4Contests(final Integer number) {
 		assertEquals((int) number, contests.size());
 	}
 
@@ -73,38 +74,41 @@ public class Ech015xv4ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^contest with identification \"([^\"]*)\" has evotingperiod set$")
-	public void andContestHasEvotingPeriodSet(String contestIdentification) {
-		Optional<ContestType> contest = contests.stream().filter(c -> c.getContestIdentification().equals(contestIdentification)).findFirst();
+	public void andContestHasEvotingPeriodSet(final String contestIdentification) {
+		final Optional<ContestType> contest = contests.stream().filter(c -> c.getContestIdentification().equals(contestIdentification)).findFirst();
 		assertTrue(contest.isPresent());
 		assertNotNull(contest.get().getEvotingFromDate());
 		assertNotNull(contest.get().getEvotingToDate());
 	}
 
 	@And("^it outputs a contest contains election with electionId \"([^\"]*)\"$")
-	public void andContestContainsElection(String electionId) {
+	public void andContestContainsElection(final String electionId) {
 		assertTrue(
 				contests.stream()
-						.flatMap(c -> c.getElectionInformation().stream())
+						.flatMap(c -> c.getElectionGroupBallot().stream())
+						.flatMap(eg -> eg.getElectionInformation().stream())
 						.anyMatch(e -> e.getElection().getElectionIdentification().equalsIgnoreCase(electionId)));
 	}
 
 	@And("^it outputs an election with electionId \"([^\"]*)\" has doi equals to \"([^\"]*)\"$")
-	public void andElectionHasDOI(String electionId, String doi) {
+	public void andElectionHasDOI(final String electionId, final String doi) {
 		assertTrue(
 				elections.stream()
-						.map(eit -> eit.getElection())
-						.filter(e -> e.getElectionIdentification().equals(electionId))
-						.anyMatch(e -> e.getDomainOfInfluence().equalsIgnoreCase(doi)));
+						.filter(eg -> eg.getElectionInformation().stream()
+								.anyMatch(ei -> ei.getElection().getElectionIdentification().equals(electionId)))
+						.anyMatch(eg -> eg.getDomainOfInfluence().equalsIgnoreCase(doi)));
 	}
 
 	@And("^it outputs election has (\\d*) candidates")
-	public void andElectionsHasCandidates(Integer numberOfCandidates) {
-		assertEquals((int) numberOfCandidates, elections.stream().flatMap(e -> e.getCandidate().stream()).count());
+	public void andElectionsHasCandidates(final Integer numberOfCandidates) {
+		assertEquals((int) numberOfCandidates,
+				elections.stream().map(eg -> eg.getElectionInformation().get(0)).flatMap(e -> e.getCandidate().stream()).count());
 	}
 
 	@And("^candidate v4 with callName \"([^\"]*)\" has a candidateText")
-	public void andCandidateHasCandidateText(String candidateCallName) {
-		List<CandidateType> candidateList = elections.stream()
+	public void andCandidateHasCandidateText(final String candidateCallName) {
+		final List<CandidateType> candidateList = elections.stream()
+				.flatMap(eg -> eg.getElectionInformation().stream())
 				.map(ElectionInformationType::getCandidate)
 				.flatMap(Collection::stream)
 				.filter(c -> c.getCallName().equals(candidateCallName)).toList();
@@ -115,8 +119,9 @@ public class Ech015xv4ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^candidate v4 with callName \"([^\"]*)\" has \"([^\"]*)\" as candidateTextInformation")
-	public void andCandidateHasCandidateTextInformation(String candidateCallName, String value) {
-		List<CandidateType> candidateList = elections.stream()
+	public void andCandidateHasCandidateTextInformation(final String candidateCallName, final String value) {
+		final List<CandidateType> candidateList = elections.stream()
+				.flatMap(eg -> eg.getElectionInformation().stream())
 				.map(ElectionInformationType::getCandidate)
 				.flatMap(Collection::stream)
 				.filter(c -> c.getCallName().equals(candidateCallName)).toList();
@@ -124,7 +129,7 @@ public class Ech015xv4ContestPhaseSteps extends PhaseSteps {
 		if (candidateList.size() > 1) {
 			fail(String.format("More that one candidate with callName  %s", candidateCallName));
 		}
-		List<CandidateTextInformationType.CandidateTextInfo> candidateTextList = candidateList.get(0).getCandidateText().getCandidateTextInfo();
+		final List<CandidateTextInformationType.CandidateTextInfo> candidateTextList = candidateList.get(0).getCandidateText().getCandidateTextInfo();
 		assertTrue(candidateTextList.stream().map(CandidateTextInformationType.CandidateTextInfo::getCandidateText).allMatch(s -> s.equals(value)));
 	}
 }

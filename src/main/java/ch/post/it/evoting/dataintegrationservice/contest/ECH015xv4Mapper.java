@@ -17,38 +17,41 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.ech.xmlns.ech_0010._6.AddressInformationType;
+import ch.ech.xmlns.ech_0155._4.ElectionGroupDescriptionType;
 import ch.ech.xmlns.ech_0157._4.EventInitialDelivery;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.AnswerInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.BallotDescriptionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.BallotQuestionType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.BallotType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.CandidatePositionType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.CandidateTextInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.CandidateType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestDescriptionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.DwellingAddressType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ElectionDescriptionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ElectionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ElectionType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.LanguageType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ListDescriptionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ListType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ListUnionDescriptionType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ListUnionType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.OccupationalTitleInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.PartyAffiliationformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ReferencedElectionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.StandardAnswerType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.StandardBallotType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.StandardQuestionType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.TieBreakQuestionType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.TieBreakQuestionTypeWithReferences;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.TiebreakAnswerType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VariantBallotType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoteDescriptionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoteInformationType;
+import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidatePositionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestDescriptionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.DwellingAddressType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionDescriptionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupDescriptionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionDescriptionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.OccupationalTitleInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PartyAffiliationformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ReferencedElectionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswerType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardQuestionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TiebreakAnswerType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VariantBallotType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteDescriptionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
 @Mapper(imports = { UUID.class, LanguageType.class })
 public interface
@@ -61,10 +64,11 @@ ECH015xv4Mapper {
 	@Mapping(target = "evotingFromDate", ignore = true)
 	@Mapping(target = "evotingToDate", ignore = true)
 	@Mapping(target = "contestDefaultLanguage", ignore = true)
-	@Mapping(target = "electionInformation", ignore = true)
+	@Mapping(target = "electionGroupBallot", ignore = true)
 	@Mapping(target = "voteInformation", ignore = true)
 	@Mapping(target = "extendedAuthenticationKeys", ignore = true)
-	@Mapping(target = "electoralAuthority", ignore = true)
+	@Mapping(target = "adminBoard", ignore = true)
+	@Mapping(target = "electoralBoard", ignore = true)
 	void addContestInformation(
 			@MappingTarget
 			ContestType mappedContest, ch.ech.xmlns.ech_0155._4.ContestType contest);
@@ -112,7 +116,7 @@ ECH015xv4Mapper {
 	CandidateType.Swiss map(ch.ech.xmlns.ech_0155._4.CandidateType.Swiss value);
 
 	default CandidateTextInformationType convert(final ch.ech.xmlns.ech_0155._4.CandidateTextInformationType value) {
-		final CandidateTextInformationType candidateTextInformationType = new ch.post.it.evoting.domain.xmlns.evotingconfig.CandidateTextInformationType();
+		final CandidateTextInformationType candidateTextInformationType = new ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType();
 
 		if (value == null) {
 			final List<CandidateTextInformationType.CandidateTextInfo> list = new ArrayList<>();
@@ -140,7 +144,7 @@ ECH015xv4Mapper {
 		if (value == null) {
 			return null;
 		}
-		final ch.post.it.evoting.domain.xmlns.evotingconfig.CandidateTextInformationType.CandidateTextInfo candidateTextInfo = new ch.post.it.evoting.domain.xmlns.evotingconfig.CandidateTextInformationType.CandidateTextInfo();
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType.CandidateTextInfo candidateTextInfo = new ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType.CandidateTextInfo();
 		candidateTextInfo.setLanguage(convert(value.getLanguage()));
 		candidateTextInfo.setCandidateText(StringUtil.isNullOrEmpty(value.getCandidateText()) ? "No candidate text" : value.getCandidateText());
 		return candidateTextInfo;
@@ -179,22 +183,40 @@ ECH015xv4Mapper {
 
 	VoteDescriptionInformationType.VoteDescriptionInfo convert(ch.ech.xmlns.ech_0155._4.VoteDescriptionInformationType.VoteDescriptionInfo value);
 
-	default ElectionInformationType convert(final EventInitialDelivery.ElectionGroupBallot e) {
-		if (e.getElectionInformation() == null || e.getElectionInformation().size() > 1) {
-			throw new IllegalArgumentException("We only support electionGroup containing  ONE electionInformation");
+	default ElectionGroupBallotType convert(final EventInitialDelivery.ElectionGroupBallot e) {
+		final ElectionGroupBallotType electionGroupBallotType = new ElectionGroupBallotType();
+
+		electionGroupBallotType.setElectionGroupIdentification(e.getElectionGroupIdentification());
+		electionGroupBallotType.withDomainOfInfluence(e.getDomainOfInfluenceIdentification());
+		electionGroupBallotType.setElectionGroupDescription(
+				electionGroupDescriptionTypeToElectionGroupDescriptionInformationType(e.getElectionGroupDescription()));
+		if (e.getElectionGroupPosition() != null) {
+			electionGroupBallotType.setElectionGroupPosition(e.getElectionGroupPosition().intValueExact());
 		}
-		return convert(e.getDomainOfInfluenceIdentification(), e.getElectionInformation().get(0));
+		electionGroupBallotType.setElectionInformation(electionInformationListToElectionInformationTypeList(e.getElectionInformation()));
+
+		return electionGroupBallotType;
 	}
 
+	List<ElectionInformationType> electionInformationListToElectionInformationTypeList(
+			List<EventInitialDelivery.ElectionGroupBallot.ElectionInformation> electionInformation);
+
+	@Mapping(target = "electionGroupDescriptionInfo", source = "electionDescriptionInfo")
+	ElectionGroupDescriptionInformationType electionGroupDescriptionTypeToElectionGroupDescriptionInformationType(
+			ElectionGroupDescriptionType electionGroupDescription);
+
+	@Mapping(target = "electionGroupDescription", source = "electionDescription")
+	@Mapping(target = "electionGroupDescriptionShort", source = "electionDescriptionShort")
+	ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo electionDescriptionInfoToElectionGroupDescriptionInfo(
+			ch.ech.xmlns.ech_0155._4.ElectionDescriptionInformationType.ElectionDescriptionInfo electionDescriptionInfo);
+
 	@Mapping(target = "election.electionIdentification", source = "electionInformation.election.electionIdentification")
-	@Mapping(target = "election.domainOfInfluence", source = "domainOfInfluenceIdentification")
 	@Mapping(target = "election.typeOfElection", source = "electionInformation.election.typeOfElection")
 	@Mapping(target = "election.electionDescription", source = "electionInformation.election.electionDescription")
 	@Mapping(target = "election.numberOfMandates", source = "electionInformation.election.numberOfMandates")
 	@Mapping(target = "election.writeInsAllowed", ignore = true)
 	@Mapping(target = "election.candidateAccumulation", ignore = true)
 	@Mapping(target = "election.referencedElection", source = "electionInformation.election.referencedElection")
-	@Mapping(target = "election.uiProperties", ignore = true)
 	@Mapping(target = "candidate", source = "electionInformation.candidate")
 	@Mapping(target = "list", source = "electionInformation.list")
 	@Mapping(target = "listUnion", source = "electionInformation.listUnion")
@@ -210,11 +232,13 @@ ECH015xv4Mapper {
 
 	@Mapping(target = "answerType", source = "answerInformation.answerType")
 	@Mapping(target = "answer", source = "answerInformation.answerOptionIdentification")
+	@Mapping(target = "questionNumber", source = "ballotQuestionNumber")
 	StandardQuestionType convert(ch.ech.xmlns.ech_0155._4.QuestionInformationType qit);
 
 	@Mapping(target = "ballotQuestion", source = "tieBreakQuestion")
 	@Mapping(target = "answerType", source = "tbit.answerInformation.answerType")
 	@Mapping(target = "answer", source = "tbit.answerInformation.answerOptionIdentification")
+	@Mapping(target = "questionNumber", source = "tbit.tieBreakQuestionNumber")
 	void appendTieBreakQuestionType(
 			@MappingTarget
 			TieBreakQuestionType tb, ch.ech.xmlns.ech_0155._4.TieBreakInformationType tbit);
@@ -240,6 +264,7 @@ ECH015xv4Mapper {
 
 	@Mapping(target = "answerType", source = "answerInformation.answerType")
 	@Mapping(target = "answer", source = "answerInformation.answerOptionIdentification")
+	@Mapping(target = "questionNumber", source = "ballotQuestionNumber")
 	StandardBallotType convert(ch.ech.xmlns.ech_0155._4.BallotType.StandardBallot sb);
 
 	@Mapping(target = "answerIdentification", source = "answerIdentification")

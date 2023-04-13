@@ -12,12 +12,12 @@ import java.util.function.Function;
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.dataintegrationservice.authorization.AuthorizationService;
-import ch.post.it.evoting.dataintegrationservice.parameter.plugin.AuthorizationPlugin;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationsType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.parameter.plugin.AuthorizationPlugin;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuple5;

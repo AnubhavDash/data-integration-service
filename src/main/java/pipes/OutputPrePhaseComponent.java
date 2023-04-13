@@ -11,18 +11,18 @@ import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.dataintegrationservice.output.ConfigService;
+import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.contest.ContestService;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.output.ConfigService;
 import ch.post.it.evoting.dataintegrationservice.output.InvalidVoterService;
 import ch.post.it.evoting.dataintegrationservice.register.RegisterService;
-import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationsType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.HeaderType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.RegisterType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.HeaderType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RegisterType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -37,8 +37,8 @@ public class OutputPrePhaseComponent {
 	private final RegisterService registerService;
 	private final InvalidVoterService invalidVoterService;
 
-	public OutputPrePhaseComponent(ConfigService configService, ContestService contestService, RegisterService registerService,
-			InvalidVoterService invalidVoterService) {
+	public OutputPrePhaseComponent(final ConfigService configService, final ContestService contestService, final RegisterService registerService,
+			final InvalidVoterService invalidVoterService) {
 		this.configService = configService;
 		this.contestService = contestService;
 		this.registerService = registerService;

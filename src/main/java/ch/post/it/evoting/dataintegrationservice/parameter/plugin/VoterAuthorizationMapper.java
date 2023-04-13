@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
 public class VoterAuthorizationMapper implements BiFunction<VoterTypeWithRole, Optional<CantonalTree>, VoterTypeWithRole> {
 	@Override

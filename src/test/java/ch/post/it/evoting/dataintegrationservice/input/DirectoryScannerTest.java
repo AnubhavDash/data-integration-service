@@ -12,15 +12,13 @@ import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.dataintegrationservice.input.DirectoryScanner;
-
 class DirectoryScannerTest {
 
 	private final DirectoryScanner directoryScanner = new DirectoryScanner("src/test/resources");
 
 	@Test
 	void scan() {
-		List<String> filenames = new ArrayList<>();
+		final List<String> filenames = new ArrayList<>();
 		directoryScanner.scan().iterator().forEachRemaining(filenames::add);
 
 		assertTrue(filenames.size() > 0);
@@ -29,7 +27,7 @@ class DirectoryScannerTest {
 
 	@Test
 	void filterType() {
-		Predicate<String> predicate = DirectoryScanner.filterType("test");
+		final Predicate<String> predicate = DirectoryScanner.filterType("test");
 		assertTrue(predicate.test("blablatestblabla"));
 		assertFalse(predicate.test("blablablabla"));
 	}

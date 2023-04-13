@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ (c) Copyright 2023 Swiss Post Ltd.
-  -->
-<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:merge="http://xmlmerge.el4j.elca.ch" xmlns="http://www.evoting.ch/xmlns/parameter/4" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/4 evoting-parameter-4-3.xsd">
+<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:merge="http://xmlmerge.el4j.elca.ch" xmlns="http://www.evoting.ch/xmlns/parameter/4" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/4 evoting-parameter-4-4.xsd">
 	<contest>
 		<defaultAnswerTranslations merge:action="xsdinsert">
 			<answerType>

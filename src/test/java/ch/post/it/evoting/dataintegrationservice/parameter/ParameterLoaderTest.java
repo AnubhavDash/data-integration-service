@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,7 +21,6 @@ import ch.evoting.xmlns.parameter._4.Parameter;
 import ch.galinet.xml.xmlmerge.XmlMerge;
 import ch.galinet.xml.xmlmerge.config.AttributeMergeConfigurer;
 import ch.galinet.xml.xmlmerge.config.ConfigurableXmlMerge;
-import ch.post.it.evoting.dataintegrationservice.parameter.ParameterLoader;
 
 class ParameterLoaderTest {
 
@@ -30,7 +28,7 @@ class ParameterLoaderTest {
 
 	@Test
 	void loadParameter() {
-		Parameter param = parameterLoader.loadParameter("./src/test/resources/ParameterLoaderTest/file.param.xml");
+		final Parameter param = parameterLoader.loadParameter("./src/test/resources/ParameterLoaderTest/file.param.xml");
 		assertTrue(param.getPlugins().getAfterReadVoter().getPlugins().stream()
 				.anyMatch(p -> p.getClass().equals(BirthYearAuthenticationKeyTypeImpl.class)));
 		assertTrue(param.getPlugins().getAfterReadVoterAuthorization().getPlugins().stream()
@@ -39,16 +37,16 @@ class ParameterLoaderTest {
 
 	@Test
 	void mergeTest() throws Exception {
-		InputStream is1 = this.getClass().getResourceAsStream("/ParameterLoaderTest/mergeTest/file.param.xml");
-		InputStream is2 = this.getClass().getResourceAsStream("/ParameterLoaderTest/mergeTest/default.param.xml");
-		XmlMerge merger = new ConfigurableXmlMerge(new AttributeMergeConfigurer());
+		final InputStream is1 = this.getClass().getResourceAsStream("/ParameterLoaderTest/mergeTest/file.param.xml");
+		final InputStream is2 = this.getClass().getResourceAsStream("/ParameterLoaderTest/mergeTest/default.param.xml");
+		final XmlMerge merger = new ConfigurableXmlMerge(new AttributeMergeConfigurer());
 
-		InputStream out = merger.merge(new InputStream[] { is1, is2 });
+		final InputStream out = merger.merge(new InputStream[] { is1, is2 });
 
-		String result = IOUtils.toString(out, Charset.forName("UTF-8"));
+		final String result = IOUtils.toString(out, StandardCharsets.UTF_8);
 
-		URL resource = this.getClass().getResource("/ParameterLoaderTest/mergeTest/ParameterLoaderTest_merge.xml");
-		String expected = new String(Files.readAllBytes(Paths.get(resource.toURI())), StandardCharsets.UTF_8);
+		final URL resource = this.getClass().getResource("/ParameterLoaderTest/mergeTest/ParameterLoaderTest_merge.xml");
+		final String expected = new String(Files.readAllBytes(Paths.get(resource.toURI())), StandardCharsets.UTF_8);
 
 		assertEquals(expected, result);
 	}

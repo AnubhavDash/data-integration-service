@@ -5,7 +5,7 @@ package ch.evoting.xmlns.parameter._4;
 
 import ch.post.it.evoting.dataintegrationservice.common.ReflexionUtil;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
 public class VoterIdPrefixerTypeImpl extends VoterIdPrefixerType {
 	@Override

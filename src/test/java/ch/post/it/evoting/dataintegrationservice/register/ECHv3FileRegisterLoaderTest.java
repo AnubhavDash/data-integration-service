@@ -12,16 +12,15 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import ch.ech.xmlns.ech_0045._3.VotingPersonType;
-import ch.post.it.evoting.dataintegrationservice.register.ECHv3FileRegisterLoader;
 
 class ECHv3FileRegisterLoaderTest {
 
 	@Test
 	void loadECH0045v3() {
-		Iterable<VotingPersonType> result = new ECHv3FileRegisterLoader().loadECH0045v3(
+		final Iterable<VotingPersonType> result = new ECHv3FileRegisterLoader().loadECH0045v3(
 				"./src/test/resources/ECHv3FileRegisterLoaderTest/file1.ech0045v3.one.xml");
 
-		List<VotingPersonType> voters = new ArrayList<>();
+		final List<VotingPersonType> voters = new ArrayList<>();
 		result.iterator().forEachRemaining(voters::add);
 
 		assertEquals(1, voters.size());

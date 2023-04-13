@@ -7,9 +7,9 @@ import java.util.LinkedList;
 import java.util.Optional;
 
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterDomainOfInfluence;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterDomainOfInfluenceInfo;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluence;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluenceInfo;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
 public class DoiLocalIdMapperTypeImpl extends DoiLocalIdMapperType {
 	@Override

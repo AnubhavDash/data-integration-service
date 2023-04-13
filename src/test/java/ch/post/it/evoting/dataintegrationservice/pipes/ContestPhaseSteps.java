@@ -14,6 +14,7 @@ import static org.swisspush.supermachine.BeanScanner.from;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,42 +25,48 @@ import javax.xml.namespace.QName;
 
 import org.slf4j.LoggerFactory;
 
+import ch.evoting.xmlns.parameter._4.AdminBoardMembersType;
+import ch.evoting.xmlns.parameter._4.AdminBoardType;
 import ch.evoting.xmlns.parameter._4.AnswerInformationType;
 import ch.evoting.xmlns.parameter._4.AnswerTranslationType;
 import ch.evoting.xmlns.parameter._4.DefaultAnswerTranslationType;
 import ch.evoting.xmlns.parameter._4.ElectionsType;
+import ch.evoting.xmlns.parameter._4.ElectoralBoardMembersType;
+import ch.evoting.xmlns.parameter._4.ElectoralBoardType;
 import ch.evoting.xmlns.parameter._4.StandardAnswerType;
 import ch.evoting.xmlns.parameter._4.TiebreakAnswerType;
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
 import ch.post.it.evoting.dataintegrationservice.common.XmlTransformer;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.BallotDescriptionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.BallotQuestionType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.BallotType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.CandidatePositionType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.CandidateTextInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.CandidateType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestDescriptionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.DwellingAddressType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ElectionDescriptionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ElectionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ElectionType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.IncumbentType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.LanguageType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ListDescriptionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ListType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ListUnionDescriptionType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ListUnionType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ObjectFactory;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.OccupationalTitleInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.StandardBallotType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.StandardQuestionType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.TieBreakQuestionType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.TieBreakQuestionTypeWithReferences;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VariantBallotType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoteDescriptionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoteInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoteType;
+import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidatePositionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestDescriptionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.DwellingAddressType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionDescriptionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupDescriptionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionDescriptionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ObjectFactory;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.OccupationalTitleInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardQuestionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VariantBallotType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteDescriptionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteType;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
@@ -84,8 +91,8 @@ public class ContestPhaseSteps extends PhaseSteps {
 	private final MemoryAppender memoryAppender;
 	private final Map<String, ContestType> contestMap = new HashMap<>();
 	private final Map<String, ch.evoting.xmlns.parameter._4.ContestType> paramsMap = new HashMap<>();
-	private final Map<String, List<ElectionInformationType>> electionsMap = new HashMap<>();
-	private final Map<String, ElectionInformationType> electionMap = new HashMap<>();
+	private final Map<String, List<ElectionGroupBallotType>> electionsMap = new HashMap<>();
+	private final Map<String, ElectionGroupBallotType> electionMap = new HashMap<>();
 	private final Map<String, List<VoteInformationType>> votesMap = new HashMap<>();
 	private final Map<String, VoteInformationType> voteMap = new HashMap<>();
 	private final Map<String, CandidateType> candidateMap = new HashMap<>();
@@ -104,7 +111,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 	private RuntimeException processException = null;
 
 	public ContestPhaseSteps() {
-		ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger("ch.post.it.evoting");
+		final ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger("ch.post.it.evoting");
 		logger.setLevel(Level.WARN);
 		logger.setAdditive(true);
 		memoryAppender = new MemoryAppender();
@@ -114,7 +121,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@Given("^a contest from eCHv3 with Id \"([^\"]*)\"$")
-	public void given(String contestId) {
+	public void given(final String contestId) {
 		ContestEch015xv3.exports.setContests(Flux.just(new ContestType().withContestIdentification(contestId).withContestDescription(
 				new ContestDescriptionInformationType().withContestDescriptionInfo(
 						new ContestDescriptionInformationType.ContestDescriptionInfo().withLanguage(LanguageType.DE)
@@ -128,22 +135,32 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^an election input eCHv3 with an Id \"([^\"]*)\"$")
-	public void andElectionId(String electionId) {
+	public void andElectionId(final String electionId) {
 		ContestEch015xv3.exports.setElections(
-				Flux.just(new ElectionInformationType().withElection(new ElectionType().withElectionIdentification(electionId)
-						.withElectionDescription(new ElectionDescriptionInformationType().withElectionDescriptionInfo(
-								new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.DE)
-										.withElectionDescription("Desc DE")).withElectionDescriptionInfo(
-								new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.FR)
-										.withElectionDescription("Desc FR")).withElectionDescriptionInfo(
-								new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.IT)
-										.withElectionDescription("Desc IT")).withElectionDescriptionInfo(
-								new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.RM)
-										.withElectionDescription("Desc RM"))))));
+				Flux.just(new ElectionGroupBallotType().withElectionGroupIdentification(electionId)
+						.withElectionGroupDescription(new ElectionGroupDescriptionInformationType().withElectionGroupDescriptionInfo(
+								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.DE)
+										.withElectionGroupDescription("Desc DE")).withElectionGroupDescriptionInfo(
+								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.FR)
+										.withElectionGroupDescription("Desc FR")).withElectionGroupDescriptionInfo(
+								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.IT)
+										.withElectionGroupDescription("Desc IT")).withElectionGroupDescriptionInfo(
+								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.RM)
+										.withElectionGroupDescription("Desc RM")))
+						.withElectionInformation(new ElectionInformationType().withElection(new ElectionType().withElectionIdentification(electionId)
+								.withElectionDescription(new ElectionDescriptionInformationType().withElectionDescriptionInfo(
+										new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.DE)
+												.withElectionDescription("Desc DE")).withElectionDescriptionInfo(
+										new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.FR)
+												.withElectionDescription("Desc FR")).withElectionDescriptionInfo(
+										new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.IT)
+												.withElectionDescription("Desc IT")).withElectionDescriptionInfo(
+										new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.RM)
+												.withElectionDescription("Desc RM")))))));
 	}
 
 	@And("^a votation input eCHv3 with an Id \"([^\"]*)\"$")
-	public void andVoteId(String voteId) {
+	public void andVoteId(final String voteId) {
 		ContestEch015xv3.exports.setVotes(Flux.just(new VoteInformationType().withVote(new VoteType().withVoteIdentification(voteId)
 				.withVoteDescription(new VoteDescriptionInformationType().withVoteDescriptionInfo(
 								new VoteDescriptionInformationType.VoteDescriptionInfo().withLanguage(LanguageType.DE).withVoteDescription("Desc DE"))
@@ -174,17 +191,19 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@Then("^it outputs a contest with Id \"([^\"]*)\"$")
-	public void then(String contestId) {
+	public void then(final String contestId) {
 		assertEquals(contest.getContestIdentification(), contestId);
 	}
 
 	@And("^it outputs a contest with electionId \"([^\"]*)\"$")
-	public void andItOuputsAContestWithElectionId(String electionId) {
-		assertTrue(contest.getElectionInformation().stream().anyMatch(e -> e.getElection().getElectionIdentification().equalsIgnoreCase(electionId)));
+	public void andItOuputsAContestWithElectionId(final String electionId) {
+		assertTrue(contest.getElectionGroupBallot().stream()
+				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+				.anyMatch(e -> e.getElection().getElectionIdentification().equalsIgnoreCase(electionId)));
 	}
 
 	@And("^it outputs a contest with votationId \"([^\"]*)\"$")
-	public void andItOuputsAContestWithVotationId(String voteId) {
+	public void andItOuputsAContestWithVotationId(final String voteId) {
 		assertTrue(contest.getVoteInformation().stream().anyMatch(v -> v.getVote().getVoteIdentification().equals(voteId)));
 	}
 
@@ -193,30 +212,41 @@ public class ContestPhaseSteps extends PhaseSteps {
 	//
 	//
 	@Given("^user parameters named \"([^\"]*)\"$")
-	public void givenUserParametersNamed(String name) {
+	public void givenUserParametersNamed(final String name) {
 		paramsMap.put(name,
 				new ch.evoting.xmlns.parameter._4.ContestType().withAnswerTranslations(new AnswerTranslationType().withQuestion(new ArrayList<>()))
-						.withDefaultAnswerTranslations(new DefaultAnswerTranslationType()));
+						.withDefaultAnswerTranslations(new DefaultAnswerTranslationType())
+						.withAdminBoard(new AdminBoardType()
+								.withAdminBoardIdentification("ab")
+								.withAdminBoardDescription("Admin Board")
+								.withAdminBoardName("AB")
+								.withAdminBoardThresholdValue(BigInteger.TWO)
+								.withAdminBoardMembers(new AdminBoardMembersType().withAdminBoardMemberName("AB1", "AB2")))
+						.withElectoralBoard(new ElectoralBoardType()
+								.withElectoralBoardIdentification("eb")
+								.withElectoralBoardDescription("ELECTORAL BOARD")
+								.withElectoralBoardName("EB")
+								.withElectoralBoardMembers(new ElectoralBoardMembersType().withElectoralBoardMemberName("EB1", "EB2"))));
 	}
 
 	@And("^user parameters \"([^\"]*)\" has eVoting date from \"([^\"]*)\"$")
-	public void andUserParametersHasEvotingDateFrom(String name, String dt) {
+	public void andUserParametersHasEvotingDateFrom(final String name, final String dt) {
 		paramsMap.get(name).setEvotingFromDate(DateUtil.parseToXMLGregorianCalendar(dt));
 	}
 
 	@And("^user parameters \"([^\"]*)\" has eVoting date to \"([^\"]*)\"$")
-	public void andUserParametersHasEvotingDateTo(String name, String dt) {
+	public void andUserParametersHasEvotingDateTo(final String name, final String dt) {
 		paramsMap.get(name).setEvotingToDate(DateUtil.parseToXMLGregorianCalendar(dt));
 	}
 
 	@And("^user parameters \"([^\"]*)\" has contest default language \"([^\"]*)\"$")
-	public void andUserParametersHasContestDefaultLanguage(String name, String lang) {
+	public void andUserParametersHasContestDefaultLanguage(final String name, final String lang) {
 		paramsMap.get(name).setDefaultLanguage(ch.evoting.xmlns.parameter._4.LanguageType.valueOf(lang));
 	}
 
 	@And("^user parameters \"([^\"]*)\" has election named \"([^\"]*)\"$")
-	public void andUserParametersHasElectionNamed(String name, String electionName) {
-		ch.evoting.xmlns.parameter._4.ElectionType election = new ch.evoting.xmlns.parameter._4.ElectionType();
+	public void andUserParametersHasElectionNamed(final String name, final String electionName) {
+		final ch.evoting.xmlns.parameter._4.ElectionType election = new ch.evoting.xmlns.parameter._4.ElectionType();
 		pElectionMap.put(electionName, election);
 		if (paramsMap.get(name).getElections() == null) {
 			paramsMap.get(name).withElections(new ElectionsType().withElection(new ArrayList<>()));
@@ -225,91 +255,91 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^election \"([^\"]*)\".\"([^\"]*)\" has id \"([^\"]*)\"$")
-	public void andElectionHasId(String name, String electionName, String id) {
+	public void andElectionHasId(final String name, final String electionName, final String id) {
 		pElectionMap.get(electionName).setElectionIdentification(id);
 	}
 
 	@And("^election \"([^\"]*)\".\"([^\"]*)\" has writeIns \"([^\"]*)\"$")
-	public void andElectionHasWriteIns(String name, String electionName, String writeIns) {
+	public void andElectionHasWriteIns(final String name, final String electionName, final String writeIns) {
 		pElectionMap.get(electionName).setWriteInsAllowed(Boolean.valueOf(writeIns));
 	}
 
 	@And("^election \"([^\"]*)\".\"([^\"]*)\" has accumulation (\\d+)$")
-	public void andElectionHasAccumulation(String name, String electionName, BigInteger accum) {
+	public void andElectionHasAccumulation(final String name, final String electionName, final BigInteger accum) {
 		pElectionMap.get(electionName).setCandidateAccumulation(accum);
 	}
 
 	@And("^election \"([^\"]*)\".\"([^\"]*)\" has minimalCandidateSelection (\\d+)$")
-	public void andElectionHasMinimalCandidateSelection(String name, String electionName, BigInteger minimalCandidate) {
+	public void andElectionHasMinimalCandidateSelection(final String name, final String electionName, final BigInteger minimalCandidate) {
 		pElectionMap.get(electionName).setMinimalCandidateSelectionInList(minimalCandidate);
 	}
 
 	@And("^user parameters \"([^\"]*)\" has default answer type named \"([^\"]*)\"$")
-	public void andUserParametersHasDefaultAnswerTypeNamed(String name, String answerType) {
-		DefaultAnswerTranslationType.AnswerType at = new DefaultAnswerTranslationType.AnswerType();
+	public void andUserParametersHasDefaultAnswerTypeNamed(final String name, final String answerType) {
+		final DefaultAnswerTranslationType.AnswerType at = new DefaultAnswerTranslationType.AnswerType();
 
 		paramsMap.get(name).getDefaultAnswerTranslations().getAnswerType().add(at);
 		pAnswerTypeMap.put(name + "." + answerType, at);
 	}
 
 	@And("^default answer type \"([^\"]*)\".\"([^\"]*)\" has type (\\d+)$")
-	public void andDefaultAnswerType(String name, String at, Integer type) {
+	public void andDefaultAnswerType(final String name, final String at, final Integer type) {
 		pAnswerTypeMap.get(name + "." + at).setAnswerTypeIdentification(BigInteger.valueOf(type));
 	}
 
 	@And("^default answer type \"([^\"]*)\".\"([^\"]*)\" has standardAnswer named \"([^\"]*)\"$")
-	public void andDefaultAnswer(String name, String at, String answer) {
-		StandardAnswerType answerType = new StandardAnswerType();
+	public void andDefaultAnswer(final String name, final String at, final String answer) {
+		final StandardAnswerType answerType = new StandardAnswerType();
 		pAnswerTypeMap.get(name + "." + at).getStandardAnswer().add(answerType);
 		pStandardAnswerMap.put(name + "." + at + "." + answer, answerType);
 	}
 
 	@And("^default answer type \"([^\"]*)\".\"([^\"]*)\" has tiebreakAnswer named \"([^\"]*)\"$")
-	public void andDefaultAnswerType(String name, String at, String answer) {
-		TiebreakAnswerType answerType = new TiebreakAnswerType();
+	public void andDefaultAnswerType(final String name, final String at, final String answer) {
+		final TiebreakAnswerType answerType = new TiebreakAnswerType();
 		pAnswerTypeMap.get(name + "." + at).getTiebreakAnswer().add(answerType);
 		pTiebreakAnswerMap.put(name + "." + at + "." + answer, answerType);
 	}
 
 	@And("^standardAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer position (\\d+)$")
-	public void andStandardAnswer(String name, String at, String answer, Integer pos) {
+	public void andStandardAnswer(final String name, final String at, final String answer, final Integer pos) {
 		pStandardAnswerMap.get(name + "." + at + "." + answer).setAnswerPosition(BigInteger.valueOf(pos));
 	}
 
 	@And("^tiebreakAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer position (\\d+)$")
-	public void andTiebreakAnswer(String name, String at, String answer, Integer pos) {
+	public void andTiebreakAnswer(final String name, final String at, final String answer, final Integer pos) {
 		pTiebreakAnswerMap.get(name + "." + at + "." + answer).setAnswerPosition(BigInteger.valueOf(pos));
 	}
 
 	@And("^tiebreakAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer questionReference \"([^\"]*)\"$")
-	public void andTiebreakAnswer(String name, String at, String answer, String questionReference) {
+	public void andTiebreakAnswer(final String name, final String at, final String answer, final String questionReference) {
 		pTiebreakAnswerMap.get(name + "." + at + "." + answer).setStandardQuestionReference(questionReference);
 	}
 
 	@And("^standardAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer standardAnswerType = \"([^\"]*)\"$")
-	public void andStandardAnswer(String name, String at, String answer, String answerType) {
+	public void andStandardAnswer(final String name, final String at, final String answer, final String answerType) {
 		pStandardAnswerMap.get(name + "." + at + "." + answer).setStandardAnswerType(answerType);
 	}
 
 	@And("^tiebreakAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" is as blank defined$")
-	public void andTiebreakAnswer(String name, String at, String answer) {
+	public void andTiebreakAnswer(final String name, final String at, final String answer) {
 		pTiebreakAnswerMap.get(name + "." + at + "." + answer).setStandardQuestionReference(null);
 	}
 
 	@And("^standardAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer description \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andStandardAnswer(String name, String at, String answer, String lang, String info) {
+	public void andStandardAnswer(final String name, final String at, final String answer, final String lang, final String info) {
 		pStandardAnswerMap.get(name + "." + at + "." + answer).getAnswerInfo()
 				.add(new AnswerInformationType().withLanguage(ch.evoting.xmlns.parameter._4.LanguageType.valueOf(lang)).withAnswer(info));
 	}
 
 	@And("^tiebreakAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer description \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andTiebreakAnswer(String name, String at, String answer, String lang, String info) {
+	public void andTiebreakAnswer(final String name, final String at, final String answer, final String lang, final String info) {
 		pTiebreakAnswerMap.get(name + "." + at + "." + answer).getAnswerInfo()
 				.add(new AnswerInformationType().withLanguage(ch.evoting.xmlns.parameter._4.LanguageType.valueOf(lang)).withAnswer(info));
 	}
 
 	@Given("^the descriptions of the answer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")
-	public void givenDescriptionsOfAnswer(String name, String at, String answer) {
+	public void givenDescriptionsOfAnswer(final String name, final String at, final String answer) {
 		if (pStandardAnswerMap.get(name + "." + at + "." + answer) != null) {
 			pStandardAnswerMap.get(name + "." + at + "." + answer).getAnswerInfo().clear();
 		}
@@ -319,49 +349,49 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^user parameters \"([^\"]*)\" has question \"([^\"]*)\"$")
-	public void andUserParametersHasQuestion(String name, String question) {
-		AnswerTranslationType.Question q = new AnswerTranslationType.Question();
+	public void andUserParametersHasQuestion(final String name, final String question) {
+		final AnswerTranslationType.Question q = new AnswerTranslationType.Question();
 		paramsMap.get(name).getAnswerTranslations().getQuestion().add(q);
 		pQuestionMap.put(name + "." + question, q);
 	}
 
 	@And("^parameter question \"([^\"]*)\".\"([^\"]*)\" has questionIdentification \"([^\"]*)\"$")
-	public void andParameterQuestionHasIdentification(String name, String question, String id) {
+	public void andParameterQuestionHasIdentification(final String name, final String question, final String id) {
 		pQuestionMap.get(name + "." + question).setQuestionIdentification(id);
 	}
 
 	@And("^parameter question \"([^\"]*)\".\"([^\"]*)\" has standardAnswer named \"([^\"]*)\"$")
-	public void andParameterQuestionHasStandardAnswerNamed(String name, String question, String answer) {
-		StandardAnswerType at = new StandardAnswerType();
+	public void andParameterQuestionHasStandardAnswerNamed(final String name, final String question, final String answer) {
+		final StandardAnswerType at = new StandardAnswerType();
 		pQuestionMap.get(name + "." + question).getStandardAnswer().add(at);
 		pStandardAnswerMap.put(name + "." + question + "." + answer, at);
 	}
 
 	@And("^parameter question \"([^\"]*)\".\"([^\"]*)\" has tiebreakAnswer named \"([^\"]*)\"$")
-	public void andParameterQuestionHasTiebreakAnswerNamed(String name, String question, String answer) {
-		TiebreakAnswerType at = new TiebreakAnswerType();
+	public void andParameterQuestionHasTiebreakAnswerNamed(final String name, final String question, final String answer) {
+		final TiebreakAnswerType at = new TiebreakAnswerType();
 		pQuestionMap.get(name + "." + question).getTiebreakAnswer().add(at);
 		pTiebreakAnswerMap.put(name + "." + question + "." + answer, at);
 	}
 
 	//
 	@Given("^a contest named \"([^\"]*)\"$")
-	public void givenAContestNamed(String name) {
+	public void givenAContestNamed(final String name) {
 		contestMap.put(name, new ContestType());
 	}
 
 	@And("^the contest \"([^\"]*)\" has Id=\"([^\"]*)\"$")
-	public void andContestHasId(String name, String id) {
+	public void andContestHasId(final String name, final String id) {
 		contestMap.get(name).setContestIdentification(id);
 	}
 
 	@And("^the contest \"([^\"]*)\" has date \"([^\"]*)\"$")
-	public void andContestHasDate(String name, String dt) {
+	public void andContestHasDate(final String name, final String dt) {
 		contestMap.get(name).setContestDate(DateUtil.parseToXMLGregorianCalendar(dt));
 	}
 
 	@And("^the contest \"([^\"]*)\" has description \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andContestHasDescription(String name, String lang, String desc) {
+	public void andContestHasDescription(final String name, final String lang, final String desc) {
 		ContestDescriptionInformationType descInfo = contestMap.get(name).getContestDescription();
 		if (descInfo == null) {
 			descInfo = new ContestDescriptionInformationType();
@@ -373,49 +403,51 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@Given("^a list of elections named \"([^\"]*)\"$")
-	public void givenAListOfElectionsNamed(String elections) {
+	public void givenAListOfElectionsNamed(final String elections) {
 		electionsMap.put(elections, new ArrayList<>());
 	}
 
 	@And("^an election named \"([^\"]*)\" within \"([^\"]*)\"$")
-	public void andElectionNamedWithin(String election, String elections) {
-		ElectionInformationType e = new ElectionInformationType().withElection(
-						new ElectionType().withNumberOfMandates(BigInteger.valueOf(5L)).withTypeOfElection(BigInteger.valueOf(1L)))
+	public void andElectionNamedWithin(final String election, final String elections) {
+		final ElectionInformationType e = new ElectionInformationType().withElection(
+						new ElectionType().withNumberOfMandates(5).withTypeOfElection(BigInteger.valueOf(1L)))
 				.withCandidate(new ArrayList<>());
-		electionMap.put(elections + "." + election, e);
-		electionsMap.get(elections).add(e);
+		ElectionGroupBallotType eg = new ElectionGroupBallotType().withElectionInformation(e);
+		electionMap.put(elections + "." + election, eg);
+		electionsMap.get(elections).add(eg);
 	}
 
 	@And("^the election \"([^\"]*)\".\"([^\"]*)\" has id \"([^\"]*)\"$")
-	public void andTheElectionHasId(String elections, String election, String id) {
-		electionMap.get(elections + "." + election).getElection().setElectionIdentification(id);
+	public void andTheElectionHasId(final String elections, final String election, final String id) {
+		electionMap.get(elections + "." + election).getElectionInformation().get(0).getElection().setElectionIdentification(id);
 	}
 
 	@And("^the election \"([^\"]*)\".\"([^\"]*)\" has domain of influence \"([^\"]*)\"$")
-	public void andElectionHasDOI(String elections, String election, String doi) {
-		electionMap.get(elections + "." + election).getElection().setDomainOfInfluence(doi);
+	public void andElectionHasDOI(final String elections, final String election, final String doi) {
+		electionMap.get(elections + "." + election).setDomainOfInfluence(doi);
 	}
 
 	@And("^the election \"([^\"]*)\".\"([^\"]*)\" has description \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andElectionHasDescription(String elections, String election, String lang, String desc) {
-		ElectionDescriptionInformationType descInfo = electionMap.get(elections + "." + election).getElection().getElectionDescription();
+	public void andElectionHasDescription(final String elections, final String election, final String lang, final String desc) {
+		ElectionDescriptionInformationType descInfo = electionMap.get(elections + "." + election).getElectionInformation().get(0).getElection()
+				.getElectionDescription();
 		if (descInfo == null) {
 			descInfo = new ElectionDescriptionInformationType();
 		}
 		descInfo.getElectionDescriptionInfo()
 				.add(new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.valueOf(lang))
 						.withElectionDescription(desc));
-		electionMap.get(elections + "." + election).getElection().setElectionDescription(descInfo);
+		electionMap.get(elections + "." + election).getElectionInformation().get(0).getElection().setElectionDescription(descInfo);
 	}
 
 	@Given("^a list of votes named \"([^\"]*)\"$")
-	public void givenAListOfVotesNamed(String name) {
+	public void givenAListOfVotesNamed(final String name) {
 		votesMap.put(name, new ArrayList<>());
 	}
 
 	@And("^a vote named \"([^\"]*)\" within \"([^\"]*)\"$")
-	public void andVoteNamed(String vote, String votes) {
-		VoteInformationType v = new VoteInformationType().withVote(
+	public void andVoteNamed(final String vote, final String votes) {
+		final VoteInformationType v = new VoteInformationType().withVote(
 				new VoteType().withVoteDescription(new VoteDescriptionInformationType().withVoteDescriptionInfo(new ArrayList<>()))
 						.withBallot(new ArrayList<>()));
 		voteMap.put(votes + "." + vote, v);
@@ -423,18 +455,18 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^the vote \"([^\"]*)\".\"([^\"]*)\" has id \"([^\"]*)\"$")
-	public void andVoteHasId(String votes, String vote, String id) {
+	public void andVoteHasId(final String votes, final String vote, final String id) {
 		voteMap.get(votes + "." + vote).getVote().setVoteIdentification(id);
 	}
 
 	@And("^the vote \"([^\"]*)\".\"([^\"]*)\" has domain of influence \"([^\"]*)\"$")
-	public void andVoteHasDOI(String votes, String vote, String doi) {
+	public void andVoteHasDOI(final String votes, final String vote, final String doi) {
 		voteMap.get(votes + "." + vote).getVote().setDomainOfInfluence(doi);
 
 	}
 
 	@And("^the vote \"([^\"]*)\".\"([^\"]*)\" has description \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andVoteHasDescription(String votes, String vote, String lang, String desc) {
+	public void andVoteHasDescription(final String votes, final String vote, final String lang, final String desc) {
 		VoteDescriptionInformationType descInfo = voteMap.get(votes + "." + vote).getVote().getVoteDescription();
 		if (descInfo == null) {
 			descInfo = new VoteDescriptionInformationType();
@@ -445,11 +477,12 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@Given("^the vote \"([^\"]*)\".\"([^\"]*)\" has a \"([^\"]*)\" ballot \"([^\"]*)\"$")
-	public void givenVoteHasBallot(String votes, String vote, String type, String name) {
-		BallotType ballot = new BallotType().withBallotPosition(BigInteger.valueOf(1L))
+	public void givenVoteHasBallot(final String votes, final String vote, final String type, final String name) {
+		final BallotType ballot = new BallotType().withBallotPosition(1)
 				.withBallotDescription(new BallotDescriptionInformationType().withBallotDescriptionInfo(new ArrayList<>()));
 		if (type.equals("standard")) {
-			ballot.setStandardBallot(new StandardBallotType().withBallotQuestion(new BallotQuestionType().withBallotQuestionInfo(new ArrayList<>()))
+			ballot.setStandardBallot(new StandardBallotType().withQuestionNumber("1")
+					.withBallotQuestion(new BallotQuestionType().withBallotQuestionInfo(new ArrayList<>()))
 					.withAnswer(new ArrayList<>()));
 		} else if (type.equals("variant")) {
 			ballot.setVariantBallot(new VariantBallotType().withStandardQuestion(new ArrayList<>()));
@@ -461,122 +494,130 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^the ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has id \"([^\"]*)\"$")
-	public void andBallotHasId(String votes, String vote, String ballot, String id) {
+	public void andBallotHasId(final String votes, final String vote, final String ballot, final String id) {
 		ballotMap.get(votes + "." + vote + "." + ballot).setBallotIdentification(id);
 	}
 
 	@And("^the ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has description \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andBallotHasDescription(String votes, String vote, String ballot, String lang, String desc) {
+	public void andBallotHasDescription(final String votes, final String vote, final String ballot, final String lang, final String desc) {
 		ballotMap.get(votes + "." + vote + "." + ballot).getBallotDescription().getBallotDescriptionInfo()
 				.add(new BallotDescriptionInformationType.BallotDescriptionInfo().withLanguage(LanguageType.valueOf(lang))
 						.withBallotDescriptionLong(desc));
 	}
 
 	@And("^the ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has variant ballot standard question \"([^\"]*)\"$")
-	public void andBallotHasVariantBallotStandardQuestion(String votes, String vote, String ballot, String question) {
-		StandardQuestionType standardQuestion = new StandardQuestionType().withBallotQuestion(
+	public void andBallotHasVariantBallotStandardQuestion(final String votes, final String vote, final String ballot, final String question) {
+		final StandardQuestionType standardQuestion = new StandardQuestionType().withQuestionNumber("1").withBallotQuestion(
 				new BallotQuestionType().withBallotQuestionInfo(new ArrayList<>()));
-		VariantBallotType variantBallot = ballotMap.get(votes + "." + vote + "." + ballot).getVariantBallot();
+		final VariantBallotType variantBallot = ballotMap.get(votes + "." + vote + "." + ballot).getVariantBallot();
 		variantBallot.getStandardQuestion().add(standardQuestion);
 		standardQuestionMap.put(votes + "." + vote + "." + ballot + "." + question, standardQuestion);
 	}
 
 	@And("^the ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has variant ballot tiebreak question \"([^\"]*)\"$")
-	public void andBallotHasVariantBallotTiebreakQuestion(String votes, String vote, String ballot, String question) {
-		TieBreakQuestionType tq = new TieBreakQuestionTypeWithReferences().withBallotQuestion(
+	public void andBallotHasVariantBallotTiebreakQuestion(final String votes, final String vote, final String ballot, final String question) {
+		final TieBreakQuestionType tq = new TieBreakQuestionTypeWithReferences().withQuestionNumber("1").withBallotQuestion(
 				new BallotQuestionType().withBallotQuestionInfo(new ArrayList<>()));
-		VariantBallotType variantBallot = ballotMap.get(votes + "." + vote + "." + ballot).getVariantBallot();
+		final VariantBallotType variantBallot = ballotMap.get(votes + "." + vote + "." + ballot).getVariantBallot();
 		variantBallot.getTieBreakQuestion().add(tq);
 		tiebreakQuestionMap.put(votes + "." + vote + "." + ballot + "." + question, (TieBreakQuestionTypeWithReferences) tq);
 	}
 
 	@And("^the standard question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has id \"([^\"]*)\"$")
-	public void andStandardQuestionHasId(String votes, String vote, String ballot, String question, String id) {
+	public void andStandardQuestionHasId(final String votes, final String vote, final String ballot, final String question, final String id) {
 		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionIdentification(id);
 	}
 
 	@And("^the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has id \"([^\"]*)\"$")
-	public void andTiebreakQuestionHasId(String votes, String vote, String ballot, String question, String id) {
+	public void andTiebreakQuestionHasId(final String votes, final String vote, final String ballot, final String question, final String id) {
 		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionIdentification(id);
 	}
 
 	@And("^the standard question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has position (\\d+)$")
-	public void andStandardQuestionHasPosition(String votes, String vote, String ballot, String question, Integer pos) {
-		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(BigInteger.valueOf(pos));
+	public void andStandardQuestionHasPosition(final String votes, final String vote, final String ballot, final String question, final Integer pos) {
+		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(pos);
 	}
 
 	@And("^the standard question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has position cleared out$")
-	public void andStandardQuestionHasPositionClearedOut(String votes, String vote, String ballot, String question) {
-		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(null);
+	public void andStandardQuestionHasPositionClearedOut(final String votes, final String vote, final String ballot, final String question) {
+		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(0);
 	}
 
 	@And("^the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has position (\\d+)$")
-	public void andTiebreakQuestionHasPosition(String votes, String vote, String ballot, String question, Integer pos) {
-		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(BigInteger.valueOf(pos));
+	public void andTiebreakQuestionHasPosition(final String votes, final String vote, final String ballot, final String question, final Integer pos) {
+		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(pos);
 	}
 
 	@And("^the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer type (\\d+)$")
-	public void andTiebreakQuestionHasAnswerType(String votes, String vote, String ballot, String question, BigInteger type) {
+	public void andTiebreakQuestionHasAnswerType(final String votes, final String vote, final String ballot, final String question,
+			final BigInteger type) {
 		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setAnswerType(type);
 	}
 
 	@And("^the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has referenceQuestion1 \"([^\"]*)\"$")
-	public void andTiebreakQuestionHasReferenceQuestion1(String votes, String vote, String ballot, String question, String refQ1) {
+	public void andTiebreakQuestionHasReferenceQuestion1(final String votes, final String vote, final String ballot, final String question,
+			final String refQ1) {
 		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setReferencedQuestion1(refQ1);
 	}
 
 	@And("^the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has referenceQuestion2 \"([^\"]*)\"$")
-	public void andTiebreakQuestionHasReferenceQuestion2(String votes, String vote, String ballot, String question, String refQ2) {
+	public void andTiebreakQuestionHasReferenceQuestion2(final String votes, final String vote, final String ballot, final String question,
+			final String refQ2) {
 		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setReferencedQuestion2(refQ2);
 	}
 
 	@And("^the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has position cleared out$")
-	public void andTiebreakQuestionHasPositionClearedOut(String votes, String vote, String ballot, String question) {
-		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(null);
+	public void andTiebreakQuestionHasPositionClearedOut(final String votes, final String vote, final String ballot, final String question) {
+		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(0);
 	}
 
 	@And("^the standard question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer type (\\d+)$")
-	public void andStandardQuestionHasAnswerType(String votes, String vote, String ballot, String question, Integer type) {
+	public void andStandardQuestionHasAnswerType(final String votes, final String vote, final String ballot, final String question,
+			final Integer type) {
 		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setAnswerType(BigInteger.valueOf(type));
 	}
 
 	@And("^the standard question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has info \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andStandardQuestionHasInfo(String votes, String vote, String ballot, String question, String lang, String info) {
-		BallotQuestionType.BallotQuestionInfo questionInfo = new BallotQuestionType.BallotQuestionInfo().withLanguage(LanguageType.valueOf(lang))
+	public void andStandardQuestionHasInfo(final String votes, final String vote, final String ballot, final String question, final String lang,
+			final String info) {
+		final BallotQuestionType.BallotQuestionInfo questionInfo = new BallotQuestionType.BallotQuestionInfo().withLanguage(
+						LanguageType.valueOf(lang))
 				.withBallotQuestion(info);
 		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).getBallotQuestion().getBallotQuestionInfo().add(questionInfo);
 	}
 
 	@And("^the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has info \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andTiebreakQuestionHasInfo(String votes, String vote, String ballot, String question, String lang, String info) {
-		BallotQuestionType.BallotQuestionInfo questionInfo = new BallotQuestionType.BallotQuestionInfo().withLanguage(LanguageType.valueOf(lang))
+	public void andTiebreakQuestionHasInfo(final String votes, final String vote, final String ballot, final String question, final String lang,
+			final String info) {
+		final BallotQuestionType.BallotQuestionInfo questionInfo = new BallotQuestionType.BallotQuestionInfo().withLanguage(
+						LanguageType.valueOf(lang))
 				.withBallotQuestion(info);
 		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).getBallotQuestion().getBallotQuestionInfo().add(questionInfo);
 	}
 
 	@Given("^the descriptions of the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")
-	public void andDescriptionOfTiebreakQuestionAreClearedOut(String votes, String vote, String ballot, String question) {
+	public void andDescriptionOfTiebreakQuestionAreClearedOut(final String votes, final String vote, final String ballot, final String question) {
 		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).getBallotQuestion().getBallotQuestionInfo().clear();
 	}
 
 	@And("^the ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has question id  \"([^\"]*)\"$")
-	public void andBallotHasQuestionId(String votes, String vote, String ballot, String id) {
+	public void andBallotHasQuestionId(final String votes, final String vote, final String ballot, final String id) {
 		ballotMap.get(votes + "." + vote + "." + ballot).getStandardBallot().setQuestionIdentification(id);
 	}
 
 	@And("^the ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer type (\\d+)$")
-	public void andBallotHasAnswerType(String votes, String vote, String ballot, Integer type) {
+	public void andBallotHasAnswerType(final String votes, final String vote, final String ballot, final Integer type) {
 		ballotMap.get(votes + "." + vote + "." + ballot).getStandardBallot().setAnswerType(BigInteger.valueOf(type));
 	}
 
 	@And("^the ballot question of ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has info \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andBallotQuestionOfBallotHasInfo(String votes, String vote, String ballot, String lang, String info) {
+	public void andBallotQuestionOfBallotHasInfo(final String votes, final String vote, final String ballot, final String lang, final String info) {
 		ballotMap.get(votes + "." + vote + "." + ballot).getStandardBallot().getBallotQuestion().getBallotQuestionInfo()
 				.add(new BallotQuestionType.BallotQuestionInfo().withLanguage(LanguageType.valueOf(lang)).withBallotQuestion(info));
 	}
 
 	@Given("^the descriptions of the ballot question of ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")
-	public void givenDescriptionsOfBallotQuestion(String votes, String vote, String ballot) {
+	public void givenDescriptionsOfBallotQuestion(final String votes, final String vote, final String ballot) {
 		ballotMap.get(votes + "." + vote + "." + ballot).getStandardBallot().getBallotQuestion().getBallotQuestionInfo().clear();
 	}
 
@@ -585,150 +626,154 @@ public class ContestPhaseSteps extends PhaseSteps {
 	// end background
 	//
 	@Given("^elections \"([^\"]*)\" are cleared out$")
-	public void givenElectionsAreClearedOut(String name) {
+	public void givenElectionsAreClearedOut(final String name) {
 		electionsMap.put(name, new ArrayList<>());
 	}
 
 	@Given("^votes \"([^\"]*)\" are cleared out$")
-	public void givenVotesAreClearedOut(String name) {
+	public void givenVotesAreClearedOut(final String name) {
 		votesMap.put(name, new ArrayList<>());
 	}
 
 	@And("^the descriptions of the contest \"([^\"]*)\" are cleared out$")
-	public void andDescriptionsOfContestAreClearedOut(String name) {
+	public void andDescriptionsOfContestAreClearedOut(final String name) {
 		contestMap.get(name).getContestDescription().setContestDescriptionInfo(new ArrayList<>());
 	}
 
 	@Given("^the descriptions of the vote \"([^\"]*)\".\"([^\"]*)\" are cleared out$")
-	public void givenDescriptionsOfTheVoteAreClearedOut(String votes, String vote) {
+	public void givenDescriptionsOfTheVoteAreClearedOut(final String votes, final String vote) {
 		voteMap.get(votes + "." + vote).getVote().getVoteDescription().setVoteDescriptionInfo(new ArrayList<>());
 	}
 
 	@Given("^the descriptions of the ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")
-	public void givenDescriptionsOfBallotAreClearedOut(String votes, String vote, String ballot) {
+	public void givenDescriptionsOfBallotAreClearedOut(final String votes, final String vote, final String ballot) {
 		ballotMap.get(votes + "." + vote + "." + ballot).getBallotDescription().setBallotDescriptionInfo(new ArrayList<>());
 	}
 
 	@Given("^the descriptions of the standard question  \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")
-	public void givenDescriptionsOfStandardQuestionAreClearedOut(String votes, String vote, String ballot, String question) {
+	public void givenDescriptionsOfStandardQuestionAreClearedOut(final String votes, final String vote, final String ballot, final String question) {
 		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).getBallotQuestion().setBallotQuestionInfo(new ArrayList<>());
 	}
 
 	@And("^the descriptions of the election \"([^\"]*)\".\"([^\"]*)\" are cleared out$")
-	public void andDescriptionsOfElectionAreClearedOut(String elections, String election) {
-		electionMap.get(elections + "." + election).getElection().getElectionDescription().setElectionDescriptionInfo(new ArrayList<>());
+	public void andDescriptionsOfElectionAreClearedOut(final String elections, final String election) {
+		electionMap.get(elections + "." + election).getElectionInformation().get(0).getElection().getElectionDescription()
+				.setElectionDescriptionInfo(new ArrayList<>());
 	}
 
 	@And("^a candidate named \"([^\"]*)\" within \"([^\"]*)\".\"([^\"]*)\"$")
-	public void andCandidateNamedWithinElection(String name, String elections, String election) {
-		CandidateType candidate = new CandidateType().withDwellingAddress(
+	public void andCandidateNamedWithinElection(final String name, final String elections, final String election) {
+		final CandidateType candidate = new CandidateType().withDwellingAddress(
 						new DwellingAddressType().withStreet("Rue de la gare").withHouseNumber("4").withSwissZipCode(1700L).withTown("Fribourg"))
 				.withIncumbent(new IncumbentType().withIncumbent(true)).withSwiss(new CandidateType.Swiss()).withSex("1")
 				.withDateOfBirth(DateUtil.parseToXMLGregorianCalendar("1965-04-29 00:00:00")).withCandidateText(new CandidateTextInformationType())
 				.withOccupationalTitle(new OccupationalTitleInformationType());
-		electionMap.get(elections + "." + election).getCandidate().add(candidate);
+		electionMap.get(elections + "." + election).getElectionInformation().get(0).getCandidate().add(candidate);
 		candidateMap.put(elections + "." + election + "." + name, candidate);
 	}
 
 	@And("^candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has text \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andCandidateHasText(String elections, String election, String name, String lang, String text) {
+	public void andCandidateHasText(final String elections, final String election, final String name, final String lang, final String text) {
 		candidateMap.get(elections + "." + election + "." + name).getCandidateText().getCandidateTextInfo()
 				.add(new CandidateTextInformationType.CandidateTextInfo().withLanguage(LanguageType.valueOf(lang)).withCandidateText(text));
 	}
 
 	@And("^candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has occupational title \"([^\"]*)\" \"([^\"]*)\"$")
 	public void andCandidateHasOccupationTitle
-			(String elections, String election, String name, String lang, String title) {
+			(final String elections, final String election, final String name, final String lang, final String title) {
 		candidateMap.get(elections + "." + election + "." + name).getOccupationalTitle().getOccupationalTitleInfo()
 				.add(new OccupationalTitleInformationType.OccupationalTitleInfo().withLanguage(LanguageType.valueOf(lang))
 						.withOccupationalTitle(title));
 	}
 
 	@And("^candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has id \"([^\"]*)\"$")
-	public void andCandidateHasId(String elections, String election, String name, String id) {
+	public void andCandidateHasId(final String elections, final String election, final String name, final String id) {
 		candidateMap.get(elections + "." + election + "." + name).setCandidateIdentification(id);
 	}
 
 	@And("^candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has name \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andCandidateHasName(String elections, String election, String cand, String firstName, String lastName) {
+	public void andCandidateHasName(final String elections, final String election, final String cand, final String firstName, final String lastName) {
 		candidateMap.get(elections + "." + election + "." + cand).withFirstName(firstName).withFamilyName(lastName)
 				.withCallName(lastName + " " + firstName);
 	}
 
 	@And("^the text descriptions of the candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")
-	public void andTextDescriptionfOfCandidateAreClearedOut(String elections, String election, String name) {
+	public void andTextDescriptionfOfCandidateAreClearedOut(final String elections, final String election, final String name) {
 		candidateMap.get(elections + "." + election + "." + name).getCandidateText().setCandidateTextInfo(new ArrayList<>());
 	}
 
 	@Given("^the title descriptions of the candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")
-	public void givenTitleDescriptionsOfCandidateAreClearedOut(String elections, String election, String name) {
+	public void givenTitleDescriptionsOfCandidateAreClearedOut(final String elections, final String election, final String name) {
 		candidateMap.get(elections + "." + election + "." + name).getOccupationalTitle().setOccupationalTitleInfo(new ArrayList<>());
 	}
 
 	@Given("^a list named \"([^\"]*)\" within \"([^\"]*)\".\"([^\"]*)\"$")
-	public void givenAListNamedWithin(String name, String elections, String election) {
-		ListType list = new ListType().withListDescription(new ListDescriptionInformationType().withListDescriptionInfo(new ArrayList<>()));
-		electionMap.get(elections + "." + election).getList().add(list);
+	public void givenAListNamedWithin(final String name, final String elections, final String election) {
+		final ListType list = new ListType().withListDescription(new ListDescriptionInformationType().withListDescriptionInfo(new ArrayList<>()));
+		electionMap.get(elections + "." + election).getElectionInformation().get(0).getList().add(list);
 		listMap.put(elections + "." + election + "." + name, list);
 	}
 
 	@And("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has id \"([^\"]*)\"$")
-	public void andListHasId(String elections, String election, String name, String id) {
+	public void andListHasId(final String elections, final String election, final String name, final String id) {
 		listMap.get(elections + "." + election + "." + name).setListIdentification(id);
 	}
 
 	@And("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has indentureNumber \"([^\"]*)\"$")
-	public void andListHasIndentureNumber(String elections, String election, String name, String number) {
+	public void andListHasIndentureNumber(final String elections, final String election, final String name, final String number) {
 		listMap.get(elections + "." + election + "." + name).setListIndentureNumber(number);
 	}
 
 	@And("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has listOrderOfPrecedence (\\d+)$")
-	public void andListHasListOrderOfPrecedence(String elections, String election, String name, BigInteger order) {
+	public void andListHasListOrderOfPrecedence(final String elections, final String election, final String name, final Integer order) {
 		listMap.get(elections + "." + election + "." + name).setListOrderOfPrecedence(order);
 	}
 
 	@Given("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has no listOrderOfPrecedence$")
-	public void gibenListHasNoListOrderOfPrecedence(String elections, String election, String name) {
-		listMap.get(elections + "." + election + "." + name).setListOrderOfPrecedence(null);
+	public void givenListHasNoListOrderOfPrecedence(final String elections, final String election, final String name) {
+		listMap.get(elections + "." + election + "." + name).setListOrderOfPrecedence(0);
 	}
 
 	@And("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has description \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andListHasDescription(String elections, String election, String name, String lang, String text) {
+	public void andListHasDescription(final String elections, final String election, final String name, final String lang, final String text) {
 		listMap.get(elections + "." + election + "." + name).getListDescription().getListDescriptionInfo()
 				.add(new ListDescriptionInformationType.ListDescriptionInfo().withLanguage(LanguageType.valueOf(lang)).withListDescription(text));
 	}
 
 	@Given("^the list descriptions of the list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")
-	public void givenListDescriptionAreClearedOut(String elections, String election, String name) {
+	public void givenListDescriptionAreClearedOut(final String elections, final String election, final String name) {
 		listMap.get(elections + "." + election + "." + name).getListDescription().setListDescriptionInfo(new ArrayList<>());
 	}
 
 	@Given("^a position named \"([^\"]*)\" within \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\"$")
-	public void givenAPositionNamed(String position, String elections, String election, String list) {
-		CandidatePositionType pos = new CandidatePositionType().withCandidateReferenceOnPosition("k12-13");
+	public void givenAPositionNamed(final String position, final String elections, final String election, final String list) {
+		final CandidatePositionType pos = new CandidatePositionType().withCandidateReferenceOnPosition("k12-13");
 		pos.setCandidateTextOnPosition(new CandidateTextInformationType().withCandidateTextInfo(new ArrayList<>()));
 		listMap.get(elections + "." + election + "." + list).getCandidatePosition().add(pos);
 		candidatePositionMap.put(elections + "." + election + "." + list + "." + position, pos);
 	}
 
 	@And("^position \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has id \"([^\"]*)\"$")
-	public void andPositionHasId(String elections, String election, String list, String pos, String id) {
+	public void andPositionHasId(final String elections, final String election, final String list, final String pos, final String id) {
 		candidatePositionMap.get(elections + "." + election + "." + list + "." + pos).setCandidateIdentification(id);
 	}
 
 	@And("^position \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has position in list (\\d+)$")
-	public void andPositionHasPositionOnList(String elections, String election, String list, String pos, BigInteger posInList) {
+	public void andPositionHasPositionOnList(final String elections, final String election, final String list, final String pos,
+			final Integer posInList) {
 		candidatePositionMap.get(elections + "." + election + "." + list + "." + pos).setPositionOnList(posInList);
 	}
 
 	@And("^position \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has text \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andPositionHasText(String elections, String election, String list, String pos, String lang, String text) {
+	public void andPositionHasText(final String elections, final String election, final String list, final String pos, final String lang,
+			final String text) {
 		candidatePositionMap.get(elections + "." + election + "." + list + "." + pos).getCandidateTextOnPosition().getCandidateTextInfo()
 				.add(new CandidateTextInformationType.CandidateTextInfo().withLanguage(LanguageType.valueOf(lang)).withCandidateText(text));
 	}
 
 	@Given("^the candidate text descriptions at position \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")
-	public void givenCandidateTextDescriptionsAtPositionAreClearedOut(String elections, String election, String list, String pos) {
+	public void givenCandidateTextDescriptionsAtPositionAreClearedOut(final String elections, final String election, final String list,
+			final String pos) {
 		candidatePositionMap.get(elections + "." + election + "." + list + "." + pos).getCandidateTextOnPosition()
 				.setCandidateTextInfo(new ArrayList<>());
 	}
@@ -766,14 +811,14 @@ public class ContestPhaseSteps extends PhaseSteps {
 		try {
 			drain(ContestPhase.exports.getContest().doOnNext(c -> contest = c));
 			fail();
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			processException = e;
 		}
 	}
 
 	@When("^executing the contest phase \\(catching exceptions\\) with parameters \"([^\"]*)\" and contest \"([^\"]*)\" and votes \"([^\"]*)\" and elections \"([^\"]*)\"$")
-	public void whenExecutingContestPhaseAndCatchingExceptionsWithParameters(String params, String contestName, String votesName,
-			String electionsName) {
+	public void whenExecutingContestPhaseAndCatchingExceptionsWithParameters(final String params, final String contestName, final String votesName,
+			final String electionsName) {
 		processException = null;
 		ParameterPhase.exports.setContestParameters(Flux.just(paramsMap.get(params)));
 		ParameterPhase.exports.setAfterReadContestPlugins(Flux.just(Collections.emptyList()));
@@ -788,13 +833,14 @@ public class ContestPhaseSteps extends PhaseSteps {
 		try {
 			drain(ContestPhase.exports.getContest().doOnNext(c -> contest = c));
 			fail();
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			processException = e;
 		}
 	}
 
 	@When("^executing the contest phase with parameters \"([^\"]*)\" and contest \"([^\"]*)\" and votes \"([^\"]*)\" and elections \"([^\"]*)\"$")
-	public void whenExecutingContestPhaseWithParameters(String params, String contestName, String votesName, String electionsName) {
+	public void whenExecutingContestPhaseWithParameters(final String params, final String contestName, final String votesName,
+			final String electionsName) {
 		processException = null;
 		ParameterPhase.exports.setContestParameters(Flux.just(paramsMap.get(params)));
 		ParameterPhase.exports.setAfterReadContestPlugins(Flux.just(Collections.emptyList()));
@@ -809,12 +855,12 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@Then("^it outputs a contest with id \"([^\"]*)\"$")
-	public void thenItOuputsAContest(String id) {
+	public void thenItOuputsAContest(final String id) {
 		assertEquals(contest.getContestIdentification(), id);
 	}
 
 	@Then("^it outputs an exception with text \"([^\"]*)\"$")
-	public void thenItOutputsAnExceptionWithText(String message) {
+	public void thenItOutputsAnExceptionWithText(final String message) {
 		assertTrue(processException.getMessage().endsWith(message));
 	}
 
@@ -825,39 +871,41 @@ public class ContestPhaseSteps extends PhaseSteps {
 	@And("^the contest xml is validated and displayed in the console logs$")
 	public void andTheContestXMLIsValidatedAndDisplayedInTheConsoleLogs() {
 		try {
-			URL schemaPath = ContestPhaseSteps.class.getResource("/ContestPhaseSteps/contest.xsd");
+			final URL schemaPath = ContestPhaseSteps.class.getResource("/ContestPhaseSteps/contest.xsd");
 			checkState(schemaPath != null, "contest.xsd not found");
 
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			XmlTransformer.toXml(outputStream, ObjectFactory.class, schemaPath, contest, new QName("contest"), null);
-			String result = outputStream.toString("UTF-8");
+			final String result = outputStream.toString(StandardCharsets.UTF_8);
 			LOGGER.warn(result);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new IllegalStateException(e);
 		}
 	}
 
 	@Then("^the variant ballot standard question \"([^\"]*)\" should have position (\\d+)$")
-	public void thenTheVariantBallotStandardQuestionShouldHavePosition(String questionId, Integer pos) {
-		StandardQuestionType question = from(contest).find(StandardQuestionType.class).filter(q -> q.getQuestionIdentification().equals(questionId))
+	public void thenTheVariantBallotStandardQuestionShouldHavePosition(final String questionId, final Integer pos) {
+		final StandardQuestionType question = from(contest).find(StandardQuestionType.class)
+				.filter(q -> q.getQuestionIdentification().equals(questionId))
 				.stream().findFirst().get();
-		assertEquals(question.getQuestionPosition(), BigInteger.valueOf(pos));
+		assertEquals(question.getQuestionPosition(), pos);
 	}
 
 	@Then("^the variant ballot tiebreak question \"([^\"]*)\" should have position (\\d+)$")
-	public void thenTheVariantVallotTiebreakQuestionShouldHavePosition(String questionId, Integer pos) {
-		TieBreakQuestionType question = from(contest).find(TieBreakQuestionType.class).filter(q -> q.getQuestionIdentification().equals(questionId))
+	public void thenTheVariantVallotTiebreakQuestionShouldHavePosition(final String questionId, final Integer pos) {
+		final TieBreakQuestionType question = from(contest).find(TieBreakQuestionType.class)
+				.filter(q -> q.getQuestionIdentification().equals(questionId))
 				.stream().findFirst().get();
-		assertEquals(question.getQuestionPosition(), BigInteger.valueOf(pos));
+		assertEquals(question.getQuestionPosition(), pos);
 	}
 
 	@Then("^a log with text \"([^\"]*)\" must exist$")
-	public void thenALogWithTextMustExist(String message) {
+	public void thenALogWithTextMustExist(final String message) {
 		assertTrue(memoryAppender.list.stream().anyMatch(m -> m.getMessage().equals(message)));
 	}
 
 	@Given("^the elections parameters in \"([^\"]*)\" are cleared out$")
-	public void givenTheElectionsParametersAreClearedOut(String name) {
+	public void givenTheElectionsParametersAreClearedOut(final String name) {
 		pElectionMap.clear();
 		paramsMap.get(name).setElections(null);
 	}
@@ -868,76 +916,78 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@Then("^election identified by \"([^\"]*)\" should have writeIns \"([^\"]*)\"$")
-	public void thenElectionShouldHaveWriteIns(String id, String writeIns) {
-		ElectionType election = from(contest).find(ElectionType.class).filter(e -> e.getElectionIdentification().equals(id)).stream().findFirst()
+	public void thenElectionShouldHaveWriteIns(final String id, final String writeIns) {
+		final ElectionType election = from(contest).find(ElectionType.class).filter(e -> e.getElectionIdentification().equals(id)).stream()
+				.findFirst()
 				.get();
-		assertEquals(election.isWriteInsAllowed(), (boolean) Boolean.valueOf(writeIns));
+		assertEquals(election.isWriteInsAllowed(), Boolean.valueOf(writeIns));
 	}
 
 	@Then("^election identified by \"([^\"]*)\" should have minimalCandidateSelection ([^\"]*)$")
-	public void thenElectionShouldHaveMinimalCandidateSelection(String id, BigInteger minimalValue) {
-		ElectionType election = from(contest).find(ElectionType.class).filter(e -> e.getElectionIdentification().equals(id)).stream().findFirst()
+	public void thenElectionShouldHaveMinimalCandidateSelection(final String id, final Integer minimalValue) {
+		final ElectionType election = from(contest).find(ElectionType.class).filter(e -> e.getElectionIdentification().equals(id)).stream()
+				.findFirst()
 				.get();
 		assertEquals(election.getMinimalCandidateSelectionInList(), minimalValue);
 	}
 
 	@Then("^the list identified by \"([^\"]*)\" should contain (\\d+) occurrences of the candidateListIdentification \"([^\"]*)\"$")
-	public void thenListShouldContainsOccurencesOfCandidateListIdentification(String listId, Integer accum, String id) {
+	public void thenListShouldContainsOccurencesOfCandidateListIdentification(final String listId, final Integer accum, final String id) {
 		assertEquals(accum.longValue(), Long.valueOf(
 				from(contest).find(ListType.class).filter(list -> list.getListIdentification().equals(listId)).stream().findFirst().get()
 						.getCandidatePosition().stream().filter(c -> c.getCandidateListIdentification().equals(id)).count()).longValue());
 	}
 
 	@Given("^a list-union named \"([^\"]*)\" within \"([^\"]*)\".\"([^\"]*)\"$")
-	public void givenListUnionWithin(String name, String elections, String election) {
-		ListUnionType union = new ListUnionType().withReferencedList(new ArrayList<>())
+	public void givenListUnionWithin(final String name, final String elections, final String election) {
+		final ListUnionType union = new ListUnionType().withReferencedList(new ArrayList<>())
 				.withListUnionDescription(new ListUnionDescriptionType().withListUnionDescriptionInfo(new ArrayList<>()));
 		listUnionMap.put(elections + "." + election + "." + name, union);
-		if (electionMap.get(elections + "." + election).getListUnion() == null) {
-			electionMap.get(elections + "." + election).setListUnion(new ArrayList<>());
+		if (electionMap.get(elections + "." + election).getElectionInformation().get(0).getListUnion() == null) {
+			electionMap.get(elections + "." + election).getElectionInformation().get(0).setListUnion(new ArrayList<>());
 		}
-		electionMap.get(elections + "." + election).getListUnion().add(union);
+		electionMap.get(elections + "." + election).getElectionInformation().get(0).getListUnion().add(union);
 	}
 
 	@And("^list-union  \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has id \"([^\"]*)\"$")
-	public void andListUntionHasId(String elections, String election, String name, String id) {
+	public void andListUntionHasId(final String elections, final String election, final String name, final String id) {
 		listUnionMap.get(elections + "." + election + "." + name).setListUnionIdentification(id);
 	}
 
 	@And("^list-union  \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has type (\\d+)$")
-	public void andListUnionHasType(String elections, String election, String name, BigInteger type) {
+	public void andListUnionHasType(final String elections, final String election, final String name, final BigInteger type) {
 		listUnionMap.get(elections + "." + election + "." + name).setListUnionType(type);
 	}
 
 	@And("^list-union  \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has description \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andListUnionHasDescription(String elections, String election, String name, String lang, String desc) {
+	public void andListUnionHasDescription(final String elections, final String election, final String name, final String lang, final String desc) {
 		listUnionMap.get(elections + "." + election + "." + name).getListUnionDescription().getListUnionDescriptionInfo()
 				.add(new ListUnionDescriptionType.ListUnionDescriptionInfo().withLanguage(LanguageType.valueOf(lang)).withListUnionDescription(desc));
 	}
 
 	@And("^list-union  \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has referenced list \"([^\"]*)\"$")
-	public void andListUnionHasReferencedList(String elections, String election, String name, String reference) {
+	public void andListUnionHasReferencedList(final String elections, final String election, final String name, final String reference) {
 		listUnionMap.get(elections + "." + election + "." + name).getReferencedList().add(reference);
 	}
 
 	@Given("^the list-union descriptions for \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")
-	public void givenListUntionDescriptionAreClearedOut(String elections, String election, String name) {
+	public void givenListUntionDescriptionAreClearedOut(final String elections, final String election, final String name) {
 		listUnionMap.get(elections + "." + election + "." + name).getListUnionDescription().setListUnionDescriptionInfo(new ArrayList<>());
 	}
 
 	@And("^elections in parameters \"([^\"]*)\" are cleared out$")
-	public void andElectionsInParametersAreClearedOut(String params) {
+	public void andElectionsInParametersAreClearedOut(final String params) {
 		paramsMap.get(params).setElections(null);
 	}
 
 	@Then("^the list identified by \"([^\"]*)\" should have listOrderOfPrecedence (\\d+)$")
-	public void thenListShouldHaveListOrderOfPrecedence(String listId, BigInteger order) {
-		ListType l = from(contest).find(ListType.class).stream().filter(list -> list.getListIdentification().equals(listId)).findFirst().get();
+	public void thenListShouldHaveListOrderOfPrecedence(final String listId, final Integer order) {
+		final ListType l = from(contest).find(ListType.class).stream().filter(list -> list.getListIdentification().equals(listId)).findFirst().get();
 		assertEquals(l.getListOrderOfPrecedence(), order);
 	}
 
 	@And("^the contest default language is \"([^\"]*)\"$")
-	public void andContestDefaultLanguageIs(String lang) {
+	public void andContestDefaultLanguageIs(final String lang) {
 		assertEquals(LanguageType.DE, contest.getContestDefaultLanguage());
 	}
 
@@ -946,25 +996,25 @@ public class ContestPhaseSteps extends PhaseSteps {
 			this.list.clear();
 		}
 
-		public boolean contains(String string, Level level) {
+		public boolean contains(final String string, final Level level) {
 			return this.list.stream()
 					.anyMatch(event -> event.toString().contains(string)
 							&& event.getLevel().equals(level));
 		}
 
-		public int countEventsForLogger(String loggerName) {
+		public int countEventsForLogger(final String loggerName) {
 			return (int) this.list.stream()
 					.filter(event -> event.getLoggerName().contains(loggerName))
 					.count();
 		}
 
-		public List<ILoggingEvent> search(String string) {
+		public List<ILoggingEvent> search(final String string) {
 			return this.list.stream()
 					.filter(event -> event.toString().contains(string))
 					.toList();
 		}
 
-		public List<ILoggingEvent> search(String string, Level level) {
+		public List<ILoggingEvent> search(final String string, final Level level) {
 			return this.list.stream()
 					.filter(event -> event.toString().contains(string)
 							&& event.getLevel().equals(level))

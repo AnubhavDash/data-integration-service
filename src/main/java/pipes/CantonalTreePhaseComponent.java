@@ -8,14 +8,14 @@ import java.util.function.Consumer;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTreeService;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
+import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTreeService;
 
 @Component
 public class CantonalTreePhaseComponent {
 	private final CantonalTreeService cantonalTreeService;
 
-	public CantonalTreePhaseComponent(CantonalTreeService cantonalTreeService) {
+	public CantonalTreePhaseComponent(final CantonalTreeService cantonalTreeService) {
 		this.cantonalTreeService = cantonalTreeService;
 	}
 

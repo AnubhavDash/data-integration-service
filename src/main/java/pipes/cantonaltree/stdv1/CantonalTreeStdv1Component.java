@@ -9,12 +9,12 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1Mapper;
+import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1CountingCircle;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1CountingCircleLoader;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1DomainOfInfluence;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1DomainOfInfluenceLoader;
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
+import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1Mapper;
 
 import reactor.util.function.Tuple2;
 
@@ -24,8 +24,8 @@ public class CantonalTreeStdv1Component {
 	private final Stdv1CountingCircleLoader stdv1CountingCircleLoader;
 	private final Stdv1DomainOfInfluenceLoader stdv1DomainOfInfluenceLoader;
 
-	public CantonalTreeStdv1Component(Stdv1CountingCircleLoader stdv1CountingCircleLoader,
-			Stdv1DomainOfInfluenceLoader stdv1DomainOfInfluenceLoader) {
+	public CantonalTreeStdv1Component(final Stdv1CountingCircleLoader stdv1CountingCircleLoader,
+			final Stdv1DomainOfInfluenceLoader stdv1DomainOfInfluenceLoader) {
 		this.stdv1CountingCircleLoader = stdv1CountingCircleLoader;
 		this.stdv1DomainOfInfluenceLoader = stdv1DomainOfInfluenceLoader;
 	}

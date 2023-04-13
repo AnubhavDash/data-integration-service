@@ -24,8 +24,6 @@ import org.codehaus.stax2.validation.XMLValidationSchemaFactory;
 
 import com.sun.xml.txw2.output.IndentingXMLStreamWriter;
 
-import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
-
 public class XmlTransformer {
 
 	private XmlTransformer() {

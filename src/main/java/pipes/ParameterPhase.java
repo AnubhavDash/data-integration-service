@@ -6,7 +6,6 @@ package pipes;
 import java.util.List;
 
 import ch.evoting.xmlns.parameter._4.ContestType;
-import ch.evoting.xmlns.parameter._4.PostVotePhaseType;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.AuthorizationPlugin;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.ContestMapper;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterAuthorizationMapper;
@@ -24,7 +23,6 @@ public abstract class ParameterPhase extends Tools {
 		private Flux<List<VoterWithRoleMapper>> afterReadVoterPlugins;
 		private Flux<List<VoterCategorizer>> configSplitterPlugins;
 		private Flux<ContestType> contestParameters;
-		private Flux<PostVotePhaseType> postVotePhaseParameters;
 		private Flux<List<ContestMapper>> afterReadContestPlugins;
 		private Flux<List<VoterAuthorizationMapper>> afterReadVoterAuthorizationPlugins;
 		private Flux<List<AuthorizationPlugin>> buildAuthorizationPlugins;
@@ -53,14 +51,6 @@ public abstract class ParameterPhase extends Tools {
 
 		public void setContestParameters(final Flux<ContestType> contestParameters) {
 			this.contestParameters = contestParameters;
-		}
-
-		public Flux<PostVotePhaseType> getPostVotePhaseParameters() {
-			return postVotePhaseParameters;
-		}
-
-		public void setPostVotePhaseParameters(final Flux<PostVotePhaseType> postVotePhaseParameters) {
-			this.postVotePhaseParameters = postVotePhaseParameters;
 		}
 
 		public Flux<List<ContestMapper>> getAfterReadContestPlugins() {

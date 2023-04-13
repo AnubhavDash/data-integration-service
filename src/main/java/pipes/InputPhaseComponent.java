@@ -12,10 +12,11 @@ public class InputPhaseComponent {
 
 	private final DirectoryScanner directoryScanner;
 
-	public InputPhaseComponent(DirectoryScanner directoryScanner) {
+	public InputPhaseComponent(final DirectoryScanner directoryScanner) {
 		this.directoryScanner = directoryScanner;
 	}
-	public Iterable<String> scanner(){
+
+	public Iterable<String> scanner() {
 		return directoryScanner.scan();
 	}
 }

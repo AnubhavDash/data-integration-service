@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service;
 
 import com.rits.cloning.Cloner;
 
-import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationsType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.HeaderType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.RegisterTypeWithVoterStream;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterType;
+import ch.post.it.evoting.dataintegrationservice.domain.RegisterTypeWithVoterStream;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.HeaderType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType;
 
 @Service
 public class ConfigService {

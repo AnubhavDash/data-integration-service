@@ -3,7 +3,7 @@
  */
 package pipes;
 
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
 import reactor.core.publisher.Flux;
 
