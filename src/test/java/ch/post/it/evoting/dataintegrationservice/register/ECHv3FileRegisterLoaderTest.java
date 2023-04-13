@@ -12,7 +12,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import ch.ech.xmlns.ech_0045._3.VotingPersonType;
-import ch.post.it.evoting.dataintegrationservice.register.ECHv3FileRegisterLoader;
 
 class ECHv3FileRegisterLoaderTest {
 

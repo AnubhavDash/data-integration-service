@@ -22,6 +22,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteType;
 class ContestBuilderTest {
 
 	private final ContestService contestService = new ContestService();
+
 	@Test
 	void cleanHtmlTags() {
 		ContestType contest = new ContestType().withVoteInformation(

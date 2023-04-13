@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.contest.ContestService;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.dataintegrationservice.output.ConfigService;
 import ch.post.it.evoting.dataintegrationservice.output.InvalidVoterService;
 import ch.post.it.evoting.dataintegrationservice.register.RegisterService;
@@ -22,7 +23,6 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.HeaderType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RegisterType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

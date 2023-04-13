@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import ch.ech.xmlns.ech_0045._3.AuthorityType;
 import ch.ech.xmlns.ech_0045._3.ObjectFactory;
 import ch.ech.xmlns.ech_0045._3.VotingPersonType;
-import ch.post.it.evoting.dataintegrationservice.common.Stax2Wrapper;
 
 class Stax2WrapperTest {
 

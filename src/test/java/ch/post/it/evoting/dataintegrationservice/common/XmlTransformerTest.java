@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -33,7 +33,7 @@ class XmlTransformerTest {
 	public void toXml(final String configName, final String schemeName) throws Exception {
 
 		final InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(configName);
-		final String should = IOUtils.toString(inputStream, "UTF-8");
+		final String should = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
 
 		final URL schemaPath = getClass().getResource(schemeName);
 		checkState(schemaPath != null, "resource not found");
@@ -52,15 +52,15 @@ class XmlTransformerTest {
 
 		System.setProperty(formatPropertyName, originalValue == null ? "" : originalValue);
 
-		final String result = outputStream.toString("UTF-8");
+		final String result = outputStream.toString(StandardCharsets.UTF_8);
 		assertNotNull(result);
 		assertEquals(should, result);
 	}
 
 	protected Object unmarshall(final Class clazz, final String obj) {
 		try {
-			return JAXBContext.newInstance(clazz).createUnmarshaller().unmarshal(new ByteArrayInputStream(obj.getBytes("UTF-8")));
-		} catch (final JAXBException | UnsupportedEncodingException e) {
+			return JAXBContext.newInstance(clazz).createUnmarshaller().unmarshal(new ByteArrayInputStream(obj.getBytes(StandardCharsets.UTF_8)));
+		} catch (final JAXBException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}

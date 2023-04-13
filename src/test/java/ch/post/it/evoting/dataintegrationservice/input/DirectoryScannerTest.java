@@ -12,8 +12,6 @@ import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.dataintegrationservice.input.DirectoryScanner;
-
 class DirectoryScannerTest {
 
 	private final DirectoryScanner directoryScanner = new DirectoryScanner("src/test/resources");

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import ch.ech.xmlns.ech_0045._4.VotingPersonType;
 import ch.post.it.evoting.dataintegrationservice.common.Stax2Wrapper;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
 @Component
 public class ECHv4FileRegisterLoader {

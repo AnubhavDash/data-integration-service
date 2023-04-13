@@ -7,8 +7,8 @@ import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
+import ch.post.it.evoting.dataintegrationservice.domain.RegisterTypeWithVoterStream;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RegisterType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RegisterTypeWithVoterStream;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType;
 
 @Service

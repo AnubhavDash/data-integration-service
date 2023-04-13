@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.dataintegrationservice.authorization.AuthorizationService;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.AuthorizationPlugin;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuple6;

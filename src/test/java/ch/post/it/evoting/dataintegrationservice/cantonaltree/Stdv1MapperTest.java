@@ -12,14 +12,6 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.DomainOfInfluence;
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1CountingCircle;
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1CountingCircleLoader;
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1DomainOfInfluence;
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1DomainOfInfluenceLoader;
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1Mapper;
-
 class Stdv1MapperTest {
 
 	private final Stdv1Mapper mapper = Stdv1Mapper.INSTANCE;

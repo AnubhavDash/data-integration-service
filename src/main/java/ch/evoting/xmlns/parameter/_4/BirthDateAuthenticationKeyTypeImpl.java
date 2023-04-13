@@ -6,10 +6,10 @@ package ch.evoting.xmlns.parameter._4;
 import java.util.Collections;
 import java.util.List;
 
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.ExtendedAuthenticationKeyPlugin;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ExtendedAuthenticationKeyType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ExtendedAuthenticationKeysType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 public class BirthDateAuthenticationKeyTypeImpl extends BirthDateAuthenticationKeyType implements ExtendedAuthenticationKeyPlugin {
 

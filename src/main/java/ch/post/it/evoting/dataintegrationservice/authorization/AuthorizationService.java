@@ -6,7 +6,6 @@ package ch.post.it.evoting.dataintegrationservice.authorization;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -27,6 +26,10 @@ import ch.post.it.evoting.dataintegrationservice.cantonaltree.DomainOfInfluence;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.DomainOfInfluenceId;
 import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterCountingCircle;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluence;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluenceInfo;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.AuthorizationPlugin;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.CountingCircleFilter;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.CountingCircleSetter;
@@ -36,11 +39,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Authorization
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CountingCircleType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.DomainOfInfluenceType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterCountingCircle;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterDomainOfInfluence;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterDomainOfInfluenceInfo;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
@@ -49,7 +48,7 @@ import reactor.util.function.Tuples;
 public class AuthorizationService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationService.class);
 
-	private static final int GRACE_PERIOD = Integer.valueOf(PropertyProvider.getPropertyValue("authorization.gracePeriod", "900"));
+	private static final int GRACE_PERIOD = Integer.parseInt(PropertyProvider.getPropertyValue("authorization.gracePeriod", "900"));
 
 	private static final Integer MIN_TEST_CONTROL_VALUE = Integer.parseInt(PropertyProvider.getPropertyValue("countingCircle.testControl.minValue"));
 

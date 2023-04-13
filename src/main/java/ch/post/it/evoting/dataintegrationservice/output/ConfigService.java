@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 
 import com.rits.cloning.Cloner;
 
+import ch.post.it.evoting.dataintegrationservice.domain.RegisterTypeWithVoterStream;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.HeaderType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RegisterTypeWithVoterStream;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType;
 
 @Service

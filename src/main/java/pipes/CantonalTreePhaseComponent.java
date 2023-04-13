@@ -8,8 +8,8 @@ import java.util.function.Consumer;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTreeService;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
+import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTreeService;
 
 @Component
 public class CantonalTreePhaseComponent {

@@ -15,17 +15,17 @@ import org.springframework.stereotype.Service;
 
 import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.FrankingAreaType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PhysicalAddressType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 @Service
 public class RegisterService {
 
 	private final Map<String, FrankingAreaType> frankingAreaCache = new HashMap<>();
 	private final Map<String, String> diplomaticBagCache = new HashMap<>();
-	private Set<String> knownVoters = new HashSet<>();
+	private final Set<String> knownVoters = new HashSet<>();
 
 	// used by unit tests
 	public Set<String> getKnownVoters() {

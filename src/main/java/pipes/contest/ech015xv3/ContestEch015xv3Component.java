@@ -12,7 +12,6 @@ import ch.ech.xmlns.ech_0157._3.EventInitialDelivery;
 import ch.post.it.evoting.dataintegrationservice.contest.ECH015xv3Mapper;
 import ch.post.it.evoting.dataintegrationservice.contest.ECHv3FileContestLoader;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
 import reactor.util.function.Tuple2;

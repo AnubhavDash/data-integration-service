@@ -10,12 +10,10 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
-import ch.ech.xmlns.ech_0157._4.EventInitialDelivery;
 import ch.post.it.evoting.dataintegrationservice.contest.ContestService;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.ExtendedAuthenticationKeyPlugin;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
 import reactor.util.function.Tuple2;

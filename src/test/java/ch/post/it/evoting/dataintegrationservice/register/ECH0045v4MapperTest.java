@@ -26,9 +26,9 @@ import ch.ech.xmlns.ech_0045._4.SwissAbroadType;
 import ch.ech.xmlns.ech_0045._4.SwissDomesticType;
 import ch.ech.xmlns.ech_0045._4.SwissPersonType;
 import ch.ech.xmlns.ech_0045._4.VotingPersonType;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 class ECH0045v4MapperTest {
 
@@ -67,13 +67,12 @@ class ECH0045v4MapperTest {
 								.withHouseNumber("12a")
 								.withDwellingNumber("222")
 								.withPostOfficeBoxText("Case postale")
-								.withPostOfficeBoxNumber(1002l)
-								.withSwissZipCode(2072l)
+								.withPostOfficeBoxNumber(1002L)
+								.withSwissZipCode(2072L)
 								.withTown("St-Blaise")
 								.withCountry(new ch.ech.xmlns.ech_0010._6.CountryType().withCountryIdISO2("ch"))
 						)
 				);
-		;
 		return voter;
 	}
 
@@ -118,7 +117,6 @@ class ECH0045v4MapperTest {
 				.withEmail(new EmailType()
 						.withEmailAddress("fabienne.durand@provider.ch")
 				);
-		;
 		return voter;
 	}
 

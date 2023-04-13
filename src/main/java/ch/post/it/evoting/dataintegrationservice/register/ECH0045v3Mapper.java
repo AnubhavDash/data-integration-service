@@ -20,14 +20,14 @@ import org.mapstruct.factory.Mappers;
 
 import ch.ech.xmlns.ech_0046._2.EmailType;
 import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluence;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluenceInfo;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectronicAddressType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PersonType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PhysicalAddressType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.SexType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterDomainOfInfluence;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterDomainOfInfluenceInfo;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 @Mapper
 public interface ECH0045v3Mapper {

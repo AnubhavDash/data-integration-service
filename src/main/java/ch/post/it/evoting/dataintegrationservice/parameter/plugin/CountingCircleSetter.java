@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.CountingCircle;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
 public interface CountingCircleSetter extends BiFunction<VoterTypeWithRole, List<CountingCircle>, CountingCircle> {
 

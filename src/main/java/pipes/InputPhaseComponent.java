@@ -15,7 +15,8 @@ public class InputPhaseComponent {
 	public InputPhaseComponent(final DirectoryScanner directoryScanner) {
 		this.directoryScanner = directoryScanner;
 	}
-	public Iterable<String> scanner(){
+
+	public Iterable<String> scanner() {
 		return directoryScanner.scan();
 	}
 }

@@ -5,7 +5,7 @@ package ch.post.it.evoting.dataintegrationservice.parameter.plugin;
 
 import java.util.function.BiFunction;
 
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
 public class VoterCategorizer implements BiFunction<VoterTypeWithRole, String, String> {
 

@@ -27,11 +27,11 @@ import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplicati
 import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.common.XmlTransformer;
+import ch.post.it.evoting.dataintegrationservice.domain.RegisterTypeWithVoterStream;
 import ch.post.it.evoting.dataintegrationservice.input.DirectoryScanner;
 import ch.post.it.evoting.evotinglibraries.xml.XsdConstants;
 import ch.post.it.evoting.evotinglibraries.xml.hashable.ConfigurationSignerListener;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RegisterTypeWithVoterStream;
 
 import li.chee.reactive.plumber.Plumbing;
 import reactor.core.publisher.Flux;
@@ -67,7 +67,7 @@ public abstract class Tools extends Plumbing {
 				Marshaller.Listener listener = null;
 				if (jaxbFactoryClass.equals(Configuration.class)) {
 					listener = new ConfigurationSignerListener((Configuration) o,
-							DataIntegrationServiceApplication.context.getBean(SignatureKeystore.class));
+							DataIntegrationServiceApplication.getContext().getBean(SignatureKeystore.class));
 				}
 
 				XmlTransformer.toXml(fos, jaxbFactoryClass, xsdSchema, o, rootElementName, listener);

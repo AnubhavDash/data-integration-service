@@ -11,9 +11,9 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
 import ch.evoting.xmlns.parameter._4.BirthYearAuthenticationKeyTypeImpl;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PersonType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;

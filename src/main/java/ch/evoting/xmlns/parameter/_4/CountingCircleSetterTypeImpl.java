@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.CountingCircle;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.CountingCircleSetter;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 public class CountingCircleSetterTypeImpl extends CountingCircleSetterType implements CountingCircleSetter {
 	@Override

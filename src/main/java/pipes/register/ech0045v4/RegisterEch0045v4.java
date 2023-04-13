@@ -3,7 +3,7 @@
  */
 package pipes.register.ech0045v4;
 
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
 import pipes.InputPhase;
 import pipes.Tools;

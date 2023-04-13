@@ -7,8 +7,8 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.dataintegrationservice.register.RegisterService;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 @Component
 public class RegisterPhaseComponent {

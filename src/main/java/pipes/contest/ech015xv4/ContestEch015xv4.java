@@ -4,7 +4,6 @@
 package pipes.contest.ech015xv4;
 
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
 import pipes.InputPhase;
@@ -13,7 +12,7 @@ import reactor.core.publisher.Flux;
 
 public abstract class ContestEch015xv4 extends Tools {
 
-	public static Exports exports = new Exports();
+	public static final Exports exports = new Exports();
 	static InputPhase.Exports inputPhase = InputPhase.exports;
 
 	public static class Exports {

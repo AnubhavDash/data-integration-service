@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,7 +21,6 @@ import ch.evoting.xmlns.parameter._4.Parameter;
 import ch.galinet.xml.xmlmerge.XmlMerge;
 import ch.galinet.xml.xmlmerge.config.AttributeMergeConfigurer;
 import ch.galinet.xml.xmlmerge.config.ConfigurableXmlMerge;
-import ch.post.it.evoting.dataintegrationservice.parameter.ParameterLoader;
 
 class ParameterLoaderTest {
 
@@ -45,7 +43,7 @@ class ParameterLoaderTest {
 
 		final InputStream out = merger.merge(new InputStream[] { is1, is2 });
 
-		final String result = IOUtils.toString(out, Charset.forName("UTF-8"));
+		final String result = IOUtils.toString(out, StandardCharsets.UTF_8);
 
 		final URL resource = this.getClass().getResource("/ParameterLoaderTest/mergeTest/ParameterLoaderTest_merge.xml");
 		final String expected = new String(Files.readAllBytes(Paths.get(resource.toURI())), StandardCharsets.UTF_8);

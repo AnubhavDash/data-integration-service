@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.CountingCircle;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.CountingCircleFilter;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 public class CountingCircleFilterTypeImpl extends CountingCircleFilterType implements CountingCircleFilter {
 	@Override

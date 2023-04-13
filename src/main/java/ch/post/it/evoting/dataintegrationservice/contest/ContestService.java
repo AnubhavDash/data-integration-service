@@ -40,6 +40,7 @@ import ch.evoting.xmlns.parameter._4.SortingType;
 import ch.post.it.evoting.dataintegrationservice.common.MarshallTool;
 import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
+import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
 import ch.post.it.evoting.dataintegrationservice.parameter.ParameterMapper;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType;
@@ -66,7 +67,6 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswe
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionTypeWithReferences;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TiebreakAnswerType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VariantBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteDescriptionInformationType;
@@ -326,7 +326,7 @@ public class ContestService {
 	}
 
 	private char getLetter(int value) {
-		return (char) ((int) 'a' + value);
+		return (char) ('a' + value);
 	}
 
 	private void addVotesPositionIfNeeded(final List<VoteInformationType> votes) {

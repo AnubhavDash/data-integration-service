@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,6 +24,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
 import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.dataintegrationservice.pipes.PhaseSteps;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AdminBoardMembersType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AdminBoardType;
@@ -45,7 +45,6 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RegisterType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.SexType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -61,10 +60,10 @@ import reactor.core.publisher.Flux;
 
 public class OutputPhaseSteps extends PhaseSteps {
 
-	private HeaderType header = new HeaderType().withFileDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 12:34:00"))
+	private final HeaderType header = new HeaderType().withFileDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 12:34:00"))
 			.withVoterTotal(3);
 
-	private ContestType contest = new ContestType().withContestDefaultLanguage(LanguageType.DE).withContestIdentification("111-222-abc")
+	private final ContestType contest = new ContestType().withContestDefaultLanguage(LanguageType.DE).withContestIdentification("111-222-abc")
 			.withContestDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
 			.withEvotingFromDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
 			.withEvotingToDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
@@ -90,21 +89,23 @@ public class OutputPhaseSteps extends PhaseSteps {
 					.withElectoralBoardDescription("EB")
 					.withElectoralBoardMembers(new ElectoralBoardMembersType().withElectoralBoardMemberName("EB1", "EB2")));
 
-	private AuthorizationsType authorization = new AuthorizationsType().withAuthorization(
+	private final AuthorizationsType authorization = new AuthorizationsType().withAuthorization(
 			new AuthorizationType().withAuthorizationIdentification("auth-000-abc").withAuthorizationAlias("auth-000-abc-alias")
 					.withAuthorizationName("auth-000-abc-name").withAuthorizationFromDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
 					.withAuthorizationToDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00")).withAuthorizationTest(false)
 					.withAuthorizationGracePeriod(900).withAuthorizationObject(
-							new AuthorizationObjectType().withCountingCircle(new CountingCircleType().withCountingCircleIdentification("cc-000-abc").withCountingCircleName("cc-000-abc"))
+							new AuthorizationObjectType().withCountingCircle(
+											new CountingCircleType().withCountingCircleIdentification("cc-000-abc").withCountingCircleName("cc-000-abc"))
 									.withDomainOfInfluence(
-											new DomainOfInfluenceType().withDomainOfInfluenceIdentification("doi-000-abc").withDomainOfInfluenceName("CT-CH-1234").withDomainOfInfluenceType("CH"))
+											new DomainOfInfluenceType().withDomainOfInfluenceIdentification("doi-000-abc")
+													.withDomainOfInfluenceName("CT-CH-1234").withDomainOfInfluenceType("CH"))
 
 					));
+	private final Map<String, List<VoterTypeWithRole>> votersMap = new HashMap<>();
+	private final Map<String, VoterTypeWithRole> voterMap = new HashMap<>();
+	private final Map<String, List<VoterTypeWithRole>> invalidVotersMap = new HashMap<>();
+	private final Map<String, VoterTypeWithRole> invalidVoterMap = new HashMap<>();
 	private RuntimeException processException = null;
-	private Map<String, List<VoterTypeWithRole>> votersMap = new HashMap<>();
-	private Map<String, VoterTypeWithRole> voterMap = new HashMap<>();
-	private Map<String, List<VoterTypeWithRole>> invalidVotersMap = new HashMap<>();
-	private Map<String, VoterTypeWithRole> invalidVoterMap = new HashMap<>();
 
 	private Object getXMLObjectFromFile(final Class clazz, final String fileName) {
 		try {

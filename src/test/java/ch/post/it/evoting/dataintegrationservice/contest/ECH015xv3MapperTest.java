@@ -211,7 +211,7 @@ class ECH015xv3MapperTest {
 								)
 								.withTieBreakInformation(new TieBreakInformationType()
 										.withAnswerType(new AnswerInformationType()
-												.withAnswerType(BigInteger.valueOf(1l)))
+												.withAnswerType(BigInteger.valueOf(1L)))
 										.withQuestionIdentification("QUE-000-41500010")
 										.withQuestionPosition(BigInteger.valueOf(4))
 										.withTieBreakQuestion(new ch.ech.xmlns.ech_0155._3.TieBreakQuestionType()

@@ -9,12 +9,12 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1Mapper;
+import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1CountingCircle;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1CountingCircleLoader;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1DomainOfInfluence;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1DomainOfInfluenceLoader;
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
+import ch.post.it.evoting.dataintegrationservice.cantonaltree.Stdv1Mapper;
 
 import reactor.util.function.Tuple2;
 

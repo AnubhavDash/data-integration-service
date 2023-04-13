@@ -101,7 +101,8 @@ public class Ech015xv4ContestPhaseSteps extends PhaseSteps {
 
 	@And("^it outputs election has (\\d*) candidates")
 	public void andElectionsHasCandidates(final Integer numberOfCandidates) {
-		assertEquals((int) numberOfCandidates, elections.stream().map(eg -> eg.getElectionInformation().get(0)).flatMap(e -> e.getCandidate().stream()).count());
+		assertEquals((int) numberOfCandidates,
+				elections.stream().map(eg -> eg.getElectionInformation().get(0)).flatMap(e -> e.getCandidate().stream()).count());
 	}
 
 	@And("^candidate v4 with callName \"([^\"]*)\" has a candidateText")

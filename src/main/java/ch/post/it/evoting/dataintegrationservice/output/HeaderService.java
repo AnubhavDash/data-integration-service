@@ -3,7 +3,6 @@
  */
 package ch.post.it.evoting.dataintegrationservice.output;
 
-import java.math.BigInteger;
 import java.util.GregorianCalendar;
 
 import javax.xml.datatype.DatatypeConfigurationException;

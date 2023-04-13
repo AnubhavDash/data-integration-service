@@ -3,7 +3,6 @@
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import ch.ech.xmlns.ech_0010._6.AddressInformationType;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
+import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotType;
@@ -42,7 +42,6 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ReferencedEle
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionTypeWithReferences;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VariantBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
@@ -75,8 +74,10 @@ public interface ECH015xv3Mapper {
 				.withElectionGroupDescription(mapElectionDescriptionToGroupDescription(ei.getElection().getElectionDescription()))
 				.withElectionInformation(convertElectionInformation(ei));
 	}
+
 	@Mapping(target = "electionGroupDescriptionInfo", source = "electionDescriptionInfo")
-	ElectionGroupDescriptionInformationType mapElectionDescriptionToGroupDescription(ch.ech.xmlns.ech_0155._3.ElectionDescriptionInformationType electionDescription);
+	ElectionGroupDescriptionInformationType mapElectionDescriptionToGroupDescription(
+			ch.ech.xmlns.ech_0155._3.ElectionDescriptionInformationType electionDescription);
 
 	@Mapping(target = "electionGroupDescription", source = "electionDescription")
 	@Mapping(target = "electionGroupDescriptionShort", source = "electionDescriptionShort")

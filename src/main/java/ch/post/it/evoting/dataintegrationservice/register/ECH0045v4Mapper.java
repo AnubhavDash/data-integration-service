@@ -27,14 +27,14 @@ import ch.ech.xmlns.ech_0045._4.LanguageType;
 import ch.ech.xmlns.ech_0045._4.SwissPersonType;
 import ch.ech.xmlns.ech_0045._4.VotingPersonType;
 import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterCountingCircle;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluence;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluenceInfo;
+import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectronicAddressType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PersonType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PhysicalAddressType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.SexType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterCountingCircle;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterDomainOfInfluence;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterDomainOfInfluenceInfo;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 @Mapper
 public interface ECH0045v4Mapper {

@@ -5,7 +5,6 @@ package ch.evoting.xmlns.parameter._4;
 
 import static com.google.common.base.Preconditions.checkState;
 
-import java.math.BigInteger;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Collectors;

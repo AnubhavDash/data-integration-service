@@ -14,6 +14,7 @@ import static org.swisspush.supermachine.BeanScanner.from;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import ch.evoting.xmlns.parameter._4.StandardAnswerType;
 import ch.evoting.xmlns.parameter._4.TiebreakAnswerType;
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
 import ch.post.it.evoting.dataintegrationservice.common.XmlTransformer;
+import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotType;
@@ -61,7 +63,6 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.OccupationalT
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionTypeWithReferences;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VariantBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
@@ -875,7 +876,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 
 			final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			XmlTransformer.toXml(outputStream, ObjectFactory.class, schemaPath, contest, new QName("contest"), null);
-			final String result = outputStream.toString("UTF-8");
+			final String result = outputStream.toString(StandardCharsets.UTF_8);
 			LOGGER.warn(result);
 		} catch (final Exception e) {
 			throw new IllegalStateException(e);
@@ -919,7 +920,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 		final ElectionType election = from(contest).find(ElectionType.class).filter(e -> e.getElectionIdentification().equals(id)).stream()
 				.findFirst()
 				.get();
-		assertEquals(election.isWriteInsAllowed(), (boolean) Boolean.valueOf(writeIns));
+		assertEquals(election.isWriteInsAllowed(), Boolean.valueOf(writeIns));
 	}
 
 	@Then("^election identified by \"([^\"]*)\" should have minimalCandidateSelection ([^\"]*)$")

@@ -12,7 +12,7 @@ import java.util.Iterator;
 
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RegisterTypeWithVoterStream;
+import ch.post.it.evoting.dataintegrationservice.domain.RegisterTypeWithVoterStream;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType;
 
 class RegisterTypeWithVoterStreamTest {
