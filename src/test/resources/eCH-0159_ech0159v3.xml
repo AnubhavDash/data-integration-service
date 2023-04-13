@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!--
-  ~ Copyright 2019 by Swiss Post, Information Technology
-  -->
-
 <eCH-0159:delivery xmlns:eCH-0159="http://www.ech.ch/xmlns/eCH-0159/3" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ech.ch/xmlns/eCH-0159/3 http://www.ech.ch/xmlns/eCH-0159/3/eCH-0159-3-0.xsd">
     <eCH-0159:deliveryHeader>
         <eCH-0058:senderId>9</eCH-0058:senderId>

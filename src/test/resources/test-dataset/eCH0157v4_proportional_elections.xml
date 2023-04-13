@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ (c) Copyright 2023 Swiss Post Ltd.
-  -->
+
 <eCH-0157:delivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4" xsi:schemaLocation="http://www.ech.ch/xmlns/eCH-0157/4 http://www.ech.ch/xmlns/eCH-0157/4/eCH-0157-4-0.xsd" xmlns:eCH-0157="http://www.ech.ch/xmlns/eCH-0157/4">
   <eCH-0157:deliveryHeader xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5">
     <eCH-0058:senderId>ABC-VOTING</eCH-0058:senderId>
