@@ -28,10 +28,10 @@ import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.common.XmlTransformer;
 import ch.post.it.evoting.dataintegrationservice.input.DirectoryScanner;
-import ch.post.it.evoting.domain.hashable.ConfigurationSignerListener;
-import ch.post.it.evoting.domain.xml.XsdConstants;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.RegisterTypeWithVoterStream;
+import ch.post.it.evoting.evotinglibraries.xml.XsdConstants;
+import ch.post.it.evoting.evotinglibraries.xml.hashable.ConfigurationSignerListener;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RegisterTypeWithVoterStream;
 
 import li.chee.reactive.plumber.Plumbing;
 import reactor.core.publisher.Flux;

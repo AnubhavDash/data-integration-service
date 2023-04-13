@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 
 import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.FrankingAreaType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.PhysicalAddressType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.FrankingAreaType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PhysicalAddressType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 @Service
 public class RegisterService {

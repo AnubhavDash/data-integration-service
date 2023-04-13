@@ -14,9 +14,9 @@ class ReflexionUtilTest {
 
 	@Test
 	void getFieldValue() {
-		A a = new A();
+		final A a = new A();
 
-		String value = ReflexionUtil.getFieldValue(a, "b.f");
+		final String value = ReflexionUtil.getFieldValue(a, "b.f");
 		assertNotNull(value);
 		assertEquals("toto", value);
 	}

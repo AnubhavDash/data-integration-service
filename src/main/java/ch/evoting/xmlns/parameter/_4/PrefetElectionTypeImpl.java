@@ -10,10 +10,10 @@ import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import ch.post.it.evoting.domain.xmlns.evotingconfig.CandidatePositionType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.CandidateType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ListType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidatePositionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListType;
 
 public class PrefetElectionTypeImpl extends PrefetElectionType {
 	@Override

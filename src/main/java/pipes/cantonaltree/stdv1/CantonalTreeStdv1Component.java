@@ -24,8 +24,8 @@ public class CantonalTreeStdv1Component {
 	private final Stdv1CountingCircleLoader stdv1CountingCircleLoader;
 	private final Stdv1DomainOfInfluenceLoader stdv1DomainOfInfluenceLoader;
 
-	public CantonalTreeStdv1Component(Stdv1CountingCircleLoader stdv1CountingCircleLoader,
-			Stdv1DomainOfInfluenceLoader stdv1DomainOfInfluenceLoader) {
+	public CantonalTreeStdv1Component(final Stdv1CountingCircleLoader stdv1CountingCircleLoader,
+			final Stdv1DomainOfInfluenceLoader stdv1DomainOfInfluenceLoader) {
 		this.stdv1CountingCircleLoader = stdv1CountingCircleLoader;
 		this.stdv1DomainOfInfluenceLoader = stdv1DomainOfInfluenceLoader;
 	}

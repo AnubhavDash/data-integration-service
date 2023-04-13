@@ -11,7 +11,7 @@ import javax.xml.datatype.DatatypeFactory;
 
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.domain.xmlns.evotingconfig.HeaderType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.HeaderType;
 
 @Service
 public class HeaderService {

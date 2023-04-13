@@ -3,9 +3,9 @@
  */
 package pipes.contest.ech015xv3;
 
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ElectionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoteInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
 import pipes.InputPhase;
 import pipes.Tools;
@@ -17,9 +17,9 @@ public abstract class ContestEch015xv3 extends Tools {
 	static InputPhase.Exports inputPhase = InputPhase.exports;
 
 	public static class Exports {
-		private Flux<ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType> contests;
-		private Flux<ch.post.it.evoting.domain.xmlns.evotingconfig.ElectionInformationType> elections;
-		private Flux<ch.post.it.evoting.domain.xmlns.evotingconfig.VoteInformationType> votes;
+		private Flux<ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType> contests;
+		private Flux<ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType> elections;
+		private Flux<ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType> votes;
 
 		public Flux<ContestType> getContests() {
 			return contests;

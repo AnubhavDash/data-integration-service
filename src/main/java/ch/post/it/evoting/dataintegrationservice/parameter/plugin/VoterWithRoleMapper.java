@@ -5,7 +5,7 @@ package ch.post.it.evoting.dataintegrationservice.parameter.plugin;
 
 import java.util.function.UnaryOperator;
 
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 public class VoterWithRoleMapper implements UnaryOperator<VoterTypeWithRole> {
 	@Override

@@ -5,7 +5,7 @@ package pipes;
 
 import java.util.List;
 
-import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationsType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
 
 import reactor.core.publisher.Flux;
 

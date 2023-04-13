@@ -14,9 +14,9 @@ import org.junit.jupiter.api.Test;
 import ch.evoting.xmlns.parameter._4.DoiLocalIdMapperType;
 import ch.evoting.xmlns.parameter._4.DoiLocalIdMapperTypeImpl;
 import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterDomainOfInfluence;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterDomainOfInfluenceInfo;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterDomainOfInfluence;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterDomainOfInfluenceInfo;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 class DoiLocalIdMapperTypeImplTest {
 
@@ -34,11 +34,11 @@ class DoiLocalIdMapperTypeImplTest {
 				.withOldValue(oldValue)
 				.withNewValue(newValue);
 
-		VoterDomainOfInfluence doi = new VoterDomainOfInfluence();
+		final VoterDomainOfInfluence doi = new VoterDomainOfInfluence();
 		doi.setType(VoterDomainOfInfluence.VoterDomainOfInfluenceType.valueOf(type));
 		doi.setLocalId(oldValue);
 
-		VoterDomainOfInfluenceInfo voterDomainOfInfluenceInfo = new VoterDomainOfInfluenceInfo();
+		final VoterDomainOfInfluenceInfo voterDomainOfInfluenceInfo = new VoterDomainOfInfluenceInfo();
 		voterDomainOfInfluenceInfo.setDomainOfInfluence(doi);
 
 		voter.setDomainOfInfluenceInfos(Collections.singletonList(voterDomainOfInfluenceInfo));
@@ -46,7 +46,7 @@ class DoiLocalIdMapperTypeImplTest {
 
 	@Test
 	void apply() {
-		VoterDomainOfInfluence doi = voter.getDomainOfInfluenceInfos().stream().filter(d -> d.getDomainOfInfluence().getType().equals(
+		final VoterDomainOfInfluence doi = voter.getDomainOfInfluenceInfos().stream().filter(d -> d.getDomainOfInfluence().getType().equals(
 						VoterDomainOfInfluence.VoterDomainOfInfluenceType.valueOf(type)) && d.getDomainOfInfluence().getLocalId().equals(oldValue))
 				.findFirst().get().getDomainOfInfluence();
 		assertEquals(doi.getLocalId(), oldValue);

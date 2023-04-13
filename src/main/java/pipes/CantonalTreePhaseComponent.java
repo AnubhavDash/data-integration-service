@@ -15,7 +15,7 @@ import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
 public class CantonalTreePhaseComponent {
 	private final CantonalTreeService cantonalTreeService;
 
-	public CantonalTreePhaseComponent(CantonalTreeService cantonalTreeService) {
+	public CantonalTreePhaseComponent(final CantonalTreeService cantonalTreeService) {
 		this.cantonalTreeService = cantonalTreeService;
 	}
 

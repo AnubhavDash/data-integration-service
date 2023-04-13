@@ -4,7 +4,7 @@
 package pipes
 
 import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
-import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationsType
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType
 
 import static li.chee.reactive.plumber.Plumbing.*
 import static pipes.Tools.logAsInfo

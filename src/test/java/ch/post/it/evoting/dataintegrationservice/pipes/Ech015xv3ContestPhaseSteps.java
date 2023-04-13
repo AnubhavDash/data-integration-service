@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ch.post.it.evoting.domain.xmlns.evotingconfig.CandidateTextInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.CandidateType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ElectionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoteInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -35,12 +35,12 @@ public class Ech015xv3ContestPhaseSteps extends PhaseSteps {
 	private List<VoteInformationType> votes;
 
 	@Given("^\"([^\"]*)\" file as input$")
-	public void givenFileAsInput(String file) {
+	public void givenFileAsInput(final String file) {
 		InputPhase.exports.setFiles(Flux.just("src/test/resources/" + file));
 	}
 
 	@Given("^\"([^\"]*)\" and \"([^\"]*)\" files as input$")
-	public void givenManyFilesAsInput(String file1, String file2) {
+	public void givenManyFilesAsInput(final String file1, final String file2) {
 		InputPhase.exports.setFiles(Flux.just("src/test/resources/" + file1, "src/test/resources/" + file2));
 	}
 
@@ -82,8 +82,8 @@ public class Ech015xv3ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^candidate with callName \"([^\"]*)\" has a candidateText")
-	public void andCandidateWithCallnameHasCandidateText(String candidateCallName) {
-		List<CandidateType> candidateList = elections.stream()
+	public void andCandidateWithCallnameHasCandidateText(final String candidateCallName) {
+		final List<CandidateType> candidateList = elections.stream()
 				.map(ElectionInformationType::getCandidate)
 				.flatMap(Collection::stream)
 				.filter(c -> c.getCallName().equals(candidateCallName))
@@ -95,8 +95,8 @@ public class Ech015xv3ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^candidate with callName \"([^\"]*)\" has \"([^\"]*)\" as candidateTextInformation")
-	public void andCandidateWithCallnameHasCandidateTextInformation(String candidateCallName, String value) {
-		List<CandidateType> candidateList = elections.stream()
+	public void andCandidateWithCallnameHasCandidateTextInformation(final String candidateCallName, final String value) {
+		final List<CandidateType> candidateList = elections.stream()
 				.map(ElectionInformationType::getCandidate)
 				.flatMap(Collection::stream)
 				.filter(c -> c.getCallName().equals(candidateCallName)).toList();
@@ -104,7 +104,7 @@ public class Ech015xv3ContestPhaseSteps extends PhaseSteps {
 		if (candidateList.size() > 1) {
 			fail(String.format("More that one candidate with callName  %s", candidateCallName));
 		}
-		List<CandidateTextInformationType.CandidateTextInfo> candidateTextList = candidateList.get(0).getCandidateText().getCandidateTextInfo();
+		final List<CandidateTextInformationType.CandidateTextInfo> candidateTextList = candidateList.get(0).getCandidateText().getCandidateTextInfo();
 		assertTrue(candidateTextList.stream().map(CandidateTextInformationType.CandidateTextInfo::getCandidateText).allMatch(s -> s.equals(value)));
 	}
 }

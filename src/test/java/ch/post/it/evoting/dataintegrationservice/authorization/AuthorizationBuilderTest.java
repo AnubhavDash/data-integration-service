@@ -7,12 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import ch.post.it.evoting.dataintegrationservice.authorization.AuthorizationService;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationObjectType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationsType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.CountingCircleType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.DomainOfInfluenceType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationObjectType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CountingCircleType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.DomainOfInfluenceType;
 
 class AuthorizationBuilderTest {
 
@@ -21,7 +20,7 @@ class AuthorizationBuilderTest {
 	@Test
 	void appendAuthorization() {
 		AuthorizationsType authorizations = new AuthorizationsType();
-		AuthorizationType auth = new AuthorizationType()
+		final AuthorizationType auth = new AuthorizationType()
 				.withAuthorizationIdentification("id")
 				.withAuthorizationAlias("1234").withAuthorizationName("Toto").withAuthorizationObject(
 						new AuthorizationObjectType()

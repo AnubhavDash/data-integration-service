@@ -11,10 +11,9 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
 import ch.evoting.xmlns.parameter._4.BirthYearAuthenticationKeyTypeImpl;
-import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterWithRoleMapper;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.PersonType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PersonType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -35,9 +34,9 @@ public class BirthYearAuthenticationKeySteps {
 	}
 
 	@And("^A voter born on (\\d+)-(\\d+)-(\\d+)$")
-	public void andAVoterBorn(Integer year, Integer month, Integer day) {
+	public void andAVoterBorn(final Integer year, final Integer month, final Integer day) {
 		voter = new VoterTypeWithRole();
-		PersonType person = new PersonType();
+		final PersonType person = new PersonType();
 		person.setDateOfBirth(factory.newXMLGregorianCalendar(year, month, day, 0, 0, 0, 0, 0));
 		voter.setPerson(person);
 	}
@@ -54,7 +53,7 @@ public class BirthYearAuthenticationKeySteps {
 	}
 
 	@And("^The authentication key named \"([^\"]*)\" contains (\\d+)$")
-	public void andAuthenticationKeyNamedContain(String key, Integer value) {
+	public void andAuthenticationKeyNamedContain(final String key, final Integer value) {
 		assertThat(voter.getExtendedAuthenticationKeys().getExtendedAuthenticationKey().get(0).getName(),
 				is(BirthYearAuthenticationKeyTypeImpl.KEY_NAME));
 		assertThat(voter.getExtendedAuthenticationKeys().getExtendedAuthenticationKey().get(0).getValue(),

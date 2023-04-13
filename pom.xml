@@ -30,7 +30,7 @@
 		<crypto-primitives.version>1.2.1.0</crypto-primitives.version>
 		<crypto-primitives-domain.version>1.2.1.0</crypto-primitives-domain.version>
 		<cucumber-bom.version>7.11.1</cucumber-bom.version>
-		<domain.version>1.2.3.0</domain.version>
+		<e-voting-libraries.version>0.0.0.3</e-voting-libraries.version>
 		<gmavenplus-plugin.version>1.11.1</gmavenplus-plugin.version>
 		<groovy.version>3.0.14</groovy.version>
 		<groovy-all.version>2.4.21</groovy-all.version>
@@ -79,9 +79,9 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>ch.post.it.evoting.domain</groupId>
-				<artifactId>domain</artifactId>
-				<version>${domain.version}</version>
+				<groupId>ch.post.it.evoting.evotinglibraries</groupId>
+				<artifactId>xml</artifactId>
+				<version>${e-voting-libraries.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.post.it.evoting.cryptoprimitives</groupId>
@@ -244,8 +244,8 @@
 	</dependencyManagement>
 	<dependencies>
 		<dependency>
-			<groupId>ch.post.it.evoting.domain</groupId>
-			<artifactId>domain</artifactId>
+			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
+			<artifactId>xml</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>ch.post.it.evoting.cryptoprimitives</groupId>

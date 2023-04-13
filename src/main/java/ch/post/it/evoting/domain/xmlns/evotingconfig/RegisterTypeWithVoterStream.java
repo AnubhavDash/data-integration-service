@@ -1,13 +1,16 @@
 /*
  * (c) Copyright 2023 Swiss Post Ltd.
  */
-package ch.post.it.evoting.domain.xmlns.evotingconfig;
+package ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.stream.Stream;
+
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RegisterType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType;
 
 public class RegisterTypeWithVoterStream extends RegisterType {
 

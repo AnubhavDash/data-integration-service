@@ -4,8 +4,8 @@
 package ch.evoting.xmlns.parameter._4;
 
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 public class ResidenceSplitterTypeImpl extends ResidenceSplitterType {
 	@Override

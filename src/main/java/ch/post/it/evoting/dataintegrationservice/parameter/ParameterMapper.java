@@ -11,16 +11,16 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.AnswerInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ElectoralAuthorityMembersType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ElectoralAuthorityType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.IncumbentTextInfoType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.IncumbentTextType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.LanguageType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.PropertyType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.StandardAnswerType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.TiebreakAnswerType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.UiPropertiesType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectoralAuthorityMembersType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectoralAuthorityType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentTextInfoType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentTextType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PropertyType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswerType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TiebreakAnswerType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.UiPropertiesType;
 
 @Mapper(imports = UUID.class)
 public interface ParameterMapper {

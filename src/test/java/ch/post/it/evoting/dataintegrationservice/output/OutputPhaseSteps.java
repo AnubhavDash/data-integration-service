@@ -23,25 +23,25 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
-import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
+import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.pipes.PhaseSteps;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationObjectType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.AuthorizationsType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.Configuration;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestDescriptionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.CountingCircleType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.DomainOfInfluenceType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.HeaderType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.LanguageType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.PersonType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.RegisterType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.SexType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationObjectType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestDescriptionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CountingCircleType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.DomainOfInfluenceType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.HeaderType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PersonType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RegisterType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.SexType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -90,32 +90,32 @@ public class OutputPhaseSteps extends PhaseSteps {
 	private Map<String, List<VoterTypeWithRole>> invalidVotersMap = new HashMap<>();
 	private Map<String, VoterTypeWithRole> invalidVoterMap = new HashMap<>();
 
-	private Object getXMLObjectFromFile(Class clazz, String fileName) {
+	private Object getXMLObjectFromFile(final Class clazz, final String fileName) {
 		try {
-			String targetDir = PropertyProvider.getPropertyValue("directory.target");
-			File file = new File(targetDir + "/" + fileName);
-			JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
-			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			JAXBElement root = jaxbUnmarshaller.unmarshal(new StreamSource(file), clazz);
+			final String targetDir = PropertyProvider.getPropertyValue("directory.target");
+			final File file = new File(targetDir + "/" + fileName);
+			final JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
+			final Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			final JAXBElement root = jaxbUnmarshaller.unmarshal(new StreamSource(file), clazz);
 			return root.getValue();
-		} catch (JAXBException e) {
+		} catch (final JAXBException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
 
 	@Given("^a list of voters named \"([^\"]*)\"$")
-	public void givenAListOvVoterNamed(String list) {
+	public void givenAListOvVoterNamed(final String list) {
 		votersMap.put(list, new ArrayList<>());
 	}
 
 	@Given("^a list of invalid voters named \"([^\"]*)\"$")
-	public void givenAListOfInvalidVotersNamed(String list) {
+	public void givenAListOfInvalidVotersNamed(final String list) {
 		invalidVotersMap.put(list, new ArrayList<>());
 	}
 
 	@Given("^a voter named \"([^\"]*)\" in list \"([^\"]*)\"$")
-	public void givenAVoterNamed(String name, String list) {
-		VoterTypeWithRole voter = new VoterTypeWithRole();
+	public void givenAVoterNamed(final String name, final String list) {
+		final VoterTypeWithRole voter = new VoterTypeWithRole();
 		voter.setVoterType(VoterTypeType.SWISSRESIDENT);
 		voter.setSex(SexType.FEMALE);
 		votersMap.get(list).add(voter);
@@ -123,29 +123,29 @@ public class OutputPhaseSteps extends PhaseSteps {
 	}
 
 	@Given("^an invalid voter named \"([^\"]*)\" in list \"([^\"]*)\"$")
-	public void givenAnInvalidVoterNamed(String name, String list) {
-		VoterTypeWithRole voter = new VoterTypeWithRole();
+	public void givenAnInvalidVoterNamed(final String name, final String list) {
+		final VoterTypeWithRole voter = new VoterTypeWithRole();
 		invalidVotersMap.get(list).add(voter);
 		invalidVoterMap.put(name, voter);
 	}
 
 	@And("^voter named \"([^\"]*)\" has id \"([^\"]*)\"$")
-	public void andVoterNameHasId(String name, String id) {
+	public void andVoterNameHasId(final String name, final String id) {
 		voterMap.get(name).setVoterIdentification(id);
 	}
 
 	@And("^invalid voter named \"([^\"]*)\" has id \"([^\"]*)\"$")
-	public void andInvalidVoterNamedHasId(String name, String id) {
+	public void andInvalidVoterNamedHasId(final String name, final String id) {
 		invalidVoterMap.get(name).setVoterIdentification(id);
 	}
 
 	@And("^voter named \"([^\"]*)\" has authorization \"([^\"]*)\"$")
-	public void andVoterNamedHasAuthorization(String name, String auth) {
+	public void andVoterNamedHasAuthorization(final String name, final String auth) {
 		voterMap.get(name).setAuthorization(auth);
 	}
 
 	@And("^voter named \"([^\"]*)\" has first name, last name, date of birth \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andVoterNamedHasDetails(String voter, String fname, String lname, String dt) {
+	public void andVoterNamedHasDetails(final String voter, final String fname, final String lname, final String dt) {
 		voterMap.get(voter).withPerson(new PersonType().withResidenceCountryId("CH").withSex("1").withLanguageOfCorrespondance(LanguageType.DE)
 				.withMunicipality(new PersonType.Municipality().withMunicipalityId(1).withMunicipalityName("Bern")).withFirstName(fname)
 				.withOfficialName(lname).withDateOfBirth(DateUtil.parseToXMLGregorianCalendar(dt + " 00:00:00")));
@@ -179,46 +179,46 @@ public class OutputPhaseSteps extends PhaseSteps {
 			ParameterPhase.exports.setConfigSplitterPlugins(Flux.just(Collections.EMPTY_LIST));
 			new Runtime().run(uri("outputPrePhase"));
 			fail();
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			processException = e;
 		}
 	}
 
 	@Then("^an exception with text \"([^\"]*)\" should occur$")
-	public void thenAnExceptionWithTestShouldOccur(String message) {
+	public void thenAnExceptionWithTestShouldOccur(final String message) {
 		assertTrue(processException.getMessage().endsWith(message));
 	}
 
 	@Then("^voter with id \"([^\"]*)\" should have personal information in the file \"([^\"]*)\"$")
-	public void thenVoterWithIdShouldHaveInformation(String id, String fname) {
-		Configuration configuration = (Configuration) getXMLObjectFromFile(Configuration.class, fname);
-		VoterType voter = configuration.getRegister().getVoter().stream().filter(v -> v.getVoterIdentification().equals(id)).findFirst().get();
+	public void thenVoterWithIdShouldHaveInformation(final String id, final String fname) {
+		final Configuration configuration = (Configuration) getXMLObjectFromFile(Configuration.class, fname);
+		final VoterType voter = configuration.getRegister().getVoter().stream().filter(v -> v.getVoterIdentification().equals(id)).findFirst().get();
 		assertNotNull(voter.getPerson());
 	}
 
 	@And("^voter with id \"([^\"]*)\" should have no personal information in the file \"([^\"]*)\"$")
-	public void andVoterWithIdShouldHaveNoPersonalInformation(String id, String fname) {
-		Configuration configuration = (Configuration) getXMLObjectFromFile(Configuration.class, fname);
-		VoterType voter = configuration.getRegister().getVoter().stream().filter(v -> v.getVoterIdentification().equals(id)).findFirst().get();
+	public void andVoterWithIdShouldHaveNoPersonalInformation(final String id, final String fname) {
+		final Configuration configuration = (Configuration) getXMLObjectFromFile(Configuration.class, fname);
+		final VoterType voter = configuration.getRegister().getVoter().stream().filter(v -> v.getVoterIdentification().equals(id)).findFirst().get();
 		assertNull(voter.getPerson());
 	}
 
 	@And("^the configuration file \"([^\"]*)\" should exist and contain (\\d+) voters$")
-	public void andConfigurationFileShouldExistAndContain(String fname, Long nb) {
-		Configuration configuration = (Configuration) getXMLObjectFromFile(Configuration.class, fname);
-		Long nbVoters = configuration.getRegister().getVoter().stream().count();
+	public void andConfigurationFileShouldExistAndContain(final String fname, final Long nb) {
+		final Configuration configuration = (Configuration) getXMLObjectFromFile(Configuration.class, fname);
+		final Long nbVoters = configuration.getRegister().getVoter().stream().count();
 		assertEquals(nbVoters, nb);
 	}
 
 	@And("^the register file \"([^\"]*)\" should exist and contain (\\d+) voters$")
-	public void andRegisterFileShouldExistAndContain(String fname, Long nb) {
-		RegisterType register = (RegisterType) getXMLObjectFromFile(RegisterType.class, fname);
-		Long nbVoters = register.getVoter().stream().count();
+	public void andRegisterFileShouldExistAndContain(final String fname, final Long nb) {
+		final RegisterType register = (RegisterType) getXMLObjectFromFile(RegisterType.class, fname);
+		final Long nbVoters = register.getVoter().stream().count();
 		assertEquals(nbVoters, nb);
 	}
 
 	@Given("^the contest has description \"([^\"]*)\" \"([^\"]*)\"$")
-	public void givenContestHasDescription(String lang, String desc) {
+	public void givenContestHasDescription(final String lang, final String desc) {
 		contest.getContestDescription().getContestDescriptionInfo()
 				.add(new ContestDescriptionInformationType.ContestDescriptionInfo().withLanguage(LanguageType.valueOf(lang))
 						.withContestDescription(desc));
@@ -230,8 +230,8 @@ public class OutputPhaseSteps extends PhaseSteps {
 	}
 
 	@Then("^the configuration \"([^\"]*)\" should have contest description \"([^\"]*)\" \"([^\"]*)\"$")
-	public void thenConfigurationShouldHaveContestDescription(String fname, String lang, String desc) {
-		Configuration configuration = (Configuration) getXMLObjectFromFile(Configuration.class, fname);
+	public void thenConfigurationShouldHaveContestDescription(final String fname, final String lang, final String desc) {
+		final Configuration configuration = (Configuration) getXMLObjectFromFile(Configuration.class, fname);
 		assertTrue(configuration.getContest().getContestDescription().getContestDescriptionInfo().stream()
 				.anyMatch(d -> d.getLanguage().equals(LanguageType.valueOf(lang)) && d.getContestDescription().equals(desc)));
 	}

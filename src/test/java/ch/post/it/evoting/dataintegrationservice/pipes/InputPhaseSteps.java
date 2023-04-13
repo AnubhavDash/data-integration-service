@@ -38,7 +38,7 @@ public class InputPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^it outputs a file of type \"([^\"]*)\"$")
-	public void andItOutputsAFileOfType(String type) {
+	public void andItOutputsAFileOfType(final String type) {
 		assertTrue(files.stream().anyMatch(f -> f.contains(type)));
 	}
 }

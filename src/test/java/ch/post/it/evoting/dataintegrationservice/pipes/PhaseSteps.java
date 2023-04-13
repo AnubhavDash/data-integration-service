@@ -11,19 +11,19 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 public abstract class PhaseSteps {
-	protected URI uri(String pipeName) {
+	protected URI uri(final String pipeName) {
 		try {
 			return getClass().getResource("/pipes/" + pipeName + ".groovy").toURI();
-		} catch (URISyntaxException e) {
+		} catch (final URISyntaxException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
 
-	protected String marshall(Object obj) {
-		StringWriter w = new StringWriter();
+	protected String marshall(final Object obj) {
+		final StringWriter w = new StringWriter();
 		try {
 			JAXBContext.newInstance(obj.getClass()).createMarshaller().marshal(obj, w);
-		} catch (JAXBException e) {
+		} catch (final JAXBException e) {
 			throw new IllegalArgumentException(e);
 		}
 		return w.toString();

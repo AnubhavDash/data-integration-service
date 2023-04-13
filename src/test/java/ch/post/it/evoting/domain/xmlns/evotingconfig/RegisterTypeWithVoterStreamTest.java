@@ -12,19 +12,22 @@ import java.util.Iterator;
 
 import org.junit.jupiter.api.Test;
 
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RegisterTypeWithVoterStream;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType;
+
 class RegisterTypeWithVoterStreamTest {
 
 	@Test
 	void TestStreamAsList() {
 
-		VoterType[] voters = new VoterType[] { new VoterType().withVoterIdentification("toto") };
+		final VoterType[] voters = new VoterType[] { new VoterType().withVoterIdentification("toto") };
 
-		RegisterTypeWithVoterStream pojo = new RegisterTypeWithVoterStream(Arrays.stream(voters));
+		final RegisterTypeWithVoterStream pojo = new RegisterTypeWithVoterStream(Arrays.stream(voters));
 
-		Iterator<VoterType> it = pojo.getVoter().iterator();
+		final Iterator<VoterType> it = pojo.getVoter().iterator();
 		assertTrue(it.hasNext());
 
-		VoterType voter = it.next();
+		final VoterType voter = it.next();
 		assertEquals("toto", voter.getVoterIdentification());
 
 		assertFalse(it.hasNext());

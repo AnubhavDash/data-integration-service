@@ -11,8 +11,8 @@ import ch.ech.xmlns.ech_0155._3.ContestType;
 import ch.ech.xmlns.ech_0157._3.EventInitialDelivery;
 import ch.post.it.evoting.dataintegrationservice.contest.ECH015xv3Mapper;
 import ch.post.it.evoting.dataintegrationservice.contest.ECHv3FileContestLoader;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.ElectionInformationType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoteInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
 import reactor.util.function.Tuple2;
 
@@ -21,12 +21,12 @@ public class ContestEch015xv3Component {
 
 	private final ECHv3FileContestLoader ecHv3FileContestLoader;
 
-	public ContestEch015xv3Component(ECHv3FileContestLoader ecHv3FileContestLoader) {
+	public ContestEch015xv3Component(final ECHv3FileContestLoader ecHv3FileContestLoader) {
 
 		this.ecHv3FileContestLoader = ecHv3FileContestLoader;
 	}
 
-	Function<ContestType, ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType> fromECHv3Contest() {
+	Function<ContestType, ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType> fromECHv3Contest() {
 		return ECH015xv3Mapper.INSTANCE::convert;
 	}
 

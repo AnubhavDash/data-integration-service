@@ -26,20 +26,19 @@ import ch.ech.xmlns.ech_0045._4.SwissAbroadType;
 import ch.ech.xmlns.ech_0045._4.SwissDomesticType;
 import ch.ech.xmlns.ech_0045._4.SwissPersonType;
 import ch.ech.xmlns.ech_0045._4.VotingPersonType;
-import ch.post.it.evoting.dataintegrationservice.register.ECH0045v4Mapper;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.LanguageType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeType;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 class ECH0045v4MapperTest {
 
 	private final ECH0045v4Mapper mapper = ECH0045v4Mapper.INSTANCE;
 
 	private VotingPersonType createSwissVoter() throws Exception {
-		XMLGregorianCalendar gc = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());
+		final XMLGregorianCalendar gc = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());
 		gc.clear();
 		gc.setYear(1999);
-		VotingPersonType voter = new VotingPersonType()
+		final VotingPersonType voter = new VotingPersonType()
 				.withPerson(new VotingPersonType.Person()
 						.withSwiss(new SwissDomesticType()
 								.withMunicipality(new SwissMunicipalityType()
@@ -79,10 +78,10 @@ class ECH0045v4MapperTest {
 	}
 
 	private VotingPersonType createAbroadVoter() throws Exception {
-		XMLGregorianCalendar gc = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());
+		final XMLGregorianCalendar gc = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());
 		gc.clear();
 		gc.setYear(1999);
-		VotingPersonType voter = new VotingPersonType()
+		final VotingPersonType voter = new VotingPersonType()
 				.withPerson(new VotingPersonType.Person()
 						.withSwissAbroad(new SwissAbroadType()
 								.withResidenceCountry(new CountryType().withCountryIdISO2("FR"))
@@ -123,8 +122,8 @@ class ECH0045v4MapperTest {
 		return voter;
 	}
 
-	private void setBirthDate(VotingPersonType voter, int year, Integer month, Integer day) throws Exception {
-		XMLGregorianCalendar gc = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());
+	private void setBirthDate(final VotingPersonType voter, final int year, final Integer month, final Integer day) throws Exception {
+		final XMLGregorianCalendar gc = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());
 		gc.clear();
 		gc.setYear(year);
 		if (month != null && day != null) {
@@ -153,8 +152,8 @@ class ECH0045v4MapperTest {
 
 	@Test
 	void testBirthDate() throws Exception {
-		VotingPersonType echVoter = createSwissVoter();
-		VotingPersonType echAbroadVoter = createAbroadVoter();
+		final VotingPersonType echVoter = createSwissVoter();
+		final VotingPersonType echAbroadVoter = createAbroadVoter();
 		VoterTypeWithRole voter;
 
 		setBirthDate(echVoter, 1999, null, null);
@@ -184,8 +183,8 @@ class ECH0045v4MapperTest {
 
 	@Test
 	void testSimpleFields() throws Exception {
-		VotingPersonType echVoter = createSwissVoter();
-		VotingPersonType echAbroadVoter = createAbroadVoter();
+		final VotingPersonType echVoter = createSwissVoter();
+		final VotingPersonType echAbroadVoter = createAbroadVoter();
 		VoterTypeWithRole voter;
 
 		voter = mapper.convert(echVoter);
@@ -240,8 +239,8 @@ class ECH0045v4MapperTest {
 
 	@Test
 	void testConvertCountryIdToIso2() throws Exception {
-		VotingPersonType echAbroadVoter = createAbroadVoter();
-		VoterTypeWithRole voter;
+		final VotingPersonType echAbroadVoter = createAbroadVoter();
+		final VoterTypeWithRole voter;
 		echAbroadVoter.getPerson().getSwissAbroad().getResidenceCountry()
 				.withCountryId(8207)
 				.withCountryIdISO2(null);

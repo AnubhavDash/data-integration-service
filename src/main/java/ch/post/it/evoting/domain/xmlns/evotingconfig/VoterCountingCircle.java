@@ -1,7 +1,7 @@
 /*
  * (c) Copyright 2023 Swiss Post Ltd.
  */
-package ch.post.it.evoting.domain.xmlns.evotingconfig;
+package ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig;
 
 import lombok.Getter;
 import lombok.Setter;

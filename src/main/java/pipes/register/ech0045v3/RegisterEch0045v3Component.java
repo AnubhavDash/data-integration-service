@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import ch.ech.xmlns.ech_0045._3.VotingPersonType;
 import ch.post.it.evoting.dataintegrationservice.register.ECH0045v3Mapper;
 import ch.post.it.evoting.dataintegrationservice.register.ECHv3FileRegisterLoader;
-import ch.post.it.evoting.domain.xmlns.evotingconfig.VoterTypeWithRole;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeWithRole;
 
 @Component
 public class RegisterEch0045v3Component {

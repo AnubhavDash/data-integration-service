@@ -29,7 +29,6 @@ import ch.ech.xmlns.ech_0155._4.TieBreakQuestionType;
 import ch.ech.xmlns.ech_0155._4.VoteDescriptionInformationType;
 import ch.ech.xmlns.ech_0155._4.VoteType;
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
-import ch.post.it.evoting.dataintegrationservice.contest.ECH015xv4Mapper;
 
 class ECH015xv4MapperTest {
 
@@ -37,17 +36,17 @@ class ECH015xv4MapperTest {
 
 	private ContestType createEchContestType() throws Exception {
 
-		DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
-		XMLGregorianCalendar gc = datatypeFactory.newXMLGregorianCalendar(new GregorianCalendar());
+		final DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
+		final XMLGregorianCalendar gc = datatypeFactory.newXMLGregorianCalendar(new GregorianCalendar());
 		gc.clear();
 		gc.setDay(27);
 		gc.setMonth(3);
 		gc.setYear(1999);
 
-		GregorianCalendar tmpTill = gc.toGregorianCalendar();
+		final GregorianCalendar tmpTill = gc.toGregorianCalendar();
 		tmpTill.add(Calendar.DAY_OF_MONTH, 1);
 
-		ContestType echContest = new ContestType();
+		final ContestType echContest = new ContestType();
 		echContest
 				.withContestIdentification("A1-B2-1111111111111-aaa")
 				.withContestDate(gc)
@@ -72,10 +71,10 @@ class ECH015xv4MapperTest {
 				);
 	}
 
-	private EVotingPeriodType createEVotingPeriodType(DatatypeFactory dateFactory, XMLGregorianCalendar refDate) {
-		GregorianCalendar tmpTill = refDate.toGregorianCalendar();
+	private EVotingPeriodType createEVotingPeriodType(final DatatypeFactory dateFactory, final XMLGregorianCalendar refDate) {
+		final GregorianCalendar tmpTill = refDate.toGregorianCalendar();
 		tmpTill.add(Calendar.DAY_OF_MONTH, 1);
-		XMLGregorianCalendar dateTill = dateFactory.newXMLGregorianCalendar(tmpTill);
+		final XMLGregorianCalendar dateTill = dateFactory.newXMLGregorianCalendar(tmpTill);
 
 		return new EVotingPeriodType() // Opt
 				.withEVotingPeriodFrom(refDate)
@@ -176,7 +175,7 @@ class ECH015xv4MapperTest {
 	}
 
 	private ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation createEchVoteInformation() {
-		ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation echVote = new ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation();
+		final ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation echVote = new ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation();
 		echVote
 				.withVote(createEchVoteType())
 				.withBallot(new BallotType()
@@ -196,7 +195,7 @@ class ECH015xv4MapperTest {
 	}
 
 	private ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation createEchElectionInformation() {
-		ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation echElection = new ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation();
+		final ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation echElection = new ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation();
 		echElection
 				.withElection(new ch.ech.xmlns.ech_0155._4.ElectionType()
 						.withElectionIdentification("elec-1")
@@ -334,21 +333,21 @@ class ECH015xv4MapperTest {
 	@Test
 	void testContestType() throws Exception {
 
-		ContestType echContest = createEchContestType();
-		ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType contest = mapper.convert(echContest);
+		final ContestType echContest = createEchContestType();
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType contest = mapper.convert(echContest);
 		assertEquals(echContest.getContestIdentification(), contest.getContestIdentification());
 		assertEquals(echContest.getContestDate().toXMLFormat(), contest.getContestDate().toXMLFormat());
 	}
 
 	@Test
 	void testContestDescriptionInformationType() throws Exception {
-		ContestType echContest = createEchContestType();
-		ch.post.it.evoting.domain.xmlns.evotingconfig.ContestType contest = mapper.convert(echContest);
-		Set<String> echDescriptions = echContest.getContestDescription().getContestDescriptionInfo()
+		final ContestType echContest = createEchContestType();
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType contest = mapper.convert(echContest);
+		final Set<String> echDescriptions = echContest.getContestDescription().getContestDescriptionInfo()
 				.stream()
 				.map(d -> d.getLanguage() + "-" + d.getContestDescription())
 				.collect(Collectors.toSet());
-		Set<String> descriptions = contest.getContestDescription().getContestDescriptionInfo()
+		final Set<String> descriptions = contest.getContestDescription().getContestDescriptionInfo()
 				.stream()
 				.map(d -> d.getLanguage().value() + "-" + d.getContestDescription())
 				.collect(Collectors.toSet());
@@ -357,22 +356,22 @@ class ECH015xv4MapperTest {
 
 	@Test
 	void testBallotDescriptionInformationType() {
-		BallotDescriptionInformationType source = createEchBallotDescriptionInformationType();
-		ch.post.it.evoting.domain.xmlns.evotingconfig.BallotDescriptionInformationType destination = mapper.convert(source);
+		final BallotDescriptionInformationType source = createEchBallotDescriptionInformationType();
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType destination = mapper.convert(source);
 
 		assertEquals(source.getBallotDescriptionInfo().size(), destination.getBallotDescriptionInfo().size());
 	}
 
 	@Test
 	void testBallotDescriptionInfo() {
-		BallotDescriptionInformationType source = createEchBallotDescriptionInformationType();
-		ch.post.it.evoting.domain.xmlns.evotingconfig.BallotDescriptionInformationType destination = mapper.convert(source);
+		final BallotDescriptionInformationType source = createEchBallotDescriptionInformationType();
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType destination = mapper.convert(source);
 
-		Set<String> echDescriptions = source.getBallotDescriptionInfo()
+		final Set<String> echDescriptions = source.getBallotDescriptionInfo()
 				.stream()
 				.map(d -> String.format("%s - %s - %s", d.getLanguage(), d.getBallotDescriptionShort(), d.getBallotDescriptionLong()))
 				.collect(Collectors.toSet());
-		Set<String> descriptions = destination.getBallotDescriptionInfo()
+		final Set<String> descriptions = destination.getBallotDescriptionInfo()
 				.stream()
 				.map(d -> String.format("%s - %s - %s", d.getLanguage().value(), d.getBallotDescriptionShort(), d.getBallotDescriptionLong()))
 				.collect(Collectors.toSet());
@@ -381,22 +380,22 @@ class ECH015xv4MapperTest {
 
 	@Test
 	void testBallotQuestionType() {
-		BallotQuestionType source = createEchBallotQuestionType();
-		ch.post.it.evoting.domain.xmlns.evotingconfig.BallotQuestionType destination = mapper.convert(source);
+		final BallotQuestionType source = createEchBallotQuestionType();
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType destination = mapper.convert(source);
 
 		assertEquals(source.getBallotQuestionInfo().size(), destination.getBallotQuestionInfo().size());
 	}
 
 	@Test
 	void testBallotQuestionType_BallotQuestionInfo() {
-		BallotQuestionType source = createEchBallotQuestionType();
-		ch.post.it.evoting.domain.xmlns.evotingconfig.BallotQuestionType destination = mapper.convert(source);
+		final BallotQuestionType source = createEchBallotQuestionType();
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType destination = mapper.convert(source);
 
-		Set<String> echDescriptions = source.getBallotQuestionInfo()
+		final Set<String> echDescriptions = source.getBallotQuestionInfo()
 				.stream()
 				.map(d -> String.format("%s - %s - %s", d.getLanguage(), d.getBallotQuestionTitle(), d.getBallotQuestion()))
 				.collect(Collectors.toSet());
-		Set<String> descriptions = destination.getBallotQuestionInfo()
+		final Set<String> descriptions = destination.getBallotQuestionInfo()
 				.stream()
 				.map(d -> String.format("%s - %s - %s", d.getLanguage().value(), d.getBallotQuestionTitle(), d.getBallotQuestion()))
 				.collect(Collectors.toSet());
@@ -405,11 +404,11 @@ class ECH015xv4MapperTest {
 
 	@Test
 	void testVoteInformation() {
-		ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation source = createEchVoteInformation();
-		ch.post.it.evoting.domain.xmlns.evotingconfig.VoteInformationType destination = mapper.convert(source);
+		final ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation source = createEchVoteInformation();
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType destination = mapper.convert(source);
 
-		ch.ech.xmlns.ech_0155._4.VoteType voteSource = source.getVote();
-		ch.post.it.evoting.domain.xmlns.evotingconfig.VoteType voteDestination = destination.getVote();
+		final ch.ech.xmlns.ech_0155._4.VoteType voteSource = source.getVote();
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteType voteDestination = destination.getVote();
 
 		assertEquals(source.getVote() != null, destination.getVote() != null);
 		assertEquals(source.getBallot().size(), destination.getVote().getBallot().size());
@@ -417,14 +416,14 @@ class ECH015xv4MapperTest {
 
 	@Test
 	void testVoteDescriptionInfo() {
-		ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation source = createEchVoteInformation();
-		ch.post.it.evoting.domain.xmlns.evotingconfig.VoteInformationType destination = mapper.convert(source);
+		final ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation source = createEchVoteInformation();
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType destination = mapper.convert(source);
 
-		Set<String> echDescriptions = source.getVote().getVoteDescription().getVoteDescriptionInfo()
+		final Set<String> echDescriptions = source.getVote().getVoteDescription().getVoteDescriptionInfo()
 				.stream()
 				.map(v -> v.getLanguage() + "-" + v.getVoteDescription())
 				.collect(Collectors.toSet());
-		Set<String> descriptions = destination.getVote().getVoteDescription().getVoteDescriptionInfo()
+		final Set<String> descriptions = destination.getVote().getVoteDescription().getVoteDescriptionInfo()
 				.stream()
 				.map(v -> v.getLanguage().value() + "-" + v.getVoteDescription())
 				.collect(Collectors.toSet());
@@ -434,11 +433,11 @@ class ECH015xv4MapperTest {
 	@Test
 	void testElectionInformation() {
 
-		ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation source = createEchElectionInformation();
-		ch.post.it.evoting.domain.xmlns.evotingconfig.ElectionInformationType destination = mapper.convert(source);
+		final ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation source = createEchElectionInformation();
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType destination = mapper.convert(source);
 
-		ch.ech.xmlns.ech_0155._4.ElectionType electionSource = source.getElection();
-		ch.post.it.evoting.domain.xmlns.evotingconfig.ElectionType electionDestination = destination.getElection();
+		final ch.ech.xmlns.ech_0155._4.ElectionType electionSource = source.getElection();
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionType electionDestination = destination.getElection();
 
 		assertEquals(electionSource != null, electionDestination != null);
 		assertEquals(source.getList().size(), destination.getList().size());
