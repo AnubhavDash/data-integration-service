@@ -52,6 +52,8 @@ public class AuthorizationService {
 
 	private static final Integer MIN_TEST_CONTROL_VALUE = Integer.parseInt(PropertyProvider.getPropertyValue("countingCircle.testControl.minValue"));
 
+	private static final boolean COUNTING_CIRCLE_ALL_TEST = Boolean.parseBoolean(PropertyProvider.getPropertyValue("countingCircle.allTest"));
+
 	private HashMap<String, Integer> authorizationTypePriority;
 	private final Comparator<AuthorizationObjectType> authorizationObjectTypeComparator = (o1, o2) -> {
 		Integer prio1 = authorizationTypePriority.get(o1.getDomainOfInfluence().getDomainOfInfluenceType());
@@ -226,7 +228,8 @@ public class AuthorizationService {
 				result.setAuthorizationAlias(result.getAuthorizationAlias().substring(0, 97) + "...");
 			}
 
-			result.setAuthorizationTest(usedCountingCircles.stream().anyMatch(cc -> cc.getMunicipalityId() >= MIN_TEST_CONTROL_VALUE));
+			result.setAuthorizationTest(
+					COUNTING_CIRCLE_ALL_TEST || usedCountingCircles.stream().anyMatch(cc -> cc.getMunicipalityId() >= MIN_TEST_CONTROL_VALUE));
 			result.setAuthorizationFromDate(result.isAuthorizationTest() && contestParameters.getEvotingTestBallotBoxesFromDate() != null ?
 					contestParameters.getEvotingTestBallotBoxesFromDate() :
 					contest.getEvotingFromDate());
@@ -257,8 +260,9 @@ public class AuthorizationService {
 				result.setAuthorizationAlias(result.getAuthorizationAlias().substring(0, 97) + "...");
 			}
 
-			result.setAuthorizationTest(voter.getDomainOfInfluenceInfos().stream().map(VoterDomainOfInfluenceInfo::getCountingCircle)
-					.filter(cc -> StringUtil.isInteger(cc.getId())).anyMatch(cc -> Integer.parseInt(cc.getId()) >= MIN_TEST_CONTROL_VALUE));
+			result.setAuthorizationTest(
+					COUNTING_CIRCLE_ALL_TEST || voter.getDomainOfInfluenceInfos().stream().map(VoterDomainOfInfluenceInfo::getCountingCircle)
+							.filter(cc -> StringUtil.isInteger(cc.getId())).anyMatch(cc -> Integer.parseInt(cc.getId()) >= MIN_TEST_CONTROL_VALUE));
 			result.setAuthorizationFromDate(result.isAuthorizationTest() && contestParameters.getEvotingTestBallotBoxesFromDate() != null ?
 					contestParameters.getEvotingTestBallotBoxesFromDate() :
 					contest.getEvotingFromDate());
