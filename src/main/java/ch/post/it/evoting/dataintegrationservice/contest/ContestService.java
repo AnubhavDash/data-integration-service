@@ -78,6 +78,8 @@ public class ContestService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ContestService.class);
 
+	private static final String VALUE_NOT_UNIQUE_WITHIN_PARAMETERS_MESSAGE = "%s '%s' not unique within the parameters";
+
 	private static final int MINIMAL_REQUIRED_LANGUAGES = 4;
 	private static final int DEFAULT_VALUE = 0;
 
@@ -131,7 +133,7 @@ public class ContestService {
 					.map(DefaultAnswerTranslationType.AnswerType::getAnswerTypeIdentification)
 					.collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().filter(e -> e.getValue() > 1)
 					.findFirst().ifPresent(e -> {
-						throw new IllegalStateException("answerType '" + e.getKey() + "' not unique within the parameters");
+						throw new IllegalStateException(String.format(VALUE_NOT_UNIQUE_WITHIN_PARAMETERS_MESSAGE, "answerType", e.getKey()));
 					});
 			defaultAnswers = contestParameters.getDefaultAnswerTranslations().getAnswerType().stream().collect(
 					Collectors.toMap(DefaultAnswerTranslationType.AnswerType::getAnswerTypeIdentification,
@@ -150,7 +152,7 @@ public class ContestService {
 					.map(DefaultAnswerTranslationType.AnswerType::getAnswerTypeIdentification)
 					.collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().filter(e -> e.getValue() > 1)
 					.findFirst().ifPresent(e -> {
-						throw new IllegalStateException("answerType '" + e.getKey() + "' not unique within the parameters");
+						throw new IllegalStateException(String.format(VALUE_NOT_UNIQUE_WITHIN_PARAMETERS_MESSAGE, "answerType", e.getKey()));
 					});
 			defaultAnswers = contestParameters.getDefaultAnswerTranslations().getAnswerType().stream().collect(
 					Collectors.toMap(DefaultAnswerTranslationType.AnswerType::getAnswerTypeIdentification,
@@ -168,7 +170,7 @@ public class ContestService {
 			contestParameters.getAnswerTranslations().getQuestion().stream()
 					.collect(Collectors.groupingBy(AnswerTranslationType.Question::getQuestionIdentification, Collectors.counting())).entrySet()
 					.stream().filter(e -> e.getValue() > 1).findFirst().ifPresent(e -> {
-						throw new IllegalStateException("question id '" + e.getKey() + "' not unique within the parameters");
+						throw new IllegalStateException(String.format(VALUE_NOT_UNIQUE_WITHIN_PARAMETERS_MESSAGE, "questionId", e.getKey()));
 					});
 			specificAnswers = contestParameters.getAnswerTranslations().getQuestion().stream().collect(
 					Collectors.toMap(AnswerTranslationType.Question::getQuestionIdentification, AnswerTranslationType.Question::getStandardAnswer));
@@ -185,7 +187,7 @@ public class ContestService {
 			contestParameters.getAnswerTranslations().getQuestion().stream()
 					.collect(Collectors.groupingBy(AnswerTranslationType.Question::getQuestionIdentification, Collectors.counting())).entrySet()
 					.stream().filter(e -> e.getValue() > 1).findFirst().ifPresent(e -> {
-						throw new IllegalStateException("question id '" + e.getKey() + "' not unique within the parameters");
+						throw new IllegalStateException(String.format(VALUE_NOT_UNIQUE_WITHIN_PARAMETERS_MESSAGE, "questionId", e.getKey()));
 					});
 			specificAnswers = contestParameters.getAnswerTranslations().getQuestion().stream().collect(
 					Collectors.toMap(AnswerTranslationType.Question::getQuestionIdentification, AnswerTranslationType.Question::getTiebreakAnswer));
@@ -205,30 +207,42 @@ public class ContestService {
 
 		votes.forEach(vote -> vote.getVote().getBallot().forEach(ballot -> {
 			if (ballot.getStandardBallot() != null) {
-				final StandardBallotType question = ballot.getStandardBallot();
-				if (question.getAnswer().isEmpty()) {
-					question.getAnswer()
-							.addAll(getStandardAnswers(question.getQuestionIdentification(), question.getAnswerType(), specificStandardAnswers,
-									defaultStandardAnswers));
-				}
+				addVotesAnswersStandardBallot(defaultStandardAnswers, specificStandardAnswers, ballot);
 			} else {
-				ballot.getVariantBallot().getStandardQuestion().forEach(question -> {
-					if (question.getAnswer().isEmpty()) {
-						question.getAnswer()
-								.addAll(getStandardAnswers(question.getQuestionIdentification(), question.getAnswerType(), specificStandardAnswers,
-										defaultStandardAnswers));
-					}
-				});
-				ballot.getVariantBallot().getTieBreakQuestion().forEach(question -> {
-					if (question.getAnswer().isEmpty()) {
-						question.getAnswer()
-								.addAll(getTiebreakAnswers(question.getQuestionIdentification(), question.getAnswerType(), specificTiebreakAnswers,
-										defaultTiebreakAnswers));
-					}
-				});
-
+				addVotesAnswersVariantBallot(defaultStandardAnswers, specificStandardAnswers, defaultTiebreakAnswers, specificTiebreakAnswers,
+						ballot);
 			}
 		}));
+	}
+
+	private void addVotesAnswersVariantBallot(final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> defaultStandardAnswers,
+			final Map<String, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> specificStandardAnswers,
+			final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> defaultTiebreakAnswers,
+			final Map<String, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> specificTiebreakAnswers, final BallotType ballot) {
+		ballot.getVariantBallot().getStandardQuestion().forEach(question -> {
+			if (question.getAnswer().isEmpty()) {
+				question.getAnswer()
+						.addAll(getStandardAnswers(question.getQuestionIdentification(), question.getAnswerType(), specificStandardAnswers,
+								defaultStandardAnswers));
+			}
+		});
+		ballot.getVariantBallot().getTieBreakQuestion().forEach(question -> {
+			if (question.getAnswer().isEmpty()) {
+				question.getAnswer()
+						.addAll(getTiebreakAnswers(question.getQuestionIdentification(), question.getAnswerType(), specificTiebreakAnswers,
+								defaultTiebreakAnswers));
+			}
+		});
+	}
+
+	private void addVotesAnswersStandardBallot(final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> defaultStandardAnswers,
+			final Map<String, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> specificStandardAnswers, final BallotType ballot) {
+		final StandardBallotType question = ballot.getStandardBallot();
+		if (question.getAnswer().isEmpty()) {
+			question.getAnswer()
+					.addAll(getStandardAnswers(question.getQuestionIdentification(), question.getAnswerType(), specificStandardAnswers,
+							defaultStandardAnswers));
+		}
 	}
 
 	public ContestType build(final ContestType contest, final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups,
@@ -467,7 +481,7 @@ public class ContestService {
 				for (int aCounter = 0; aCounter < tbq.getAnswer().size() && aCounter < 2; aCounter++) {
 					final TiebreakAnswerType tba = tbq.getAnswer().get(aCounter);
 					if (tba.getStandardQuestionReference() == null) {
-						tba.setStandardQuestionReference(aCounter == 0 ? tbq.getReferencedQuestion1() : tbq.getReferencedQuestion2());
+						tba.setStandardQuestionReference(getReferencedQuestion(tbq, aCounter));
 						if (tba.getStandardQuestionReference() == null) {
 							LOGGER.warn("ReferencedQuestion for tieBreakQuestion with identification {} and answer with identification {} is null",
 									tbq.getQuestionIdentification(), tba.getAnswerIdentification());
@@ -476,6 +490,10 @@ public class ContestService {
 				}
 			}
 		});
+	}
+
+	private String getReferencedQuestion(final TieBreakQuestionTypeWithReferences tbq, final int answerNumber) {
+		return answerNumber == 0 ? tbq.getReferencedQuestion1() : tbq.getReferencedQuestion2();
 	}
 
 	private void addCandidatesListIdentifications(final List<ElectionGroupBallotType> elections) {
@@ -696,14 +714,18 @@ public class ContestService {
 							ElectionDescriptionInformationType.ElectionDescriptionInfo::getLanguage, e.getElection().getElectionIdentification(),
 							"election",
 							"electionDescription");
+
+					final String CANDIDATE_ELEMENT_NAME = "candidate";
+
 					e.getCandidate().forEach(c -> {
 						checkState(c.getCandidateText() != null, "CandidateText must be defined in source file");
 
 						checkLanguageCount(c.getCandidateText().getCandidateTextInfo(), CandidateTextInformationType.CandidateTextInfo::getLanguage,
-								c.getCandidateIdentification(), "candidate", "candidateText");
+								c.getCandidateIdentification(), CANDIDATE_ELEMENT_NAME, "candidateText");
 						if (c.getOccupationalTitle() != null) {
 							checkLanguageCount(c.getOccupationalTitle().getOccupationalTitleInfo(),
-									OccupationalTitleInformationType.OccupationalTitleInfo::getLanguage, c.getCandidateIdentification(), "candidate",
+									OccupationalTitleInformationType.OccupationalTitleInfo::getLanguage, c.getCandidateIdentification(),
+									CANDIDATE_ELEMENT_NAME,
 									"occupationalTitle");
 						}
 					});
@@ -712,7 +734,7 @@ public class ContestService {
 								ListDescriptionInformationType.ListDescriptionInfo::getLanguage,
 								l.getListIdentification(), "list", "listDescription");
 						l.getCandidatePosition().forEach(cp -> checkLanguageCount(cp.getCandidateTextOnPosition().getCandidateTextInfo(),
-								CandidateTextInformationType.CandidateTextInfo::getLanguage, cp.getCandidateIdentification(), "candidate",
+								CandidateTextInformationType.CandidateTextInfo::getLanguage, cp.getCandidateIdentification(), CANDIDATE_ELEMENT_NAME,
 								"candidateTextOnPosition"));
 					});
 					e.getListUnion().forEach(l -> checkLanguageCount(l.getListUnionDescription().getListUnionDescriptionInfo(),
@@ -731,29 +753,39 @@ public class ContestService {
 							BallotDescriptionInformationType.BallotDescriptionInfo::getLanguage, b.getBallotIdentification(), "ballot",
 							"ballotDescription");
 				}
+
+				final String QUESTION_ELEMENT_NAME = "question";
+				final String ANSWER_ELEMENT_NAME = "answer";
+				final String ANSWER_FIELD_NAME = "answer";
+				final String BALLOT_QUESTION_FIELD_NAME = "ballotQuestion";
+
 				if (b.getStandardBallot() != null) {
 					//standardBallot
 					checkLanguageCount(b.getStandardBallot().getBallotQuestion().getBallotQuestionInfo(),
-							BallotQuestionType.BallotQuestionInfo::getLanguage, b.getStandardBallot().getQuestionIdentification(), "question",
-							"ballotQuestion");
+							BallotQuestionType.BallotQuestionInfo::getLanguage, b.getStandardBallot().getQuestionIdentification(),
+							QUESTION_ELEMENT_NAME,
+							BALLOT_QUESTION_FIELD_NAME);
 					b.getStandardBallot().getAnswer().forEach(
-							a -> checkLanguageCount(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(), "answer",
-									"answer"));
+							a -> checkLanguageCount(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
+									ANSWER_ELEMENT_NAME,
+									ANSWER_FIELD_NAME));
 				} else {
 					//variantBallot
 					b.getVariantBallot().getStandardQuestion().forEach(sq -> {
 						checkLanguageCount(sq.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionType.BallotQuestionInfo::getLanguage,
-								sq.getQuestionIdentification(), "question", "ballotQuestion");
+								sq.getQuestionIdentification(), QUESTION_ELEMENT_NAME, BALLOT_QUESTION_FIELD_NAME);
 						sq.getAnswer().forEach(
-								a -> checkLanguageCount(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(), "answer",
-										"answer"));
+								a -> checkLanguageCount(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
+										ANSWER_ELEMENT_NAME,
+										ANSWER_FIELD_NAME));
 					});
 					b.getVariantBallot().getTieBreakQuestion().forEach(tbq -> {
 						checkLanguageCount(tbq.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionType.BallotQuestionInfo::getLanguage,
-								tbq.getQuestionIdentification(), "question", "ballotQuestion");
+								tbq.getQuestionIdentification(), QUESTION_ELEMENT_NAME, BALLOT_QUESTION_FIELD_NAME);
 						tbq.getAnswer().forEach(
-								a -> checkLanguageCount(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(), "answer",
-										"answer"));
+								a -> checkLanguageCount(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
+										ANSWER_ELEMENT_NAME,
+										ANSWER_FIELD_NAME));
 					});
 				}
 			});

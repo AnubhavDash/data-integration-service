@@ -105,7 +105,7 @@ public class OutputPhaseSteps extends PhaseSteps {
 	private final Map<String, VoterTypeWithRole> voterMap = new HashMap<>();
 	private final Map<String, List<VoterTypeWithRole>> invalidVotersMap = new HashMap<>();
 	private final Map<String, VoterTypeWithRole> invalidVoterMap = new HashMap<>();
-	private RuntimeException processException = null;
+	private Exception processException = null;
 
 	private Object getXMLObjectFromFile(final Class clazz, final String fileName) {
 		try {
@@ -196,7 +196,7 @@ public class OutputPhaseSteps extends PhaseSteps {
 			ParameterPhase.exports.setConfigSplitterPlugins(Flux.just(Collections.EMPTY_LIST));
 			new Runtime().run(uri("outputPrePhase"));
 			fail();
-		} catch (final RuntimeException e) {
+		} catch (final Exception e) {
 			processException = e;
 		}
 	}

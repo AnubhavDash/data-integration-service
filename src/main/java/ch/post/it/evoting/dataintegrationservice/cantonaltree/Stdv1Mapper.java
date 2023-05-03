@@ -38,7 +38,7 @@ public class Stdv1Mapper {
 				if (result.hasDomainOfInfluence(doi.getCode())) {
 					DomainOfInfluence doiResult = result.getDomainOfInfluence(
 							doi.getCode());
-					doiResult = append(result, doiResult, doi);
+					append(result, doiResult, doi);
 					result.putDomainOfInfluence(doiResult);
 				} else {
 					final DomainOfInfluence doiResult = convert(result, doi);
@@ -47,14 +47,7 @@ public class Stdv1Mapper {
 			}
 
 			//from STDV1 format, the only DOI that has no description is FR-CH-1... Assigning it manually
-			final Optional<DomainOfInfluence> federal = result.getAllDomainOfInfluences()
-					.stream()
-					.filter(doi -> doi.getType().equals("CH") && doi.getLocalId().equals("1")).findFirst();
-			if (federal.isPresent()) {
-				federal.get().setDescription(PropertyProvider.getPropertyValue("domainOfInfluence.CH-1.description"));
-			} else {
-				LOGGER.warn("Unable to find the DomainOfInfluence FR-CH-1 to set its description");
-			}
+			setFederalDescription(result, PropertyProvider.getPropertyValue("domainOfInfluence.CH-1.description"));
 
 			for (final Stdv1CountingCircle cc : ccs) {
 				if (cc.getOfsNumber() < Integer.parseInt(PropertyProvider.getPropertyValue("countingCircle.testControl.minValue"))) {
@@ -63,13 +56,24 @@ public class Stdv1Mapper {
 					result.putDomainOfInfluence(doi);
 				} else {
 					final CountingCircle specialCC = new CountingCircle(
-							cc.getCantonCode(), "MU", "" + cc.getOfsNumber(), cc.getDescription(), Collections.emptyList(), cc.getCode(),
+							cc.getCantonCode(), "MU", String.valueOf(cc.getOfsNumber()), cc.getDescription(), Collections.emptyList(), cc.getCode(),
 							cc.getDescription(), cc.getOfsNumber());
 					result.putTestControlSupportCountingCircle(specialCC);
 				}
 			}
 
 			return Optional.of(result);
+		}
+	}
+
+	private void setFederalDescription(final CantonalTree result, final String description) {
+		final Optional<DomainOfInfluence> federal = result.getAllDomainOfInfluences()
+				.stream()
+				.filter(doi -> doi.getType().equals("CH") && doi.getLocalId().equals("1")).findFirst();
+		if (federal.isPresent()) {
+			federal.get().setDescription(description);
+		} else {
+			LOGGER.warn("Unable to find the DomainOfInfluence FR-CH-1 to set its description");
 		}
 	}
 
@@ -91,8 +95,7 @@ public class Stdv1Mapper {
 		return result;
 	}
 
-	private DomainOfInfluence append(final CantonalTree cantonalTree,
-			final DomainOfInfluence result, final Stdv1DomainOfInfluence doi) {
+	private void append(final CantonalTree cantonalTree, final DomainOfInfluence result, final Stdv1DomainOfInfluence doi) {
 		final String[] split = splitCode(doi.getCode());
 		result.setCantonAbbreviation(split[0]);
 		result.setType(split[1]);
@@ -109,7 +112,6 @@ public class Stdv1Mapper {
 					.orElseThrow();
 			append(cantonalTree, domainOfInfluenceId, doi);
 		}
-		return result;
 	}
 
 	private DomainOfInfluenceId append(final CantonalTree cantonalTree, final DomainOfInfluenceId domainOfInfluenceId,
@@ -119,10 +121,10 @@ public class Stdv1Mapper {
 		return domainOfInfluenceId;
 	}
 
-	DomainOfInfluence convert(final CantonalTree cantonalTree,
-			final Stdv1DomainOfInfluence doi) {
+	DomainOfInfluence convert(final CantonalTree cantonalTree, final Stdv1DomainOfInfluence doi) {
 		final DomainOfInfluence result = new DomainOfInfluence();
-		return append(cantonalTree, result, doi);
+		append(cantonalTree, result, doi);
+		return result;
 	}
 
 	private DomainOfInfluenceId getOrCreateParentId(final CantonalTree cantonalTree, final String parentId, final String parentCode) {

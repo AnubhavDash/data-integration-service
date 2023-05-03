@@ -30,6 +30,7 @@ public class ParameterLoader {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterLoader.class);
 
 	private static final String DEFAULT_PARAMETER_PATH = "xml/default.param.xml";
+	@SuppressWarnings("java:S1075")
 	private static final String PARAMETER_SCHEMA_PATH = "/xsd/evoting-parameter-4-4.xsd";
 
 	public Parameter loadParameter(final String fileLocation) {

@@ -3,6 +3,7 @@
  */
 package pipes.contest.ech015xv4;
 
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
@@ -16,8 +17,32 @@ public abstract class ContestEch015xv4 extends Tools {
 	static InputPhase.Exports inputPhase = InputPhase.exports;
 
 	public static class Exports {
-		public static Flux<ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType> contests;
-		public static Flux<ElectionGroupBallotType> elections;
-		public static Flux<VoteInformationType> votes;
+		private  Flux<ContestType> contests;
+		private Flux<ElectionGroupBallotType> elections;
+		private Flux<VoteInformationType> votes;
+
+		public Flux<ContestType> getContests() {
+			return contests;
+		}
+
+		public void setContests(final Flux<ContestType> contests) {
+			this.contests = contests;
+		}
+
+		public Flux<ElectionGroupBallotType> getElections() {
+			return elections;
+		}
+
+		public void setElections(final Flux<ElectionGroupBallotType> elections) {
+			this.elections = elections;
+		}
+
+		public Flux<VoteInformationType> getVotes() {
+			return votes;
+		}
+
+		public void setVotes(final Flux<VoteInformationType> votes) {
+			this.votes = votes;
+		}
 	}
 }

@@ -49,21 +49,7 @@ public interface ECH0045v4Mapper {
 			appendAbroadVoter(voterType, voter, voter.getPerson().getSwissAbroad().getSwissAbroadPerson());
 
 			//ResidenceCountryId calculation
-			String iso2code = voter.getPerson().getSwissAbroad().getResidenceCountry().getCountryIdISO2();
-			if (isNullOrEmpty(iso2code)) {
-				final Integer countryId = voter.getPerson().getSwissAbroad().getResidenceCountry().getCountryId();
-				checkState(countryId != null, "voter '%s': neither iso2code, nor countryId is provided",
-						voter.getPerson().getSwissAbroad().getSwissAbroadPerson().getPersonIdentification().getLocalPersonId()
-								.getPersonId());
-				// conversion
-				voterType.getPerson().setResidenceCountryId(getCountryIso2ByCountryId(countryId));
-			} else {
-				// direct setting
-				if (iso2code.equalsIgnoreCase("XZ")) {
-					iso2code = "XK";
-				}
-				voterType.getPerson().setResidenceCountryId(iso2code);
-			}
+			calculateResidenceCountry(voter, voterType);
 
 		} else if (voter.getPerson().getSwiss() != null) {
 			appendSwissVoter(voterType, voter, voter.getPerson().getSwiss().getSwissDomesticPerson());
@@ -111,6 +97,25 @@ public interface ECH0045v4Mapper {
 		}).toList()));
 
 		return voterType;
+	}
+
+	private void calculateResidenceCountry(final VotingPersonType voter, final VoterTypeWithRole voterType) {
+		String iso2code = voter.getPerson().getSwissAbroad().getResidenceCountry().getCountryIdISO2();
+
+		if (isNullOrEmpty(iso2code)) {
+			final Integer countryId = voter.getPerson().getSwissAbroad().getResidenceCountry().getCountryId();
+			checkState(countryId != null, "voter '%s': neither iso2code, nor countryId is provided",
+					voter.getPerson().getSwissAbroad().getSwissAbroadPerson().getPersonIdentification().getLocalPersonId()
+							.getPersonId());
+			// conversion
+			voterType.getPerson().setResidenceCountryId(getCountryIso2ByCountryId(countryId));
+		} else {
+			// direct setting
+			if (iso2code.equalsIgnoreCase("XZ")) {
+				iso2code = "XK";
+			}
+			voterType.getPerson().setResidenceCountryId(iso2code);
+		}
 	}
 
 	default SexType convertSexCode(final String value) {

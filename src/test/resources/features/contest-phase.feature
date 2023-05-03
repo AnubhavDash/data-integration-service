@@ -482,7 +482,7 @@ Feature: Contest Phase
   Scenario: Throw an exception when parameters contains duplicate question ids
     Given parameter question "my params"."tiebreak question 2" has questionIdentification "V-B_B-1_TQ-1"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "question id 'V-B_B-1_TQ-1' not unique within the parameters"
+    Then it outputs an exception with text "questionId 'V-B_B-1_TQ-1' not unique within the parameters"
 
   Scenario: Throw an exception when no answer exists for a question with a given type
     Given default answer type "my params"."answer type 1" has type 7

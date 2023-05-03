@@ -4,6 +4,7 @@
 package ch.post.it.evoting.dataintegrationservice.contest;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -130,7 +131,7 @@ public interface ECH015xv3Mapper {
 	default List<CandidateTextInformationType.CandidateTextInfo> toCandidateTextInfoList(
 			final List<ch.ech.xmlns.ech_0155._3.CandidateTextInformationType.CandidateTextInfo> list) {
 		if (list == null) {
-			return null;
+			return Collections.emptyList();
 		}
 		return list.stream().map(this::convert).toList();
 	}

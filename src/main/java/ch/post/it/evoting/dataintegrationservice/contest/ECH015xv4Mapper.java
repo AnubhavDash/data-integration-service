@@ -6,6 +6,7 @@ package ch.post.it.evoting.dataintegrationservice.contest;
 import java.math.BigInteger;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -134,7 +135,7 @@ ECH015xv4Mapper {
 	default List<CandidateTextInformationType.CandidateTextInfo> toCandidateTextInfoList(
 			final List<ch.ech.xmlns.ech_0155._4.CandidateTextInformationType.CandidateTextInfo> list) {
 		if (list == null) {
-			return null;
+			return Collections.emptyList();
 		}
 		return list.stream().map(this::convert).toList();
 	}
