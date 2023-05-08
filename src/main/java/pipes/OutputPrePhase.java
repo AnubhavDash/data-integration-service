@@ -4,7 +4,6 @@
 package pipes;
 
 public abstract class OutputPrePhase extends Tools {
-	static ContestPhase.Exports contestPhase = ContestPhase.exports;
 	static AssigningAuthorizationPhase.Exports assigningAuthorizationPhase = AssigningAuthorizationPhase.exports;
 	static AuthorizationPhase.Exports authorizationPhase = AuthorizationPhase.exports;
 	static HeaderPhase.Exports headerPhase = HeaderPhase.exports;

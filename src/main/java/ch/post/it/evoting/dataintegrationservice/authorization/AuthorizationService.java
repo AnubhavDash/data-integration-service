@@ -427,4 +427,12 @@ public class AuthorizationService {
 		}
 		return authorizationsType;
 	}
+
+	public List<String> getUsedDois(final AuthorizationsType authorizations) {
+		return authorizations.getAuthorization().stream()
+				.flatMap(authorizationType -> authorizationType.getAuthorizationObject().stream())
+				.map(authorizationObjectType -> authorizationObjectType.getDomainOfInfluence().getDomainOfInfluenceIdentification())
+				.distinct()
+				.toList();
+	}
 }

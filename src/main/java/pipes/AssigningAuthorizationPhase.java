@@ -4,6 +4,7 @@
 package pipes;
 
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 
 import reactor.core.publisher.Flux;
 
@@ -20,6 +21,15 @@ public abstract class AssigningAuthorizationPhase extends Tools {
 		private Flux<VoterTypeWithRole> validVoters;
 		private Flux<VoterTypeWithRole> invalidVoters;
 		private Flux<VoterTypeWithRole> assignedVoters;
+		private Flux<ContestType> filteredContest;
+
+		public Flux<ContestType> getFilteredContest() {
+			return filteredContest;
+		}
+
+		public void setFilteredContest(final Flux<ContestType> filteredContest) {
+			this.filteredContest = filteredContest;
+		}
 
 		public Flux<VoterTypeWithRole> getValidVoters() {
 			return validVoters;

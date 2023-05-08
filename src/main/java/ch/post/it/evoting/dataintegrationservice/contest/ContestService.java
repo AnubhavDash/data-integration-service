@@ -995,4 +995,17 @@ public class ContestService {
 		}
 		return contestType;
 	}
+
+	public ContestType filterContest(final ContestType contest, final List<String> usedDOIs) {
+		List<VoteInformationType> usedVotes = contest.getVoteInformation().stream()
+				.filter(vi -> usedDOIs.contains(vi.getVote().getDomainOfInfluence())).toList();
+
+		List<ElectionGroupBallotType> usedElections = contest.getElectionGroupBallot().stream()
+				.filter(eg -> usedDOIs.contains(eg.getDomainOfInfluence())).toList();
+
+		contest.setVoteInformation(usedVotes);
+		contest.setElectionGroupBallot(usedElections);
+
+		return contest;
+	}
 }
