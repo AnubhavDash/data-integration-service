@@ -13,9 +13,9 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Authorization
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CountingCircleType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.DomainOfInfluenceType;
 
-class AuthorizationBuilderTest {
+class AuthorizationServiceTest {
 
-	AuthorizationService authorizationBuilder = new AuthorizationService();
+	AuthorizationService authorizationService = new AuthorizationService();
 
 	@Test
 	void appendAuthorization() {
@@ -28,8 +28,8 @@ class AuthorizationBuilderTest {
 								.withCountingCircle(new CountingCircleType().withCountingCircleIdentification("cc"))
 				);
 
-		authorizations = authorizationBuilder.appendAuthorization(authorizations, auth);
-		authorizations = authorizationBuilder.appendAuthorization(authorizations, auth);
+		authorizations = authorizationService.appendAuthorization(authorizations, auth);
+		authorizations = authorizationService.appendAuthorization(authorizations, auth);
 		assertEquals(1, authorizations.getAuthorization().size());
 	}
 

@@ -30,7 +30,7 @@ public class XmlTransformer {
 		//Intentionally left blank
 	}
 
-	public static void toXml(final OutputStream os, final Class jaxbFactoryClass, final URL xsdSchema, final Object jaxbElement,
+	public static <T> void toXml(final OutputStream os, final Class<?> jaxbFactoryClass, final URL xsdSchema, final T jaxbElement,
 			final QName rootElementName,
 			final Marshaller.Listener listener) {
 		try {
@@ -58,7 +58,7 @@ public class XmlTransformer {
 			if (rootElementName == null) {
 				marshaller.marshal(jaxbElement, writer);
 			} else {
-				marshaller.marshal(new JAXBElement(rootElementName, jaxbElement.getClass(), jaxbElement), writer);
+				marshaller.marshal(new JAXBElement<T>(rootElementName, (Class<T>) jaxbElement.getClass(), jaxbElement), writer);
 			}
 
 			writer.close();

@@ -22,6 +22,7 @@ import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 public class ECHv4FileRegisterLoader {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ECHv4FileRegisterLoader.class);
 
+	@SuppressWarnings("java:S1075")
 	private static final String ECH45_SCHEMA_PATH = "/xsd/eCH-0045-4-0.xsd";
 
 	public Iterable<VotingPersonType> loadECH0045v4(final String fileLocation) {

@@ -7,7 +7,6 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.util.Comparator;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidatePositionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateType;
@@ -45,7 +44,7 @@ public class PrefetElectionTypeImpl extends PrefetElectionType {
 				.filter(e -> this.getElectionId().contains(e.getElection().getElectionIdentification()))
 				.forEach(e -> e.setList(e.getList().stream()
 						.filter(ListType::isListEmpty)
-						.collect(Collectors.toList())));
+						.toList()));
 		return contestType;
 	}
 }

@@ -19,6 +19,7 @@ import java.util.function.Predicate;
 import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 
+import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,8 +99,8 @@ public abstract class Tools extends Plumbing {
 		return flux -> flux;
 	}
 
-	public static Function<Flux, Flux> errorIfEmpty(final String message) {
-		return flux -> flux.switchIfEmpty(empty().doOnComplete(() -> {
+	public static <T> Function<Flux<T>, Flux<T>> errorIfEmpty(final String message) {
+		return flux -> flux.switchIfEmpty((Publisher<? extends T>) empty().doOnComplete(() -> {
 			throw new IllegalStateException(message);
 		}));
 	}

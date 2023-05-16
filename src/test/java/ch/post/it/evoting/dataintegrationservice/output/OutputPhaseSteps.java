@@ -53,7 +53,6 @@ import io.cucumber.java.en.When;
 import li.chee.reactive.plumber.Runtime;
 import pipes.AssigningAuthorizationPhase;
 import pipes.AuthorizationPhase;
-import pipes.ContestPhase;
 import pipes.HeaderPhase;
 import pipes.ParameterPhase;
 import reactor.core.publisher.Flux;
@@ -105,7 +104,7 @@ public class OutputPhaseSteps extends PhaseSteps {
 	private final Map<String, VoterTypeWithRole> voterMap = new HashMap<>();
 	private final Map<String, List<VoterTypeWithRole>> invalidVotersMap = new HashMap<>();
 	private final Map<String, VoterTypeWithRole> invalidVoterMap = new HashMap<>();
-	private RuntimeException processException = null;
+	private Exception processException = null;
 
 	private Object getXMLObjectFromFile(final Class clazz, final String fileName) {
 		try {
@@ -172,7 +171,7 @@ public class OutputPhaseSteps extends PhaseSteps {
 	public void whenExecutingTheOutputPhase() {
 		processException = null;
 		HeaderPhase.exports.setHeader(Flux.just(header));
-		ContestPhase.exports.setContest(Flux.just(contest));
+		AssigningAuthorizationPhase.exports.setFilteredContest(Flux.just(contest));
 		AuthorizationPhase.exports.setAuthorizations(Flux.just(authorization));
 		AssigningAuthorizationPhase.exports.setValidVoters(Flux.fromIterable(votersMap.get("my voters")));
 		AssigningAuthorizationPhase.exports.setInvalidVoters(Flux.fromIterable(invalidVotersMap.get("my invalid voters")));
@@ -189,14 +188,14 @@ public class OutputPhaseSteps extends PhaseSteps {
 		try {
 			processException = null;
 			HeaderPhase.exports.setHeader(Flux.just(header));
-			ContestPhase.exports.setContest(Flux.just(contest));
+			AssigningAuthorizationPhase.exports.setFilteredContest(Flux.just(contest));
 			AuthorizationPhase.exports.setAuthorizations(Flux.just(authorization));
 			AssigningAuthorizationPhase.exports.setValidVoters(Flux.fromIterable(votersMap.get("my voters")));
 			AssigningAuthorizationPhase.exports.setInvalidVoters(Flux.fromIterable(invalidVotersMap.get("my invalid voters")));
 			ParameterPhase.exports.setConfigSplitterPlugins(Flux.just(Collections.EMPTY_LIST));
 			new Runtime().run(uri("outputPrePhase"));
 			fail();
-		} catch (final RuntimeException e) {
+		} catch (final Exception e) {
 			processException = e;
 		}
 	}
