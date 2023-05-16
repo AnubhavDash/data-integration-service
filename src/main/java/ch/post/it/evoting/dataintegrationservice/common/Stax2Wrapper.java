@@ -31,28 +31,30 @@ import org.slf4j.LoggerFactory;
 
 public class Stax2Wrapper {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Stax2Wrapper.class);
+	private static final String XPATH_ROOT_ELEMENT = "/";
 	private final XMLStreamReader2 reader;
 	private final Unmarshaller unmarshaller;
-	private final HashMap<String, Consumer> elements = new HashMap<>();
-	private final HashMap<String, Class> classes = new HashMap<>();
+	private final HashMap<String, Consumer<Object>> elements = new HashMap<>();
+	private final HashMap<String, Class<?>> classes = new HashMap<>();
 	private final LinkedList<String> actualParsingThroughTags = new LinkedList<>();
 	private final String name;
 	private Class<?> iteratorClass;
 	private String iteratorPath;
 	private Object iteratorObject;
 
-	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class jaxbFactoryClass) throws XMLStreamException, JAXBException {
+	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class<?> jaxbFactoryClass)
+			throws XMLStreamException, JAXBException {
 		this(xmlFileLocation, xsdLocation, jaxbFactoryClass, null);
 	}
 
-	public Stax2Wrapper(final InputStream input, final URL xsdLocation, final Class jaxbFactoryClass,
-			final Object specificUnmarschallerFactoryInstance)
+	public Stax2Wrapper(final InputStream input, final URL xsdLocation, final Class<?> jaxbFactoryClass,
+			final Object specificUnmarshallerFactoryInstance)
 			throws XMLStreamException, JAXBException {
 
 		name = "inputStream";
 		unmarshaller = JAXBContext.newInstance(jaxbFactoryClass).createUnmarshaller();
-		if (specificUnmarschallerFactoryInstance != null) {
-			unmarshaller.setProperty("com.sun.xml.bind.ObjectFactory", specificUnmarschallerFactoryInstance);
+		if (specificUnmarshallerFactoryInstance != null) {
+			unmarshaller.setProperty("com.sun.xml.bind.ObjectFactory", specificUnmarshallerFactoryInstance);
 		}
 
 		final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
@@ -67,15 +69,15 @@ public class Stax2Wrapper {
 		}
 	}
 
-	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class jaxbFactoryClass,
-			final Object specificUnmarschallerFactoryInstance)
+	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class<?> jaxbFactoryClass,
+			final Object specificUnmarshallerFactoryInstance)
 			throws XMLStreamException, JAXBException {
 
 		name = xmlFileLocation;
 		unmarshaller = JAXBContext.newInstance(jaxbFactoryClass).createUnmarshaller();
 
-		if (specificUnmarschallerFactoryInstance != null) {
-			unmarshaller.setProperty("com.sun.xml.bind.ObjectFactory", specificUnmarschallerFactoryInstance);
+		if (specificUnmarshallerFactoryInstance != null) {
+			unmarshaller.setProperty("com.sun.xml.bind.ObjectFactory", specificUnmarshallerFactoryInstance);
 		}
 
 		final XMLInputFactory2 factory = (XMLInputFactory2) XMLInputFactory.newInstance();
@@ -92,16 +94,15 @@ public class Stax2Wrapper {
 	}
 
 	public <T> void addElementListener(final String path, final Class<T> clazz, final Consumer<T> consumer) {
-		elements.put(path, consumer);
+		elements.put(path, (Consumer<Object>) consumer);
 		classes.put(path, clazz);
 	}
 
 	public <T> Iterable<T> processByIteration(final String path, final Class<T> clazz) {
-		//Tuple.
 		iteratorPath = path;
 		iteratorClass = clazz;
 
-		return new MyIterable();
+		return new MyIterable<>();
 	}
 
 	public void process() {
@@ -115,23 +116,20 @@ public class Stax2Wrapper {
 				if (reader.getEventType() == XMLStreamConstants.START_ELEMENT) {
 					actualParsingThroughTags.add(reader.getLocalName());
 
-					final String actualPath = "/" + String.join("/", actualParsingThroughTags);
+					final String actualPath = XPATH_ROOT_ELEMENT + String.join("/", actualParsingThroughTags);
 
 					final boolean elementStep = elements.containsKey(actualPath);
 					final boolean stopProcessingStep = actualPath.equals(stopProcessingPath);
 
-					if (elementStep || stopProcessingStep) {
+					if (elementStep) {
 						actualParsingThroughTags.removeLast();
-
 						//When unmarshalling, we don't have to call the next() on reader because the unmarshaller already call it
-						final Object o = unmarshaller.unmarshal(reader, elementStep ? classes.get(actualPath) : iteratorClass).getValue();
-						if (elementStep) {
-							elements.get(actualPath).accept(o);
-						}
-						if (stopProcessingStep) {
-							iteratorObject = o;
-							return true;
-						}
+						elements.get(actualPath).accept(unmarshaller.unmarshal(reader, classes.get(actualPath)).getValue());
+					} else if (stopProcessingStep) {
+						actualParsingThroughTags.removeLast();
+						//When unmarshalling, we don't have to call the next() on reader because the unmarshaller already call it
+						iteratorObject = unmarshaller.unmarshal(reader, iteratorClass).getValue();
+						return true;
 					} else {
 						reader.next();
 					}
@@ -144,23 +142,25 @@ public class Stax2Wrapper {
 					reader.next();
 				}
 			}
-			LOGGER.debug("{} finished {}", reader.toString().split("@")[1], name);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("{} finished {}", reader.toString().split("@")[1], name);
+			}
 			return false;
 		} catch (final XMLStreamException | JAXBException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
 
-	class MyIterable implements Iterable {
-		final MyIterator it = new MyIterator();
+	class MyIterable<T> implements Iterable<T> {
+		final MyIterator<T> it = new MyIterator<>();
 
 		@Override
-		public Iterator iterator() {
+		public Iterator<T> iterator() {
 			return it;
 		}
 	}
 
-	class MyIterator implements Iterator {
+	class MyIterator<T> implements Iterator<T> {
 
 		private Boolean hasNext = null;
 
@@ -170,7 +170,9 @@ public class Stax2Wrapper {
 			if (!containsNextElement) {
 				LOGGER.warn("There is no element to be extracted from XML file. Check your configuration");
 			}
-			LOGGER.debug("{} starting {}", reader.toString().split("@")[1], name);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("{} starting {}", reader.toString().split("@")[1], name);
+			}
 		}
 
 		@Override
@@ -182,10 +184,10 @@ public class Stax2Wrapper {
 		}
 
 		@Override
-		public Object next() {
+		public T next() {
 			try {
 				if (hasNext()) {
-					return iteratorObject;
+					return (T) iteratorObject;
 				}
 				throw new NoSuchElementException();
 			} finally {

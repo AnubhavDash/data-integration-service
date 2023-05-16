@@ -19,6 +19,7 @@ import ch.post.it.evoting.dataintegrationservice.common.Stax2Wrapper;
 
 @Component
 public class ECHv3FileRegisterLoader {
+	@SuppressWarnings("java:S1075")
 	private static final String ECH45_SCHEMA_PATH = "/xsd/eCH-0045-3-0.xsd";
 	private static final Logger LOGGER = LoggerFactory.getLogger(ECHv3FileRegisterLoader.class);
 

@@ -25,7 +25,9 @@ import reactor.util.function.Tuples;
 @Component
 public class ECHv3FileContestLoader {
 
+	@SuppressWarnings("java:S1075")
 	private static final String ECH157_SCHEMA_PATH = "/xsd/eCH-0157-3-0.xsd";
+	@SuppressWarnings("java:S1075")
 	private static final String ECH159_SCHEMA_PATH = "/xsd/eCH-0159-3-0.xsd";
 	private static final Logger LOGGER = LoggerFactory.getLogger(ECHv3FileContestLoader.class);
 

@@ -21,6 +21,7 @@ import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluence;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluenceInfo;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.dataintegrationservice.pipes.PhaseSteps;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
@@ -67,7 +68,7 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 					)
 			);
 	private final ch.evoting.xmlns.parameter._4.ContestType contestParameters = new ch.evoting.xmlns.parameter._4.ContestType();
-	private RuntimeException processException = null;
+	private Exception processException = null;
 	private CantonalTree cantonalTree;
 	private List<VoterTypeWithRole> voters;
 
@@ -116,12 +117,13 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 		CantonalTreePhase.exports.setCantonalTree(Flux.just(Optional.of(cantonalTree)));
 		new Runtime().run(uri("authorizationPhase"));
 		try {
-			drain(AuthorizationPhase.exports.getAuthorizations().doOnNext(auth -> {
-					}),
-					AuthorizationPhase.exports.getContestUsedDOIs().doOnNext(dois -> {
-					}));
+			Flux<AuthorizationsType> auths = AuthorizationPhase.exports.getAuthorizations().doOnNext(auth -> {
+			});
+			Flux<List<String>> contestUsedDOIs = AuthorizationPhase.exports.getContestUsedDOIs().doOnNext(dois -> {
+			});
+			drain(auths, contestUsedDOIs);
 			fail();
-		} catch (final RuntimeException e) {
+		} catch (final Exception e) {
 			processException = e;
 		}
 	}

@@ -108,7 +108,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 	private final Map<String, ch.evoting.xmlns.parameter._4.ElectionType> pElectionMap = new HashMap<>();
 	private final Map<String, ListUnionType> listUnionMap = new HashMap<>();
 	private ContestType contest;
-	private RuntimeException processException = null;
+	private Exception processException = null;
 
 	public ContestPhaseSteps() {
 		final ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger("ch.post.it.evoting");
@@ -787,10 +787,10 @@ public class ContestPhaseSteps extends PhaseSteps {
 
 		ContestEch015xv3.exports.setElections(Flux.fromIterable(electionsMap.get(DEFAULT_ELECTIONS)));
 		ContestEch015xv3.exports.setVotes(Flux.fromIterable(votesMap.get(DEFAULT_VOTES)));
-		ContestEch015xv4.exports.votes = Flux.empty();
-		ContestEch015xv4.exports.elections = Flux.empty();
+		ContestEch015xv4.exports.setVotes(Flux.empty());
+		ContestEch015xv4.exports.setElections(Flux.empty());
 		ContestEch015xv3.exports.setContests(Flux.just(contestMap.get(DEFAULT_CONTEST)));
-		ContestEch015xv4.exports.contests = Flux.empty();
+		ContestEch015xv4.exports.setContests(Flux.empty());
 		new Runtime().run(uri("contestPhase"));
 		drain(ContestPhase.exports.getContest().doOnNext(c -> contest = c));
 	}
@@ -803,15 +803,15 @@ public class ContestPhaseSteps extends PhaseSteps {
 
 		ContestEch015xv3.exports.setElections(Flux.fromIterable(electionsMap.get(DEFAULT_ELECTIONS)));
 		ContestEch015xv3.exports.setVotes(Flux.fromIterable(votesMap.get(DEFAULT_VOTES)));
-		ContestEch015xv4.exports.votes = Flux.empty();
-		ContestEch015xv4.exports.elections = Flux.empty();
+		ContestEch015xv4.exports.setVotes(Flux.empty());
+		ContestEch015xv4.exports.setElections(Flux.empty());
 		ContestEch015xv3.exports.setContests(Flux.just(contestMap.get(DEFAULT_CONTEST)));
-		ContestEch015xv4.exports.contests = Flux.empty();
+		ContestEch015xv4.exports.setContests(Flux.empty());
 		new Runtime().run(uri("contestPhase"));
 		try {
 			drain(ContestPhase.exports.getContest().doOnNext(c -> contest = c));
 			fail();
-		} catch (final RuntimeException e) {
+		} catch (final Exception e) {
 			processException = e;
 		}
 	}
@@ -825,15 +825,15 @@ public class ContestPhaseSteps extends PhaseSteps {
 
 		ContestEch015xv3.exports.setElections(Flux.fromIterable(electionsMap.get(electionsName)));
 		ContestEch015xv3.exports.setVotes(Flux.fromIterable(votesMap.get(votesName)));
-		ContestEch015xv4.exports.votes = Flux.empty();
-		ContestEch015xv4.exports.elections = Flux.empty();
+		ContestEch015xv4.exports.setVotes(Flux.empty());
+		ContestEch015xv4.exports.setElections(Flux.empty());
 		ContestEch015xv3.exports.setContests(Flux.just(contestMap.get(contestName)));
-		ContestEch015xv4.exports.contests = Flux.empty();
+		ContestEch015xv4.exports.setContests(Flux.empty());
 		new Runtime().run(uri("contestPhase"));
 		try {
 			drain(ContestPhase.exports.getContest().doOnNext(c -> contest = c));
 			fail();
-		} catch (final RuntimeException e) {
+		} catch (final Exception e) {
 			processException = e;
 		}
 	}
@@ -847,9 +847,9 @@ public class ContestPhaseSteps extends PhaseSteps {
 
 		ContestEch015xv3.exports.setElections(Flux.fromIterable(electionsMap.get(electionsName)));
 		ContestEch015xv3.exports.setVotes(Flux.fromIterable(votesMap.get(votesName)));
-		ContestEch015xv4.exports.votes = Flux.empty();
+		ContestEch015xv4.exports.setVotes(Flux.empty());
 		ContestEch015xv3.exports.setContests(Flux.just(contestMap.get(contestName)));
-		ContestEch015xv4.exports.contests = Flux.empty();
+		ContestEch015xv4.exports.setContests(Flux.empty());
 		new Runtime().run(uri("contestPhase"));
 		drain(ContestPhase.exports.getContest().doOnNext(c -> contest = c));
 	}

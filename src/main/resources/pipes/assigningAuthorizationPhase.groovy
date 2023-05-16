@@ -57,6 +57,17 @@ def invalidVoters = tube {
     filter {VoterType v -> StringUtils.isEmpty(v.getAuthorization())}
 }
 
+def usedDoisFromAuthorizations = tube {
+    from AssigningAuthorizationPhase.authorizationPhase.authorizations \
+    map assigningAuthorizationPhaseComponent.usedDoisFromAuthorizations()
+}
+
+def filteredContest = tube {
+    from zip(AssigningAuthorizationPhase.contestPhase.contest, usedDoisFromAuthorizations) \
+    map assigningAuthorizationPhaseComponent.filterContest()
+}
+
 AssigningAuthorizationPhase.exports.assignedVoters = assignedVoters
 AssigningAuthorizationPhase.exports.validVoters = validVoters
 AssigningAuthorizationPhase.exports.invalidVoters = invalidVoters
+AssigningAuthorizationPhase.exports.filteredContest = filteredContest

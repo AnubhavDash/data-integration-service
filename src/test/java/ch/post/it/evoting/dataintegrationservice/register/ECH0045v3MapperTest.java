@@ -180,12 +180,9 @@ class ECH0045v3MapperTest {
 	}
 
 	@Test
-	void testSimpleFields() throws Exception {
+	void testSwissVoter() throws Exception {
 		final VotingPersonType echVoter = createSwissVoter();
-		final VotingPersonType echAbroadVoter = createAbroadVoter();
-		VoterTypeWithRole voter;
-
-		voter = mapper.convert(echVoter);
+		VoterTypeWithRole voter = mapper.convert(echVoter);
 		assertEquals("Dupont", voter.getPerson().getOfficialName());
 		assertEquals("Pierre", voter.getPerson().getFirstName());
 		assertEquals("1", voter.getPerson().getSex());
@@ -208,8 +205,12 @@ class ECH0045v3MapperTest {
 		assertEquals("ch", voter.getPerson().getPhysicalAddress().getCountry());
 		assertEquals(0, voter.getPerson().getElectronicAddress().size());
 		assertNull(voter.getPerson().getPhysicalAddress().getFrankingArea());
+	}
 
-		voter = mapper.convert(echAbroadVoter);
+	@Test
+	void testAbroadVoter() throws Exception {
+		final VotingPersonType echAbroadVoter = createAbroadVoter();
+		VoterTypeWithRole voter = mapper.convert(echAbroadVoter);
 		assertEquals("Durand", voter.getPerson().getOfficialName());
 		assertEquals("Fabienne", voter.getPerson().getFirstName());
 		assertEquals("2", voter.getPerson().getSex());

@@ -6,9 +6,11 @@ package ch.post.it.evoting.dataintegrationservice.common;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("java:S3011")
 public class ReflexionUtil {
 
 	private ReflexionUtil() {
@@ -21,23 +23,13 @@ public class ReflexionUtil {
 
 			Object element = src;
 			for (final String obj : objects.subList(0, objects.size() - 1)) {
-				Field field = null;
-				Class<?> clazz = element.getClass();
-				final Class<?> originClass = clazz;
-				checkState(originClass != null, "The original class must not be null");
-				while (field == null && clazz != null) {
-					try {
-						field = clazz.getDeclaredField(obj);
-						field.setAccessible(true);
-					} catch (final NoSuchFieldException e) {
-						clazz = clazz.getSuperclass();
-					}
-				}
-				checkState(field != null, "The field could not be found in class. [field: %s, class: %s]", obj, originClass.getSimpleName());
+				checkState(element.getClass() != null, "The element class must not be null");
+				Field field = getField(element, obj);
 
+				checkState(field != null, "The field could not be found in class. [field: %s, class: %s]", obj, element.getClass().getSimpleName());
 				element = field.get(element);
 				if (element == null) {
-					throw new NullPointerException("object " + obj + " is null");
+					throw new NullPointerException(String.format("object %s is null", obj));
 				}
 			}
 
@@ -47,6 +39,39 @@ public class ReflexionUtil {
 
 		} catch (final IllegalAccessException | NoSuchFieldException e) {
 			throw new IllegalArgumentException("Error during execution of VoterFieldModifier plugin :" + src, e);
+		}
+	}
+
+	public static Object getOrCreateFieldValue(final Field f, final Object element)
+			throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+		Object result = f.get(element);
+		if (result == null) {
+			result = f.getType().getDeclaredConstructor().newInstance();
+			f.set(element, result);
+		}
+		return result;
+	}
+
+	public static Field getField(final Object element, final String fieldName) {
+		Field result = null;
+		Class<?> clazz = element.getClass();
+		while (result == null && clazz != null) {
+			try {
+				result = clazz.getDeclaredField(fieldName);
+				result.setAccessible(true);
+			} catch (final NoSuchFieldException e) {
+				clazz = clazz.getSuperclass();
+			}
+		}
+		return result;
+	}
+
+	public static void setFieldValue(Field field, Object element, Object value) {
+		try {
+			field.setAccessible(true);
+			field.set(element, value);
+		} catch (IllegalAccessException e) {
+			throw new IllegalArgumentException("Error setting value on field", e);
 		}
 	}
 }

@@ -11,7 +11,7 @@ import static reactor.core.publisher.Flux.zip
 def outputPrePhaseComponent = DataIntegrationServiceApplication.context.getBean(OutputPrePhaseComponent.class)
 
 def configInfo = value pipe {
-    from zip(OutputPrePhase.contestPhase.contest, OutputPrePhase.authorizationPhase.authorizations, OutputPrePhase.headerPhase.header)
+    from zip(OutputPrePhase.assigningAuthorizationPhase.filteredContest, OutputPrePhase.authorizationPhase.authorizations, OutputPrePhase.headerPhase.header)
 }
 
 def splitVoters = pipe {
@@ -35,7 +35,7 @@ def createConfig = pipe {
 }
 
 def contestWithoutHtml = pipe {
-    from OutputPrePhase.contestPhase.contest \
+    from OutputPrePhase.assigningAuthorizationPhase.filteredContest \
     map outputPrePhaseComponent.cleanHtmlTags()
 }
 

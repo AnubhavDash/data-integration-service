@@ -52,9 +52,9 @@ public class Ech015xv4ContestPhaseSteps extends PhaseSteps {
 		elections = new ArrayList<>();
 		votes = new ArrayList<>();
 		drain(
-				ContestEch015xv4.exports.contests.doOnNext(contests::add),
-				ContestEch015xv4.exports.elections.doOnNext(elections::add),
-				ContestEch015xv4.exports.votes.doOnNext(votes::add)
+				ContestEch015xv4.exports.getContests().doOnNext(contests::add),
+				ContestEch015xv4.exports.getElections().doOnNext(elections::add),
+				ContestEch015xv4.exports.getVotes().doOnNext(votes::add)
 		);
 	}
 
