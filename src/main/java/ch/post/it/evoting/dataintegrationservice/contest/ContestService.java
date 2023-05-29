@@ -463,6 +463,7 @@ public class ContestService {
 
 	private void warnIfCandidatesOutOfLists(final List<ElectionGroupBallotType> electionGroups) {
 		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+				.filter(e -> e.getList().stream().anyMatch(l -> !l.isListEmpty()))
 				.forEach(e -> e.getCandidate().stream().filter(c -> e.getList().stream().flatMap(l -> l.getCandidatePosition().stream())
 								.noneMatch(cp -> c.getCandidateIdentification().equalsIgnoreCase(cp.getCandidateIdentification())))
 						.forEach(c -> LOGGER.warn("Candidate {} is not present in any list", c.getCandidateIdentification())));
