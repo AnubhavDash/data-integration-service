@@ -39,7 +39,7 @@
     </eCH-0159:contest>
     <eCH-0159:voteInformation>
       <eCH-0159:vote xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4">
-        <eCH-0155:voteIdentification>ch_test</eCH-0155:voteIdentification>
+        <eCH-0155:voteIdentification>4151943c-0b78-4c96-b46e-3f209e65dc2c</eCH-0155:voteIdentification>
         <eCH-0155:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0155:domainOfInfluenceIdentification>
         <eCH-0155:voteDescription>
           <eCH-0155:voteDescriptionInfo>
