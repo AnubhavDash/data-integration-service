@@ -41,7 +41,7 @@
       <eCH-0157:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0157:domainOfInfluenceIdentification>
       <eCH-0157:electionInformation>
         <eCH-0157:election xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4">
-          <eCH-0155:electionIdentification>nrw_test</eCH-0155:electionIdentification>
+          <eCH-0155:electionIdentification>01904d8c-8a10-4998-aecd-377f2688e3fa</eCH-0155:electionIdentification>
           <eCH-0155:typeOfElection>1</eCH-0155:typeOfElection>
           <eCH-0155:electionPosition>0</eCH-0155:electionPosition>
           <eCH-0155:electionDescription>

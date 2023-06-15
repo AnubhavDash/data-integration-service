@@ -36,7 +36,6 @@ import ch.evoting.xmlns.parameter._4.ContestType.IncumbentText;
 import ch.evoting.xmlns.parameter._4.DefaultAnswerTranslationType;
 import ch.evoting.xmlns.parameter._4.ElectionType;
 import ch.evoting.xmlns.parameter._4.EmptyCandidateTextInfo;
-import ch.evoting.xmlns.parameter._4.SortingType;
 import ch.post.it.evoting.dataintegrationservice.common.MarshallTool;
 import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
@@ -248,33 +247,15 @@ public class ContestService {
 	public ContestType build(final ContestType contest, final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups,
 			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 
-		if (contestParameters.getSorting() != null) {
-			final Map<String, BigInteger> electionSortDefinition = contestParameters.getSorting().getElection().stream()
-					.collect(Collectors.toMap(SortingType.Election::getElectionIdentification, SortingType.Election::getSequenceNumber));
-			electionGroups.sort((o1, o2) -> {
-				final BigInteger val1 = electionSortDefinition.getOrDefault(o1.getElectionGroupIdentification(),
-						BigInteger.valueOf(Integer.MAX_VALUE));
-				final BigInteger val2 = electionSortDefinition.getOrDefault(o2.getElectionGroupIdentification(),
-						BigInteger.valueOf(Integer.MAX_VALUE));
-				return val1.compareTo(val2);
-			});
+		addElectionGroupIdAndDescriptionIfNeeded(electionGroups);
 
-			final Map<String, BigInteger> voteSortDefinition = contestParameters.getSorting().getVote().stream()
-					.collect(Collectors.toMap(SortingType.Vote::getVoteIdentification, SortingType.Vote::getSequenceNumber));
-			votes.sort((o1, o2) -> {
-				final BigInteger val1 = voteSortDefinition.getOrDefault(o1.getVote().getVoteIdentification(), BigInteger.valueOf(Integer.MAX_VALUE));
-				final BigInteger val2 = voteSortDefinition.getOrDefault(o2.getVote().getVoteIdentification(), BigInteger.valueOf(Integer.MAX_VALUE));
-				return val1.compareTo(val2);
-			});
-		}
+		fillPositionIfDefinedInParameters(votes, electionGroups, contestParameters);
 
 		addVotesAnswers(votes, contestParameters);
 		addVotesQuestionPositionIfNeeded(votes);
 		addVotesStandardQuestionReferenceIfNeeded(votes);
 		addVotesPositionIfNeeded(votes);
 		addVotesQuestionNumberIfNeeded(votes);
-
-		contest.getVoteInformation().addAll(votes);
 
 		addElectionsOrderOfPrecedenceIfNeeded(electionGroups);
 		addEmptyListIfNeeded(electionGroups);
@@ -288,12 +269,13 @@ public class ContestService {
 		addElectionsAccumulation(electionGroups, contestParameters);
 		addElectionsMinimalCandidateSelectionInList(electionGroups, contestParameters);
 
-		addElectionGroupIdAndDescriptionIfNeeded(electionGroups);
-
 		addElectionGroupPositionIfNeeded(electionGroups);
 		addElectionPositionIfNeeded(electionGroups);
 
+		sortElectionsAndVotes(electionGroups, votes);
+
 		contest.getElectionGroupBallot().addAll(electionGroups);
+		contest.getVoteInformation().addAll(votes);
 
 		if (contestParameters.getEvotingFromDate() != null) {
 			contest.setEvotingFromDate(contestParameters.getEvotingFromDate());
@@ -312,6 +294,45 @@ public class ContestService {
 		contest.setElectoralBoard(ParameterMapper.INSTANCE.map(contestParameters.getElectoralBoard()));
 
 		return contest;
+	}
+
+	private void sortElectionsAndVotes(final List<ElectionGroupBallotType> electionGroups, final List<VoteInformationType> votes) {
+		electionGroups.stream()
+				.map(ElectionGroupBallotType::getElectionInformation)
+				.forEach(list -> list.sort(Comparator.comparingInt(ei -> ei.getElection().getElectionPosition())));
+
+		electionGroups.sort(Comparator.comparingInt(ElectionGroupBallotType::getElectionGroupPosition));
+
+		votes.sort(Comparator.comparingInt(vote -> vote.getVote().getVotePosition().intValueExact()));
+	}
+
+	private void fillPositionIfDefinedInParameters(final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups,
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+		if (contestParameters.getSorting() != null) {
+			contestParameters.getSorting().getElectionGroup().forEach(positionParameter -> {
+				final String electionGroupIdentification = positionParameter.getElectionGroupIdentification();
+				final int position = positionParameter.getPositionNumber().intValueExact();
+				electionGroups.stream()
+						.filter(eg -> eg.getElectionGroupIdentification().equals(electionGroupIdentification))
+						.findFirst()
+						.orElseThrow(() -> new IllegalStateException(String.format(
+								"Unknown electionGroupIdentification defined in sorting definition of parameters file. [electionGroupIdentification: %s",
+								electionGroupIdentification)))
+						.setElectionGroupPosition(position);
+			});
+
+			contestParameters.getSorting().getVote().forEach(positionParameter -> {
+				final String voteIdentification = positionParameter.getVoteIdentification();
+				final BigInteger position = positionParameter.getPositionNumber();
+				votes.stream()
+						.filter(vote -> vote.getVote().getVoteIdentification().equals(voteIdentification))
+						.findFirst()
+						.orElseThrow(() -> new IllegalStateException(String.format(
+								"Unknown voteIdentification defined in sorting definition of parameters file. [voteIdentification: %s",
+								voteIdentification)))
+						.getVote().setVotePosition(position);
+			});
+		}
 	}
 
 	private void addVotesQuestionNumberIfNeeded(final List<VoteInformationType> votes) {
@@ -463,6 +484,7 @@ public class ContestService {
 
 	private void warnIfCandidatesOutOfLists(final List<ElectionGroupBallotType> electionGroups) {
 		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+				.filter(e -> e.getList().stream().anyMatch(l -> !l.isListEmpty()))
 				.forEach(e -> e.getCandidate().stream().filter(c -> e.getList().stream().flatMap(l -> l.getCandidatePosition().stream())
 								.noneMatch(cp -> c.getCandidateIdentification().equalsIgnoreCase(cp.getCandidateIdentification())))
 						.forEach(c -> LOGGER.warn("Candidate {} is not present in any list", c.getCandidateIdentification())));
