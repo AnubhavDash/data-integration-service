@@ -40,6 +40,7 @@ def contestParameters = pipe {
 def assignedVoters = tube {
     from zip(voters, value(authorizations), value(canton), value(usedDOIs), value(AssigningAuthorizationPhase.contestPhase.contest), zip(value(buildAuthorizationPlugins), value(contestParameters))) \
     transformDeferred logAsInfo("Assigning authorization to voters...") \
+    transformDeferred assigningAuthorizationPhaseComponent.warnIfAllCountingCircleAsTestIsConfigured() \
     map assigningAuthorizationPhaseComponent.assignAuthorization()
 }
 

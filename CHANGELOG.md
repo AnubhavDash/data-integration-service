@@ -1,5 +1,18 @@
 # Changelog
 
+## Release 2.7.0
+
+The Data Integration Service 2.7.0 contains the following changes
+
+* Adapted plugin to set the electionGroupPosition and votePosition.
+* Added possibility to set all authorizations to test.
+* Remove elections and votes with no associated voters from the produced election event configuration file.
+* Improved the log messages.
+* Improved code quality.
+* Updated dependencies and third-party libraries.
+
+---
+
 ## Release 2.6.0
 
 The Data Integration Service 2.6.0 contains the following changes

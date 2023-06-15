@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.evoting.ch/xmlns/parameter/4" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.evoting.ch/xmlns/parameter/4" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.1" xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb bindingschema_2_0.xsd" jaxb:version="2.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.evoting.ch/xmlns/parameter/4" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.evoting.ch/xmlns/parameter/4" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.5" xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb bindingschema_2_0.xsd" jaxb:version="2.0">
 	<xs:simpleType name="languageType">
 		<xs:restriction base="xs:string">
 			<xs:length value="2"/>
@@ -373,11 +373,11 @@
 	</xs:complexType>
 	<xs:complexType name="sortingType">
 		<xs:sequence>
-			<xs:element name="election" minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="electionGroup" minOccurs="0" maxOccurs="unbounded">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="electionIdentification" type="xs:token" minOccurs="1" maxOccurs="1"/>
-						<xs:element name="sequenceNumber" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="electionGroupIdentification" type="xs:token" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="positionNumber" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -385,7 +385,7 @@
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="voteIdentification" type="xs:token" minOccurs="1" maxOccurs="1"/>
-						<xs:element name="sequenceNumber" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="positionNumber" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>

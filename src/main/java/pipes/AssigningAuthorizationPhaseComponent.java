@@ -17,6 +17,7 @@ import ch.post.it.evoting.dataintegrationservice.parameter.plugin.AuthorizationP
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 
+import reactor.core.publisher.Flux;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuple6;
 
@@ -43,4 +44,10 @@ public class AssigningAuthorizationPhaseComponent {
 	Function<AuthorizationsType, List<String>> usedDoisFromAuthorizations() {
 		return authorizationService::getUsedDois;
 	}
+
+	public static <T> Function<Flux<T>, Flux<T>> warnIfAllCountingCircleAsTestIsConfigured() {
+		AuthorizationService.warnIfAllCountingCircleAsTestIsConfigured();
+		return flux -> flux;
+	}
+
 }

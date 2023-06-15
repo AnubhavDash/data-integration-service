@@ -158,8 +158,9 @@ public class AuthorizationService {
 
 		checkAuthorizationAliasLength(result);
 
-		result.setAuthorizationTest(COUNTING_CIRCLE_ALL_TEST || voter.getDomainOfInfluenceInfos().stream().map(VoterDomainOfInfluenceInfo::getCountingCircle)
-				.filter(cc -> StringUtil.isInteger(cc.getId())).anyMatch(cc -> Integer.parseInt(cc.getId()) >= MIN_TEST_CONTROL_VALUE));
+		result.setAuthorizationTest(
+				COUNTING_CIRCLE_ALL_TEST || voter.getDomainOfInfluenceInfos().stream().map(VoterDomainOfInfluenceInfo::getCountingCircle)
+						.filter(cc -> StringUtil.isInteger(cc.getId())).anyMatch(cc -> Integer.parseInt(cc.getId()) >= MIN_TEST_CONTROL_VALUE));
 		result.setAuthorizationFromDate(result.isAuthorizationTest() && contestParameters.getEvotingTestBallotBoxesFromDate() != null ?
 				contestParameters.getEvotingTestBallotBoxesFromDate() :
 				contest.getEvotingFromDate());
@@ -183,7 +184,8 @@ public class AuthorizationService {
 
 		for (final VoterDomainOfInfluenceInfo voterDoiInfo : voter.getDomainOfInfluenceInfos()) {
 
-			final List<CountingCircle> ccs = determineCountingCircles(voter, authorizationPlugins, cantonalTree.get(), contestParameters, voterDoiInfo);
+			final List<CountingCircle> ccs = determineCountingCircles(voter, authorizationPlugins, cantonalTree.get(), contestParameters,
+					voterDoiInfo);
 
 			checkState(!ccs.isEmpty(), "Unable to build the authorizations, because cannot find countingCircle related to voter [voterId: %s]",
 					voter.getVoterIdentification());
@@ -215,7 +217,8 @@ public class AuthorizationService {
 		result.setAuthorizationAlias(result.getAuthorizationIdentification());
 		checkAuthorizationAliasLength(result);
 
-		result.setAuthorizationTest(COUNTING_CIRCLE_ALL_TEST || usedCountingCircles.stream().anyMatch(cc -> cc.getMunicipalityId() >= MIN_TEST_CONTROL_VALUE));
+		result.setAuthorizationTest(
+				COUNTING_CIRCLE_ALL_TEST || usedCountingCircles.stream().anyMatch(cc -> cc.getMunicipalityId() >= MIN_TEST_CONTROL_VALUE));
 		result.setAuthorizationFromDate(result.isAuthorizationTest() && contestParameters.getEvotingTestBallotBoxesFromDate() != null ?
 				contestParameters.getEvotingTestBallotBoxesFromDate() :
 				contest.getEvotingFromDate());
@@ -238,7 +241,6 @@ public class AuthorizationService {
 			final CantonalTree cantonalTree, final ch.evoting.xmlns.parameter._4.ContestType contestParameters,
 			final VoterDomainOfInfluenceInfo voterDoiInfo) {
 		List<CountingCircle> allCountingCircles = new LinkedList<>(cantonalTree.getAllCountingCircles());
-
 
 		if (voter.getAvailableCountingCircleIds() != null && !voter.getAvailableCountingCircleIds().isEmpty()) {
 			return allCountingCircles.stream()
@@ -434,5 +436,11 @@ public class AuthorizationService {
 				.map(authorizationObjectType -> authorizationObjectType.getDomainOfInfluence().getDomainOfInfluenceIdentification())
 				.distinct()
 				.toList();
+	}
+
+	public static void warnIfAllCountingCircleAsTestIsConfigured() {
+		if (COUNTING_CIRCLE_ALL_TEST) {
+			LOGGER.warn("As defined in the configuration, all counting circles will be treated as test ones");
+		}
 	}
 }
