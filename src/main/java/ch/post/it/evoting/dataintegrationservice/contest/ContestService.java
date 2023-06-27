@@ -446,9 +446,13 @@ public class ContestService {
 	}
 
 	private String determineElectionGroupIdentification(final List<ElectionInformationType> electionInformation) {
-		return StringUtil.generateUUIDFromString(
-				electionInformation.stream().map(ei -> ei.getElection().getElectionIdentification()).reduce("", (s1, s2) -> s1 + s2)
-		);
+		if (electionInformation.size() == 1) {
+			return electionInformation.get(0).getElection().getElectionIdentification();
+		} else {
+			return StringUtil.generateUUIDFromString(
+					electionInformation.stream().map(ei -> ei.getElection().getElectionIdentification()).reduce("", (s1, s2) -> s1 + s2)
+			);
+		}
 	}
 
 	private Map<String, BigInteger> getParametersMinimalCandidateSelectionInList(final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
