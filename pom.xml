@@ -18,7 +18,7 @@
 		<maven.compiler.release>17</maven.compiler.release>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.build.outputTimestamp>2023-07-06T09:28:36+02:00</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2023-07-06T09:44:41+02:00</project.build.outputTimestamp>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<cloning.version>1.11.1</cloning.version>
