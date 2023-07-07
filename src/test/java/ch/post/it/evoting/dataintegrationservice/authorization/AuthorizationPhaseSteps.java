@@ -10,12 +10,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.CountingCircle;
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.DomainOfInfluence;
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.DomainOfInfluenceId;
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluence;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluenceInfo;
@@ -35,7 +30,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import li.chee.reactive.plumber.Runtime;
 import pipes.AuthorizationPhase;
-import pipes.CantonalTreePhase;
 import pipes.ContestPhase;
 import pipes.ParameterPhase;
 import pipes.RegisterPhase;
@@ -69,26 +63,7 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 			);
 	private final ch.evoting.xmlns.parameter._4.ContestType contestParameters = new ch.evoting.xmlns.parameter._4.ContestType();
 	private Exception processException = null;
-	private CantonalTree cantonalTree;
 	private List<VoterTypeWithRole> voters;
-
-	private void setDoiId(final String code, final String id, final String parentId, final String parentCode) {
-		final DomainOfInfluenceId parentDoiId = cantonalTree.getDomainOfInfluence(parentCode).getDomainOfInfluenceIds().stream()
-				.filter(i -> i.getId().equals(parentId)).findFirst().get();
-		final DomainOfInfluenceId doiId = new DomainOfInfluenceId();
-		doiId.setId(id);
-		doiId.setParent(parentDoiId);
-		doiId.setRelatedDomainOfInfluence(cantonalTree.getDomainOfInfluence(code));
-		if (cantonalTree.getDomainOfInfluence(code).getDomainOfInfluenceIds() == null) {
-			cantonalTree.getDomainOfInfluence(code).setDomainOfInfluenceIds(new ArrayList<>());
-		}
-		cantonalTree.getDomainOfInfluence(code).getDomainOfInfluenceIds().add(doiId);
-	}
-
-	@Given("^a cantonal tree$")
-	public void givenCantonalTree() {
-		cantonalTree = new CantonalTree();
-	}
 
 	@When("^executing the authorization phase$")
 	public void whenExecutingTheAuthorizationPhase() {
@@ -96,9 +71,7 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 		ContestPhase.exports.setContest(Flux.just(contest));
 		RegisterPhase.exports.setVoters(Flux.fromIterable(voters));
 		ParameterPhase.exports.setAfterReadVoterAuthorizationPlugins(Flux.just(Collections.EMPTY_LIST));
-		ParameterPhase.exports.setBuildAuthorizationPlugins(Flux.just(Collections.EMPTY_LIST));
 		ParameterPhase.exports.setContestParameters(Flux.just(contestParameters));
-		CantonalTreePhase.exports.setCantonalTree(Flux.just(Optional.of(cantonalTree)));
 		new Runtime().run(uri("authorizationPhase"));
 		drain(AuthorizationPhase.exports.getAuthorizations().doOnNext(auth -> {
 				}),
@@ -111,15 +84,12 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 		processException = null;
 		ContestPhase.exports.setContest(Flux.just(contest));
 		RegisterPhase.exports.setVoters(Flux.fromIterable(voters));
-		ParameterPhase.exports.setBuildAuthorizationPlugins(Flux.just(Collections.EMPTY_LIST));
-		ParameterPhase.exports.setBuildAuthorizationPlugins(Flux.just(Collections.EMPTY_LIST));
 		ParameterPhase.exports.setContestParameters(Flux.just(contestParameters));
-		CantonalTreePhase.exports.setCantonalTree(Flux.just(Optional.of(cantonalTree)));
 		new Runtime().run(uri("authorizationPhase"));
 		try {
-			Flux<AuthorizationsType> auths = AuthorizationPhase.exports.getAuthorizations().doOnNext(auth -> {
+			final Flux<AuthorizationsType> auths = AuthorizationPhase.exports.getAuthorizations().doOnNext(auth -> {
 			});
-			Flux<List<String>> contestUsedDOIs = AuthorizationPhase.exports.getContestUsedDOIs().doOnNext(dois -> {
+			final Flux<List<String>> contestUsedDOIs = AuthorizationPhase.exports.getContestUsedDOIs().doOnNext(dois -> {
 			});
 			drain(auths, contestUsedDOIs);
 			fail();
@@ -130,47 +100,6 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 
 	@Given("^aaa$")
 	public void given() {
-	}
-
-	@And("^cantonal tree has domain of influence \"([^\"]*)\",\"([^\"]*)\",(\\d+)$")
-	public void andCantonalTreeHasDOI(final String arg0, final String arg1, final Integer arg2) {
-
-	}
-
-	@And("^cantonal tree has domain of influence \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
-	public void andCantonalTreeHasDOI(final String canton, final String type, final String localId) {
-		final DomainOfInfluence doi = new DomainOfInfluence();
-		doi.setCantonAbbreviation(canton);
-		doi.setType(type);
-		doi.setLocalId(localId);
-		cantonalTree.putDomainOfInfluence(doi);
-	}
-
-	@And("^cantonal tree has counting circle \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
-	public void andCantonalTreeHasCountingCricle(final String canton, final String type, final String localId) {
-		final CountingCircle cc = new CountingCircle(canton, type, localId, "dummy", new ArrayList<>(), "ccId", "ccName", 1111);
-		cantonalTree.putDomainOfInfluence(cc);
-	}
-
-	@And("^domain of influence \"([^\"]*)\" has ID \"([^\"]*)\"$")
-	public void andDomainOfInfluenceHasId(final String code, final String id) {
-		final DomainOfInfluenceId doiId = new DomainOfInfluenceId();
-		doiId.setRelatedDomainOfInfluence(cantonalTree.getDomainOfInfluence(code));
-		doiId.setId(id);
-		if (cantonalTree.getDomainOfInfluence(code).getDomainOfInfluenceIds() == null) {
-			cantonalTree.getDomainOfInfluence(code).setDomainOfInfluenceIds(new ArrayList<>());
-		}
-		cantonalTree.getDomainOfInfluence(code).getDomainOfInfluenceIds().add(doiId);
-	}
-
-	@And("^domain of influence \"([^\"]*)\" has ID \"([^\"]*)\" and parent ID \"([^\"]*)\" in \"([^\"]*)\"$")
-	public void andDomainOfInfluenceHasIdAndParentId(final String code, final String id, final String parentId, final String parentCode) {
-		setDoiId(code, id, parentId, parentCode);
-	}
-
-	@And("^counting circle \"([^\"]*)\" has ID \"([^\"]*)\" and parent ID \"([^\"]*)\" in \"([^\"]*)\"$")
-	public void andCountingCircleHasIdAndParentId(final String code, final String id, final String parentId, final String parentCode) {
-		setDoiId(code, id, parentId, parentCode);
 	}
 
 	@Given("^a list of valid voters$")

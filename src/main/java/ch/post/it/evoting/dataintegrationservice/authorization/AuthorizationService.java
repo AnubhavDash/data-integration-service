@@ -9,7 +9,6 @@ import static com.google.common.base.Preconditions.checkState;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,28 +19,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.CountingCircle;
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.DomainOfInfluence;
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.DomainOfInfluenceId;
 import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterCountingCircle;
-import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluence;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluenceInfo;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
-import ch.post.it.evoting.dataintegrationservice.parameter.plugin.AuthorizationPlugin;
-import ch.post.it.evoting.dataintegrationservice.parameter.plugin.CountingCircleFilter;
-import ch.post.it.evoting.dataintegrationservice.parameter.plugin.CountingCircleSetter;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationObjectType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CountingCircleType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.DomainOfInfluenceType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType;
 
-import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 @Service
@@ -78,30 +67,6 @@ public class AuthorizationService {
 		return prio1.compareTo(prio2);
 	};
 
-	private final Comparator<Tuple2<DomainOfInfluence, CountingCircle>> authAliasComparator = (o1, o2) -> {
-		Integer prio1 = authorizationTypePriority.get(o1.getT1().getType());
-		Integer prio2 = authorizationTypePriority.get(o2.getT2().getType());
-		if (prio1 == null) {
-			prio1 = Integer.MAX_VALUE;
-		}
-		if (prio2 == null) {
-			prio2 = Integer.MAX_VALUE;
-		}
-		return prio1.compareTo(prio2);
-	};
-
-	private final Comparator<CountingCircle> countingCircleComparator = (cc1, cc2) -> {
-		Integer prio1 = authorizationTypePriority.get(cc1.getCcId().split("-")[1]);
-		Integer prio2 = authorizationTypePriority.get(cc2.getCcId().split("-")[1]);
-		if (prio1 == null) {
-			prio1 = Integer.MAX_VALUE;
-		}
-		if (prio2 == null) {
-			prio2 = Integer.MAX_VALUE;
-		}
-		return prio2.compareTo(prio1);
-	};
-
 	public AuthorizationService() {
 		initializeAuthorizationTypePriority();
 	}
@@ -120,19 +85,7 @@ public class AuthorizationService {
 		authorizationTypePriority.put("AN", 9);
 	}
 
-	public AuthorizationType build(final VoterTypeWithRole voter, final Optional<CantonalTree> cantonalTree, final List<String> usedDOIids,
-			final ContestType contest,
-			final List<AuthorizationPlugin> authorizationPlugins, final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
-
-		if (voter.getDomainOfInfluenceInfos().stream().anyMatch(doiInfo -> doiInfo.getCountingCircle() == null)) {
-			//build the authorization using the ech v3 format for which counting circle are not given with voter but should be calculated
-			return buildV3(voter, cantonalTree, usedDOIids, contest, authorizationPlugins, contestParameters);
-		} else {
-			return buildV4(voter, usedDOIids, contest, contestParameters);
-		}
-	}
-
-	private AuthorizationType buildV4(final VoterTypeWithRole voter, final List<String> usedDOIids,
+	public AuthorizationType build(final VoterTypeWithRole voter, final List<String> usedDOIids,
 			final ContestType contest, final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 
 		final AuthorizationType result = new AuthorizationType();
@@ -170,146 +123,11 @@ public class AuthorizationService {
 		return result;
 	}
 
-	private AuthorizationType buildV3(final VoterTypeWithRole voter, final Optional<CantonalTree> cantonalTree, final List<String> usedDOIids,
-			final ContestType contest, final List<AuthorizationPlugin> authorizationPlugins,
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
-		final AuthorizationType result = new AuthorizationType();
-
-		checkState(cantonalTree.isPresent(),
-				"You should provide a cantonalTree when a user don't have all its counting circles defined [voterId: %s]",
-				voter.getVoterIdentification());
-
-		final List<CountingCircle> usedCountingCircles = new ArrayList<>();
-		final List<Tuple2<DomainOfInfluence, CountingCircle>> authAlias = new ArrayList<>();
-
-		for (final VoterDomainOfInfluenceInfo voterDoiInfo : voter.getDomainOfInfluenceInfos()) {
-
-			final List<CountingCircle> ccs = determineCountingCircles(voter, authorizationPlugins, cantonalTree.get(), contestParameters,
-					voterDoiInfo);
-
-			checkState(!ccs.isEmpty(), "Unable to build the authorizations, because cannot find countingCircle related to voter [voterId: %s]",
-					voter.getVoterIdentification());
-
-			//sort counting circle by priority (smallest first KR->BZ->MU->CT-CH)
-			ccs.sort(countingCircleComparator);
-
-			final CountingCircle filterCC = getFilterCC(voter, cantonalTree.get(), authorizationPlugins);
-
-			for (final CountingCircle cc : ccs) {
-				for (final DomainOfInfluenceId id : cc.getDomainOfInfluenceIds()) {
-					final DomainOfInfluenceId doiId = parseTree(id, voterDoiInfo.getDomainOfInfluence());
-					if (doiId != null && usedDOIids.contains(doiId.getId()) && result.getAuthorizationObject().stream()
-							.noneMatch(ao -> ao.getDomainOfInfluence().getDomainOfInfluenceIdentification().equals(doiId.getId()))) {
-						final AuthorizationObjectType ao = createAuthorizationAliasV3(voter, usedCountingCircles, authAlias, filterCC, cc, doiId);
-						result.getAuthorizationObject().add(ao);
-					}
-				}
-			}
-		}
-
-		result.setAuthorizationName(usedCountingCircles.stream().distinct().map(CountingCircle::getCcName)
-				.reduce("", (cc1, cc2) -> StringUtil.concat(cc1, cc2, " | ")));
-
-		result.setAuthorizationIdentification(StringUtil.generateUUIDFromString(
-				authAlias.stream().sorted(authAliasComparator).map(auth -> Tuples.of(auth.getT1().getCode(), auth.getT2().getCcId()))
-						.map(tuple -> StringUtil.concat(tuple.getT1(), tuple.getT2(), "|")).reduce("", (s1, s2) -> StringUtil.concat(s1, s2, "+"))));
-
-		result.setAuthorizationAlias(result.getAuthorizationIdentification());
-		checkAuthorizationAliasLength(result);
-
-		result.setAuthorizationTest(
-				COUNTING_CIRCLE_ALL_TEST || usedCountingCircles.stream().anyMatch(cc -> cc.getMunicipalityId() >= MIN_TEST_CONTROL_VALUE));
-		result.setAuthorizationFromDate(result.isAuthorizationTest() && contestParameters.getEvotingTestBallotBoxesFromDate() != null ?
-				contestParameters.getEvotingTestBallotBoxesFromDate() :
-				contest.getEvotingFromDate());
-		result.setAuthorizationToDate(contest.getEvotingToDate());
-		result.setAuthorizationGracePeriod(GRACE_PERIOD);
-
-		return result;
-	}
-
-	private CountingCircle getFilterCC(final VoterTypeWithRole voter, final CantonalTree cantonalTree,
-			final List<AuthorizationPlugin> authorizationPlugins) {
-		return authorizationPlugins.stream().filter(CountingCircleSetter.class::isInstance)
-				.map(CountingCircleSetter.class::cast).reduce((v, countingCircles) -> null, (bi1, bi2) -> (v, countingCircles) -> {
-					final CountingCircle cc1 = bi1.apply(v, countingCircles);
-					return cc1 != null ? cc1 : bi2.apply(v, countingCircles);
-				}).apply(voter, new LinkedList<>(cantonalTree.getAllCountingCircles()));
-	}
-
-	private List<CountingCircle> determineCountingCircles(VoterTypeWithRole voter, final List<AuthorizationPlugin> authorizationPlugins,
-			final CantonalTree cantonalTree, final ch.evoting.xmlns.parameter._4.ContestType contestParameters,
-			final VoterDomainOfInfluenceInfo voterDoiInfo) {
-		List<CountingCircle> allCountingCircles = new LinkedList<>(cantonalTree.getAllCountingCircles());
-
-		if (voter.getAvailableCountingCircleIds() != null && !voter.getAvailableCountingCircleIds().isEmpty()) {
-			return allCountingCircles.stream()
-					.filter(cc -> voter.getAvailableCountingCircleIds().contains(cc.getCcId().substring(cc.getCcId().indexOf("-") + 1)))
-					.toList();
-		} else {
-
-			allCountingCircles = authorizationPlugins.stream().filter(CountingCircleFilter.class::isInstance)
-					.map(CountingCircleFilter.class::cast).reduce((v, countingCircles) -> countingCircles,
-							(bi1, bi2) -> (v, countingCircles) -> bi2.apply(v, bi1.apply(v, countingCircles)))
-					.apply(voter, allCountingCircles);
-
-			final boolean swissAbroadSpecificCCMode = contestParameters.getSwissAbroadCountingMode().getSpecificCountingCircle() != null;
-
-			if (voter.getVoterType() == VoterTypeType.SWISSABROAD && swissAbroadSpecificCCMode) {
-				final List<ch.evoting.xmlns.parameter._4.ContestType.SwissAbroadCountingMode.SpecificCountingCircle.Configuration> configs = contestParameters.getSwissAbroadCountingMode()
-						.getSpecificCountingCircle().getConfiguration().stream().filter(c -> c.getVoteTypes().getVoteType().stream()
-								.anyMatch(v -> v.value().equals(voterDoiInfo.getDomainOfInfluence().getType().name())))
-						.filter(c -> c.getMunicipalities() == null || c.getMunicipalities().getMunicipalityId().stream()
-								.anyMatch(m -> m.intValue() == voter.getPerson().getMunicipality().getMunicipalityId())).toList();
-
-				checkState(configs.size() == 1,
-						"Unable to define the CC to use for swissAbroad voter: [voterId: %s, voteType: %s, municipality: %s, possibleCCs: %s]",
-						voter.getVoterIdentification(), voterDoiInfo.getDomainOfInfluence().getType(),
-						voter.getPerson().getMunicipality().getMunicipalityId(), configs.stream()
-								.map(ch.evoting.xmlns.parameter._4.ContestType.SwissAbroadCountingMode.SpecificCountingCircle.Configuration::getCountingCircleId)
-								.toList());
-
-				return new LinkedList<>(
-						allCountingCircles.stream().filter(c -> c.getCcId().equals(configs.get(0).getCountingCircleId())).toList());
-			} else {
-				List<CountingCircle> ccs = new LinkedList<>(allCountingCircles.stream()
-						.filter(c -> c.getMunicipalityId() == voter.getPerson().getMunicipality().getMunicipalityId()).toList());
-				checkState(ccs.size() <= 1, "Many countingCircles found related to voter [voterId: %s]", voter.getVoterIdentification());
-				return ccs;
-			}
-		}
-	}
-
 	private void checkAuthorizationAliasLength(final AuthorizationType result) {
 		if (result.getAuthorizationAlias().length() > 100) {
 			LOGGER.warn("Authorization alias ({}) is too long. Cutting it to get only 100 characters", result.getAuthorizationAlias());
 			result.setAuthorizationAlias(result.getAuthorizationAlias().substring(0, 97) + "...");
 		}
-	}
-
-	private AuthorizationObjectType createAuthorizationAliasV3(final VoterTypeWithRole voter, final List<CountingCircle> usedCountingCircles,
-			final List<Tuple2<DomainOfInfluence, CountingCircle>> authAlias, final CountingCircle filterCC, final CountingCircle cc,
-			final DomainOfInfluenceId doiId) {
-		final AuthorizationObjectType ao = new AuthorizationObjectType();
-
-		final CountingCircle ccToLink = filterCC != null ? filterCC : cc;
-		if (filterCC != null) {
-			LOGGER.info("Changing the countingCircle with plugin for voter [voterId: {}] to {}}", voter.getVoterIdentification(),
-					ccToLink.getCcId());
-			checkState(filterCC.getMunicipalityId() >= MIN_TEST_CONTROL_VALUE,
-					"Cannot change the countingCircle to a non test/control one [voterId: %s", voter.getVoterIdentification());
-		}
-
-		ao.setCountingCircle(new CountingCircleType().withCountingCircleIdentification(ccToLink.getCcId())
-				.withCountingCircleName(ccToLink.getCcName()));
-		ao.setDomainOfInfluence(new DomainOfInfluenceType().withDomainOfInfluenceIdentification(doiId.getId())
-				.withDomainOfInfluenceName(String.format("%s-%s-%s", doiId.getRelatedDomainOfInfluence().getCantonAbbreviation(),
-						doiId.getRelatedDomainOfInfluence().getType(), doiId.getRelatedDomainOfInfluence().getLocalId()))
-				.withDomainOfInfluenceType(doiId.getRelatedDomainOfInfluence().getType()));
-
-		usedCountingCircles.add(ccToLink);
-		authAlias.add(Tuples.of(doiId.getRelatedDomainOfInfluence(), ccToLink));
-		return ao;
 	}
 
 	private AuthorizationObjectType map(final VoterTypeWithRole voter, final VoterDomainOfInfluenceInfo voterDomainOfInfluenceInfo) {
@@ -335,17 +153,6 @@ public class AuthorizationService {
 		ao.setCountingCircle(cc);
 
 		return ao;
-	}
-
-	private DomainOfInfluenceId parseTree(final DomainOfInfluenceId doiId, final VoterDomainOfInfluence voterDomainOfInfluence) {
-		if (doiId == null) {
-			return null;
-		}
-		if (doiId.getRelatedDomainOfInfluence().getType().equals(voterDomainOfInfluence.getType().name()) && doiId.getRelatedDomainOfInfluence()
-				.getLocalId().equals(voterDomainOfInfluence.getLocalId())) {
-			return doiId;
-		}
-		return parseTree(doiId.getParent(), voterDomainOfInfluence);
 	}
 
 	public AuthorizationsType appendAuthorization(final AuthorizationsType authorizations, final AuthorizationType authorization) {
@@ -383,11 +190,10 @@ public class AuthorizationService {
 	}
 
 	public VoterTypeWithRole assignAuthorization(final VoterTypeWithRole voter, final AuthorizationsType authorizations,
-			final Optional<CantonalTree> canton,
-			final List<String> contestUsedDOIs, final ContestType contest, final List<AuthorizationPlugin> authorizationPlugins,
+			final List<String> contestUsedDOIs, final ContestType contest,
 			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 
-		final AuthorizationType auth = build(voter, canton, contestUsedDOIs, contest, authorizationPlugins, contestParameters);
+		final AuthorizationType auth = build(voter, contestUsedDOIs, contest, contestParameters);
 
 		//only for valid voters (which have an authorization with objects)
 		if (!auth.getAuthorizationObject().isEmpty()) {
@@ -399,16 +205,6 @@ public class AuthorizationService {
 		}
 
 		return voter;
-	}
-
-	public void checkDomainOfInfluences(final Optional<CantonalTree> optCantonalTree, final List<String> usedDOIids) {
-		if (optCantonalTree.isPresent()) {
-			final CantonalTree cantonalTree = optCantonalTree.get();
-			final List<String> cantonalDois = cantonalTree.getAllDomainOfInfluences().stream()
-					.flatMap(d -> d.getDomainOfInfluenceIds().stream().map(DomainOfInfluenceId::getId)).toList();
-
-			checkState(cantonalDois.containsAll(usedDOIids), "Some domain of influence defined in the contest are not defined in the cantonal tree.");
-		}
 	}
 
 	public AuthorizationsType uniqueAuthorizationNames(final AuthorizationsType authorizationsType) {

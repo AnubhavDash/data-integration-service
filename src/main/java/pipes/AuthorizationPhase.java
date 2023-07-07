@@ -11,7 +11,6 @@ import reactor.core.publisher.Flux;
 
 public abstract class AuthorizationPhase extends Tools {
 	public static final Exports exports = new Exports();
-	static CantonalTreePhase.Exports cantonalTreePhase = CantonalTreePhase.exports;
 	static RegisterPhase.Exports registerPhase = RegisterPhase.exports;
 	static ContestPhase.Exports contestPhase = ContestPhase.exports;
 	static ParameterPhase.Exports parameterPhase = ParameterPhase.exports;

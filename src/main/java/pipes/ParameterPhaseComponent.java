@@ -75,13 +75,4 @@ public class ParameterPhaseComponent {
 		};
 	}
 
-	public Function<Parameter, List<AuthorizationPlugin>> getBuildAuthorizationPlugins() {
-		return p -> {
-			if (p.getPlugins().getBuildAuthorization() != null) {
-				return p.getPlugins().getBuildAuthorization().getPlugins().stream().toList();
-			} else {
-				return Collections.emptyList();
-			}
-		};
-	}
 }

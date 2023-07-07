@@ -39,11 +39,6 @@ public class PluginObjectFactory extends ObjectFactory {
 	}
 
 	@Override
-	public DistrictAuthorizationAppenderType createDistrictAuthorizationAppenderType() {
-		return new DistrictAuthorizationAppenderTypeImpl();
-	}
-
-	@Override
 	public ResidenceSplitterType createResidenceSplitterType() {
 		return new ResidenceSplitterTypeImpl();
 	}
@@ -51,16 +46,6 @@ public class PluginObjectFactory extends ObjectFactory {
 	@Override
 	public VoterFieldModifierPluginType createVoterFieldModifierPluginType() {
 		return new VoterFieldModifierTypeImpl();
-	}
-
-	@Override
-	public CountingCircleSetterType createCountingCircleSetterType() {
-		return new CountingCircleSetterTypeImpl();
-	}
-
-	@Override
-	public CountingCircleFilterType createCountingCircleFilterType() {
-		return new CountingCircleFilterTypeImpl();
 	}
 
 	@Override

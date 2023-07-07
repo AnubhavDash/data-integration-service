@@ -78,7 +78,6 @@ import io.cucumber.java.en.When;
 import li.chee.reactive.plumber.Runtime;
 import pipes.ContestPhase;
 import pipes.ParameterPhase;
-import pipes.contest.ech015xv3.ContestEch015xv3;
 import pipes.contest.ech015xv4.ContestEch015xv4;
 import reactor.core.publisher.Flux;
 
@@ -120,9 +119,9 @@ public class ContestPhaseSteps extends PhaseSteps {
 		logger.addAppender(memoryAppender);
 	}
 
-	@Given("^a contest from eCHv3 with Id \"([^\"]*)\"$")
+	@Given("^a contest from eCHv4 with Id \"([^\"]*)\"$")
 	public void given(final String contestId) {
-		ContestEch015xv3.exports.setContests(Flux.just(new ContestType().withContestIdentification(contestId).withContestDescription(
+		ContestEch015xv4.exports.setContests(Flux.just(new ContestType().withContestIdentification(contestId).withContestDescription(
 				new ContestDescriptionInformationType().withContestDescriptionInfo(
 						new ContestDescriptionInformationType.ContestDescriptionInfo().withLanguage(LanguageType.DE)
 								.withContestDescription("Desc DE")).withContestDescriptionInfo(
@@ -134,9 +133,9 @@ public class ContestPhaseSteps extends PhaseSteps {
 								.withContestDescription("Desc RM")))));
 	}
 
-	@And("^an election input eCHv3 with an Id \"([^\"]*)\"$")
+	@And("^an election input eCHv4 with an Id \"([^\"]*)\"$")
 	public void andElectionId(final String electionId) {
-		ContestEch015xv3.exports.setElections(
+		ContestEch015xv4.exports.setElections(
 				Flux.just(new ElectionGroupBallotType().withElectionGroupIdentification(electionId)
 						.withElectionGroupDescription(new ElectionGroupDescriptionInformationType().withElectionGroupDescriptionInfo(
 								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.DE)
@@ -159,9 +158,9 @@ public class ContestPhaseSteps extends PhaseSteps {
 												.withElectionDescription("Desc RM")))))));
 	}
 
-	@And("^a votation input eCHv3 with an Id \"([^\"]*)\"$")
+	@And("^a votation input eCHv4 with an Id \"([^\"]*)\"$")
 	public void andVoteId(final String voteId) {
-		ContestEch015xv3.exports.setVotes(Flux.just(new VoteInformationType().withVote(new VoteType().withVoteIdentification(voteId)
+		ContestEch015xv4.exports.setVotes(Flux.just(new VoteInformationType().withVote(new VoteType().withVoteIdentification(voteId)
 				.withVoteDescription(new VoteDescriptionInformationType().withVoteDescriptionInfo(
 								new VoteDescriptionInformationType.VoteDescriptionInfo().withLanguage(LanguageType.DE).withVoteDescription("Desc DE"))
 						.withVoteDescriptionInfo(
@@ -412,7 +411,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 		final ElectionInformationType e = new ElectionInformationType().withElection(
 						new ElectionType().withNumberOfMandates(5).withTypeOfElection(BigInteger.valueOf(1L)))
 				.withCandidate(new ArrayList<>());
-		ElectionGroupBallotType eg = new ElectionGroupBallotType().withElectionInformation(e);
+		final ElectionGroupBallotType eg = new ElectionGroupBallotType().withElectionInformation(e);
 		electionMap.put(elections + "." + election, eg);
 		electionsMap.get(elections).add(eg);
 	}
@@ -785,12 +784,9 @@ public class ContestPhaseSteps extends PhaseSteps {
 		ParameterPhase.exports.setAfterReadContestPlugins(Flux.just(Collections.emptyList()));
 		ParameterPhase.exports.setAfterReadVoterPlugins(Flux.just(Collections.emptyList()));
 
-		ContestEch015xv3.exports.setElections(Flux.fromIterable(electionsMap.get(DEFAULT_ELECTIONS)));
-		ContestEch015xv3.exports.setVotes(Flux.fromIterable(votesMap.get(DEFAULT_VOTES)));
-		ContestEch015xv4.exports.setVotes(Flux.empty());
-		ContestEch015xv4.exports.setElections(Flux.empty());
-		ContestEch015xv3.exports.setContests(Flux.just(contestMap.get(DEFAULT_CONTEST)));
-		ContestEch015xv4.exports.setContests(Flux.empty());
+		ContestEch015xv4.exports.setElections(Flux.fromIterable(electionsMap.get(DEFAULT_ELECTIONS)));
+		ContestEch015xv4.exports.setVotes(Flux.fromIterable(votesMap.get(DEFAULT_VOTES)));
+		ContestEch015xv4.exports.setContests(Flux.just(contestMap.get(DEFAULT_CONTEST)));
 		new Runtime().run(uri("contestPhase"));
 		drain(ContestPhase.exports.getContest().doOnNext(c -> contest = c));
 	}
@@ -801,12 +797,10 @@ public class ContestPhaseSteps extends PhaseSteps {
 		ParameterPhase.exports.setContestParameters(Flux.just(paramsMap.get(DEFAULT_PARAMS)));
 		ParameterPhase.exports.setAfterReadContestPlugins(Flux.just(Collections.emptyList()));
 
-		ContestEch015xv3.exports.setElections(Flux.fromIterable(electionsMap.get(DEFAULT_ELECTIONS)));
-		ContestEch015xv3.exports.setVotes(Flux.fromIterable(votesMap.get(DEFAULT_VOTES)));
-		ContestEch015xv4.exports.setVotes(Flux.empty());
-		ContestEch015xv4.exports.setElections(Flux.empty());
-		ContestEch015xv3.exports.setContests(Flux.just(contestMap.get(DEFAULT_CONTEST)));
-		ContestEch015xv4.exports.setContests(Flux.empty());
+		ContestEch015xv4.exports.setElections(Flux.fromIterable(electionsMap.get(DEFAULT_ELECTIONS)));
+		ContestEch015xv4.exports.setVotes(Flux.fromIterable(votesMap.get(DEFAULT_VOTES)));
+		ContestEch015xv4.exports.setContests(Flux.just(contestMap.get(DEFAULT_CONTEST)));
+
 		new Runtime().run(uri("contestPhase"));
 		try {
 			drain(ContestPhase.exports.getContest().doOnNext(c -> contest = c));
@@ -823,12 +817,9 @@ public class ContestPhaseSteps extends PhaseSteps {
 		ParameterPhase.exports.setContestParameters(Flux.just(paramsMap.get(params)));
 		ParameterPhase.exports.setAfterReadContestPlugins(Flux.just(Collections.emptyList()));
 
-		ContestEch015xv3.exports.setElections(Flux.fromIterable(electionsMap.get(electionsName)));
-		ContestEch015xv3.exports.setVotes(Flux.fromIterable(votesMap.get(votesName)));
-		ContestEch015xv4.exports.setVotes(Flux.empty());
-		ContestEch015xv4.exports.setElections(Flux.empty());
-		ContestEch015xv3.exports.setContests(Flux.just(contestMap.get(contestName)));
-		ContestEch015xv4.exports.setContests(Flux.empty());
+		ContestEch015xv4.exports.setElections(Flux.fromIterable(electionsMap.get(electionsName)));
+		ContestEch015xv4.exports.setVotes(Flux.fromIterable(votesMap.get(votesName)));
+		ContestEch015xv4.exports.setContests(Flux.just(contestMap.get(contestName)));
 		new Runtime().run(uri("contestPhase"));
 		try {
 			drain(ContestPhase.exports.getContest().doOnNext(c -> contest = c));
@@ -845,11 +836,9 @@ public class ContestPhaseSteps extends PhaseSteps {
 		ParameterPhase.exports.setContestParameters(Flux.just(paramsMap.get(params)));
 		ParameterPhase.exports.setAfterReadContestPlugins(Flux.just(Collections.emptyList()));
 
-		ContestEch015xv3.exports.setElections(Flux.fromIterable(electionsMap.get(electionsName)));
-		ContestEch015xv3.exports.setVotes(Flux.fromIterable(votesMap.get(votesName)));
-		ContestEch015xv4.exports.setVotes(Flux.empty());
-		ContestEch015xv3.exports.setContests(Flux.just(contestMap.get(contestName)));
-		ContestEch015xv4.exports.setContests(Flux.empty());
+		ContestEch015xv4.exports.setElections(Flux.fromIterable(electionsMap.get(electionsName)));
+		ContestEch015xv4.exports.setVotes(Flux.fromIterable(votesMap.get(votesName)));
+		ContestEch015xv4.exports.setContests(Flux.just(contestMap.get(contestName)));
 		new Runtime().run(uri("contestPhase"));
 		drain(ContestPhase.exports.getContest().doOnNext(c -> contest = c));
 	}
@@ -991,7 +980,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 		assertEquals(LanguageType.DE, contest.getContestDefaultLanguage());
 	}
 
-	class MemoryAppender extends ListAppender<ILoggingEvent> {
+	static class MemoryAppender extends ListAppender<ILoggingEvent> {
 		public void reset() {
 			this.list.clear();
 		}

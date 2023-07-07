@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<eCH-0159:delivery xmlns:eCH-0159="http://www.ech.ch/xmlns/eCH-0159/3" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/3" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ech.ch/xmlns/eCH-0159/3 http://www.ech.ch/xmlns/eCH-0159/3/eCH-0159-3-0.xsd">
+<eCH-0159:delivery xmlns:eCH-0159="http://www.ech.ch/xmlns/eCH-0159/4" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ech.ch/xmlns/eCH-0159/4 http://www.ech.ch/xmlns/eCH-0159/3/eCH-0159-4-0.xsd">
     <eCH-0159:deliveryHeader>
         <eCH-0058:senderId>9</eCH-0058:senderId>
         <eCH-0058:messageId>F106AA8C-8A19-11E6-A85E-00155D28151F</eCH-0058:messageId>
@@ -39,7 +39,7 @@
         <eCH-0159:voteInformation>
             <eCH-0159:vote>
                 <eCH-0155:voteIdentification>VOTE_F108F47D-8A19-11E6-A85E-00155D28151F</eCH-0155:voteIdentification>
-                <eCH-0155:domainOfInfluence>21611090-4DB4-11E6-89C7-00155D28151E</eCH-0155:domainOfInfluence>
+                <eCH-0155:domainOfInfluenceIdentification>21611090-4DB4-11E6-89C7-00155D28151E</eCH-0155:domainOfInfluenceIdentification>
                 <eCH-0155:voteDescription>
                     <eCH-0155:voteDescriptionInfo>
                         <eCH-0155:language>de</eCH-0155:language>
@@ -64,9 +64,9 @@
                 <eCH-0155:ballotPosition>1</eCH-0155:ballotPosition>
                 <eCH-0155:standardBallot>
                     <eCH-0155:questionIdentification>417B8B99-8A19-11E6-BA28-00155D28151E</eCH-0155:questionIdentification>
-                    <eCH-0155:answerType>
+                    <eCH-0155:answerInformation>
                         <eCH-0155:answerType>2</eCH-0155:answerType>
-                    </eCH-0155:answerType>
+                    </eCH-0155:answerInformation>
                     <eCH-0155:ballotQuestion>
                         <eCH-0155:ballotQuestionInfo>
                             <eCH-0155:language>de</eCH-0155:language>

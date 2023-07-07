@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/4" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/4 file:///C:/Users/hepplerl/Documents/E-Voting/DIS_2_0_final/evoting-parameter-4-0.xsd">
+<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/4" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/4 file:///C:/Users/hepplerl/Documents/E-Voting/DIS_2_0_final/evoting-parameter-4-6.xsd">
 	<contest>
 		<defaultLanguage>de</defaultLanguage>
 		<evotingFromDate>2022-12-14T07:00:00+01:00</evotingFromDate>
 		<evotingToDate>2023-12-14T23:00:00+01:00</evotingToDate>
 		<evotingTestBallotBoxesFromDate>2022-12-14T07:00:00+01:00</evotingTestBallotBoxesFromDate>
-		<swissAbroadCountingMode>
-			<specificCountingCircle>
-				<configuration>
-					<countingCircleId>BE-MU-9170</countingCircleId>
-					<voteTypes>
-						<voteType>CH</voteType>
-					</voteTypes>
-				</configuration>
-			</specificCountingCircle>
-		</swissAbroadCountingMode>
 		<adminBoard>
 			<adminBoardIdentification>Post_E2E_DEV</adminBoardIdentification>
 			<adminBoardName>Post_E2E_DEV</adminBoardName>
