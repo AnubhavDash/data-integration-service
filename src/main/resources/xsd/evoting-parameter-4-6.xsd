@@ -238,6 +238,7 @@
 			<xs:extension base="configSplitter">
 				<xs:sequence>
 					<xs:element name="splitSwissResidentByMunicipality" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="splitSwissAbroadByMunicipality" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
