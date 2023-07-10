@@ -375,7 +375,7 @@
 		<incumbentText merge:action="xsdinsert">
 			<incumbentTextInfo>
 				<language>de</language>
-				<text>Bisher</text>
+				<text>bisher</text>
 			</incumbentTextInfo>
 			<incumbentTextInfo>
 				<language>fr</language>
