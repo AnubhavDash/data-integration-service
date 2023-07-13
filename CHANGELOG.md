@@ -1,5 +1,15 @@
 # Changelog
 
+## Release 2.7.1
+
+Release 2.7.1 is a minor maintenance patch containing the following changes:
+
+* Reuse the electionIdentification as electionGroupIdentification if the electionGroup has no identification and contains a single election.
+* Provide a warning if the evotingTestBallotBoxesFromDate is after the evotingFromDate.
+* Provide a splitter for generating multiple files per ballot box.
+* Replace incumbent text "Bisher" with "bisher".
+* Updated dependencies and third-party libraries.
+
 ## Release 2.7.0
 
 The Data Integration Service 2.7.0 contains the following changes

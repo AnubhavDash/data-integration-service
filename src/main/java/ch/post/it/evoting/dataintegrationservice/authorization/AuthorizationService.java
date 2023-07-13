@@ -158,6 +158,12 @@ public class AuthorizationService {
 
 		checkAuthorizationAliasLength(result);
 
+		if (contestParameters.getEvotingTestBallotBoxesFromDate() != null
+				&& contestParameters.getEvotingTestBallotBoxesFromDate().compare(contest.getEvotingFromDate()) > 0) {
+			LOGGER.warn(
+					"The test ballot boxes (evotingTestBallotBoxesFromDate ) open after the productive ballot boxes (evotingFromDate). Are you sure that this is the intended configuration?");
+		}
+
 		result.setAuthorizationTest(
 				COUNTING_CIRCLE_ALL_TEST || voter.getDomainOfInfluenceInfos().stream().map(VoterDomainOfInfluenceInfo::getCountingCircle)
 						.filter(cc -> StringUtil.isInteger(cc.getId())).anyMatch(cc -> Integer.parseInt(cc.getId()) >= MIN_TEST_CONTROL_VALUE));
@@ -216,6 +222,12 @@ public class AuthorizationService {
 
 		result.setAuthorizationAlias(result.getAuthorizationIdentification());
 		checkAuthorizationAliasLength(result);
+
+		if (contestParameters.getEvotingTestBallotBoxesFromDate() != null
+				&& contestParameters.getEvotingTestBallotBoxesFromDate().compare(contest.getEvotingFromDate()) > 0) {
+			LOGGER.warn(
+					"The test ballot boxes (evotingTestBallotBoxesFromDate ) open after the productive ballot boxes (evotingFromDate). Are you sure that this is the intended configuration?");
+		}
 
 		result.setAuthorizationTest(
 				COUNTING_CIRCLE_ALL_TEST || usedCountingCircles.stream().anyMatch(cc -> cc.getMunicipalityId() >= MIN_TEST_CONTROL_VALUE));

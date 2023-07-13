@@ -15,6 +15,11 @@ public class ResidenceSplitterTypeImpl extends ResidenceSplitterType {
 			return StringUtil.concat(VoterTypeType.SWISSRESIDENT.toString(), "" + voterTypeWithRole.getPerson().getMunicipality().getMunicipalityId(),
 					"_");
 		}
+		if (splitSwissAbroadByMunicipality != null && splitSwissAbroadByMunicipality
+				&& voterTypeWithRole.getVoterType() == VoterTypeType.SWISSABROAD) {
+			return StringUtil.concat(VoterTypeType.SWISSABROAD.toString(), "" + voterTypeWithRole.getPerson().getMunicipality().getMunicipalityId(),
+					"_");
+		}
 		return voterTypeWithRole.getVoterType().toString();
 	}
 }
