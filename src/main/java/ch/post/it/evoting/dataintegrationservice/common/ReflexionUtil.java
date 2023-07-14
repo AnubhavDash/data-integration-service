@@ -24,7 +24,7 @@ public class ReflexionUtil {
 			Object element = src;
 			for (final String obj : objects.subList(0, objects.size() - 1)) {
 				checkState(element.getClass() != null, "The element class must not be null");
-				Field field = getField(element, obj);
+				final Field field = getField(element, obj);
 
 				checkState(field != null, "The field could not be found in class. [field: %s, class: %s]", obj, element.getClass().getSimpleName());
 				element = field.get(element);
@@ -66,11 +66,11 @@ public class ReflexionUtil {
 		return result;
 	}
 
-	public static void setFieldValue(Field field, Object element, Object value) {
+	public static void setFieldValue(final Field field, final Object element, final Object value) {
 		try {
 			field.setAccessible(true);
 			field.set(element, value);
-		} catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			throw new IllegalArgumentException("Error setting value on field", e);
 		}
 	}

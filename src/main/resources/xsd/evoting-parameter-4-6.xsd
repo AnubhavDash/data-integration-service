@@ -349,6 +349,14 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="election" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="electionIdentification" type="xs:token" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="positionNumber" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="vote" minOccurs="0" maxOccurs="unbounded">
 				<xs:complexType>
 					<xs:sequence>

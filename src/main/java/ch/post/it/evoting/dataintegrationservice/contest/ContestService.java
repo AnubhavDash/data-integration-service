@@ -321,6 +321,18 @@ public class ContestService {
 						.setElectionGroupPosition(position);
 			});
 
+			contestParameters.getSorting().getElection().forEach(positionParameter -> {
+				final String electionIdentification = positionParameter.getElectionIdentification();
+				final int position = positionParameter.getPositionNumber().intValueExact();
+				electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+						.filter(e -> e.getElection().getElectionIdentification().equals(electionIdentification))
+						.findFirst()
+						.orElseThrow(() -> new IllegalStateException(String.format(
+								"Unknown electionIdentification defined in sorting definition of parameters file. [electionIdentification: %s",
+								electionIdentification)))
+						.getElection().setElectionPosition(position);
+			});
+
 			contestParameters.getSorting().getVote().forEach(positionParameter -> {
 				final String voteIdentification = positionParameter.getVoteIdentification();
 				final BigInteger position = positionParameter.getPositionNumber();
