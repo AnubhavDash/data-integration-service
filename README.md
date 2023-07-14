@@ -50,7 +50,6 @@ In the folder src, the following files must be present:
 
 * eCH-0045 XML file(s)
 * eCH-0157/9 XML file(s)
-* Auxiliary CSV files (if eCH version 3 is used)
 * params.xml, configures the data integration service, by activating plugins, and provides additional election event parameters that are not present in the eCH-files
 
 ## Development
