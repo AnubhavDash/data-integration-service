@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:config="http://www.evoting.ch/xmlns/config/5" targetNamespace="http://www.evoting.ch/xmlns/config/5" elementFormDefault="qualified" attributeFormDefault="unqualified" version="5.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:config="http://www.evoting.ch/xmlns/config/5" targetNamespace="http://www.evoting.ch/xmlns/config/5" elementFormDefault="qualified" attributeFormDefault="unqualified" version="5.1">
 	<xs:simpleType name="languageType">
 		<xs:restriction base="xs:string">
 			<xs:length value="2"/>
@@ -479,6 +479,14 @@
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="partyAffiliation" type="config:partyAffiliationformationType" minOccurs="0"/>
+			<xs:element name="eligibility">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:enumeration value="explicit"/>
+						<xs:enumeration value="implicit"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="varListTextInfoType">

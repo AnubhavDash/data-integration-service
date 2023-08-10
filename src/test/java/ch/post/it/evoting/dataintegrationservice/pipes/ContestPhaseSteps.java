@@ -52,6 +52,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroup
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EligibilityType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType;
@@ -683,6 +684,11 @@ public class ContestPhaseSteps extends PhaseSteps {
 		candidateMap.get(elections + "." + election + "." + name).getOccupationalTitle().getOccupationalTitleInfo()
 				.add(new OccupationalTitleInformationType.OccupationalTitleInfo().withLanguage(LanguageType.valueOf(lang))
 						.withOccupationalTitle(title));
+	}
+
+	@And("^candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has eligibility \"([^\"]*)\"$")
+	public void andCandidateHasEligibility(final String elections, final String election, final String name, final String eligibility) {
+		candidateMap.get(elections + "." + election + "." + name).setEligibility(EligibilityType.fromValue(eligibility));
 	}
 
 	@And("^candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has id \"([^\"]*)\"$")

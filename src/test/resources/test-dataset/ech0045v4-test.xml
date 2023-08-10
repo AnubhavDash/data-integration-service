@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <!-- edited with XMLSpy v2019 rel. 3 sp1 (x64) (http://www.altova.com) by Post CH AG (Post CH AG) -->
-<eCH-0045:voterDelivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0045="http://www.ech.ch/xmlns/eCH-0045/4" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/6" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/7">
+<eCH-0045:voterDelivery xmlns:eCH-0045="http://www.ech.ch/xmlns/eCH-0045/4" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/6" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/7">
 	<eCH-0045:deliveryHeader xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5">
 		<eCH-0058:senderId>CC EVO</eCH-0058:senderId>
 		<eCH-0058:messageId>XXXXXX-XXXX-XXXX-XXXX-XXXXXXXX</eCH-0058:messageId>

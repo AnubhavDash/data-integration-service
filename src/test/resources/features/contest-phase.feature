@@ -280,6 +280,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 1 for A" has occupational title "FR" "Candidate 1 for A title (FR)"
     And candidate "my elections"."election A"."candidate 1 for A" has occupational title "IT" "Candidate 1 for A title (IT)"
     And candidate "my elections"."election A"."candidate 1 for A" has occupational title "RM" "Candidate 1 for A title (RM)"
+    And candidate "my elections"."election A"."candidate 1 for A" has eligibility "explicit"
 
     Given a candidate named "candidate 2 for A" within "my elections"."election A"
     And candidate "my elections"."election A"."candidate 2 for A" has id "candidate-2-for-A-id"
@@ -292,6 +293,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 2 for A" has occupational title "FR" "Candidate 2 for A title (FR)"
     And candidate "my elections"."election A"."candidate 2 for A" has occupational title "IT" "Candidate 2 for A title (IT)"
     And candidate "my elections"."election A"."candidate 2 for A" has occupational title "RM" "Candidate 2 for A title (RM)"
+    And candidate "my elections"."election A"."candidate 2 for A" has eligibility "explicit"
 
     Given a candidate named "candidate 3 for A" within "my elections"."election A"
     And candidate "my elections"."election A"."candidate 3 for A" has id "candidate-3-for-A-id"
@@ -304,6 +306,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 3 for A" has occupational title "FR" "candidate 3 for A title (FR)"
     And candidate "my elections"."election A"."candidate 3 for A" has occupational title "IT" "candidate 3 for A title (IT)"
     And candidate "my elections"."election A"."candidate 3 for A" has occupational title "RM" "candidate 3 for A title (RM)"
+    And candidate "my elections"."election A"."candidate 3 for A" has eligibility "explicit"
 
     Given a candidate named "candidate 4 for A" within "my elections"."election A"
     And candidate "my elections"."election A"."candidate 4 for A" has id "candidate-4-for-A-id"
@@ -316,6 +319,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 4 for A" has occupational title "FR" "candidate 4 for A title (FR)"
     And candidate "my elections"."election A"."candidate 4 for A" has occupational title "IT" "candidate 4 for A title (IT)"
     And candidate "my elections"."election A"."candidate 4 for A" has occupational title "RM" "candidate 4 for A title (RM)"
+    And candidate "my elections"."election A"."candidate 4 for A" has eligibility "explicit"
 
     Given a candidate named "candidate 5 for A" within "my elections"."election A"
     And candidate "my elections"."election A"."candidate 5 for A" has id "candidate-5-for-A-id"
@@ -328,6 +332,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 5 for A" has occupational title "FR" "candidate 5 for A title (FR)"
     And candidate "my elections"."election A"."candidate 5 for A" has occupational title "IT" "candidate 5 for A title (IT)"
     And candidate "my elections"."election A"."candidate 5 for A" has occupational title "RM" "candidate 5 for A title (RM)"
+    And candidate "my elections"."election A"."candidate 5 for A" has eligibility "explicit"
 
     Given a list named "list 1 for A" within "my elections"."election A"
     And list "my elections"."election A"."list 1 for A" has id "list-1-for-election-A-id"

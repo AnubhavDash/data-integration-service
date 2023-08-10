@@ -496,6 +496,12 @@
 			<xs:element name="election" type="electionType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:simpleType name="eligibilityType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="explicit"/>
+			<xs:enumeration value="implicit"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:complexType name="electionType">
 		<xs:sequence>
 			<xs:element name="electionIdentification">
@@ -517,6 +523,20 @@
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="minimalCandidateSelectionInList" type="xs:nonNegativeInteger" minOccurs="0"/>
+			<xs:element name="candidatesEligibility" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="candidateEligibility" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="candidateIdentification" type="xs:token"/>
+									<xs:element name="eligibility" type="eligibilityType"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="parameter">

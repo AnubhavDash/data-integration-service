@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/4" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/4 file:///C:/Users/hepplerl/Documents/E-Voting/DIS_2_0_final/evoting-parameter-4-6.xsd">
+<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/4" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/4">
 	<contest>
 		<defaultLanguage>de</defaultLanguage>
 		<evotingFromDate>2022-12-14T07:00:00+01:00</evotingFromDate>
@@ -27,15 +26,31 @@
 		</electoralBoard>
 		<elections>
 			<election>
-				<electionIdentification>01904d8c-8a10-4998-aecd-377f2688e3fa</electionIdentification>
+				<electionIdentification>nrw_test</electionIdentification>
+				<writeInsAllowed>false</writeInsAllowed>
 				<candidateAccumulation>2</candidateAccumulation>
+				<minimalCandidateSelectionInList>1</minimalCandidateSelectionInList>
 			</election>
 			<election>
-				<electionIdentification>b1d85030-9104-48e6-9108-94cf16b8aad8</electionIdentification>
+				<electionIdentification>majorz_test</electionIdentification>
 				<writeInsAllowed>true</writeInsAllowed>
 				<candidateAccumulation>1</candidateAccumulation>
 			</election>
 		</elections>
+		<sorting>
+			<electionGroup>
+				<electionGroupIdentification>nrw_test</electionGroupIdentification>
+				<positionNumber>2</positionNumber>
+			</electionGroup>
+			<electionGroup>
+				<electionGroupIdentification>majorz_test</electionGroupIdentification>
+				<positionNumber>3</positionNumber>
+			</electionGroup>
+			<vote>
+				<voteIdentification>ch_test</voteIdentification>
+				<positionNumber>1</positionNumber>
+			</vote>
+		</sorting>
 	</contest>
 	<plugins>
 		<afterReadVoter>
