@@ -734,6 +734,11 @@ public class ContestPhaseSteps extends PhaseSteps {
 		listMap.get(elections + "." + election + "." + name).setListOrderOfPrecedence(order);
 	}
 
+	@And("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has listEmpty$")
+	public void andListHasListEmpty(final String elections, final String election, final String name) {
+		listMap.get(elections + "." + election + "." + name).setListEmpty(true);
+	}
+
 	@Given("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has no listOrderOfPrecedence$")
 	public void givenListHasNoListOrderOfPrecedence(final String elections, final String election, final String name) {
 		listMap.get(elections + "." + election + "." + name).setListOrderOfPrecedence(0);

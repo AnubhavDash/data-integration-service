@@ -1040,6 +1040,7 @@ public class ContestService {
 		checkContestIdentifiersUnique(c);
 		checkLimitOfSameOccurrencesOfCandidateInList(c);
 		checkSameNamesOfCandidates(c);
+		checkEmptyListExists(c);
 		checkAnswerConsistency(c);
 		checkParametersOfElections(c.getElectionGroupBallot(), contestParameters);
 		checkPrimarySecondaryElectionConsistency(c);
@@ -1130,6 +1131,12 @@ public class ContestService {
 		checkState(primarySecondaryTuple.secondary().getElection().getNumberOfMandates() <= primarySecondaryTuple.primary().getElection()
 						.getNumberOfMandates(), "The secondary election must have less or an equal numberOfMandates. [electionGroupId: %s]",
 				eg.getElectionGroupIdentification());
+	}
+
+	private void checkEmptyListExists(final ContestType c) {
+		c.getElectionGroupBallot().stream().flatMap(eg -> eg.getElectionInformation().stream())
+				.forEach(e -> checkState(e.getList().stream().anyMatch(ListType::isListEmpty),
+						"The election does not contains an empty list [electionIdentification: %s]", e.getElection().getElectionIdentification()));
 	}
 
 	public ContestType cleanHtmlTags(final ContestType contest) {

@@ -361,6 +361,16 @@ Feature: Contest Phase
     And list "my elections"."election A"."list 3 for A" has description "IT" "list 3 for election A (IT)"
     And list "my elections"."election A"."list 3 for A" has description "RM" "list 3 for election A (RM)"
 
+    Given a list named "list 99 for A" within "my elections"."election A"
+    And list "my elections"."election A"."list 99 for A" has id "list-99-for-election-A-id"
+    And list "my elections"."election A"."list 99 for A" has indentureNumber "99"
+    And list "my elections"."election A"."list 99 for A" has listOrderOfPrecedence 99
+    And list "my elections"."election A"."list 99 for A" has listEmpty
+    And list "my elections"."election A"."list 99 for A" has description "DE" "list 99 for election A (DE)"
+    And list "my elections"."election A"."list 99 for A" has description "FR" "list 99 for election A (FR)"
+    And list "my elections"."election A"."list 99 for A" has description "IT" "list 99 for election A (IT)"
+    And list "my elections"."election A"."list 99 for A" has description "RM" "list 99 for election A (RM)"
+
     Given a list-union named "list-union 1" within "my elections"."election A"
     And list-union  "my elections"."election A"."list-union 1" has id "list-union-1-id"
     And list-union  "my elections"."election A"."list-union 1" has type 1

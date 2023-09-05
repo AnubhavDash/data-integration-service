@@ -4,7 +4,6 @@
 package pipes;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -13,14 +12,12 @@ import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.dataintegrationservice.authorization.AuthorizationService;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
-import ch.post.it.evoting.dataintegrationservice.parameter.plugin.AuthorizationPlugin;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuple4;
-import reactor.util.function.Tuple5;
 
 @Component
 public class AuthorizationPhaseComponent {
