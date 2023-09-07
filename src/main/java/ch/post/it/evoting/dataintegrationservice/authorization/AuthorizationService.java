@@ -183,6 +183,22 @@ public class AuthorizationService {
 	}
 
 	public void checkAuthorizations(final AuthorizationsType authorizations, final List<String> usedDOIIds) {
+		authorizations.getAuthorization().stream()
+				.flatMap(auths -> auths.getAuthorizationObject().stream())
+				.map(AuthorizationObjectType::getCountingCircle)
+				.collect(Collectors.groupingBy(
+						CountingCircleType::getCountingCircleIdentification,
+						Collectors.toSet()))
+				.entrySet()
+				.stream()
+				.filter(entry -> entry.getValue().stream().map(CountingCircleType::getCountingCircleName).distinct().count() > 1)
+				.forEach(entry -> {
+					throw new IllegalStateException(
+							String.format("Different counting circles are defined with the same id [countingCircleId: %s, countingCircleNames: [%s]]",
+									entry.getKey(),
+									String.join(", ", entry.getValue().stream().map(CountingCircleType::getCountingCircleName).toList())));
+				});
+
 		final List<String> doiInAuthorizations = authorizations.getAuthorization().stream().flatMap(a -> a.getAuthorizationObject().stream())
 				.map(ao -> ao.getDomainOfInfluence().getDomainOfInfluenceIdentification()).toList();
 
