@@ -702,6 +702,12 @@ public class ContestPhaseSteps extends PhaseSteps {
 				.withCallName(lastName + " " + firstName);
 	}
 
+	@And("^candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has referenceOnPosition \"([^\"]*)\"$")
+	public void andCandidateHasReferenceOnPosition(final String elections, final String election, final String cand,
+			final String referenceOnPosition) {
+		candidateMap.get(elections + "." + election + "." + cand).setReferenceOnPosition(referenceOnPosition);
+	}
+
 	@And("^the text descriptions of the candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")
 	public void andTextDescriptionfOfCandidateAreClearedOut(final String elections, final String election, final String name) {
 		candidateMap.get(elections + "." + election + "." + name).getCandidateText().setCandidateTextInfo(new ArrayList<>());

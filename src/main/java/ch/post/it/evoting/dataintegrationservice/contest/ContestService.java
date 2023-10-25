@@ -1040,6 +1040,7 @@ public class ContestService {
 		checkContestIdentifiersUnique(c);
 		checkLimitOfSameOccurrencesOfCandidateInList(c);
 		checkSameNamesOfCandidates(c);
+		checkReferenceOnPositionOnCandidateIsFilled(c);
 		checkEmptyListExists(c);
 		checkAnswerConsistency(c);
 		checkParametersOfElections(c.getElectionGroupBallot(), contestParameters);
@@ -1131,6 +1132,14 @@ public class ContestService {
 		checkState(primarySecondaryTuple.secondary().getElection().getNumberOfMandates() <= primarySecondaryTuple.primary().getElection()
 						.getNumberOfMandates(), "The secondary election must have less or an equal numberOfMandates. [electionGroupId: %s]",
 				eg.getElectionGroupIdentification());
+	}
+
+	private void checkReferenceOnPositionOnCandidateIsFilled(final ContestType c) {
+		c.getElectionGroupBallot().stream()
+				.flatMap(eg -> eg.getElectionInformation().stream())
+				.flatMap(e -> e.getCandidate().stream())
+				.forEach(candidate -> checkState(!StringUtil.isNullOrEmpty(candidate.getReferenceOnPosition()),
+						"the referenceOnPosition for the candidate must be provided. [candidateId: %s]", candidate.getCandidateIdentification()));
 	}
 
 	private void checkEmptyListExists(final ContestType c) {
