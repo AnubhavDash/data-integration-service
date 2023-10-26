@@ -1,5 +1,14 @@
 # Changelog
 
+## Release 2.7.2
+
+Release 2.7.2 is a minor maintenance patch containing the following changes:
+
+* Enforce the presence of the referenceOnPosition field for each candidate.
+* Add a check that each election contains an empty list.
+* Prevent configurations where two different counting circles have the same ID.
+* Updated dependencies and third-party libraries.
+
 ## Release 2.7.1
 
 Release 2.7.1 is a minor maintenance patch containing the following changes:
