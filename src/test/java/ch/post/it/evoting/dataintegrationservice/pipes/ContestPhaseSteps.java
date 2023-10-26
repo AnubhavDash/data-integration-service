@@ -697,6 +697,12 @@ public class ContestPhaseSteps extends PhaseSteps {
 				.withCallName(lastName + " " + firstName);
 	}
 
+	@And("^candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has referenceOnPosition \"([^\"]*)\"$")
+	public void andCandidateHasReferenceOnPosition(final String elections, final String election, final String cand,
+			final String referenceOnPosition) {
+		candidateMap.get(elections + "." + election + "." + cand).setReferenceOnPosition(referenceOnPosition);
+	}
+
 	@And("^the text descriptions of the candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")
 	public void andTextDescriptionfOfCandidateAreClearedOut(final String elections, final String election, final String name) {
 		candidateMap.get(elections + "." + election + "." + name).getCandidateText().setCandidateTextInfo(new ArrayList<>());
@@ -727,6 +733,11 @@ public class ContestPhaseSteps extends PhaseSteps {
 	@And("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has listOrderOfPrecedence (\\d+)$")
 	public void andListHasListOrderOfPrecedence(final String elections, final String election, final String name, final Integer order) {
 		listMap.get(elections + "." + election + "." + name).setListOrderOfPrecedence(order);
+	}
+
+	@And("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has listEmpty$")
+	public void andListHasListEmpty(final String elections, final String election, final String name) {
+		listMap.get(elections + "." + election + "." + name).setListEmpty(true);
 	}
 
 	@Given("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has no listOrderOfPrecedence$")

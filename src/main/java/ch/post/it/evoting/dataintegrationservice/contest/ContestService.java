@@ -999,8 +999,24 @@ public class ContestService {
 		checkContestIdentifiersUnique(c);
 		checkLimitOfSameOccurrencesOfCandidateInList(c);
 		checkSameNamesOfCandidates(c);
+		checkReferenceOnPositionOnCandidateIsFilled(c);
+		checkEmptyListExists(c);
 		checkAnswerConsistency(c);
 		checkParametersOfElections(c.getElectionGroupBallot(), contestParameters);
+	}
+
+	private void checkReferenceOnPositionOnCandidateIsFilled(final ContestType c) {
+		c.getElectionGroupBallot().stream()
+				.flatMap(eg -> eg.getElectionInformation().stream())
+				.flatMap(e -> e.getCandidate().stream())
+				.forEach(candidate -> checkState(!StringUtil.isNullOrEmpty(candidate.getReferenceOnPosition()),
+						"the referenceOnPosition for the candidate must be provided. [candidateId: %s]", candidate.getCandidateIdentification()));
+	}
+
+	private void checkEmptyListExists(final ContestType c) {
+		c.getElectionGroupBallot().stream().flatMap(eg -> eg.getElectionInformation().stream())
+				.forEach(e -> checkState(e.getList().stream().anyMatch(ListType::isListEmpty),
+						"The election does not contains an empty list [electionIdentification: %s]", e.getElection().getElectionIdentification()));
 	}
 
 	public ContestType cleanHtmlTags(final ContestType contest) {
