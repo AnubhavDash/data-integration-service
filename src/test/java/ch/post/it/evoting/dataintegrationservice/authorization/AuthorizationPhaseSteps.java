@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
@@ -70,7 +69,6 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 		processException = null;
 		ContestPhase.exports.setContest(Flux.just(contest));
 		RegisterPhase.exports.setVoters(Flux.fromIterable(voters));
-		ParameterPhase.exports.setAfterReadVoterAuthorizationPlugins(Flux.just(Collections.EMPTY_LIST));
 		ParameterPhase.exports.setContestParameters(Flux.just(contestParameters));
 		new Runtime().run(uri("authorizationPhase"));
 		drain(AuthorizationPhase.exports.getAuthorizations().doOnNext(auth -> {

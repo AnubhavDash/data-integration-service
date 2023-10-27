@@ -5,7 +5,9 @@ package pipes
 
 import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
 
-import static pipes.Tools.*
+import static li.chee.reactive.plumber.Plumbing.*
+import static pipes.Tools.apply
+import static pipes.Tools.logAsInfo
 
 def registerPhaseComponent = DataIntegrationServiceApplication.context.getBean(RegisterPhaseComponent.class)
 
@@ -20,9 +22,4 @@ def votersWithPlugins = tube {
     zipWith value(RegisterPhase.parameterPhase.afterReadVoterPlugins), apply()
 }
 
-def votersWithAuthPlugins = tube {
-    from votersWithPlugins \
-    zipWith value(RegisterPhase.parameterPhase.afterReadVoterAuthorizationPlugins), apply() \
-}
-
-RegisterPhase.exports.voters = votersWithAuthPlugins
+RegisterPhase.exports.voters = votersWithPlugins

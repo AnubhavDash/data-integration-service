@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.evoting.ch/xmlns/parameter/4" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.evoting.ch/xmlns/parameter/4" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.5" xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb bindingschema_2_0.xsd" jaxb:version="2.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.evoting.ch/xmlns/parameter/4" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.evoting.ch/xmlns/parameter/4" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.8" xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb bindingschema_2_0.xsd" jaxb:version="2.0">
 	<xs:simpleType name="languageType">
 		<xs:restriction base="xs:string">
 			<xs:length value="2"/>
@@ -115,73 +115,6 @@
 			<xs:extension base="voterMapper"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="voterFieldModifierPluginType">
-		<xs:complexContent>
-			<xs:extension base="voterMapper">
-				<xs:sequence>
-					<xs:element name="object">
-						<xs:simpleType>
-							<xs:restriction base="xs:token">
-								<xs:minLength value="1"/>
-							</xs:restriction>
-						</xs:simpleType>
-					</xs:element>
-					<xs:element name="fieldName">
-						<xs:simpleType>
-							<xs:restriction base="xs:string">
-								<xs:minLength value="1"/>
-							</xs:restriction>
-						</xs:simpleType>
-					</xs:element>
-					<xs:element name="fieldValue" type="xs:string" minOccurs="0"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:complexType name="voterIdPrefixerType">
-		<xs:complexContent>
-			<xs:extension base="voterMapper">
-				<xs:choice>
-					<xs:element name="prefixValue" type="xs:token"/>
-					<xs:element name="prefixReference" type="xs:token"/>
-				</xs:choice>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:complexType name="doiLocalIdMunicipalityIdSetterType">
-		<xs:complexContent>
-			<xs:extension base="voterAuthorizationMapper"/>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:complexType name="doiLocalIdMapperType">
-		<xs:complexContent>
-			<xs:extension base="voterAuthorizationMapper">
-				<xs:sequence>
-					<xs:element name="type" minOccurs="1" maxOccurs="1">
-						<xs:simpleType>
-							<xs:restriction base="xs:string">
-								<xs:length value="2"/>
-							</xs:restriction>
-						</xs:simpleType>
-					</xs:element>
-					<xs:element name="oldValue" minOccurs="1" maxOccurs="unbounded">
-						<xs:simpleType>
-							<xs:restriction base="xs:string">
-								<xs:minLength value="1"/>
-							</xs:restriction>
-						</xs:simpleType>
-					</xs:element>
-					<xs:element name="newValue" minOccurs="1" maxOccurs="1">
-						<xs:simpleType>
-							<xs:restriction base="xs:string">
-								<xs:minLength value="1"/>
-							</xs:restriction>
-						</xs:simpleType>
-					</xs:element>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
 	<xs:complexType name="voterMapper" abstract="true">
 		<xs:annotation>
 			<xs:appinfo>
@@ -198,8 +131,6 @@
 			</xs:annotation>
 			<xs:element name="birthYearAuthenticationKey" type="birthYearAuthenticationKeyType"/>
 			<xs:element name="birthDateAuthenticationKey" type="birthDateAuthenticationKeyType"/>
-			<xs:element name="voterFieldModifier" type="voterFieldModifierPluginType"/>
-			<xs:element name="voterIdPrefixer" type="voterIdPrefixerType"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="configSplitter" abstract="true">
@@ -271,15 +202,6 @@
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:complexType>
-	<xs:complexType name="prefetElectionType">
-		<xs:complexContent>
-			<xs:extension base="contestMapper">
-				<xs:sequence>
-					<xs:element name="electionId" type="xs:token" minOccurs="1" maxOccurs="unbounded"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
 	<xs:complexType name="votePositionSetterType">
 		<xs:complexContent>
 			<xs:extension base="contestMapper">
@@ -303,7 +225,6 @@
 					<jaxb:property name="Plugins"/>
 				</xs:appinfo>
 			</xs:annotation>
-			<xs:element name="prefetElection" type="prefetElectionType" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="vote" type="votePositionSetterType" minOccurs="0" maxOccurs="1"/>
 		</xs:choice>
 	</xs:complexType>
@@ -314,27 +235,9 @@
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:complexType>
-	<xs:complexType name="districtAuthorizationAppenderType">
-		<xs:complexContent>
-			<xs:extension base="voterAuthorizationMapper"/>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:complexType name="afterReadVoterAuthorizationType">
-		<xs:choice minOccurs="1" maxOccurs="unbounded">
-			<xs:annotation>
-				<xs:appinfo>
-					<jaxb:property name="Plugins"/>
-				</xs:appinfo>
-			</xs:annotation>
-			<xs:element name="districtAuthorizationAppender" type="districtAuthorizationAppenderType" maxOccurs="1"/>
-			<xs:element name="doiLocalIdMapper" type="doiLocalIdMapperType"/>
-			<xs:element name="doiLocalIdMunicipalityIdSetter" type="doiLocalIdMunicipalityIdSetterType"/>
-		</xs:choice>
-	</xs:complexType>
 	<xs:complexType name="pluginsType">
 		<xs:sequence>
 			<xs:element name="afterReadVoter" type="afterReadVoterType" minOccurs="0" maxOccurs="1"/>
-			<xs:element name="afterReadVoterAuthorization" type="afterReadVoterAuthorizationType" minOccurs="0"/>
 			<xs:element name="afterReadContest" type="afterReadContestType" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="configSplitter" type="configSplitterType" minOccurs="0" maxOccurs="1"/>
 		</xs:sequence>

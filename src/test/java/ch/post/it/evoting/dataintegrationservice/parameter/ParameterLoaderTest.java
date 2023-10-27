@@ -16,7 +16,6 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import ch.evoting.xmlns.parameter._4.BirthYearAuthenticationKeyTypeImpl;
-import ch.evoting.xmlns.parameter._4.DoiLocalIdMapperTypeImpl;
 import ch.evoting.xmlns.parameter._4.Parameter;
 import ch.galinet.xml.xmlmerge.XmlMerge;
 import ch.galinet.xml.xmlmerge.config.AttributeMergeConfigurer;
@@ -31,8 +30,6 @@ class ParameterLoaderTest {
 		final Parameter param = parameterLoader.loadParameter("./src/test/resources/ParameterLoaderTest/file.param.xml");
 		assertTrue(param.getPlugins().getAfterReadVoter().getPlugins().stream()
 				.anyMatch(p -> p.getClass().equals(BirthYearAuthenticationKeyTypeImpl.class)));
-		assertTrue(param.getPlugins().getAfterReadVoterAuthorization().getPlugins().stream()
-				.anyMatch(p -> p.getClass().equals(DoiLocalIdMapperTypeImpl.class)));
 	}
 
 	@Test

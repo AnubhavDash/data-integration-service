@@ -14,11 +14,6 @@ public class PluginObjectFactory extends ObjectFactory {
 	}
 
 	@Override
-	public DoiLocalIdMapperType createDoiLocalIdMapperType() {
-		return new DoiLocalIdMapperTypeImpl();
-	}
-
-	@Override
 	public FrankingAreaSplitterType createFrankingAreaSplitterType() {
 		return new FrankingAreaSplitterTypeImpl();
 	}
@@ -29,23 +24,8 @@ public class PluginObjectFactory extends ObjectFactory {
 	}
 
 	@Override
-	public PrefetElectionType createPrefetElectionType() {
-		return new PrefetElectionTypeImpl();
-	}
-
-	@Override
-	public DoiLocalIdMunicipalityIdSetterType createDoiLocalIdMunicipalityIdSetterType() {
-		return new DoiLocalIdMunicipalityIdSetterTypeImpl();
-	}
-
-	@Override
 	public ResidenceSplitterType createResidenceSplitterType() {
 		return new ResidenceSplitterTypeImpl();
-	}
-
-	@Override
-	public VoterFieldModifierPluginType createVoterFieldModifierPluginType() {
-		return new VoterFieldModifierTypeImpl();
 	}
 
 	@Override
@@ -61,11 +41,6 @@ public class PluginObjectFactory extends ObjectFactory {
 	@Override
 	public TestAndControlSplitterType createTestAndControlSplitterType() {
 		return new TestAndControlSplitterTypeImpl();
-	}
-
-	@Override
-	public VoterIdPrefixerType createVoterIdPrefixerType() {
-		return new VoterIdPrefixerTypeImpl();
 	}
 
 	@Override

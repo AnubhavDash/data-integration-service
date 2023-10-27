@@ -13,7 +13,6 @@ import ch.evoting.xmlns.parameter._4.ContestType;
 import ch.evoting.xmlns.parameter._4.Parameter;
 import ch.post.it.evoting.dataintegrationservice.parameter.ParameterLoader;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.ContestMapper;
-import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterAuthorizationMapper;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterCategorizer;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterWithRoleMapper;
 
@@ -58,16 +57,6 @@ public class ParameterPhaseComponent {
 		return p -> {
 			if (p.getPlugins().getAfterReadVoter() != null) {
 				return p.getPlugins().getAfterReadVoter().getPlugins();
-			} else {
-				return Collections.emptyList();
-			}
-		};
-	}
-
-	public Function<Parameter, List<VoterAuthorizationMapper>> getAfterReadVoterAuthorizationPlugins() {
-		return p -> {
-			if (p.getPlugins().getAfterReadVoterAuthorization() != null) {
-				return p.getPlugins().getAfterReadVoterAuthorization().getPlugins().stream().toList();
 			} else {
 				return Collections.emptyList();
 			}
