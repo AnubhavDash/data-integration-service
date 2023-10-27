@@ -35,7 +35,7 @@
 		<hamcrest-core.version>2.2</hamcrest-core.version>
 		<jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
 		<jaxb-osgi.version>2.3.8</jaxb-osgi.version>
-		<jaxb-runtime.version>2.3.8</jaxb-runtime.version>
+		<jaxb-runtime.version>4.0.4</jaxb-runtime.version>
 		<junit-bom.version>5.10.0-M1</junit-bom.version>
 		<logback-classic.version>1.4.8</logback-classic.version>
 		<lombok.version>1.18.28</lombok.version>
