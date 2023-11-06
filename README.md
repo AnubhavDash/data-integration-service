@@ -31,7 +31,7 @@ The configuration file “param.xml” contains the following definitions for th
 
 The properties file “application.properties” contains the following definitions:
 * min number of days allowed between eVoting from and eVoting to
-        * eVotingFromTo.min.delta.allowed=15
+        * eVotingFromTo.min.delta.allowed=10
 * grace period in seconds
         * authorization.gracePeriod=900
 * circles of influence
