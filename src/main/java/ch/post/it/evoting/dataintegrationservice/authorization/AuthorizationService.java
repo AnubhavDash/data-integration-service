@@ -9,9 +9,11 @@ import static com.google.common.base.Preconditions.checkState;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -91,9 +93,18 @@ public class AuthorizationService {
 		final AuthorizationType result = new AuthorizationType();
 
 		//DOI and CC are given from the voter information (from ech-0045 v4)
-		result.getAuthorizationObject().addAll(voter.getDomainOfInfluenceInfos().stream()
+		result.getAuthorizationObject().addAll(new LinkedList<>(voter.getDomainOfInfluenceInfos().stream()
 				.filter(doiInfo -> usedDOIids.contains(doiInfo.getDomainOfInfluence().getLocalId())).map(doiInfo -> map(voter, doiInfo))
-				.toList());
+				.collect(Collectors.toMap(
+						ao -> ao.getDomainOfInfluence().getDomainOfInfluenceIdentification() + "|" + ao.getCountingCircle()
+								.getCountingCircleIdentification(),
+						Function.identity(),
+						(ao1, ao2) -> {
+							LOGGER.warn("A voter with multiple identical domainOfInfluenceInfo found. Taking only the first one. [voterId: {}].",
+									voter.getVoterIdentification());
+							return ao1;
+						}
+				)).values()));
 
 		result.setAuthorizationName(
 				voter.getDomainOfInfluenceInfos().stream().filter(doiInfo -> usedDOIids.contains(doiInfo.getDomainOfInfluence().getLocalId()))
