@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<parameter xmlns="http://www.evoting.ch/xmlns/parameter/4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/4 evoting-parameter-4-8.xsd">
+<parameter xmlns="http://www.evoting.ch/xmlns/parameter/4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/4 evoting-parameter-4-9.xsd">
   <contest>
     <defaultLanguage>fr</defaultLanguage>
     <evotingFromDate>2037-04-13T09:04:00+02:00</evotingFromDate>

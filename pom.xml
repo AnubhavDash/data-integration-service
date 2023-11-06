@@ -27,7 +27,7 @@
 		<commons-lang3.version>3.13.0</commons-lang3.version>
 		<crypto-primitives.version>1.4.0.3</crypto-primitives.version>
 		<cucumber-bom.version>7.14.0</cucumber-bom.version>
-		<e-voting-libraries.version>1.4.0.21</e-voting-libraries.version>
+		<e-voting-libraries.version>1.4.0.34</e-voting-libraries.version>
 		<gmavenplus-plugin.version>1.11.1</gmavenplus-plugin.version>
 		<groovy.version>4.0.15</groovy.version>
 		<groovy-all.version>4.0.15</groovy-all.version>
@@ -36,7 +36,7 @@
 		<jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
 		<jaxb-osgi.version>4.0.4</jaxb-osgi.version>
 		<jaxb-runtime.version>4.0.4</jaxb-runtime.version>
-		<jaxb2-basics.version>1.11.1</jaxb2-basics.version>
+		<jaxb-maven-plugin.version>4.0.0</jaxb-maven-plugin.version>
 		<junit-bom.version>5.10.0</junit-bom.version>
 		<logback-classic.version>1.4.11</logback-classic.version>
 		<lombok.version>1.18.30</lombok.version>
@@ -46,7 +46,6 @@
 		<maven-dependency-check.version>8.4.2</maven-dependency-check.version>
 		<maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
 		<maven-javadoc-plugin.version>3.6.0</maven-javadoc-plugin.version>
-		<maven-jaxb2-plugin.version>0.15.3</maven-jaxb2-plugin.version>
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
 		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
 		<maven-surefire-plugin.version>3.2.1</maven-surefire-plugin.version>
@@ -514,9 +513,9 @@
 				<artifactId>maven-resources-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>org.jvnet.jaxb2.maven2</groupId>
-				<artifactId>maven-jaxb2-plugin</artifactId>
-				<version>${maven-jaxb2-plugin.version}</version>
+				<groupId>org.jvnet.jaxb</groupId>
+				<artifactId>jaxb-maven-plugin</artifactId>
+				<version>${jaxb-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -538,14 +537,9 @@
 					</args>
 					<plugins>
 						<plugin>
-							<groupId>org.jvnet.jaxb2_commons</groupId>
-							<artifactId>jaxb2-fluent-api</artifactId>
-							<version>3.0</version>
-						</plugin>
-						<plugin>
-							<groupId>org.jvnet.jaxb2_commons</groupId>
-							<artifactId>jaxb2-basics</artifactId>
-							<version>${jaxb2-basics.version}</version>
+							<groupId>org.jvnet.jaxb</groupId>
+							<artifactId>jaxb-plugins</artifactId>
+							<version>${jaxb-maven-plugin.version}</version>
 						</plugin>
 					</plugins>
 				</configuration>
