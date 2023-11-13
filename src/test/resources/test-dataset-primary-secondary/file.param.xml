@@ -34,6 +34,16 @@
 				<electionIdentification>833341d6-26cb-46e7-9367-2c8353762cc1</electionIdentification>
 				<writeInsAllowed>true</writeInsAllowed>
 				<candidateAccumulation>1</candidateAccumulation>
+				<candidatesEligibility>
+					<candidateEligibility>
+						<candidateIdentification>e4be5aac-c058-4b45-a248-09a8d3945c72</candidateIdentification>
+						<eligibility>implicit</eligibility>
+					</candidateEligibility>
+					<candidateEligibility>
+						<candidateIdentification>447b0810-e935-4c55-82e3-55a152c9d434</candidateIdentification>
+						<eligibility>implicit</eligibility>
+					</candidateEligibility>
+				</candidatesEligibility>
 			</election>
 		</elections>
 		<sorting>
