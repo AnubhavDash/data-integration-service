@@ -25,9 +25,9 @@
 		<commons-codec.version>1.16.0</commons-codec.version>
 		<commons-io.version>2.15.0</commons-io.version>
 		<commons-lang3.version>3.13.0</commons-lang3.version>
-		<crypto-primitives.version>1.4.0.3</crypto-primitives.version>
+		<crypto-primitives.version>1.4.0.6</crypto-primitives.version>
 		<cucumber-bom.version>7.14.0</cucumber-bom.version>
-		<e-voting-libraries.version>1.4.0.34</e-voting-libraries.version>
+		<e-voting-libraries.version>1.4.0.35</e-voting-libraries.version>
 		<gmavenplus-plugin.version>1.11.1</gmavenplus-plugin.version>
 		<groovy.version>4.0.15</groovy.version>
 		<groovy-all.version>4.0.15</groovy-all.version>
@@ -37,7 +37,7 @@
 		<jaxb-osgi.version>4.0.4</jaxb-osgi.version>
 		<jaxb-runtime.version>4.0.4</jaxb-runtime.version>
 		<jaxb-maven-plugin.version>4.0.0</jaxb-maven-plugin.version>
-		<junit-bom.version>5.10.0</junit-bom.version>
+		<junit-bom.version>5.10.1</junit-bom.version>
 		<logback-classic.version>1.4.11</logback-classic.version>
 		<lombok.version>1.18.30</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
@@ -45,12 +45,12 @@
 		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 		<maven-dependency-check.version>8.4.2</maven-dependency-check.version>
 		<maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
-		<maven-javadoc-plugin.version>3.6.0</maven-javadoc-plugin.version>
+		<maven-javadoc-plugin.version>3.6.2</maven-javadoc-plugin.version>
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
 		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
-		<maven-surefire-plugin.version>3.2.1</maven-surefire-plugin.version>
+		<maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
 		<msv-rngconverter.version>2022.7</msv-rngconverter.version>
-		<reactive-plumber.version>0.25.1</reactive-plumber.version>
+		<reactive-plumber.version>0.26.0</reactive-plumber.version>
 		<reactor-core.version>3.5.11</reactor-core.version>
 		<reproducible-build-maven-plugin.version>0.15.2</reproducible-build-maven-plugin.version>
 		<spring.version>6.0.13</spring.version>
@@ -70,7 +70,7 @@
 		<sonar.coverage.exclusions>**/test/**/*,**/tests/**/*</sonar.coverage.exclusions>
 		<sonar.java.source>${maven.compiler.release}</sonar.java.source>
 		<sonar.java.target>${maven.compiler.release}</sonar.java.target>
-		<sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
+		<sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
 	</properties>
 
 	<dependencyManagement>
