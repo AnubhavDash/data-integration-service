@@ -27,7 +27,7 @@
 		<commons-lang3.version>3.13.0</commons-lang3.version>
 		<crypto-primitives.version>1.4.0.6</crypto-primitives.version>
 		<cucumber-bom.version>7.14.0</cucumber-bom.version>
-		<e-voting-libraries.version>1.4.0.35</e-voting-libraries.version>
+		<e-voting-libraries.version>1.4.0.37</e-voting-libraries.version>
 		<gmavenplus-plugin.version>1.11.1</gmavenplus-plugin.version>
 		<groovy.version>4.0.15</groovy.version>
 		<groovy-all.version>4.0.15</groovy-all.version>
@@ -43,7 +43,7 @@
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
 		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-		<maven-dependency-check.version>8.4.2</maven-dependency-check.version>
+		<maven-dependency-check.version>8.4.3</maven-dependency-check.version>
 		<maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
 		<maven-javadoc-plugin.version>3.6.2</maven-javadoc-plugin.version>
 		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
@@ -51,9 +51,9 @@
 		<maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
 		<msv-rngconverter.version>2022.7</msv-rngconverter.version>
 		<reactive-plumber.version>0.26.0</reactive-plumber.version>
-		<reactor-core.version>3.5.11</reactor-core.version>
+		<reactor-core.version>3.6.0</reactor-core.version>
 		<reproducible-build-maven-plugin.version>0.15.2</reproducible-build-maven-plugin.version>
-		<spring.version>6.0.13</spring.version>
+		<spring.version>6.1.0</spring.version>
 		<stax2-api.version>4.2.2</stax2-api.version>
 		<super-machine.version>0.1.0</super-machine.version>
 		<woodstox-core.version>6.5.1</woodstox-core.version>
