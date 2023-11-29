@@ -24,10 +24,10 @@
 		<cloning.version>1.11.1</cloning.version>
 		<commons-codec.version>1.16.0</commons-codec.version>
 		<commons-io.version>2.15.0</commons-io.version>
-		<commons-lang3.version>3.13.0</commons-lang3.version>
-		<crypto-primitives.version>1.4.0.6</crypto-primitives.version>
-		<cucumber-bom.version>7.14.0</cucumber-bom.version>
-		<e-voting-libraries.version>1.4.0.37</e-voting-libraries.version>
+		<commons-lang3.version>3.14.0</commons-lang3.version>
+		<crypto-primitives.version>1.4.0.7</crypto-primitives.version>
+		<cucumber-bom.version>7.14.1</cucumber-bom.version>
+		<e-voting-libraries.version>1.4.0.42</e-voting-libraries.version>
 		<gmavenplus-plugin.version>1.11.1</gmavenplus-plugin.version>
 		<groovy.version>4.0.15</groovy.version>
 		<groovy-all.version>4.0.15</groovy-all.version>
@@ -38,7 +38,7 @@
 		<jaxb-runtime.version>4.0.4</jaxb-runtime.version>
 		<jaxb-maven-plugin.version>4.0.0</jaxb-maven-plugin.version>
 		<junit-bom.version>5.10.1</junit-bom.version>
-		<logback-classic.version>1.4.11</logback-classic.version>
+		<logback-classic.version>1.4.13</logback-classic.version>
 		<lombok.version>1.18.30</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
