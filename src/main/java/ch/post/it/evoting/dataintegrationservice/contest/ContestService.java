@@ -304,6 +304,18 @@ public class ContestService {
 
 		contest.setElectoralBoard(ParameterMapper.INSTANCE.map(contestParameters.getElectoralBoard()));
 
+		// check to avoid list identification duplicates
+		contest.getElectionGroupBallot().stream()
+				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+				.flatMap(electionInformationType -> electionInformationType.getList().stream())
+				.map(ListType::getListIdentification)
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream()
+				.filter(e -> e.getValue() > 1)
+				.findFirst()
+				.ifPresent(e -> {
+					throw new IllegalStateException(String.format("list identifier '%s' is not unique within the contest", e.getKey()));
+				});
+
 		return contest;
 	}
 
