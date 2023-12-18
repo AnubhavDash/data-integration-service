@@ -8,6 +8,7 @@ Feature: Contest Phase
     And user parameters "my params" has contest default language "DE"
     And user parameters "my params" has eVoting date from "2045-04-12 00:00:00"
     And user parameters "my params" has eVoting date to "2045-05-22 00:00:00"
+    And user parameters "my params" has default incumbent
 
     # PARAMETERS - writeIns and accumulation
     And user parameters "my params" has election named "election 1"

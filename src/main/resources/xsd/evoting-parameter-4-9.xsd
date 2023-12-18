@@ -312,6 +312,8 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="defaultDisplayCandidateLineStyle" type="displayCandidateLineStyle"/>
+			<xs:element name="defaultDisplayListLineStyle" type="displayListLineStyle"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="defaultAnswerTranslationType">
@@ -405,6 +407,18 @@
 			<xs:enumeration value="implicit"/>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="displayCandidateLineStyle">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="DEFAULT"/>
+			<xs:enumeration value="WITH_PARTY_AFFILIATION"/>
+			<xs:enumeration value="WITH_PARTY_AFFILIATION_EXTRA_LINE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="displayListLineStyle">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DEFAULT"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:complexType name="electionType">
 		<xs:sequence>
 			<xs:element name="electionIdentification">
@@ -440,6 +454,8 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="displayCandidateLineStyle" type="displayCandidateLineStyle" minOccurs="0"/>
+			<xs:element name="displayListLineStyle" type="displayListLineStyle" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="parameter">

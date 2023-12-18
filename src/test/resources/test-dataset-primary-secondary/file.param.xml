@@ -29,6 +29,8 @@
 				<electionIdentification>833341d6-26cb-46e7-9367-2c8353762cc0</electionIdentification>
 				<writeInsAllowed>true</writeInsAllowed>
 				<candidateAccumulation>1</candidateAccumulation>
+				<displayCandidateLineStyle>DEFAULT</displayCandidateLineStyle>
+				<displayListLineStyle>DEFAULT</displayListLineStyle>
 			</election>
 			<election>
 				<electionIdentification>833341d6-26cb-46e7-9367-2c8353762cc1</electionIdentification>
@@ -44,6 +46,8 @@
 						<eligibility>implicit</eligibility>
 					</candidateEligibility>
 				</candidatesEligibility>
+				<displayCandidateLineStyle>WITH_PARTY_AFFILIATION</displayCandidateLineStyle>
+				<displayListLineStyle>DEFAULT</displayListLineStyle>
 			</election>
 		</elections>
 		<sorting>

@@ -210,6 +210,25 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="displayLineInformationType">
+		<xs:sequence>
+			<xs:element name="displayLineInfo" minOccurs="4" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="language" type="config:languageType"/>
+						<xs:element name="displayLineText">
+							<xs:simpleType>
+								<xs:restriction base="xs:token">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="500"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="occupationalTitleInformationType">
 		<xs:sequence>
 			<xs:element name="occupationalTitleInfo" minOccurs="4" maxOccurs="unbounded">
@@ -398,6 +417,12 @@
 			<xs:element name="incumbentText" type="config:incumbentTextType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:simpleType name="eligibilityType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="explicit"/>
+			<xs:enumeration value="implicit"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:complexType name="candidateType">
 		<xs:sequence>
 			<xs:element name="candidateIdentification" type="config:identifierType"/>
@@ -479,14 +504,10 @@
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="partyAffiliation" type="config:partyAffiliationformationType" minOccurs="0"/>
-			<xs:element name="eligibility">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:enumeration value="explicit"/>
-						<xs:enumeration value="implicit"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
+			<xs:element name="eligibility" type="config:eligibilityType"/>
+			<xs:element name="displayCandidateLine1" type="config:displayLineInformationType"/>
+			<xs:element name="displayCandidateLine2" type="config:displayLineInformationType"/>
+			<xs:element name="displayCandidateLine3" type="config:displayLineInformationType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="varListTextInfoType">
@@ -531,6 +552,9 @@
 			<xs:element name="candidatePosition" type="config:candidatePositionType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="varListText1" type="config:varListTextType" minOccurs="0"/>
 			<xs:element name="varListText2" type="config:varListTextType" minOccurs="0"/>
+			<xs:element name="displayListLine1" type="config:displayLineInformationType"/>
+			<xs:element name="displayListLine2" type="config:displayLineInformationType" minOccurs="0"/>
+			<xs:element name="displayListLine3" type="config:displayLineInformationType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="dwellingAddressType">

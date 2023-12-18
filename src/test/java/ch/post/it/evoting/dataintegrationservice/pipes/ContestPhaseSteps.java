@@ -30,9 +30,12 @@ import ch.evoting.xmlns.parameter._4.AdminBoardType;
 import ch.evoting.xmlns.parameter._4.AnswerInformationType;
 import ch.evoting.xmlns.parameter._4.AnswerTranslationType;
 import ch.evoting.xmlns.parameter._4.DefaultAnswerTranslationType;
+import ch.evoting.xmlns.parameter._4.DisplayCandidateLineStyle;
+import ch.evoting.xmlns.parameter._4.DisplayListLineStyle;
 import ch.evoting.xmlns.parameter._4.ElectionsType;
 import ch.evoting.xmlns.parameter._4.ElectoralBoardMembersType;
 import ch.evoting.xmlns.parameter._4.ElectoralBoardType;
+import ch.evoting.xmlns.parameter._4.IncumbentTextInfo;
 import ch.evoting.xmlns.parameter._4.StandardAnswerType;
 import ch.evoting.xmlns.parameter._4.TiebreakAnswerType;
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
@@ -53,6 +56,8 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroup
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EligibilityType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentTextInfoType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentTextType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType;
@@ -175,7 +180,9 @@ public class ContestPhaseSteps extends PhaseSteps {
 	@And("^a user parameter input$")
 	public void andUserParameterInput() {
 		ParameterPhase.exports.setContestParameters(Flux.just(
-				new ch.evoting.xmlns.parameter._4.ContestType().withDefaultAnswerTranslations(new DefaultAnswerTranslationType())));
+				new ch.evoting.xmlns.parameter._4.ContestType().withDefaultAnswerTranslations(new DefaultAnswerTranslationType())
+						.withDefaultDisplayCandidateLineStyle(DisplayCandidateLineStyle.DEFAULT)
+						.withDefaultDisplayListLineStyle(DisplayListLineStyle.DEFAULT)));
 
 		ParameterPhase.exports.setAfterReadContestPlugins(Flux.just(Collections.emptyList()));
 	}
@@ -216,6 +223,8 @@ public class ContestPhaseSteps extends PhaseSteps {
 		paramsMap.put(name,
 				new ch.evoting.xmlns.parameter._4.ContestType().withAnswerTranslations(new AnswerTranslationType().withQuestion(new ArrayList<>()))
 						.withDefaultAnswerTranslations(new DefaultAnswerTranslationType())
+						.withDefaultDisplayCandidateLineStyle(DisplayCandidateLineStyle.DEFAULT)
+						.withDefaultDisplayListLineStyle(DisplayListLineStyle.DEFAULT)
 						.withAdminBoard(new AdminBoardType()
 								.withAdminBoardIdentification("ab")
 								.withAdminBoardDescription("Admin Board")
@@ -237,6 +246,15 @@ public class ContestPhaseSteps extends PhaseSteps {
 	@And("^user parameters \"([^\"]*)\" has eVoting date to \"([^\"]*)\"$")
 	public void andUserParametersHasEvotingDateTo(final String name, final String dt) {
 		paramsMap.get(name).setEvotingToDate(DateUtil.parseToXMLGregorianCalendar(dt));
+	}
+
+	@And("^user parameters \"([^\"]*)\" has default incumbent$")
+	public void andUserParametersHasDefaultIncumbent(final String name) {
+		paramsMap.get(name).setIncumbentText(new ch.evoting.xmlns.parameter._4.ContestType.IncumbentText().withIncumbentTextInfo(
+				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._4.LanguageType.DE).withText("Bisher"),
+				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._4.LanguageType.FR).withText("sortant/e"),
+				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._4.LanguageType.IT).withText("uscente"),
+				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._4.LanguageType.RM).withText("uscant")));
 	}
 
 	@And("^user parameters \"([^\"]*)\" has contest default language \"([^\"]*)\"$")
@@ -665,7 +683,13 @@ public class ContestPhaseSteps extends PhaseSteps {
 	public void andCandidateNamedWithinElection(final String name, final String elections, final String election) {
 		final CandidateType candidate = new CandidateType().withDwellingAddress(
 						new DwellingAddressType().withStreet("Rue de la gare").withHouseNumber("4").withSwissZipCode(1700L).withTown("Fribourg"))
-				.withIncumbent(new IncumbentType().withIncumbent(true)).withSwiss(new CandidateType.Swiss()).withSex("1")
+				.withIncumbent(new IncumbentType().withIncumbent(true)
+						.withIncumbentText(new IncumbentTextType().withIncumbentTextInfo(
+								new IncumbentTextInfoType().withLanguage(LanguageType.DE).withIncumbentText("blabla"),
+								new IncumbentTextInfoType().withLanguage(LanguageType.FR).withIncumbentText("blabla"),
+								new IncumbentTextInfoType().withLanguage(LanguageType.IT).withIncumbentText("blabla"),
+								new IncumbentTextInfoType().withLanguage(LanguageType.RM).withIncumbentText("blabla")
+						))).withSwiss(new CandidateType.Swiss()).withSex("1")
 				.withDateOfBirth(DateUtil.parseToXMLGregorianCalendar("1965-04-29 00:00:00")).withCandidateText(new CandidateTextInformationType())
 				.withOccupationalTitle(new OccupationalTitleInformationType());
 		electionMap.get(elections + "." + election).getElectionInformation().get(0).getCandidate().add(candidate);
@@ -813,6 +837,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 		processException = null;
 		ParameterPhase.exports.setContestParameters(Flux.just(paramsMap.get(DEFAULT_PARAMS)));
 		ParameterPhase.exports.setAfterReadContestPlugins(Flux.just(Collections.emptyList()));
+		ParameterPhase.exports.setAfterReadVoterPlugins(Flux.just(Collections.emptyList()));
 
 		ContestEch015xv4.exports.setElections(Flux.fromIterable(electionsMap.get(DEFAULT_ELECTIONS)));
 		ContestEch015xv4.exports.setVotes(Flux.fromIterable(votesMap.get(DEFAULT_VOTES)));

@@ -390,5 +390,7 @@
 				<text>uscant</text>
 			</incumbentTextInfo>
 		</incumbentText>
+		<defaultDisplayCandidateLineStyle>DEFAULT</defaultDisplayCandidateLineStyle>
+		<defaultDisplayListLineStyle>DEFAULT</defaultDisplayListLineStyle>
 	</contest>
 </parameter>

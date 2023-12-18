@@ -30,11 +30,15 @@
 				<writeInsAllowed>false</writeInsAllowed>
 				<candidateAccumulation>2</candidateAccumulation>
 				<minimalCandidateSelectionInList>1</minimalCandidateSelectionInList>
+				<displayCandidateLineStyle>DEFAULT</displayCandidateLineStyle>
+				<displayListLineStyle>DEFAULT</displayListLineStyle>
 			</election>
 			<election>
 				<electionIdentification>majorz_test</electionIdentification>
 				<writeInsAllowed>true</writeInsAllowed>
 				<candidateAccumulation>1</candidateAccumulation>
+				<displayCandidateLineStyle>WITH_PARTY_AFFILIATION</displayCandidateLineStyle>
+				<displayListLineStyle>DEFAULT</displayListLineStyle>
 			</election>
 		</elections>
 		<sorting>
