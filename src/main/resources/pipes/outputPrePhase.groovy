@@ -5,8 +5,8 @@ package pipes
 
 import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
 
+import static li.chee.reactive.plumber.Plumbing.*
 import static pipes.Tools.*
-import static reactor.core.publisher.Flux.zip
 
 def outputPrePhaseComponent = DataIntegrationServiceApplication.context.getBean(OutputPrePhaseComponent.class)
 

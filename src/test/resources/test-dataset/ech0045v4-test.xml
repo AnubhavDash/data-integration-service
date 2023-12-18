@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <!-- edited with XMLSpy v2019 rel. 3 sp1 (x64) (http://www.altova.com) by Post CH AG (Post CH AG) -->
-<eCH-0045:voterDelivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0045="http://www.ech.ch/xmlns/eCH-0045/4" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/6" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/7">
+<eCH-0045:voterDelivery xmlns:eCH-0045="http://www.ech.ch/xmlns/eCH-0045/4" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/6" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/7">
 	<eCH-0045:deliveryHeader xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5">
 		<eCH-0058:senderId>CC EVO</eCH-0058:senderId>
 		<eCH-0058:messageId>XXXXXX-XXXX-XXXX-XXXX-XXXXXXXX</eCH-0058:messageId>
@@ -12,8 +10,8 @@
 			<eCH-0058:product>ECH.45.GEN</eCH-0058:product>
 			<eCH-0058:productVersion>0.0.0.1</eCH-0058:productVersion>
 		</eCH-0058:sendingApplication>
-		<eCH-0058:messageDate>2022-11-16T13:48:55.603</eCH-0058:messageDate>
-		<eCH-0058:eventDate>2022-11-16</eCH-0058:eventDate>
+		<eCH-0058:messageDate>2023-12-06T13:48:55.603</eCH-0058:messageDate>
+		<eCH-0058:eventDate>2023-12-06</eCH-0058:eventDate>
 		<eCH-0058:action>1</eCH-0058:action>
 		<eCH-0058:testDeliveryFlag>false</eCH-0058:testDeliveryFlag>
 		<eCH-0058:responseExpected>false</eCH-0058:responseExpected>

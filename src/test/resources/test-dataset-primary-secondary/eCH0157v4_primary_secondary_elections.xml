@@ -1,0 +1,1214 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<eCH-0157:delivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4" xsi:schemaLocation="http://www.ech.ch/xmlns/eCH-0157/4 http://www.ech.ch/xmlns/eCH-0157/4/eCH-0157-4-0.xsd" xmlns:eCH-0157="http://www.ech.ch/xmlns/eCH-0157/4">
+  <eCH-0157:deliveryHeader xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5">
+    <eCH-0058:senderId>ABC-VOTING</eCH-0058:senderId>
+    <eCH-0058:messageId>8523a25ba3aff2586f44e046e91a5d68</eCH-0058:messageId>
+    <eCH-0058:messageType>1710967</eCH-0058:messageType>
+    <eCH-0058:sendingApplication>
+      <eCH-0058:manufacturer>Abracadabra AG</eCH-0058:manufacturer>
+      <eCH-0058:product>Voting.Basis</eCH-0058:product>
+      <eCH-0058:productVersion>1.38.5</eCH-0058:productVersion>
+    </eCH-0058:sendingApplication>
+    <eCH-0058:messageDate>2023-12-06T08:20:32.314</eCH-0058:messageDate>
+    <eCH-0058:action>1</eCH-0058:action>
+    <eCH-0058:testDeliveryFlag>true</eCH-0058:testDeliveryFlag>
+  </eCH-0157:deliveryHeader>
+  <eCH-0157:initialDelivery>
+    <eCH-0157:contest xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4">
+      <eCH-0155:contestIdentification>Post_Primary_Secondary</eCH-0155:contestIdentification>
+      <eCH-0155:contestDate>2027-11-25</eCH-0155:contestDate>
+      <eCH-0155:contestDescription>
+        <eCH-0155:contestDescriptionInfo>
+          <eCH-0155:language>de</eCH-0155:language>
+          <eCH-0155:contestDescription>Kantonaler Urnengang mit Haupt- und Nebenwahl</eCH-0155:contestDescription>
+        </eCH-0155:contestDescriptionInfo>
+        <eCH-0155:contestDescriptionInfo>
+          <eCH-0155:language>fr</eCH-0155:language>
+          <eCH-0155:contestDescription>Scrutin cantonale avec élection primaire et secondaire</eCH-0155:contestDescription>
+        </eCH-0155:contestDescriptionInfo>
+        <eCH-0155:contestDescriptionInfo>
+          <eCH-0155:language>it</eCH-0155:language>
+          <eCH-0155:contestDescription>Esempio di elezione con elezione principale e secondaria</eCH-0155:contestDescription>
+        </eCH-0155:contestDescriptionInfo>
+        <eCH-0155:contestDescriptionInfo>
+          <eCH-0155:language>rm</eCH-0155:language>
+          <eCH-0155:contestDescription>Elecziun d'exempel cun elecziun principala ed accessorica</eCH-0155:contestDescription>
+        </eCH-0155:contestDescriptionInfo>
+      </eCH-0155:contestDescription>
+    </eCH-0157:contest>
+    <eCH-0157:electionGroupBallot>
+      <eCH-0157:electionGroupIdentification>1d75a359-70ec-4487-ba93-e52d31ce1b25</eCH-0157:electionGroupIdentification>
+      <eCH-0157:electionGroupDescription>
+        <eCH-0155:electionDescriptionInfo>
+          <eCH-0155:language>de</eCH-0155:language>
+          <eCH-0155:electionDescriptionShort>Haupt- und Nebenwahl</eCH-0155:electionDescriptionShort>
+          <eCH-0155:electionDescription>Beispielwahl mit Haupt- und Nebenwahl</eCH-0155:electionDescription>
+        </eCH-0155:electionDescriptionInfo>
+        <eCH-0155:electionDescriptionInfo>
+          <eCH-0155:language>fr</eCH-0155:language>
+          <eCH-0155:electionDescriptionShort>Election principale et élection secondaire</eCH-0155:electionDescriptionShort>
+          <eCH-0155:electionDescription>Exemple d'élection avec élection principale et élection secondaire</eCH-0155:electionDescription>
+        </eCH-0155:electionDescriptionInfo>
+        <eCH-0155:electionDescriptionInfo>
+          <eCH-0155:language>it</eCH-0155:language>
+          <eCH-0155:electionDescriptionShort>Elezione principale e secondaria</eCH-0155:electionDescriptionShort>
+          <eCH-0155:electionDescription>Esempio di elezione con elezione principale e secondaria</eCH-0155:electionDescription>
+        </eCH-0155:electionDescriptionInfo>
+        <eCH-0155:electionDescriptionInfo>
+          <eCH-0155:language>rm</eCH-0155:language>
+          <eCH-0155:electionDescriptionShort>Elecziun principala ed accessorica</eCH-0155:electionDescriptionShort>
+          <eCH-0155:electionDescription>Elecziun d'exempel cun elecziun principala ed accessorica</eCH-0155:electionDescription>
+        </eCH-0155:electionDescriptionInfo>
+      </eCH-0157:electionGroupDescription>
+      <eCH-0157:domainOfInfluenceIdentification>doid-ct1-mu</eCH-0157:domainOfInfluenceIdentification>
+      <eCH-0157:electionGroupPosition>1</eCH-0157:electionGroupPosition>
+      <eCH-0157:electionInformation>
+        <eCH-0157:election>
+          <eCH-0155:electionIdentification>833341d6-26cb-46e7-9367-2c8353762cc0</eCH-0155:electionIdentification>
+          <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+          <eCH-0155:electionPosition>1</eCH-0155:electionPosition>
+          <eCH-0155:electionDescription>
+            <eCH-0155:electionDescriptionInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:electionDescriptionShort>Hauptwahl</eCH-0155:electionDescriptionShort>
+              <eCH-0155:electionDescription>Beispiel einer Hauptwahl</eCH-0155:electionDescription>
+            </eCH-0155:electionDescriptionInfo>
+            <eCH-0155:electionDescriptionInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:electionDescriptionShort>Election principale</eCH-0155:electionDescriptionShort>
+              <eCH-0155:electionDescription>Exemple d'une élection principale</eCH-0155:electionDescription>
+            </eCH-0155:electionDescriptionInfo>
+            <eCH-0155:electionDescriptionInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:electionDescriptionShort>Elezione principale</eCH-0155:electionDescriptionShort>
+              <eCH-0155:electionDescription>Esempio di elezione principale</eCH-0155:electionDescription>
+            </eCH-0155:electionDescriptionInfo>
+            <eCH-0155:electionDescriptionInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:electionDescriptionShort>Elecziun principala</eCH-0155:electionDescriptionShort>
+              <eCH-0155:electionDescription>Exempel d'elecziun principala</eCH-0155:electionDescription>
+            </eCH-0155:electionDescriptionInfo>
+          </eCH-0155:electionDescription>
+          <eCH-0155:numberOfMandates>5</eCH-0155:numberOfMandates>
+          <eCH-0155:referencedElection>
+            <eCH-0155:referencedElection>833341d6-26cb-46e7-9367-2c8353762cc1</eCH-0155:referencedElection>
+            <eCH-0155:electionRelation>2</eCH-0155:electionRelation>
+          </eCH-0155:referencedElection>
+        </eCH-0157:election>
+        <eCH-0157:candidate>
+          <eCH-0155:candidateIdentification>e4be5aac-c058-4b45-a248-09a8d3945c72</eCH-0155:candidateIdentification>
+          <eCH-0155:familyName>I</eCH-0155:familyName>
+          <eCH-0155:firstName>Alice</eCH-0155:firstName>
+          <eCH-0155:callName>Alice</eCH-0155:callName>
+          <eCH-0155:candidateText>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:candidateText>01.01.1990, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:candidateText>01.01.1990, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:candidateText>01.01.1990, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:candidateText>01.01.1990, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+          </eCH-0155:candidateText>
+          <eCH-0155:dateOfBirth>1990-01-01</eCH-0155:dateOfBirth>
+          <eCH-0155:sex>2</eCH-0155:sex>
+          <eCH-0155:occupationalTitle>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Kandidatin</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidate</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidata</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidata</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+          </eCH-0155:occupationalTitle>
+          <eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+            <eCH-0010:town>Wil</eCH-0010:town>
+            <eCH-0010:swissZipCode>9500</eCH-0010:swissZipCode>
+            <eCH-0010:country>
+              <eCH-0010:countryId>8100</eCH-0010:countryId>
+              <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+              <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+            </eCH-0010:country>
+          </eCH-0155:dwellingAddress>
+          <eCH-0155:swiss>
+            <eCH-0155:origin>Weiss ich nicht</eCH-0155:origin>
+          </eCH-0155:swiss>
+          <eCH-0155:mrMrs>2</eCH-0155:mrMrs>
+          <eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+          <eCH-0155:candidateReference>1</eCH-0155:candidateReference>
+          <eCH-0155:partyAffiliation>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+          </eCH-0155:partyAffiliation>
+        </eCH-0157:candidate>
+        <eCH-0157:candidate>
+          <eCH-0155:candidateIdentification>233c00a5-4042-4388-9dc9-c967dcd8e3d5</eCH-0155:candidateIdentification>
+          <eCH-0155:familyName>II</eCH-0155:familyName>
+          <eCH-0155:firstName>Baptist</eCH-0155:firstName>
+          <eCH-0155:callName>Baptist</eCH-0155:callName>
+          <eCH-0155:candidateText>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:candidateText>02.02.1991, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:candidateText>02.02.1991, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:candidateText>02.02.1991, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:candidateText>02.02.1991, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+          </eCH-0155:candidateText>
+          <eCH-0155:dateOfBirth>1991-02-02</eCH-0155:dateOfBirth>
+          <eCH-0155:sex>1</eCH-0155:sex>
+          <eCH-0155:occupationalTitle>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Kandidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidato</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+          </eCH-0155:occupationalTitle>
+          <eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+            <eCH-0010:town>Wil</eCH-0010:town>
+            <eCH-0010:swissZipCode>9500</eCH-0010:swissZipCode>
+            <eCH-0010:country>
+              <eCH-0010:countryId>8100</eCH-0010:countryId>
+              <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+              <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+            </eCH-0010:country>
+          </eCH-0155:dwellingAddress>
+          <eCH-0155:swiss>
+            <eCH-0155:origin>Verrat ich nicht</eCH-0155:origin>
+          </eCH-0155:swiss>
+          <eCH-0155:mrMrs>1</eCH-0155:mrMrs>
+          <eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+          <eCH-0155:candidateReference>2</eCH-0155:candidateReference>
+          <eCH-0155:partyAffiliation>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+          </eCH-0155:partyAffiliation>
+        </eCH-0157:candidate>
+        <eCH-0157:candidate>
+          <eCH-0155:candidateIdentification>d7a1753f-de89-4aaf-a6a8-6fee3b21dc8a</eCH-0155:candidateIdentification>
+          <eCH-0155:familyName>III</eCH-0155:familyName>
+          <eCH-0155:firstName>Celina</eCH-0155:firstName>
+          <eCH-0155:callName>Celina</eCH-0155:callName>
+          <eCH-0155:candidateText>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:candidateText>03.03.1992, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:candidateText>03.03.1992, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:candidateText>03.03.1992, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:candidateText>03.03.1992, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+          </eCH-0155:candidateText>
+          <eCH-0155:dateOfBirth>1992-03-03</eCH-0155:dateOfBirth>
+          <eCH-0155:sex>2</eCH-0155:sex>
+          <eCH-0155:occupationalTitle>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Kandidatin</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidate</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidata</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidata</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+          </eCH-0155:occupationalTitle>
+          <eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+            <eCH-0010:town>Wil</eCH-0010:town>
+            <eCH-0010:swissZipCode>9500</eCH-0010:swissZipCode>
+            <eCH-0010:country>
+              <eCH-0010:countryId>8100</eCH-0010:countryId>
+              <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+              <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+            </eCH-0010:country>
+          </eCH-0155:dwellingAddress>
+          <eCH-0155:swiss>
+            <eCH-0155:origin>Sag ich nicht</eCH-0155:origin>
+          </eCH-0155:swiss>
+          <eCH-0155:mrMrs>2</eCH-0155:mrMrs>
+          <eCH-0155:incumbentYesNo>true</eCH-0155:incumbentYesNo>
+          <eCH-0155:candidateReference>3</eCH-0155:candidateReference>
+          <eCH-0155:partyAffiliation>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+          </eCH-0155:partyAffiliation>
+        </eCH-0157:candidate>
+        <eCH-0157:candidate>
+          <eCH-0155:candidateIdentification>b0531159-eb8a-4a11-81a4-9abcc68a1c5d</eCH-0155:candidateIdentification>
+          <eCH-0155:familyName>IV</eCH-0155:familyName>
+          <eCH-0155:firstName>Christos</eCH-0155:firstName>
+          <eCH-0155:callName>Christos</eCH-0155:callName>
+          <eCH-0155:candidateText>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:candidateText>04.04.1993, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:candidateText>04.04.1993, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:candidateText>04.04.1993, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:candidateText>04.04.1993, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+          </eCH-0155:candidateText>
+          <eCH-0155:dateOfBirth>1993-04-04</eCH-0155:dateOfBirth>
+          <eCH-0155:sex>1</eCH-0155:sex>
+          <eCH-0155:occupationalTitle>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Kandidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidato</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+          </eCH-0155:occupationalTitle>
+          <eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+            <eCH-0010:town>Wil</eCH-0010:town>
+            <eCH-0010:swissZipCode>9500</eCH-0010:swissZipCode>
+            <eCH-0010:country>
+              <eCH-0010:countryId>8100</eCH-0010:countryId>
+              <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+              <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+            </eCH-0010:country>
+          </eCH-0155:dwellingAddress>
+          <eCH-0155:swiss>
+            <eCH-0155:origin>Will ich nicht sagen</eCH-0155:origin>
+          </eCH-0155:swiss>
+          <eCH-0155:mrMrs>1</eCH-0155:mrMrs>
+          <eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+          <eCH-0155:candidateReference>4</eCH-0155:candidateReference>
+          <eCH-0155:partyAffiliation>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+          </eCH-0155:partyAffiliation>
+        </eCH-0157:candidate>
+        <eCH-0157:candidate>
+          <eCH-0155:candidateIdentification>2bb034f8-3851-4522-b639-f15a8a29f5bd</eCH-0155:candidateIdentification>
+          <eCH-0155:familyName>V</eCH-0155:familyName>
+          <eCH-0155:firstName>David</eCH-0155:firstName>
+          <eCH-0155:callName>David</eCH-0155:callName>
+          <eCH-0155:candidateText>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:candidateText>05.05.1994, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:candidateText>05.05.1994, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:candidateText>05.05.1994, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:candidateText>05.05.1994, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+          </eCH-0155:candidateText>
+          <eCH-0155:dateOfBirth>1994-05-05</eCH-0155:dateOfBirth>
+          <eCH-0155:sex>1</eCH-0155:sex>
+          <eCH-0155:occupationalTitle>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Kandidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidato</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+          </eCH-0155:occupationalTitle>
+          <eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+            <eCH-0010:town>Wil</eCH-0010:town>
+            <eCH-0010:swissZipCode>9500</eCH-0010:swissZipCode>
+            <eCH-0010:country>
+              <eCH-0010:countryId>8100</eCH-0010:countryId>
+              <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+              <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+            </eCH-0010:country>
+          </eCH-0155:dwellingAddress>
+          <eCH-0155:swiss>
+            <eCH-0155:origin>Musst du selbst herausfinden</eCH-0155:origin>
+          </eCH-0155:swiss>
+          <eCH-0155:mrMrs>1</eCH-0155:mrMrs>
+          <eCH-0155:incumbentYesNo>true</eCH-0155:incumbentYesNo>
+          <eCH-0155:candidateReference>5</eCH-0155:candidateReference>
+          <eCH-0155:partyAffiliation>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+          </eCH-0155:partyAffiliation>
+        </eCH-0157:candidate>
+        <eCH-0157:candidate>
+          <eCH-0155:candidateIdentification>02f27af0-1681-452e-9bb5-78e2475570ec</eCH-0155:candidateIdentification>
+          <eCH-0155:familyName>VI</eCH-0155:familyName>
+          <eCH-0155:firstName>Hadrian</eCH-0155:firstName>
+          <eCH-0155:callName>Hadrian</eCH-0155:callName>
+          <eCH-0155:candidateText>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:candidateText>06.06.1995, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:candidateText>06.06.1995, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:candidateText>06.06.1995, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:candidateText>06.06.1995, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+          </eCH-0155:candidateText>
+          <eCH-0155:dateOfBirth>1995-06-06</eCH-0155:dateOfBirth>
+          <eCH-0155:sex>1</eCH-0155:sex>
+          <eCH-0155:occupationalTitle>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Kandidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidato</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+          </eCH-0155:occupationalTitle>
+          <eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+            <eCH-0010:town>Wil</eCH-0010:town>
+            <eCH-0010:swissZipCode>9500</eCH-0010:swissZipCode>
+            <eCH-0010:country>
+              <eCH-0010:countryId>8100</eCH-0010:countryId>
+              <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+              <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+            </eCH-0010:country>
+          </eCH-0155:dwellingAddress>
+          <eCH-0155:swiss>
+            <eCH-0155:origin>Das ist ein Geheimnis</eCH-0155:origin>
+          </eCH-0155:swiss>
+          <eCH-0155:mrMrs>1</eCH-0155:mrMrs>
+          <eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+          <eCH-0155:candidateReference>6</eCH-0155:candidateReference>
+          <eCH-0155:partyAffiliation>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+          </eCH-0155:partyAffiliation>
+        </eCH-0157:candidate>
+        <eCH-0157:candidate>
+          <eCH-0155:candidateIdentification>40185f98-27ff-459e-b73f-80486283eaef</eCH-0155:candidateIdentification>
+          <eCH-0155:familyName>VII</eCH-0155:familyName>
+          <eCH-0155:firstName>Mattheus</eCH-0155:firstName>
+          <eCH-0155:callName>Mattheus</eCH-0155:callName>
+          <eCH-0155:candidateText>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:candidateText>07.07.1996, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:candidateText>07.07.1996, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:candidateText>07.07.1996, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:candidateText>07.07.1996, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+          </eCH-0155:candidateText>
+          <eCH-0155:dateOfBirth>1996-07-07</eCH-0155:dateOfBirth>
+          <eCH-0155:sex>1</eCH-0155:sex>
+          <eCH-0155:occupationalTitle>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Kandidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidato</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+          </eCH-0155:occupationalTitle>
+          <eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+            <eCH-0010:town>Wil</eCH-0010:town>
+            <eCH-0010:swissZipCode>9500</eCH-0010:swissZipCode>
+            <eCH-0010:country>
+              <eCH-0010:countryId>8100</eCH-0010:countryId>
+              <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+              <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+            </eCH-0010:country>
+          </eCH-0155:dwellingAddress>
+          <eCH-0155:swiss>
+            <eCH-0155:origin>Vergiss es</eCH-0155:origin>
+          </eCH-0155:swiss>
+          <eCH-0155:mrMrs>1</eCH-0155:mrMrs>
+          <eCH-0155:incumbentYesNo>true</eCH-0155:incumbentYesNo>
+          <eCH-0155:candidateReference>7</eCH-0155:candidateReference>
+          <eCH-0155:partyAffiliation>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+          </eCH-0155:partyAffiliation>
+        </eCH-0157:candidate>
+        <eCH-0157:candidate>
+          <eCH-0155:candidateIdentification>a6039f71-5f06-4ba8-8bf4-7158109b38cd</eCH-0155:candidateIdentification>
+          <eCH-0155:familyName>VIII</eCH-0155:familyName>
+          <eCH-0155:firstName>Niklaus</eCH-0155:firstName>
+          <eCH-0155:callName>Niklaus</eCH-0155:callName>
+          <eCH-0155:candidateText>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:candidateText>08.08.1997, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:candidateText>08.08.1997, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:candidateText>08.08.1997, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:candidateText>08.08.1997, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+          </eCH-0155:candidateText>
+          <eCH-0155:dateOfBirth>1997-08-08</eCH-0155:dateOfBirth>
+          <eCH-0155:sex>1</eCH-0155:sex>
+          <eCH-0155:occupationalTitle>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Kandidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidato</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+          </eCH-0155:occupationalTitle>
+          <eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+            <eCH-0010:town>Wil</eCH-0010:town>
+            <eCH-0010:swissZipCode>9500</eCH-0010:swissZipCode>
+            <eCH-0010:country>
+              <eCH-0010:countryId>8100</eCH-0010:countryId>
+              <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+              <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+            </eCH-0010:country>
+          </eCH-0155:dwellingAddress>
+          <eCH-0155:swiss>
+            <eCH-0155:origin>Die Welt wird es nie erfahren</eCH-0155:origin>
+          </eCH-0155:swiss>
+          <eCH-0155:mrMrs>1</eCH-0155:mrMrs>
+          <eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+          <eCH-0155:candidateReference>8</eCH-0155:candidateReference>
+          <eCH-0155:partyAffiliation>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+          </eCH-0155:partyAffiliation>
+        </eCH-0157:candidate>
+        <eCH-0157:candidate>
+          <eCH-0155:candidateIdentification>447b0810-e935-4c55-82e3-55a152c9d434</eCH-0155:candidateIdentification>
+          <eCH-0155:familyName>IX</eCH-0155:familyName>
+          <eCH-0155:firstName>Patrizius</eCH-0155:firstName>
+          <eCH-0155:callName>Patrizius</eCH-0155:callName>
+          <eCH-0155:candidateText>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:candidateText>09.09.1998, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:candidateText>09.09.1998, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:candidateText>09.09.1998, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:candidateText>09.09.1998, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+          </eCH-0155:candidateText>
+          <eCH-0155:dateOfBirth>1998-09-09</eCH-0155:dateOfBirth>
+          <eCH-0155:sex>1</eCH-0155:sex>
+          <eCH-0155:occupationalTitle>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Kandidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidato</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+          </eCH-0155:occupationalTitle>
+          <eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+            <eCH-0010:town>Wil</eCH-0010:town>
+            <eCH-0010:swissZipCode>9500</eCH-0010:swissZipCode>
+            <eCH-0010:country>
+              <eCH-0010:countryId>8100</eCH-0010:countryId>
+              <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+              <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+            </eCH-0010:country>
+          </eCH-0155:dwellingAddress>
+          <eCH-0155:swiss>
+            <eCH-0155:origin>Rate mal</eCH-0155:origin>
+          </eCH-0155:swiss>
+          <eCH-0155:mrMrs>1</eCH-0155:mrMrs>
+          <eCH-0155:incumbentYesNo>true</eCH-0155:incumbentYesNo>
+          <eCH-0155:candidateReference>9</eCH-0155:candidateReference>
+          <eCH-0155:partyAffiliation>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+          </eCH-0155:partyAffiliation>
+        </eCH-0157:candidate>
+        <eCH-0157:candidate>
+          <eCH-0155:candidateIdentification>476f6642-ec69-4970-b732-1ce26695cef4</eCH-0155:candidateIdentification>
+          <eCH-0155:familyName>X</eCH-0155:familyName>
+          <eCH-0155:firstName>Valentin</eCH-0155:firstName>
+          <eCH-0155:callName>Valentin</eCH-0155:callName>
+          <eCH-0155:candidateText>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:candidateText>10.10.1999, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:candidateText>10.10.1999, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:candidateText>10.10.1999, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:candidateText>10.10.1999, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+          </eCH-0155:candidateText>
+          <eCH-0155:dateOfBirth>1999-10-10</eCH-0155:dateOfBirth>
+          <eCH-0155:sex>1</eCH-0155:sex>
+          <eCH-0155:occupationalTitle>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Kandidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidato</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+          </eCH-0155:occupationalTitle>
+          <eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+            <eCH-0010:town>Wil</eCH-0010:town>
+            <eCH-0010:swissZipCode>9500</eCH-0010:swissZipCode>
+            <eCH-0010:country>
+              <eCH-0010:countryId>8100</eCH-0010:countryId>
+              <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+              <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+            </eCH-0010:country>
+          </eCH-0155:dwellingAddress>
+          <eCH-0155:swiss>
+            <eCH-0155:origin>Darf ich nicht sagen</eCH-0155:origin>
+          </eCH-0155:swiss>
+          <eCH-0155:mrMrs>1</eCH-0155:mrMrs>
+          <eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+          <eCH-0155:candidateReference>10</eCH-0155:candidateReference>
+          <eCH-0155:partyAffiliation>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+          </eCH-0155:partyAffiliation>
+        </eCH-0157:candidate>
+      </eCH-0157:electionInformation>
+      <eCH-0157:electionInformation>
+        <eCH-0157:election>
+          <eCH-0155:electionIdentification>833341d6-26cb-46e7-9367-2c8353762cc1</eCH-0155:electionIdentification>
+          <eCH-0155:typeOfElection>2</eCH-0155:typeOfElection>
+          <eCH-0155:electionPosition>2</eCH-0155:electionPosition>
+          <eCH-0155:electionDescription>
+            <eCH-0155:electionDescriptionInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:electionDescriptionShort>Nebenwahl</eCH-0155:electionDescriptionShort>
+              <eCH-0155:electionDescription>Beispiel einer Nebenwahl</eCH-0155:electionDescription>
+            </eCH-0155:electionDescriptionInfo>
+            <eCH-0155:electionDescriptionInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:electionDescriptionShort>Election secondaire</eCH-0155:electionDescriptionShort>
+              <eCH-0155:electionDescription>Exemple d'une élection secondaire</eCH-0155:electionDescription>
+            </eCH-0155:electionDescriptionInfo>
+            <eCH-0155:electionDescriptionInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:electionDescriptionShort>Elezione secondaria</eCH-0155:electionDescriptionShort>
+              <eCH-0155:electionDescription>Esempio di elezione secondaria</eCH-0155:electionDescription>
+            </eCH-0155:electionDescriptionInfo>
+            <eCH-0155:electionDescriptionInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:electionDescriptionShort>Elecziun accessorica</eCH-0155:electionDescriptionShort>
+              <eCH-0155:electionDescription>Exempel d'elecziun accessorica</eCH-0155:electionDescription>
+            </eCH-0155:electionDescriptionInfo>
+          </eCH-0155:electionDescription>
+          <eCH-0155:numberOfMandates>1</eCH-0155:numberOfMandates>
+          <eCH-0155:referencedElection>
+            <eCH-0155:referencedElection>833341d6-26cb-46e7-9367-2c8353762cc0</eCH-0155:referencedElection>
+            <eCH-0155:electionRelation>1</eCH-0155:electionRelation>
+          </eCH-0155:referencedElection>
+        </eCH-0157:election>
+        <eCH-0157:candidate>
+          <eCH-0155:candidateIdentification>e4be5aac-c058-4b45-a248-09a8d3945c72</eCH-0155:candidateIdentification>
+          <eCH-0155:familyName>I</eCH-0155:familyName>
+          <eCH-0155:firstName>Alice</eCH-0155:firstName>
+          <eCH-0155:callName>Alice</eCH-0155:callName>
+          <eCH-0155:candidateText>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:candidateText>01.01.1990, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:candidateText>01.01.1990, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:candidateText>01.01.1990, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:candidateText>01.01.1990, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+          </eCH-0155:candidateText>
+          <eCH-0155:dateOfBirth>1990-01-01</eCH-0155:dateOfBirth>
+          <eCH-0155:sex>2</eCH-0155:sex>
+          <eCH-0155:occupationalTitle>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Kandidatin</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidate</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidata</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidata</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+          </eCH-0155:occupationalTitle>
+          <eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+            <eCH-0010:town>Wil</eCH-0010:town>
+            <eCH-0010:swissZipCode>9500</eCH-0010:swissZipCode>
+            <eCH-0010:country>
+              <eCH-0010:countryId>8100</eCH-0010:countryId>
+              <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+              <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+            </eCH-0010:country>
+          </eCH-0155:dwellingAddress>
+          <eCH-0155:swiss>
+            <eCH-0155:origin>Weiss ich nicht</eCH-0155:origin>
+          </eCH-0155:swiss>
+          <eCH-0155:mrMrs>2</eCH-0155:mrMrs>
+          <eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+          <eCH-0155:candidateReference>1</eCH-0155:candidateReference>
+          <eCH-0155:partyAffiliation>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+          </eCH-0155:partyAffiliation>
+        </eCH-0157:candidate>
+        <eCH-0157:candidate>
+          <eCH-0155:candidateIdentification>d7a1753f-de89-4aaf-a6a8-6fee3b21dc8a</eCH-0155:candidateIdentification>
+          <eCH-0155:familyName>III</eCH-0155:familyName>
+          <eCH-0155:firstName>Celina</eCH-0155:firstName>
+          <eCH-0155:callName>Celina</eCH-0155:callName>
+          <eCH-0155:candidateText>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:candidateText>03.03.1992, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:candidateText>03.03.1992, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:candidateText>03.03.1992, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:candidateText>03.03.1992, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+          </eCH-0155:candidateText>
+          <eCH-0155:dateOfBirth>1992-03-03</eCH-0155:dateOfBirth>
+          <eCH-0155:sex>2</eCH-0155:sex>
+          <eCH-0155:occupationalTitle>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Kandidatin</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidate</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidata</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidata</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+          </eCH-0155:occupationalTitle>
+          <eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+            <eCH-0010:town>Wil</eCH-0010:town>
+            <eCH-0010:swissZipCode>9500</eCH-0010:swissZipCode>
+            <eCH-0010:country>
+              <eCH-0010:countryId>8100</eCH-0010:countryId>
+              <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+              <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+            </eCH-0010:country>
+          </eCH-0155:dwellingAddress>
+          <eCH-0155:swiss>
+            <eCH-0155:origin>Sag ich nicht</eCH-0155:origin>
+          </eCH-0155:swiss>
+          <eCH-0155:mrMrs>2</eCH-0155:mrMrs>
+          <eCH-0155:incumbentYesNo>true</eCH-0155:incumbentYesNo>
+          <eCH-0155:candidateReference>3</eCH-0155:candidateReference>
+          <eCH-0155:partyAffiliation>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+          </eCH-0155:partyAffiliation>
+        </eCH-0157:candidate>
+        <eCH-0157:candidate>
+          <eCH-0155:candidateIdentification>b0531159-eb8a-4a11-81a4-9abcc68a1c5d</eCH-0155:candidateIdentification>
+          <eCH-0155:familyName>IV</eCH-0155:familyName>
+          <eCH-0155:firstName>Christos</eCH-0155:firstName>
+          <eCH-0155:callName>Christos</eCH-0155:callName>
+          <eCH-0155:candidateText>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:candidateText>04.04.1993, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:candidateText>04.04.1993, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:candidateText>04.04.1993, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:candidateText>04.04.1993, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+          </eCH-0155:candidateText>
+          <eCH-0155:dateOfBirth>1993-04-04</eCH-0155:dateOfBirth>
+          <eCH-0155:sex>1</eCH-0155:sex>
+          <eCH-0155:occupationalTitle>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Kandidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidato</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+          </eCH-0155:occupationalTitle>
+          <eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+            <eCH-0010:town>Wil</eCH-0010:town>
+            <eCH-0010:swissZipCode>9500</eCH-0010:swissZipCode>
+            <eCH-0010:country>
+              <eCH-0010:countryId>8100</eCH-0010:countryId>
+              <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+              <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+            </eCH-0010:country>
+          </eCH-0155:dwellingAddress>
+          <eCH-0155:swiss>
+            <eCH-0155:origin>Will ich nicht sagen</eCH-0155:origin>
+          </eCH-0155:swiss>
+          <eCH-0155:mrMrs>1</eCH-0155:mrMrs>
+          <eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+          <eCH-0155:candidateReference>4</eCH-0155:candidateReference>
+          <eCH-0155:partyAffiliation>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+          </eCH-0155:partyAffiliation>
+        </eCH-0157:candidate>
+        <eCH-0157:candidate>
+          <eCH-0155:candidateIdentification>447b0810-e935-4c55-82e3-55a152c9d434</eCH-0155:candidateIdentification>
+          <eCH-0155:familyName>IX</eCH-0155:familyName>
+          <eCH-0155:firstName>Patrizius</eCH-0155:firstName>
+          <eCH-0155:callName>Patrizius</eCH-0155:callName>
+          <eCH-0155:candidateText>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:candidateText>09.09.1998, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:candidateText>09.09.1998, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:candidateText>09.09.1998, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+            <eCH-0155:candidateTextInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:candidateText>09.09.1998, Wil</eCH-0155:candidateText>
+            </eCH-0155:candidateTextInfo>
+          </eCH-0155:candidateText>
+          <eCH-0155:dateOfBirth>1998-09-09</eCH-0155:dateOfBirth>
+          <eCH-0155:sex>1</eCH-0155:sex>
+          <eCH-0155:occupationalTitle>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Kandidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidato</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+            <eCH-0155:occupationalTitleInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:occupationalTitle>Candidat</eCH-0155:occupationalTitle>
+            </eCH-0155:occupationalTitleInfo>
+          </eCH-0155:occupationalTitle>
+          <eCH-0155:dwellingAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+            <eCH-0010:town>Wil</eCH-0010:town>
+            <eCH-0010:swissZipCode>9500</eCH-0010:swissZipCode>
+            <eCH-0010:country>
+              <eCH-0010:countryId>8100</eCH-0010:countryId>
+              <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+              <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+            </eCH-0010:country>
+          </eCH-0155:dwellingAddress>
+          <eCH-0155:swiss>
+            <eCH-0155:origin>Rate mal</eCH-0155:origin>
+          </eCH-0155:swiss>
+          <eCH-0155:mrMrs>1</eCH-0155:mrMrs>
+          <eCH-0155:incumbentYesNo>false</eCH-0155:incumbentYesNo>
+          <eCH-0155:candidateReference>9</eCH-0155:candidateReference>
+          <eCH-0155:partyAffiliation>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+            <eCH-0155:partyAffiliationInfo>
+              <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:partyAffiliationShort>Grüne Partei</eCH-0155:partyAffiliationShort>
+            </eCH-0155:partyAffiliationInfo>
+          </eCH-0155:partyAffiliation>
+        </eCH-0157:candidate>
+      </eCH-0157:electionInformation>
+    </eCH-0157:electionGroupBallot>
+  </eCH-0157:initialDelivery>
+</eCH-0157:delivery>

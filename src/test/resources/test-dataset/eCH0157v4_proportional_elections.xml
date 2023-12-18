@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<eCH-0157:delivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4" xsi:schemaLocation="http://www.ech.ch/xmlns/eCH-0157/4 http://www.ech.ch/xmlns/eCH-0157/4/eCH-0157-4-0.xsd" xmlns:eCH-0157="http://www.ech.ch/xmlns/eCH-0157/4">
+<eCH-0157:delivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4" xsi:schemaLocation="http://www.ech.ch/xmlns/eCH-0157/4 http://www.ech.ch/xmlns/eCH-0157/4/eCH-0157-4-0.xsd" xmlns:eCH-0157="http://www.ech.ch/xmlns/eCH-0157/4">
   <eCH-0157:deliveryHeader xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5">
     <eCH-0058:senderId>ABC-VOTING</eCH-0058:senderId>
     <eCH-0058:messageId>a98a65f86af0428db865f47df6484144</eCH-0058:messageId>
@@ -10,14 +9,14 @@
       <eCH-0058:product>Voting.Basis</eCH-0058:product>
       <eCH-0058:productVersion>1.38.5</eCH-0058:productVersion>
     </eCH-0058:sendingApplication>
-    <eCH-0058:messageDate>2022-11-16T10:53:45.016</eCH-0058:messageDate>
+    <eCH-0058:messageDate>2023-12-06T10:53:45.016</eCH-0058:messageDate>
     <eCH-0058:action>1</eCH-0058:action>
     <eCH-0058:testDeliveryFlag>true</eCH-0058:testDeliveryFlag>
   </eCH-0157:deliveryHeader>
   <eCH-0157:initialDelivery>
     <eCH-0157:contest xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4">
       <eCH-0155:contestIdentification>Post_E2E_DEV</eCH-0155:contestIdentification>
-      <eCH-0155:contestDate>2022-11-25</eCH-0155:contestDate>
+      <eCH-0155:contestDate>2027-11-25</eCH-0155:contestDate>
       <eCH-0155:contestDescription>
         <eCH-0155:contestDescriptionInfo>
           <eCH-0155:language>de</eCH-0155:language>
@@ -41,9 +40,9 @@
       <eCH-0157:domainOfInfluenceIdentification>doid-ch1-mu</eCH-0157:domainOfInfluenceIdentification>
       <eCH-0157:electionInformation>
         <eCH-0157:election xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4">
-          <eCH-0155:electionIdentification>01904d8c-8a10-4998-aecd-377f2688e3fa</eCH-0155:electionIdentification>
+          <eCH-0155:electionIdentification>nrw_test</eCH-0155:electionIdentification>
           <eCH-0155:typeOfElection>1</eCH-0155:typeOfElection>
-          <eCH-0155:electionPosition>0</eCH-0155:electionPosition>
+          <eCH-0155:electionPosition>2</eCH-0155:electionPosition>
           <eCH-0155:electionDescription>
             <eCH-0155:electionDescriptionInfo>
               <eCH-0155:language>de</eCH-0155:language>

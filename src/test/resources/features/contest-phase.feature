@@ -281,6 +281,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 1 for A" has occupational title "FR" "Candidate 1 for A title (FR)"
     And candidate "my elections"."election A"."candidate 1 for A" has occupational title "IT" "Candidate 1 for A title (IT)"
     And candidate "my elections"."election A"."candidate 1 for A" has occupational title "RM" "Candidate 1 for A title (RM)"
+    And candidate "my elections"."election A"."candidate 1 for A" has eligibility "explicit"
 
     Given a candidate named "candidate 2 for A" within "my elections"."election A"
     And candidate "my elections"."election A"."candidate 2 for A" has id "candidate-2-for-A-id"
@@ -294,6 +295,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 2 for A" has occupational title "FR" "Candidate 2 for A title (FR)"
     And candidate "my elections"."election A"."candidate 2 for A" has occupational title "IT" "Candidate 2 for A title (IT)"
     And candidate "my elections"."election A"."candidate 2 for A" has occupational title "RM" "Candidate 2 for A title (RM)"
+    And candidate "my elections"."election A"."candidate 2 for A" has eligibility "explicit"
 
     Given a candidate named "candidate 3 for A" within "my elections"."election A"
     And candidate "my elections"."election A"."candidate 3 for A" has id "candidate-3-for-A-id"
@@ -307,6 +309,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 3 for A" has occupational title "FR" "candidate 3 for A title (FR)"
     And candidate "my elections"."election A"."candidate 3 for A" has occupational title "IT" "candidate 3 for A title (IT)"
     And candidate "my elections"."election A"."candidate 3 for A" has occupational title "RM" "candidate 3 for A title (RM)"
+    And candidate "my elections"."election A"."candidate 3 for A" has eligibility "explicit"
 
     Given a candidate named "candidate 4 for A" within "my elections"."election A"
     And candidate "my elections"."election A"."candidate 4 for A" has id "candidate-4-for-A-id"
@@ -320,6 +323,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 4 for A" has occupational title "FR" "candidate 4 for A title (FR)"
     And candidate "my elections"."election A"."candidate 4 for A" has occupational title "IT" "candidate 4 for A title (IT)"
     And candidate "my elections"."election A"."candidate 4 for A" has occupational title "RM" "candidate 4 for A title (RM)"
+    And candidate "my elections"."election A"."candidate 4 for A" has eligibility "explicit"
 
     Given a candidate named "candidate 5 for A" within "my elections"."election A"
     And candidate "my elections"."election A"."candidate 5 for A" has id "candidate-5-for-A-id"
@@ -333,6 +337,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 5 for A" has occupational title "FR" "candidate 5 for A title (FR)"
     And candidate "my elections"."election A"."candidate 5 for A" has occupational title "IT" "candidate 5 for A title (IT)"
     And candidate "my elections"."election A"."candidate 5 for A" has occupational title "RM" "candidate 5 for A title (RM)"
+    And candidate "my elections"."election A"."candidate 5 for A" has eligibility "explicit"
 
     Given a list named "list 1 for A" within "my elections"."election A"
     And list "my elections"."election A"."list 1 for A" has id "list-1-for-election-A-id"
@@ -473,11 +478,11 @@ Feature: Contest Phase
     When executing the contest phase and catching exceptions
     Then it outputs an exception with text "eVotingFromDate must precede eVotingToDate"
 
-  Scenario: Throw an exception when the number of days between eVoting from and to is less than 15
+  Scenario: Throw an exception when the number of days between eVoting from and to is less than 10
     Given user parameters "my params" has eVoting date from "2045-05-11 13:00:00"
-    And user parameters "my params" has eVoting date to "2045-05-25 09:00:00"
+    And user parameters "my params" has eVoting date to "2045-05-20 09:00:00"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "the number of days between 'eVoting date from' and 'eVoting date to' must be at least 15"
+    Then it outputs an exception with text "the number of days between 'eVoting date from' and 'eVoting date to' must be at least 10"
 
   Scenario: Warn when contest date does not follow eVoting date from
     Given  the contest "my contest" has date "2045-03-12 00:00:00"

@@ -14,9 +14,10 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
+
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -54,7 +55,7 @@ public class Stax2Wrapper {
 		name = "inputStream";
 		unmarshaller = JAXBContext.newInstance(jaxbFactoryClass).createUnmarshaller();
 		if (specificUnmarshallerFactoryInstance != null) {
-			unmarshaller.setProperty("com.sun.xml.bind.ObjectFactory", specificUnmarshallerFactoryInstance);
+			unmarshaller.setProperty("org.glassfish.jaxb.core.ObjectFactory", specificUnmarshallerFactoryInstance);
 		}
 
 		final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();

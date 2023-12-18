@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.evoting.ch/xmlns/parameter/4" xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb" targetNamespace="http://www.evoting.ch/xmlns/parameter/4" elementFormDefault="qualified" version="4.9" jaxb:version="3.0">
+	<xs:simpleType name="languageType">
+		<xs:restriction base="xs:string">
+			<xs:length value="2"/>
+			<xs:enumeration value="de"/>
+			<xs:enumeration value="fr"/>
+			<xs:enumeration value="it"/>
+			<xs:enumeration value="rm"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="adminBoardMembersType">
+		<xs:sequence>
+			<xs:element name="adminBoardMemberName" maxOccurs="unbounded">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="adminBoardType">
+		<xs:sequence>
+			<xs:element name="adminBoardIdentification">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:maxLength value="50"/>
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="adminBoardName">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="adminBoardDescription">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="adminBoardThresholdValue" type="xs:nonNegativeInteger" default="2"/>
+			<xs:element name="adminBoardMembers" type="adminBoardMembersType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="electoralBoardMembersType">
+		<xs:sequence>
+			<xs:element name="electoralBoardMemberName" maxOccurs="unbounded">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="electoralBoardType">
+		<xs:sequence>
+			<xs:element name="electoralBoardIdentification">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:maxLength value="50"/>
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="electoralBoardName">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="electoralBoardDescription">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="electoralBoardMembers" type="electoralBoardMembersType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="answerInformationType">
+		<xs:sequence>
+			<xs:element name="language" type="languageType"/>
+			<xs:element name="answer">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="birthYearAuthenticationKeyType">
+		<xs:complexContent>
+			<xs:extension base="voterMapper"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="birthDateAuthenticationKeyType">
+		<xs:complexContent>
+			<xs:extension base="voterMapper"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="voterMapper" abstract="true">
+		<xs:annotation>
+			<xs:appinfo>
+				<jaxb:class implClass="ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterWithRoleMapper"/>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="afterReadVoterType">
+		<xs:choice minOccurs="1" maxOccurs="unbounded">
+			<xs:annotation>
+				<xs:appinfo>
+					<jaxb:property name="Plugins"/>
+				</xs:appinfo>
+			</xs:annotation>
+			<xs:element name="birthYearAuthenticationKey" type="birthYearAuthenticationKeyType"/>
+			<xs:element name="birthDateAuthenticationKey" type="birthDateAuthenticationKeyType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="configSplitter" abstract="true">
+		<xs:annotation>
+			<xs:appinfo>
+				<jaxb:class implClass="ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterCategorizer"/>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="quantitySplitterType">
+		<xs:complexContent>
+			<xs:extension base="configSplitter">
+				<xs:sequence>
+					<xs:element name="maxPerFile" type="xs:int" nillable="false" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="languageOfCorrespondanceSplitterType">
+		<xs:complexContent>
+			<xs:extension base="configSplitter"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="testAndControlSplitterType">
+		<xs:complexContent>
+			<xs:extension base="configSplitter"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="frankingAreaSplitterType">
+		<xs:complexContent>
+			<xs:extension base="configSplitter"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="residenceSplitterType">
+		<xs:complexContent>
+			<xs:extension base="configSplitter">
+				<xs:sequence>
+					<xs:element name="splitSwissResidentByMunicipality" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="splitSwissAbroadByMunicipality" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="configSplitterType">
+		<xs:choice minOccurs="1" maxOccurs="unbounded">
+			<xs:annotation>
+				<xs:appinfo>
+					<jaxb:property name="Plugins"/>
+				</xs:appinfo>
+			</xs:annotation>
+			<xs:element name="quantitySplitter" type="quantitySplitterType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="residenceSplitter" type="residenceSplitterType" minOccurs="0"/>
+			<xs:element name="frankingAreaSplitter" type="frankingAreaSplitterType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="languageOfCorrespondanceSplitter" type="languageOfCorrespondanceSplitterType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="testAndControlSplitter" type="testAndControlSplitterType" minOccurs="0" maxOccurs="1"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="authorizationPlugin" abstract="true">
+		<xs:annotation>
+			<xs:appinfo>
+				<jaxb:class implClass="ch.post.it.evoting.dataintegrationservice.parameter.plugin.AuthorizationPlugin"/>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="contestMapper" abstract="true">
+		<xs:annotation>
+			<xs:appinfo>
+				<jaxb:class implClass="ch.post.it.evoting.dataintegrationservice.parameter.plugin.ContestMapper"/>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="votePositionSetterType">
+		<xs:complexContent>
+			<xs:extension base="contestMapper">
+				<xs:sequence>
+					<xs:element name="vote" minOccurs="1" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="voteIdentification" type="xs:token" minOccurs="1" maxOccurs="1"/>
+								<xs:element name="position" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="afterReadContestType">
+		<xs:choice minOccurs="1" maxOccurs="unbounded">
+			<xs:annotation>
+				<xs:appinfo>
+					<jaxb:property name="Plugins"/>
+				</xs:appinfo>
+			</xs:annotation>
+			<xs:element name="vote" type="votePositionSetterType" minOccurs="0" maxOccurs="1"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="voterAuthorizationMapper" abstract="true">
+		<xs:annotation>
+			<xs:appinfo>
+				<jaxb:class implClass="ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterAuthorizationMapper"/>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="pluginsType">
+		<xs:sequence>
+			<xs:element name="afterReadVoter" type="afterReadVoterType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="afterReadContest" type="afterReadContestType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="configSplitter" type="configSplitterType" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="sortingType">
+		<xs:sequence>
+			<xs:element name="electionGroup" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="electionGroupIdentification" type="xs:token" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="positionNumber" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="election" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="electionIdentification" type="xs:token" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="positionNumber" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="vote" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="voteIdentification" type="xs:token" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="positionNumber" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="voteTypeType">
+		<xs:restriction base="xs:string">
+			<xs:length value="2"/>
+			<xs:enumeration value="CH"/>
+			<xs:enumeration value="CT"/>
+			<xs:enumeration value="BZ"/>
+			<xs:enumeration value="MU"/>
+			<xs:enumeration value="SC"/>
+			<xs:enumeration value="KI"/>
+			<xs:enumeration value="OG"/>
+			<xs:enumeration value="KO"/>
+			<xs:enumeration value="SK"/>
+			<xs:enumeration value="AN"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="contestType">
+		<xs:sequence>
+			<xs:element name="defaultLanguage" type="languageType"/>
+			<xs:element name="evotingFromDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="evotingToDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="evotingTestBallotBoxesFromDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="adminBoard" type="adminBoardType"/>
+			<xs:element name="electoralBoard" type="electoralBoardType"/>
+			<xs:element name="elections" type="electionsType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="sorting" type="sortingType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="defaultAnswerTranslations" type="defaultAnswerTranslationType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="answerTranslations" type="answerTranslationType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="emptyCandidateText" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="emptyCandidateTextInfo" type="emptyCandidateTextInfo" minOccurs="4" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="customNumberingForEmptyPositions" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="incumbentText" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="incumbentTextInfo" type="incumbentTextInfo" minOccurs="4" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="defaultAnswerTranslationType">
+		<xs:sequence>
+			<xs:element name="answerType" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="answerTypeIdentification">
+							<xs:simpleType>
+								<xs:restriction base="xs:nonNegativeInteger">
+									<xs:enumeration value="1"/>
+									<xs:enumeration value="2"/>
+									<xs:enumeration value="3"/>
+									<xs:enumeration value="4"/>
+									<xs:enumeration value="5"/>
+									<xs:enumeration value="6"/>
+									<xs:enumeration value="7"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:choice>
+							<xs:element name="standardAnswer" type="standardAnswerType" maxOccurs="unbounded"/>
+							<xs:element name="tiebreakAnswer" type="tiebreakAnswerType" maxOccurs="unbounded"/>
+						</xs:choice>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="answerTranslationType">
+		<xs:sequence>
+			<xs:element name="question" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="questionIdentification">
+							<xs:simpleType>
+								<xs:restriction base="xs:token">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="50"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:choice>
+							<xs:element name="standardAnswer" type="standardAnswerType" maxOccurs="unbounded"/>
+							<xs:element name="tiebreakAnswer" type="tiebreakAnswerType" maxOccurs="unbounded"/>
+						</xs:choice>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="standardAnswerType">
+		<xs:sequence>
+			<xs:element name="answerPosition" type="xs:nonNegativeInteger"/>
+			<xs:element name="standardAnswerType">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="YES"/>
+						<xs:enumeration value="NO"/>
+						<xs:enumeration value="EMPTY"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="hiddenAnswer" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="answerInfo" type="answerInformationType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tiebreakAnswerType">
+		<xs:sequence>
+			<xs:element name="answerPosition" type="xs:nonNegativeInteger"/>
+			<xs:element name="standardQuestionReference" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="hiddenAnswer" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="answerInfo" type="answerInformationType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="electionsType">
+		<xs:sequence>
+			<xs:element name="election" type="electionType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="eligibilityType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="explicit"/>
+			<xs:enumeration value="implicit"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="electionType">
+		<xs:sequence>
+			<xs:element name="electionIdentification">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="writeInsAllowed" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="candidateAccumulation" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:nonNegativeInteger">
+						<xs:enumeration value="1"/>
+						<xs:enumeration value="2"/>
+						<xs:enumeration value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="minimalCandidateSelectionInList" type="xs:nonNegativeInteger" minOccurs="0"/>
+			<xs:element name="candidatesEligibility" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="candidateEligibility" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="candidateIdentification" type="xs:token"/>
+									<xs:element name="eligibility" type="eligibilityType"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="parameter">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="contest" type="contestType"/>
+				<xs:element name="plugins" type="pluginsType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="emptyCandidateTextInfo">
+		<xs:sequence>
+			<xs:element name="language" type="languageType"/>
+			<xs:element name="text">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:maxLength value="50"/>
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="incumbentTextInfo">
+		<xs:sequence>
+			<xs:element name="language" type="languageType"/>
+			<xs:element name="text">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

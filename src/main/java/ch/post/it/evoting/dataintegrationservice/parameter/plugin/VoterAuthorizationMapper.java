@@ -3,15 +3,13 @@
  */
 package ch.post.it.evoting.dataintegrationservice.parameter.plugin;
 
-import java.util.Optional;
-import java.util.function.BiFunction;
+import java.util.function.UnaryOperator;
 
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
-public class VoterAuthorizationMapper implements BiFunction<VoterTypeWithRole, Optional<CantonalTree>, VoterTypeWithRole> {
+public class VoterAuthorizationMapper implements UnaryOperator<VoterTypeWithRole> {
 	@Override
-	public VoterTypeWithRole apply(final VoterTypeWithRole voterTypeWithRole, final Optional<CantonalTree> cantonalTree) {
+	public VoterTypeWithRole apply(final VoterTypeWithRole voterTypeWithRole) {
 		return voterTypeWithRole;
 	}
 }

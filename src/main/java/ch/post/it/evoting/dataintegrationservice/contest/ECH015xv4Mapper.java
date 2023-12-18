@@ -106,6 +106,7 @@ ECH015xv4Mapper {
 	@Mapping(target = "position", ignore = true)
 	@Mapping(target = "incumbent.incumbent", source = "incumbentYesNo")
 	@Mapping(target = "referenceOnPosition", source = "candidateReference")
+	@Mapping(target = "eligibility", constant = "EXPLICIT")
 	CandidateType convert(ch.ech.xmlns.ech_0155._4.CandidateType ct);
 
 	PartyAffiliationformationType convert(ch.ech.xmlns.ech_0155._4.PartyAffiliationformationType pat);
