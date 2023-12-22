@@ -48,6 +48,24 @@
 				</candidatesEligibility>
 				<displayCandidateLineStyle>WITH_PARTY_AFFILIATION</displayCandidateLineStyle>
 				<displayListLineStyle>DEFAULT</displayListLineStyle>
+				<electionRulesExplanation>
+					<displayLineInfo>
+						<language>de</language>
+						<displayLineText>Wählen Sie eine(n) der Kandidat(inn)en aus der Hauptwahl</displayLineText>
+					</displayLineInfo>
+					<displayLineInfo>
+						<language>fr</language>
+						<displayLineText>Choisissez un(e) des candidat(e)s de l'élection principale</displayLineText>
+					</displayLineInfo>
+					<displayLineInfo>
+						<language>it</language>
+						<displayLineText>Scegliere uno dei candidati delle elezioni principali</displayLineText>
+					</displayLineInfo>
+					<displayLineInfo>
+						<language>rm</language>
+						<displayLineText>Elegiai ina persuna u in candidat da l'elecziun principala</displayLineText>
+					</displayLineInfo>
+				</electionRulesExplanation>
 			</election>
 		</elections>
 		<sorting>

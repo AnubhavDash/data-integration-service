@@ -1,5 +1,5 @@
 <!-- edited with XMLSpy v2012 sp1 (http://www.altova.com) by Die Schweizerische Post (Die Schweizerische Post) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:config="http://www.evoting.ch/xmlns/config/5" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xs:import namespace="http://www.evoting.ch/xmlns/config/5" schemaLocation="evoting-config-5-1.xsd"/>
+	<xs:import namespace="http://www.evoting.ch/xmlns/config/5" schemaLocation="evoting-config-5-2.xsd"/>
 	<xs:element name="contest" type="config:contestType"/>
 </xs:schema>

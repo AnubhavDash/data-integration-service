@@ -456,6 +456,27 @@
 			</xs:element>
 			<xs:element name="displayCandidateLineStyle" type="displayCandidateLineStyle" minOccurs="0"/>
 			<xs:element name="displayListLineStyle" type="displayListLineStyle" minOccurs="0"/>
+			<xs:element name="electionRulesExplanation" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="displayLineInfo" minOccurs="4" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="language" type="languageType"/>
+									<xs:element name="displayLineText">
+										<xs:simpleType>
+											<xs:restriction base="xs:token">
+												<xs:minLength value="1"/>
+												<xs:maxLength value="500"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="parameter">

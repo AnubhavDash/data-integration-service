@@ -59,6 +59,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionDescr
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionRulesExplanationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EligibilityType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ExtendedAuthenticationKeysDefinitionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentType;
@@ -280,6 +281,7 @@ public class ContestService {
 		addElectionsWriteIns(electionGroups, contestParameters);
 		addElectionsAccumulation(electionGroups, contestParameters);
 		addElectionsMinimalCandidateSelectionInList(electionGroups, contestParameters);
+		addElectionRulesExplanation(electionGroups, contestParameters);
 
 		addElectionGroupPositionIfNeeded(electionGroups);
 		addElectionPositionIfNeeded(electionGroups);
@@ -658,6 +660,34 @@ public class ContestService {
 				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.map(ElectionInformationType::getElection).forEach(e -> e.setMinimalCandidateSelectionInList(
 						parametersMinimalCandidateSelectionInList.getOrDefault(e.getElectionIdentification(), BigInteger.ONE).intValueExact()));
+	}
+
+	private void addElectionRulesExplanation(final List<ElectionGroupBallotType> electionGroups,
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+		if (contestParameters.getElections() != null) {
+			contestParameters.getElections()
+					.getElection().stream()
+					.filter(electionType -> electionType.getElectionRulesExplanation() != null)
+					.forEach(electionType -> {
+						final String electionIdentification = electionType.getElectionIdentification();
+						electionGroups.stream()
+								.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+								.map(ElectionInformationType::getElection)
+								.filter(Objects::nonNull)
+								.filter(election -> election.getElectionIdentification().equals(electionIdentification))
+								.forEach(election -> {
+									final List<ElectionRulesExplanationType.DisplayLineInfo> displayLineInfoList = electionType.getElectionRulesExplanation()
+											.getDisplayLineInfo().stream()
+											.map(displayLineInfo -> new ElectionRulesExplanationType.DisplayLineInfo()
+													.withLanguage(LanguageType.fromValue(displayLineInfo.getLanguage().value()))
+													.withDisplayLineText(displayLineInfo.getDisplayLineText()))
+											.toList();
+									final ElectionRulesExplanationType electionRulesExplanationType = new ElectionRulesExplanationType()
+											.withDisplayLineInfo(displayLineInfoList);
+									election.setElectionRulesExplanation(electionRulesExplanationType);
+								});
+					});
+		}
 	}
 
 	private void addCandidatePositionInCandidateOnlyElections(final List<ElectionGroupBallotType> electionGroups) {
