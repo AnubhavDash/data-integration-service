@@ -526,9 +526,6 @@
 				<configuration>
 					<locale>en</locale>
 					<schemaDirectory>src/main/resources/xsd/</schemaDirectory>
-					<schemaExcludes>
-						<exclude>bindingschema_2_0.xsd</exclude>
-					</schemaExcludes>
 					<encoding>UTF-8</encoding>
 					<episode>false</episode>
 					<args>
