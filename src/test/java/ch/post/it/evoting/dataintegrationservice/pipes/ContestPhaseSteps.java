@@ -520,7 +520,8 @@ public class ContestPhaseSteps extends PhaseSteps {
 	public void andBallotHasDescription(final String votes, final String vote, final String ballot, final String lang, final String desc) {
 		ballotMap.get(votes + "." + vote + "." + ballot).getBallotDescription().getBallotDescriptionInfo()
 				.add(new BallotDescriptionInformationType.BallotDescriptionInfo().withLanguage(LanguageType.valueOf(lang))
-						.withBallotDescriptionLong(desc));
+						.withBallotDescriptionLong(desc)
+						.withBallotDescriptionShort(desc));
 	}
 
 	@And("^the ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has variant ballot standard question \"([^\"]*)\"$")
@@ -595,20 +596,22 @@ public class ContestPhaseSteps extends PhaseSteps {
 		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setAnswerType(BigInteger.valueOf(type));
 	}
 
-	@And("^the standard question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has info \"([^\"]*)\" \"([^\"]*)\"$")
+	@And("^the standard question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has info \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
 	public void andStandardQuestionHasInfo(final String votes, final String vote, final String ballot, final String question, final String lang,
-			final String info) {
+			final String title, final String info) {
 		final BallotQuestionType.BallotQuestionInfo questionInfo = new BallotQuestionType.BallotQuestionInfo().withLanguage(
 						LanguageType.valueOf(lang))
+				.withBallotQuestionTitle(title)
 				.withBallotQuestion(info);
 		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).getBallotQuestion().getBallotQuestionInfo().add(questionInfo);
 	}
 
-	@And("^the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has info \"([^\"]*)\" \"([^\"]*)\"$")
+	@And("^the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has info \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
 	public void andTiebreakQuestionHasInfo(final String votes, final String vote, final String ballot, final String question, final String lang,
-			final String info) {
+			final String title, final String info) {
 		final BallotQuestionType.BallotQuestionInfo questionInfo = new BallotQuestionType.BallotQuestionInfo().withLanguage(
 						LanguageType.valueOf(lang))
+				.withBallotQuestionTitle(title)
 				.withBallotQuestion(info);
 		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).getBallotQuestion().getBallotQuestionInfo().add(questionInfo);
 	}
@@ -628,10 +631,13 @@ public class ContestPhaseSteps extends PhaseSteps {
 		ballotMap.get(votes + "." + vote + "." + ballot).getStandardBallot().setAnswerType(BigInteger.valueOf(type));
 	}
 
-	@And("^the ballot question of ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has info \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andBallotQuestionOfBallotHasInfo(final String votes, final String vote, final String ballot, final String lang, final String info) {
+	@And("^the ballot question of ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has info \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
+	public void andBallotQuestionOfBallotHasInfo(final String votes, final String vote, final String ballot, final String lang, final String title, final String info) {
 		ballotMap.get(votes + "." + vote + "." + ballot).getStandardBallot().getBallotQuestion().getBallotQuestionInfo()
-				.add(new BallotQuestionType.BallotQuestionInfo().withLanguage(LanguageType.valueOf(lang)).withBallotQuestion(info));
+				.add(new BallotQuestionType.BallotQuestionInfo()
+						.withLanguage(LanguageType.valueOf(lang))
+						.withBallotQuestionTitle(title)
+						.withBallotQuestion(info));
 	}
 
 	@Given("^the descriptions of the ballot question of ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")

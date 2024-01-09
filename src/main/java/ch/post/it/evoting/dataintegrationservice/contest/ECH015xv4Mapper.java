@@ -8,14 +8,19 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.MoreCollectors;
 
 import ch.ech.xmlns.ech_0010._6.AddressInformationType;
 import ch.ech.xmlns.ech_0155._4.ElectionGroupDescriptionType;
@@ -225,17 +230,59 @@ ECH015xv4Mapper {
 	ElectionInformationType convert(String domainOfInfluenceIdentification,
 			EventInitialDelivery.ElectionGroupBallot.ElectionInformation electionInformation);
 
-	BallotType convert(ch.ech.xmlns.ech_0155._4.BallotType bt);
+	default BallotType convert(final ch.ech.xmlns.ech_0155._4.BallotType bt) {
+		if (bt == null) {
+			return null;
+		}
+
+		final BallotType ballotType = new BallotType();
+
+		ballotType.setBallotIdentification(bt.getBallotIdentification());
+		Optional.ofNullable(bt.getBallotPosition())
+				.map(BigInteger::intValueExact)
+				.ifPresent(ballotType::setBallotPosition);
+		ballotType.setBallotDescription(convert(bt.getBallotDescription()));
+		ballotType.setStandardBallot(convert(bt.getStandardBallot(), bt));
+		ballotType.setVariantBallot(convert(bt.getVariantBallot(), bt));
+
+		return ballotType;
+	}
 
 	BallotDescriptionInformationType convert(ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType value);
 
-	BallotDescriptionInformationType.BallotDescriptionInfo convert(
-			ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo value);
+	default BallotDescriptionInformationType.BallotDescriptionInfo convert(
+			final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo bdi) {
+		final BallotDescriptionInformationType.BallotDescriptionInfo result = new BallotDescriptionInformationType.BallotDescriptionInfo();
+		result.setLanguage(convert(bdi.getLanguage()));
+
+		final Optional<String> ballotDescriptionLong = Optional.ofNullable(bdi.getBallotDescriptionLong());
+		final Optional<String> ballotDescriptionShort = Optional.ofNullable(bdi.getBallotDescriptionShort());
+
+		result.setBallotDescriptionShort(ballotDescriptionShort.or(() -> {
+					LOGGER.warn(String.format(
+							"The ballotDescriptionShort is missing. Using the truncated ballotDescriptionLong instead. [ballotDescriptionLong: %s]",
+							ballotDescriptionLong));
+					return ballotDescriptionLong;
+				})
+				.map(description -> StringUtils.left(description, 100))
+				.orElseThrow(() -> new IllegalStateException("Both, ballotDescriptionLong and ballotDescriptionShort are missing.")));
+
+		result.setBallotDescriptionLong(ballotDescriptionLong.or(() -> {
+					LOGGER.warn(String.format("The ballotDescriptionLong is missing. Using the ballotDescriptionShort instead. [ballotDescriptionShort: %s]",
+							ballotDescriptionShort));
+					return ballotDescriptionShort;
+				})
+				.orElseThrow(() -> new IllegalStateException("Both, ballotDescriptionLong and ballotDescriptionShort are missing.")));
+
+		return result;
+	}
 
 	@Mapping(target = "answerType", source = "answerInformation.answerType")
 	@Mapping(target = "answer", source = "answerInformation.answerOptionIdentification")
 	@Mapping(target = "questionNumber", source = "ballotQuestionNumber")
-	StandardQuestionType convert(ch.ech.xmlns.ech_0155._4.QuestionInformationType qit);
+	StandardQuestionType convert(ch.ech.xmlns.ech_0155._4.QuestionInformationType qit,
+			@Context
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
 	@Mapping(target = "ballotQuestion", source = "tieBreakQuestion")
 	@Mapping(target = "answerType", source = "tbit.answerInformation.answerType")
@@ -243,31 +290,57 @@ ECH015xv4Mapper {
 	@Mapping(target = "questionNumber", source = "tbit.tieBreakQuestionNumber")
 	void appendTieBreakQuestionType(
 			@MappingTarget
-			TieBreakQuestionType tb, ch.ech.xmlns.ech_0155._4.TieBreakInformationType tbit);
+			TieBreakQuestionType tb, ch.ech.xmlns.ech_0155._4.TieBreakInformationType tbit, @Context final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
-	default TieBreakQuestionType convert(final ch.ech.xmlns.ech_0155._4.TieBreakInformationType tbit) {
+	default TieBreakQuestionType convert(final ch.ech.xmlns.ech_0155._4.TieBreakInformationType tbit,
+			@Context
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
 		final TieBreakQuestionTypeWithReferences result = new TieBreakQuestionTypeWithReferences();
-		appendTieBreakQuestionType(result, tbit);
+		appendTieBreakQuestionType(result, tbit, ballotType);
 		result.setReferencedQuestion1(tbit.getReferencedQuestion1());
 		result.setReferencedQuestion2(tbit.getReferencedQuestion2());
 		return result;
 	}
 
 	@Mapping(target = "ballotQuestionInfo", source = "tieBreakQuestionInfo")
-	BallotQuestionType convert(ch.ech.xmlns.ech_0155._4.TieBreakQuestionType tbqt);
+	BallotQuestionType convert(ch.ech.xmlns.ech_0155._4.TieBreakQuestionType tbqt,
+			@Context
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
-	@Mapping(target = "ballotQuestionTitle", source = "tieBreakQuestionTitle")
-	@Mapping(target = "ballotQuestion", source = "tieBreakQuestion")
-	BallotQuestionType.BallotQuestionInfo convert(ch.ech.xmlns.ech_0155._4.TieBreakQuestionType.TieBreakQuestionInfo value);
+	default BallotQuestionType.BallotQuestionInfo convert(final ch.ech.xmlns.ech_0155._4.TieBreakQuestionType.TieBreakQuestionInfo tbqi,
+			@Context
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
+		final BallotQuestionType.BallotQuestionInfo result = new BallotQuestionType.BallotQuestionInfo();
+
+		result.setLanguage(LanguageType.fromValue(tbqi.getLanguage()));
+		if (tbqi.getTieBreakQuestionTitle() != null) {
+			result.setBallotQuestionTitle(tbqi.getTieBreakQuestionTitle());
+		} else {
+			final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo ballotDescriptionInfo = ballotType.getBallotDescription()
+					.getBallotDescriptionInfo().stream()
+					.filter(bdi -> bdi.getLanguage().equals(tbqi.getLanguage()))
+					.collect(MoreCollectors.onlyElement());
+			final String description = getDescription(ballotDescriptionInfo);
+
+			result.setBallotQuestionTitle(description);
+		}
+		result.setBallotQuestion(tbqi.getTieBreakQuestion());
+
+		return result;
+	}
 
 	@Mapping(target = "standardQuestion", source = "questionInformation")
 	@Mapping(target = "tieBreakQuestion", source = "tieBreakInformation")
-	VariantBallotType convert(ch.ech.xmlns.ech_0155._4.BallotType.VariantBallot vb);
+	VariantBallotType convert(ch.ech.xmlns.ech_0155._4.BallotType.VariantBallot vb,
+			@Context
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
 	@Mapping(target = "answerType", source = "answerInformation.answerType")
 	@Mapping(target = "answer", source = "answerInformation.answerOptionIdentification")
 	@Mapping(target = "questionNumber", source = "ballotQuestionNumber")
-	StandardBallotType convert(ch.ech.xmlns.ech_0155._4.BallotType.StandardBallot sb);
+	StandardBallotType convert(ch.ech.xmlns.ech_0155._4.BallotType.StandardBallot sb,
+			@Context
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
 	@Mapping(target = "answerIdentification", source = "answerIdentification")
 	@Mapping(target = "answerPosition", source = "answerSequenceNumber")
@@ -290,9 +363,42 @@ ECH015xv4Mapper {
 	}
 
 	@Mapping(target = "ballotQuestionInfo", source = "ballotQuestionInfo")
-	BallotQuestionType convert(ch.ech.xmlns.ech_0155._4.BallotQuestionType bqt);
+	BallotQuestionType convert(final ch.ech.xmlns.ech_0155._4.BallotQuestionType bqt,
+			@Context
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
-	BallotQuestionType.BallotQuestionInfo convert(ch.ech.xmlns.ech_0155._4.BallotQuestionType.BallotQuestionInfo value);
+	default BallotQuestionType.BallotQuestionInfo convert(final ch.ech.xmlns.ech_0155._4.BallotQuestionType.BallotQuestionInfo bqi,
+			@Context
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
+		final BallotQuestionType.BallotQuestionInfo result = new BallotQuestionType.BallotQuestionInfo();
+
+		result.setLanguage(LanguageType.fromValue(bqi.getLanguage()));
+		if (bqi.getBallotQuestionTitle() != null) {
+			result.setBallotQuestionTitle(bqi.getBallotQuestionTitle());
+		} else {
+			final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo ballotDescriptionInfo = ballotType.getBallotDescription()
+					.getBallotDescriptionInfo().stream()
+					.filter(bdi -> bdi.getLanguage().equals(bqi.getLanguage()))
+					.collect(MoreCollectors.onlyElement());
+			final String description = getDescription(ballotDescriptionInfo);
+
+			result.setBallotQuestionTitle(description);
+		}
+		result.setBallotQuestion(bqi.getBallotQuestion());
+
+		return result;
+	}
+
+	private static String getDescription(
+			final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo ballotDescriptionInfo) {
+		if (ballotDescriptionInfo.getBallotDescriptionShort() != null) {
+			return ballotDescriptionInfo.getBallotDescriptionShort();
+		} else if (ballotDescriptionInfo.getBallotDescriptionLong() != null) {
+			return StringUtils.left(ballotDescriptionInfo.getBallotDescriptionLong(), 100);
+		} else {
+			throw new IllegalStateException("Could not extract description.");
+		}
+	}
 
 	@Mapping(target = "answer", source = "answerText")
 	AnswerInformationType convert(ch.ech.xmlns.ech_0155._4.AnswerOptionIdentificationType.AnswerTextInformation answer);

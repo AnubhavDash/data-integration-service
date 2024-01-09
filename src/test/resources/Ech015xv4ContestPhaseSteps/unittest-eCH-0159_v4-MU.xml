@@ -181,18 +181,22 @@
 					<eCH-0155:ballotQuestion>
 						<eCH-0155:ballotQuestionInfo>
 							<eCH-0155:language>de</eCH-0155:language>
+							<eCH-0155:ballotQuestionTitle>Gemeinde Gstaad Vorlage</eCH-0155:ballotQuestionTitle>
 							<eCH-0155:ballotQuestion>Stimmen sie der Gemeinde Gstaad Vorlage zu?</eCH-0155:ballotQuestion>
 						</eCH-0155:ballotQuestionInfo>
 						<eCH-0155:ballotQuestionInfo>
 							<eCH-0155:language>fr</eCH-0155:language>
+							<eCH-0155:ballotQuestionTitle>Objet Commune Gstaad</eCH-0155:ballotQuestionTitle>
 							<eCH-0155:ballotQuestion>Acceptez-vous l'objet commune Gstaad?</eCH-0155:ballotQuestion>
 						</eCH-0155:ballotQuestionInfo>
 						<eCH-0155:ballotQuestionInfo>
 							<eCH-0155:language>it</eCH-0155:language>
+							<eCH-0155:ballotQuestionTitle>Objetto Commune Gstaad</eCH-0155:ballotQuestionTitle>
 							<eCH-0155:ballotQuestion>Sono d'accordo con l'objetto Commune Gstaad?</eCH-0155:ballotQuestion>
 						</eCH-0155:ballotQuestionInfo>
 						<eCH-0155:ballotQuestionInfo>
 							<eCH-0155:language>rm</eCH-0155:language>
+							<eCH-0155:ballotQuestionTitle>Obgetto Communz Gstaad</eCH-0155:ballotQuestionTitle>
 							<eCH-0155:ballotQuestion>Sun accurdz con obgetto Communz Gstaad?</eCH-0155:ballotQuestion>
 						</eCH-0155:ballotQuestionInfo>
 					</eCH-0155:ballotQuestion>

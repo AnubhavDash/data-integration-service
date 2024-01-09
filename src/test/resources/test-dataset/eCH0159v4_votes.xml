@@ -92,18 +92,22 @@
           <eCH-0155:ballotQuestion>
             <eCH-0155:ballotQuestionInfo>
               <eCH-0155:language>de</eCH-0155:language>
+              <eCH-0155:ballotQuestionTitle>Erster Vorschlag</eCH-0155:ballotQuestionTitle>
               <eCH-0155:ballotQuestion>Wollen Sie den ersten Vorschlag annehmen?</eCH-0155:ballotQuestion>
             </eCH-0155:ballotQuestionInfo>
             <eCH-0155:ballotQuestionInfo>
               <eCH-0155:language>fr</eCH-0155:language>
+              <eCH-0155:ballotQuestionTitle>Première Proposition</eCH-0155:ballotQuestionTitle>
               <eCH-0155:ballotQuestion>Acceptez-vous la première proposition ?</eCH-0155:ballotQuestion>
             </eCH-0155:ballotQuestionInfo>
             <eCH-0155:ballotQuestionInfo>
               <eCH-0155:language>it</eCH-0155:language>
+              <eCH-0155:ballotQuestionTitle>Prima Proposta</eCH-0155:ballotQuestionTitle>
               <eCH-0155:ballotQuestion>accettate la prima proposta ?</eCH-0155:ballotQuestion>
             </eCH-0155:ballotQuestionInfo>
             <eCH-0155:ballotQuestionInfo>
               <eCH-0155:language>rm</eCH-0155:language>
+              <eCH-0155:ballotQuestionTitle>Emprima Proposta</eCH-0155:ballotQuestionTitle>
               <eCH-0155:ballotQuestion>acceptar l’emprima proposta ?</eCH-0155:ballotQuestion>
             </eCH-0155:ballotQuestionInfo>
           </eCH-0155:ballotQuestion>
@@ -144,18 +148,22 @@
             <eCH-0155:ballotQuestion>
               <eCH-0155:ballotQuestionInfo>
                 <eCH-0155:language>de</eCH-0155:language>
-                <eCH-0155:ballotQuestion>Wollen Sie den Vorschlag annehmen?</eCH-0155:ballotQuestion>
+                <eCH-0155:ballotQuestionTitle>Zweiter Vorschlag</eCH-0155:ballotQuestionTitle>
+                <eCH-0155:ballotQuestion>Wollen Sie den zweiten Vorschlag annehmen?</eCH-0155:ballotQuestion>
               </eCH-0155:ballotQuestionInfo>
               <eCH-0155:ballotQuestionInfo>
                 <eCH-0155:language>fr</eCH-0155:language>
+                <eCH-0155:ballotQuestionTitle>Deuxième Proposition</eCH-0155:ballotQuestionTitle>
                 <eCH-0155:ballotQuestion>Acceptez-vous la deuxième proposition ?</eCH-0155:ballotQuestion>
               </eCH-0155:ballotQuestionInfo>
               <eCH-0155:ballotQuestionInfo>
                 <eCH-0155:language>it</eCH-0155:language>
+                <eCH-0155:ballotQuestionTitle>Seconda Proposta</eCH-0155:ballotQuestionTitle>
                 <eCH-0155:ballotQuestion>Accettare la seconda proposta ?</eCH-0155:ballotQuestion>
               </eCH-0155:ballotQuestionInfo>
               <eCH-0155:ballotQuestionInfo>
                 <eCH-0155:language>rm</eCH-0155:language>
+                <eCH-0155:ballotQuestionTitle>Segunda Proposta</eCH-0155:ballotQuestionTitle>
                 <eCH-0155:ballotQuestion>Acceptar la segunda proposta ?</eCH-0155:ballotQuestion>
               </eCH-0155:ballotQuestionInfo>
             </eCH-0155:ballotQuestion>
@@ -169,18 +177,22 @@
             <eCH-0155:ballotQuestion>
               <eCH-0155:ballotQuestionInfo>
                 <eCH-0155:language>de</eCH-0155:language>
+                <eCH-0155:ballotQuestionTitle>Gegenvorschlag</eCH-0155:ballotQuestionTitle>
                 <eCH-0155:ballotQuestion>Wollen Sie den Gegenvorschlag annehmen?</eCH-0155:ballotQuestion>
               </eCH-0155:ballotQuestionInfo>
               <eCH-0155:ballotQuestionInfo>
                 <eCH-0155:language>fr</eCH-0155:language>
+                <eCH-0155:ballotQuestionTitle>Contre Proposition</eCH-0155:ballotQuestionTitle>
                 <eCH-0155:ballotQuestion>Acceptez-vous la contre proposition ?</eCH-0155:ballotQuestion>
               </eCH-0155:ballotQuestionInfo>
               <eCH-0155:ballotQuestionInfo>
                 <eCH-0155:language>it</eCH-0155:language>
+                <eCH-0155:ballotQuestionTitle>Contra Proposta</eCH-0155:ballotQuestionTitle>
                 <eCH-0155:ballotQuestion>Accettare la contra proposta ?</eCH-0155:ballotQuestion>
               </eCH-0155:ballotQuestionInfo>
               <eCH-0155:ballotQuestionInfo>
                 <eCH-0155:language>rm</eCH-0155:language>
+                <eCH-0155:ballotQuestionTitle>Cuntra Proposta</eCH-0155:ballotQuestionTitle>
                 <eCH-0155:ballotQuestion>Acceptar la cuntra proposta ?</eCH-0155:ballotQuestion>
               </eCH-0155:ballotQuestionInfo>
             </eCH-0155:ballotQuestion>

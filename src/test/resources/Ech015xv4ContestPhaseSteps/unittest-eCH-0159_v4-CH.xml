@@ -157,18 +157,22 @@
 					<eCH-0155:ballotQuestion>
 						<eCH-0155:ballotQuestionInfo>
 							<eCH-0155:language>de</eCH-0155:language>
+							<eCH-0155:ballotQuestionTitle>Eidgenössische Vorlage</eCH-0155:ballotQuestionTitle>
 							<eCH-0155:ballotQuestion>Stimmen sie der eidgenössischen Vorlage zu?</eCH-0155:ballotQuestion>
 						</eCH-0155:ballotQuestionInfo>
 						<eCH-0155:ballotQuestionInfo>
 							<eCH-0155:language>fr</eCH-0155:language>
+							<eCH-0155:ballotQuestionTitle>Objet Fédérale</eCH-0155:ballotQuestionTitle>
 							<eCH-0155:ballotQuestion>Acceptez-vous l'objet fédérale?</eCH-0155:ballotQuestion>
 						</eCH-0155:ballotQuestionInfo>
 						<eCH-0155:ballotQuestionInfo>
 							<eCH-0155:language>it</eCH-0155:language>
+							<eCH-0155:ballotQuestionTitle>Objetto Federale</eCH-0155:ballotQuestionTitle>
 							<eCH-0155:ballotQuestion>Sono d'accordo con l'objetto federale?</eCH-0155:ballotQuestion>
 						</eCH-0155:ballotQuestionInfo>
 						<eCH-0155:ballotQuestionInfo>
 							<eCH-0155:language>rm</eCH-0155:language>
+							<eCH-0155:ballotQuestionTitle>Obgetto Federul</eCH-0155:ballotQuestionTitle>
 							<eCH-0155:ballotQuestion>Sun accurdz con obgetto federul?</eCH-0155:ballotQuestion>
 						</eCH-0155:ballotQuestionInfo>
 					</eCH-0155:ballotQuestion>
@@ -178,8 +182,29 @@
 			<eCH-0159:ballot>
 				<eCH-0155:ballotIdentification>b2</eCH-0155:ballotIdentification>
 				<eCH-0155:ballotPosition>2</eCH-0155:ballotPosition>
+				<eCH-0155:ballotDescription>
+					<eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:language>de</eCH-0155:language>
+						<eCH-0155:ballotDescriptionLong>Bund Frage 2</eCH-0155:ballotDescriptionLong>
+						<eCH-0155:ballotDescriptionShort>Bund 2</eCH-0155:ballotDescriptionShort>
+					</eCH-0155:ballotDescriptionInfo>
+					<eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:language>fr</eCH-0155:language>
+						<eCH-0155:ballotDescriptionLong>Confédération question 2</eCH-0155:ballotDescriptionLong>
+						<eCH-0155:ballotDescriptionShort>Confédération 2</eCH-0155:ballotDescriptionShort>
+					</eCH-0155:ballotDescriptionInfo>
+					<eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:language>it</eCH-0155:language>
+						<eCH-0155:ballotDescriptionLong>Confederazione quezione 2</eCH-0155:ballotDescriptionLong>
+						<eCH-0155:ballotDescriptionShort>Confederazione 2</eCH-0155:ballotDescriptionShort>
+					</eCH-0155:ballotDescriptionInfo>
+					<eCH-0155:ballotDescriptionInfo>
+						<eCH-0155:language>rm</eCH-0155:language>
+						<eCH-0155:ballotDescriptionLong>Confederaiunz Quezion 2</eCH-0155:ballotDescriptionLong>
+						<eCH-0155:ballotDescriptionShort>Confederazin 2</eCH-0155:ballotDescriptionShort>
+					</eCH-0155:ballotDescriptionInfo>
+				</eCH-0155:ballotDescription>
 				<eCH-0155:variantBallot>
-
 					<eCH-0155:questionInformation>
 						<eCH-0155:questionIdentification>q2</eCH-0155:questionIdentification>
 						<eCH-0155:ballotQuestionNumber>2A</eCH-0155:ballotQuestionNumber>
@@ -189,18 +214,22 @@
 						<eCH-0155:ballotQuestion>
 							<eCH-0155:ballotQuestionInfo>
 								<eCH-0155:language>de</eCH-0155:language>
-								<eCH-0155:ballotQuestion>Wollen sie die eigenössische Initiative annehmen?</eCH-0155:ballotQuestion>
+								<eCH-0155:ballotQuestionTitle>Eidgenössische Initiative</eCH-0155:ballotQuestionTitle>
+								<eCH-0155:ballotQuestion>Wollen sie die eidgenössische Initiative annehmen?</eCH-0155:ballotQuestion>
 							</eCH-0155:ballotQuestionInfo>
 							<eCH-0155:ballotQuestionInfo>
 								<eCH-0155:language>fr</eCH-0155:language>
+								<eCH-0155:ballotQuestionTitle>Initiative Fédérale</eCH-0155:ballotQuestionTitle>
 								<eCH-0155:ballotQuestion>Acceptez vous l'initiative fédérale?</eCH-0155:ballotQuestion>
 							</eCH-0155:ballotQuestionInfo>
 							<eCH-0155:ballotQuestionInfo>
 								<eCH-0155:language>it</eCH-0155:language>
+								<eCH-0155:ballotQuestionTitle>Initiativa Federale</eCH-0155:ballotQuestionTitle>
 								<eCH-0155:ballotQuestion>Acceptono l'initiativa federale?</eCH-0155:ballotQuestion>
 							</eCH-0155:ballotQuestionInfo>
 							<eCH-0155:ballotQuestionInfo>
 								<eCH-0155:language>rm</eCH-0155:language>
+								<eCH-0155:ballotQuestionTitle>Initiativ Federals</eCH-0155:ballotQuestionTitle>
 								<eCH-0155:ballotQuestion>Acceptuns initiativ federals?</eCH-0155:ballotQuestion>
 							</eCH-0155:ballotQuestionInfo>
 						</eCH-0155:ballotQuestion>
@@ -214,18 +243,22 @@
 					<eCH-0155:ballotQuestion>
 						<eCH-0155:ballotQuestionInfo>
 							<eCH-0155:language>de</eCH-0155:language>
+							<eCH-0155:ballotQuestionTitle>Eidgenössischer Gegenentwurf</eCH-0155:ballotQuestionTitle>
 							<eCH-0155:ballotQuestion>Wollen sie den eidgenössischen Gegenentwurf annehmen?</eCH-0155:ballotQuestion>
 						</eCH-0155:ballotQuestionInfo>
 						<eCH-0155:ballotQuestionInfo>
 							<eCH-0155:language>fr</eCH-0155:language>
+							<eCH-0155:ballotQuestionTitle>Contreproposition Fédérale</eCH-0155:ballotQuestionTitle>
 							<eCH-0155:ballotQuestion>Acceptez-vous la contreproposition fédérale?</eCH-0155:ballotQuestion>
 						</eCH-0155:ballotQuestionInfo>
 						<eCH-0155:ballotQuestionInfo>
 							<eCH-0155:language>it</eCH-0155:language>
+							<eCH-0155:ballotQuestionTitle>Contrapropositione Federale</eCH-0155:ballotQuestionTitle>
 							<eCH-0155:ballotQuestion>Acceptono la contrapropositione federale?</eCH-0155:ballotQuestion>
 						</eCH-0155:ballotQuestionInfo>
 						<eCH-0155:ballotQuestionInfo>
 							<eCH-0155:language>rm</eCH-0155:language>
+							<eCH-0155:ballotQuestionTitle>Contraproposiun Federal</eCH-0155:ballotQuestionTitle>
 							<eCH-0155:ballotQuestion>Acceptur la Contraproposiun Federal?</eCH-0155:ballotQuestion>
 						</eCH-0155:ballotQuestionInfo>
 					</eCH-0155:ballotQuestion>

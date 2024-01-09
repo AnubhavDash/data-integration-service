@@ -46,7 +46,7 @@ public class Ech015xv4ContestPhaseSteps extends PhaseSteps {
 		new Runtime().run(uri("contest/ech015xv4/contestEch015xv4"));
 	}
 
-	@And("^draining the ech015xv4 contest phase outouts$")
+	@And("^draining the ech015xv4 contest phase outputs$")
 	public void andDrainingContestPhase() {
 		contests = new ArrayList<>();
 		elections = new ArrayList<>();
