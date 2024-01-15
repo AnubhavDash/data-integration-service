@@ -13,9 +13,9 @@
 	<description>Data Integration Service application</description>
 
 	<properties>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
-		<maven.compiler.release>17</maven.compiler.release>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
+		<maven.compiler.release>21</maven.compiler.release>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.outputTimestamp>2023-07-17T14:45:28+02:00</project.build.outputTimestamp>
@@ -25,9 +25,9 @@
 		<commons-codec.version>1.16.0</commons-codec.version>
 		<commons-io.version>2.15.1</commons-io.version>
 		<commons-lang3.version>3.14.0</commons-lang3.version>
-		<crypto-primitives.version>1.4.0.7</crypto-primitives.version>
+		<crypto-primitives.version>1.4.0.8</crypto-primitives.version>
 		<cucumber-bom.version>7.15.0</cucumber-bom.version>
-		<e-voting-libraries.version>1.4.0.48</e-voting-libraries.version>
+		<e-voting-libraries.version>1.4.0.50</e-voting-libraries.version>
 		<gmavenplus-plugin.version>1.11.1</gmavenplus-plugin.version>
 		<groovy.version>4.0.17</groovy.version>
 		<groovy-all.version>4.0.17</groovy-all.version>
