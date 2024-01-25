@@ -405,6 +405,7 @@
 		<xs:restriction base="xs:token">
 			<xs:enumeration value="explicit"/>
 			<xs:enumeration value="implicit"/>
+			<xs:enumeration value="implicitDiscreet"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="displayCandidateLineStyle">

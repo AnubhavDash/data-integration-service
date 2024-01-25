@@ -27,7 +27,7 @@
 		<commons-lang3.version>3.14.0</commons-lang3.version>
 		<crypto-primitives.version>1.4.0.8</crypto-primitives.version>
 		<cucumber-bom.version>7.15.0</cucumber-bom.version>
-		<e-voting-libraries.version>1.4.0.50</e-voting-libraries.version>
+		<e-voting-libraries.version>1.4.0.54</e-voting-libraries.version>
 		<gmavenplus-plugin.version>1.11.1</gmavenplus-plugin.version>
 		<groovy.version>4.0.17</groovy.version>
 		<groovy-all.version>4.0.17</groovy-all.version>

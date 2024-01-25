@@ -1360,10 +1360,27 @@ public class ContestService {
 		final List<String> primaryCandidateIds = primarySecondaryTuple.primary().getCandidate().stream().map(
 				CandidateType::getCandidateIdentification).toList();
 
-		checkState(primarySecondaryTuple.secondary().getCandidate().stream().allMatch(
+		final List<CandidateType> secondaryCandidates = primarySecondaryTuple.secondary().getCandidate();
+		checkState(secondaryCandidates.stream().allMatch(
 						c -> (primaryCandidateIds.contains(c.getCandidateIdentification()) && c.getEligibility() == EligibilityType.EXPLICIT)
-								|| c.getEligibility() == EligibilityType.IMPLICIT),
+								|| c.getEligibility() == EligibilityType.IMPLICIT
+								|| c.getEligibility() == EligibilityType.IMPLICIT_DISCREET),
 				"At least one non already elected candidate in the secondary election is not candidate in the primary election. [electionGroupId: %s]",
+				eg.getElectionGroupIdentification());
+
+		checkState(secondaryCandidates.stream()
+						.filter(c -> c.getEligibility() == EligibilityType.IMPLICIT || c.getEligibility() == EligibilityType.IMPLICIT_DISCREET)
+						.noneMatch(c -> primaryCandidateIds.contains(c.getCandidateIdentification())),
+				"At least one implicit or implicit discreet candidate in the secondary election is also a candidate in the primary election. [electionGroupId: %s]",
+				eg.getElectionGroupIdentification());
+
+		final List<CandidateType> implicitCandidates = secondaryCandidates.stream()
+				.filter(c -> c.getEligibility() == EligibilityType.IMPLICIT)
+				.toList();
+		checkState(secondaryCandidates.stream()
+						.filter(c -> c.getEligibility() == EligibilityType.IMPLICIT_DISCREET)
+						.noneMatch(implicitCandidates::contains),
+				"At least one candidate in the secondary election is both implicitly eligible and discreet. [electionGroupId: %s]",
 				eg.getElectionGroupIdentification());
 	}
 
