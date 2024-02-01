@@ -12,6 +12,11 @@ import static reactor.core.publisher.Flux.zip
 
 def authorizationPhaseComponent = DataIntegrationServiceApplication.context.getBean(AuthorizationPhaseComponent.class)
 
+
+def cantonalTree = pipe {
+	from AuthorizationPhase.cantonalTreePhase.cantonalTree
+}
+
 def voters = tube {
 	from AuthorizationPhase.registerPhase.voters
 }
@@ -22,12 +27,21 @@ def contestUsedDOIs = pipe {
 
 }
 
+def cantonalTreeAndUsedDOIS = pipe {
+	from zip(cantonalTree, contestUsedDOIs)  \
+     map authorizationPhaseComponent.checkDomainOfInfluences()
+}
+
+def buildAuthorizationPlugins = pipe {
+	from AuthorizationPhase.parameterPhase.buildAuthorizationPlugins
+}
+
 def contestParameters = pipe {
 	from AuthorizationPhase.parameterPhase.contestParameters
 }
 
 def buildAuthorizations = pipe {
-	from zip(voters, value(contestUsedDOIs), value(AuthorizationPhase.contestPhase.contest), value(contestParameters))  \
+	from zip(voters, value(cantonalTreeAndUsedDOIS), value(AuthorizationPhase.contestPhase.contest), value(buildAuthorizationPlugins), value(contestParameters))  \
      transformDeferred logAsInfo("Building the authorizations...")  \
      map authorizationPhaseComponent.buildAuthorization()  \
      reduce(new AuthorizationsType(), authorizationPhaseComponent.appendAuthorization())  \

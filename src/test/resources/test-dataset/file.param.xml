@@ -5,6 +5,16 @@
 		<evotingFromDate>2023-12-06T07:00:00+01:00</evotingFromDate>
 		<evotingToDate>2027-11-25T23:00:00+01:00</evotingToDate>
 		<evotingTestBallotBoxesFromDate>2023-12-06T07:00:00+01:00</evotingTestBallotBoxesFromDate>
+		<swissAbroadCountingMode>
+			<specificCountingCircle>
+				<configuration>
+					<countingCircleId>BE-MU-9170</countingCircleId>
+					<voteTypes>
+						<voteType>CH</voteType>
+					</voteTypes>
+				</configuration>
+			</specificCountingCircle>
+		</swissAbroadCountingMode>
 		<adminBoard>
 			<adminBoardIdentification>Post_E2E_DEV</adminBoardIdentification>
 			<adminBoardName>Post_E2E_DEV</adminBoardName>

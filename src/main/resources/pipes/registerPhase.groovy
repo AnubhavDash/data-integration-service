@@ -5,21 +5,24 @@ package pipes
 
 import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
 
-import static li.chee.reactive.plumber.Plumbing.*
-import static pipes.Tools.apply
-import static pipes.Tools.logAsInfo
+import static pipes.Tools.*
 
 def registerPhaseComponent = DataIntegrationServiceApplication.context.getBean(RegisterPhaseComponent.class)
 
-def voters = tube {
-    from(RegisterPhase.registerEch0045v4.voters) \
+def mergedVoters = tube {
+    from merge(RegisterPhase.registerEch0045v3.voters, RegisterPhase.registerEch0045v4.voters) \
     transformDeferred logAsInfo("Building the register...")
 }
 
 def votersWithPlugins = tube {
-    from voters \
+    from mergedVoters \
     map registerPhaseComponent.assignFrankingArea() \
     zipWith value(RegisterPhase.parameterPhase.afterReadVoterPlugins), apply()
 }
 
-RegisterPhase.exports.voters = votersWithPlugins
+def votersWithAuthPlugins = tube {
+    from zip(votersWithPlugins, value(RegisterPhase.cantonalTreePhase.cantonalTree)) \
+    zipWith value(RegisterPhase.parameterPhase.afterReadVoterAuthorizationPlugins), applyTuple() \
+}
+
+RegisterPhase.exports.voters = votersWithAuthPlugins

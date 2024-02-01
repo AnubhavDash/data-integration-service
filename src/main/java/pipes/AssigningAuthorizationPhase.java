@@ -13,6 +13,7 @@ public abstract class AssigningAuthorizationPhase extends Tools {
 	public static final Exports exports = new Exports();
 	static RegisterPhase.Exports registerPhase = RegisterPhase.exports;
 	static AuthorizationPhase.Exports authorizationPhase = AuthorizationPhase.exports;
+	static CantonalTreePhase.Exports cantonalTreePhase = CantonalTreePhase.exports;
 	static ContestPhase.Exports contestPhase = ContestPhase.exports;
 	static ParameterPhase.Exports parameterPhase = ParameterPhase.exports;
 

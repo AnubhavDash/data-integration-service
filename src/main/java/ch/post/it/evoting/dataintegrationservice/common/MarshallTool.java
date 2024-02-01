@@ -7,10 +7,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBElement;
-import jakarta.xml.bind.JAXBException;
-
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -27,7 +26,7 @@ public class MarshallTool {
 			final JAXBContext context = JAXBContext.newInstance(source.getClass());
 			final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-			final QName name = new QName(source.getClass().getPackage().getAnnotation(jakarta.xml.bind.annotation.XmlSchema.class).namespace(),
+			final QName name = new QName(source.getClass().getPackage().getAnnotation(javax.xml.bind.annotation.XmlSchema.class).namespace(),
 					elementName);
 			context.createMarshaller().marshal(new JAXBElement<>(name, (Class<T>) source.getClass(), source), bos);
 

@@ -7,8 +7,8 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 
 public abstract class PhaseSteps {
 	protected URI uri(final String pipeName) {

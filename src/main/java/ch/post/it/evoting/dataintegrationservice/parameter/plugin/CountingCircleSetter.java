@@ -6,11 +6,11 @@ package ch.post.it.evoting.dataintegrationservice.parameter.plugin;
 import java.util.List;
 import java.util.function.BiFunction;
 
-import ch.post.it.evoting.dataintegrationservice.domain.VoterCountingCircle;
+import ch.post.it.evoting.dataintegrationservice.cantonaltree.CountingCircle;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
-public interface CountingCircleSetter extends BiFunction<VoterTypeWithRole, List<VoterCountingCircle>, VoterCountingCircle> {
+public interface CountingCircleSetter extends BiFunction<VoterTypeWithRole, List<CountingCircle>, CountingCircle> {
 
 	@Override
-	VoterCountingCircle apply(VoterTypeWithRole voterTypeWithRole, List<VoterCountingCircle> countingCircles);
+	CountingCircle apply(VoterTypeWithRole voterTypeWithRole, List<CountingCircle> countingCircles);
 }

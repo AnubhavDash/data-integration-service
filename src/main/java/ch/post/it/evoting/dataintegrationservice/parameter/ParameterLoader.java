@@ -11,8 +11,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 
-import jakarta.xml.bind.JAXBException;
-
+import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
 import org.slf4j.Logger;
@@ -32,7 +31,7 @@ public class ParameterLoader {
 
 	private static final String DEFAULT_PARAMETER_PATH = "xml/default.param.xml";
 	@SuppressWarnings("java:S1075")
-	private static final String PARAMETER_SCHEMA_PATH = "/xsd/evoting-parameter-4-9.xsd";
+	private static final String PARAMETER_SCHEMA_PATH = "/xsd/evoting-parameter-4-6.xsd";
 
 	public Parameter loadParameter(final String fileLocation) {
 		LOGGER.debug("Loading parameter : {}", fileLocation);

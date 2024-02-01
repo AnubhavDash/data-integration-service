@@ -7,8 +7,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.net.URL;
 
-import jakarta.xml.bind.JAXBException;
-
+import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
 import org.slf4j.Logger;
