@@ -102,6 +102,7 @@ ECH015xv4Mapper {
 
 	ElectionDescriptionInformationType convert(ch.ech.xmlns.ech_0155._4.ElectionDescriptionInformationType value);
 
+	@Mapping(target = "electionDescriptionShort", expression = "java( mapElectionDescriptionShort(\"electionDescriptionShort\", value) )")
 	ElectionDescriptionInformationType.ElectionDescriptionInfo convert(
 			ch.ech.xmlns.ech_0155._4.ElectionDescriptionInformationType.ElectionDescriptionInfo value);
 
@@ -213,8 +214,21 @@ ECH015xv4Mapper {
 	ElectionGroupDescriptionInformationType electionGroupDescriptionTypeToElectionGroupDescriptionInformationType(
 			ElectionGroupDescriptionType electionGroupDescription);
 
+	// This method is called from a MapStruct java expression
+	default String mapElectionDescriptionShort(
+			final String fieldName,
+			final ch.ech.xmlns.ech_0155._4.ElectionDescriptionInformationType.ElectionDescriptionInfo electionDescriptionInfo) {
+		if (electionDescriptionInfo.getElectionDescriptionShort() != null && !electionDescriptionInfo.getElectionDescriptionShort().isEmpty()) {
+			return electionDescriptionInfo.getElectionDescriptionShort();
+		} else {
+			LOGGER.warn("{} is missing. Filling its value with a truncated value of the full description.", fieldName);
+			return electionDescriptionInfo.getElectionDescription()
+					.substring(0, Math.min(electionDescriptionInfo.getElectionDescription().length(), 100));
+		}
+	}
+
 	@Mapping(target = "electionGroupDescription", source = "electionDescription")
-	@Mapping(target = "electionGroupDescriptionShort", source = "electionDescriptionShort")
+	@Mapping(target = "electionGroupDescriptionShort", expression = "java( mapElectionDescriptionShort(\"electionGroupDescriptionShort\", electionDescriptionInfo) )")
 	ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo electionDescriptionInfoToElectionGroupDescriptionInfo(
 			ch.ech.xmlns.ech_0155._4.ElectionDescriptionInformationType.ElectionDescriptionInfo electionDescriptionInfo);
 
@@ -291,7 +305,9 @@ ECH015xv4Mapper {
 	@Mapping(target = "questionNumber", source = "tbit.tieBreakQuestionNumber")
 	void appendTieBreakQuestionType(
 			@MappingTarget
-			TieBreakQuestionType tb, ch.ech.xmlns.ech_0155._4.TieBreakInformationType tbit, @Context final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
+			TieBreakQuestionType tb, ch.ech.xmlns.ech_0155._4.TieBreakInformationType tbit,
+			@Context
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
 	default TieBreakQuestionType convert(final ch.ech.xmlns.ech_0155._4.TieBreakInformationType tbit,
 			@Context
