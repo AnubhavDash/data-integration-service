@@ -145,23 +145,23 @@ public class ContestPhaseSteps extends PhaseSteps {
 				Flux.just(new ElectionGroupBallotType().withElectionGroupIdentification(electionId)
 						.withElectionGroupDescription(new ElectionGroupDescriptionInformationType().withElectionGroupDescriptionInfo(
 								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.DE)
-										.withElectionGroupDescription("Desc DE")).withElectionGroupDescriptionInfo(
+										.withElectionGroupDescription("Desc DE").withElectionGroupDescriptionShort("Desc DE")).withElectionGroupDescriptionInfo(
 								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.FR)
-										.withElectionGroupDescription("Desc FR")).withElectionGroupDescriptionInfo(
+										.withElectionGroupDescription("Desc FR").withElectionGroupDescriptionShort("Desc FR")).withElectionGroupDescriptionInfo(
 								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.IT)
-										.withElectionGroupDescription("Desc IT")).withElectionGroupDescriptionInfo(
+										.withElectionGroupDescription("Desc IT").withElectionGroupDescriptionShort("Desc IT")).withElectionGroupDescriptionInfo(
 								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.RM)
-										.withElectionGroupDescription("Desc RM")))
+										.withElectionGroupDescription("Desc RM").withElectionGroupDescriptionShort("Desc RM")))
 						.withElectionInformation(new ElectionInformationType().withElection(new ElectionType().withElectionIdentification(electionId)
 								.withElectionDescription(new ElectionDescriptionInformationType().withElectionDescriptionInfo(
 										new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.DE)
-												.withElectionDescription("Desc DE")).withElectionDescriptionInfo(
+												.withElectionDescription("Desc DE").withElectionDescriptionShort("Desc DE")).withElectionDescriptionInfo(
 										new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.FR)
-												.withElectionDescription("Desc FR")).withElectionDescriptionInfo(
+												.withElectionDescription("Desc FR").withElectionDescriptionShort("Desc FR")).withElectionDescriptionInfo(
 										new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.IT)
-												.withElectionDescription("Desc IT")).withElectionDescriptionInfo(
+												.withElectionDescription("Desc IT").withElectionDescriptionShort("Desc IT")).withElectionDescriptionInfo(
 										new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.RM)
-												.withElectionDescription("Desc RM")))))));
+												.withElectionDescription("Desc RM").withElectionDescriptionShort("Desc RM")))))));
 	}
 
 	@And("^a votation input eCHv4 with an Id \"([^\"]*)\"$")
@@ -454,7 +454,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 		}
 		descInfo.getElectionDescriptionInfo()
 				.add(new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.valueOf(lang))
-						.withElectionDescription(desc));
+						.withElectionDescription(desc).withElectionDescriptionShort(desc));
 		electionMap.get(elections + "." + election).getElectionInformation().get(0).getElection().setElectionDescription(descInfo);
 	}
 
