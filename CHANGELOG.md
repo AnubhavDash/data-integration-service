@@ -1,5 +1,12 @@
 # Changelog
 
+## Release 2.7.3
+
+Release 2.7.3 is a minor maintenance patch containing the following changes:
+
+* Ensure that the candidate and voter title contains at least one character.
+* Updated dependencies and third-party libraries.
+
 ## Release 2.7.2
 
 Release 2.7.2 is a minor maintenance patch containing the following changes:
