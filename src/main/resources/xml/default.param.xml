@@ -390,7 +390,7 @@
 				<text>uscant</text>
 			</incumbentTextInfo>
 		</incumbentText>
-		<defaultDisplayCandidateLineStyle>DEFAULT</defaultDisplayCandidateLineStyle>
-		<defaultDisplayListLineStyle>DEFAULT</defaultDisplayListLineStyle>
+		<defaultDisplayCandidateLineStyle merge:action="xsdinsert">DEFAULT</defaultDisplayCandidateLineStyle>
+		<defaultDisplayListLineStyle merge:action="xsdinsert">DEFAULT</defaultDisplayListLineStyle>
 	</contest>
 </parameter>
