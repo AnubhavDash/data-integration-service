@@ -1,18 +1,16 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package pipes;
 
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 
-import pipes.contest.ech015xv3.ContestEch015xv3;
 import pipes.contest.ech015xv4.ContestEch015xv4;
 import reactor.core.publisher.Flux;
 
 public abstract class ContestPhase extends Tools {
 
 	public static final Exports exports = new Exports();
-	static ContestEch015xv3.Exports contestEch015xv3 = ContestEch015xv3.exports;
 	static ContestEch015xv4.Exports contestEch015xv4 = ContestEch015xv4.exports;
 	static ParameterPhase.Exports parameterPhase = ParameterPhase.exports;
 

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package pipes;
 
@@ -16,7 +16,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import javax.xml.bind.Marshaller;
+import jakarta.xml.bind.Marshaller;
+
 import javax.xml.namespace.QName;
 
 import org.reactivestreams.Publisher;

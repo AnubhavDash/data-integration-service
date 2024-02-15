@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package pipes;
 
@@ -11,7 +11,6 @@ import reactor.core.publisher.Flux;
 
 public abstract class AuthorizationPhase extends Tools {
 	public static final Exports exports = new Exports();
-	static CantonalTreePhase.Exports cantonalTreePhase = CantonalTreePhase.exports;
 	static RegisterPhase.Exports registerPhase = RegisterPhase.exports;
 	static ContestPhase.Exports contestPhase = ContestPhase.exports;
 	static ParameterPhase.Exports parameterPhase = ParameterPhase.exports;

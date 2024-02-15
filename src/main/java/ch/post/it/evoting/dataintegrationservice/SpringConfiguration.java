@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice;
 
@@ -13,12 +13,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import ch.post.it.evoting.cryptoprimitives.domain.signature.Alias;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureKeystore;
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureKeystoreFactory;
 import ch.post.it.evoting.cryptoprimitives.utils.VerificationResult;
 import ch.post.it.evoting.dataintegrationservice.keystore.KeystoreRepository;
 import ch.post.it.evoting.evotinglibraries.direct.trust.KeystoreValidator;
+import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 
 @Configuration
 @ComponentScan(basePackages = { "ch.post.it.evoting", "pipes" })

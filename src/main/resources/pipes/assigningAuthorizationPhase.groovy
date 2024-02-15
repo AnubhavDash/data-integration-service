@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package pipes
 
@@ -25,20 +25,12 @@ def usedDOIs = pipe {
     from AssigningAuthorizationPhase.authorizationPhase.contestUsedDOIs
 }
 
-def canton = pipe {
-    from AssigningAuthorizationPhase.cantonalTreePhase.cantonalTree
-}
-
-def buildAuthorizationPlugins = pipe {
-    from AssigningAuthorizationPhase.parameterPhase.buildAuthorizationPlugins
-}
-
 def contestParameters = pipe {
     from AssigningAuthorizationPhase.parameterPhase.contestParameters
 }
 
 def assignedVoters = tube {
-    from zip(voters, value(authorizations), value(canton), value(usedDOIs), value(AssigningAuthorizationPhase.contestPhase.contest), zip(value(buildAuthorizationPlugins), value(contestParameters))) \
+    from zip(voters, value(authorizations), value(usedDOIs), value(AssigningAuthorizationPhase.contestPhase.contest), value(contestParameters)) \
     transformDeferred logAsInfo("Assigning authorization to voters...") \
     transformDeferred assigningAuthorizationPhaseComponent.warnIfAllCountingCircleAsTestIsConfigured() \
     map assigningAuthorizationPhaseComponent.assignAuthorization()

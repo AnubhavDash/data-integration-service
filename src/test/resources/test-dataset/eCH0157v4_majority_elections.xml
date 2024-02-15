@@ -128,19 +128,23 @@
           <eCH-0155:partyAffiliation>
             <eCH-0155:partyAffiliationInfo>
               <eCH-0155:language>de</eCH-0155:language>
-              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationShort>RP</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationLong>Rote Partei</eCH-0155:partyAffiliationLong>
             </eCH-0155:partyAffiliationInfo>
             <eCH-0155:partyAffiliationInfo>
               <eCH-0155:language>fr</eCH-0155:language>
-              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationShort>RP</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationLong>Rote Partei</eCH-0155:partyAffiliationLong>
             </eCH-0155:partyAffiliationInfo>
             <eCH-0155:partyAffiliationInfo>
               <eCH-0155:language>it</eCH-0155:language>
-              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationShort>RP</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationLong>Rote Partei</eCH-0155:partyAffiliationLong>
             </eCH-0155:partyAffiliationInfo>
             <eCH-0155:partyAffiliationInfo>
               <eCH-0155:language>rm</eCH-0155:language>
-              <eCH-0155:partyAffiliationShort>Rote Partei</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationShort>RP</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationLong>Rote Partei</eCH-0155:partyAffiliationLong>
             </eCH-0155:partyAffiliationInfo>
           </eCH-0155:partyAffiliation>
         </eCH-0157:candidate>
@@ -205,19 +209,23 @@
           <eCH-0155:partyAffiliation>
             <eCH-0155:partyAffiliationInfo>
               <eCH-0155:language>de</eCH-0155:language>
-              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationShort>GP</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationLong>Gelbe Partei</eCH-0155:partyAffiliationLong>
             </eCH-0155:partyAffiliationInfo>
             <eCH-0155:partyAffiliationInfo>
               <eCH-0155:language>fr</eCH-0155:language>
-              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationShort>GP</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationLong>Gelbe Partei</eCH-0155:partyAffiliationLong>
             </eCH-0155:partyAffiliationInfo>
             <eCH-0155:partyAffiliationInfo>
               <eCH-0155:language>it</eCH-0155:language>
-              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationShort>GP</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationLong>Gelbe Partei</eCH-0155:partyAffiliationLong>
             </eCH-0155:partyAffiliationInfo>
             <eCH-0155:partyAffiliationInfo>
               <eCH-0155:language>rm</eCH-0155:language>
-              <eCH-0155:partyAffiliationShort>Gelbe Partei</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationShort>GP</eCH-0155:partyAffiliationShort>
+              <eCH-0155:partyAffiliationLong>Gelbe Partei</eCH-0155:partyAffiliationLong>
             </eCH-0155:partyAffiliationInfo>
           </eCH-0155:partyAffiliation>
         </eCH-0157:candidate>

@@ -1,25 +1,22 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package pipes;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
 import ch.post.it.evoting.dataintegrationservice.authorization.AuthorizationService;
-import ch.post.it.evoting.dataintegrationservice.cantonaltree.CantonalTree;
 import ch.post.it.evoting.dataintegrationservice.contest.ContestService;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
-import ch.post.it.evoting.dataintegrationservice.parameter.plugin.AuthorizationPlugin;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 
 import reactor.core.publisher.Flux;
 import reactor.util.function.Tuple2;
-import reactor.util.function.Tuple6;
+import reactor.util.function.Tuple5;
 
 @Component
 public class AssigningAuthorizationPhaseComponent {
@@ -32,9 +29,8 @@ public class AssigningAuthorizationPhaseComponent {
 		this.contestService = contestService;
 	}
 
-	Function<Tuple6<VoterTypeWithRole, AuthorizationsType, Optional<CantonalTree>, List<String>, ContestType, Tuple2<List<AuthorizationPlugin>, ch.evoting.xmlns.parameter._4.ContestType>>, VoterTypeWithRole> assignAuthorization() {
-		return tuple -> authorizationService.assignAuthorization(tuple.getT1(), tuple.getT2(), tuple.getT3(), tuple.getT4(), tuple.getT5(),
-				tuple.getT6().getT1(), tuple.getT6().getT2());
+	Function<Tuple5<VoterTypeWithRole, AuthorizationsType, List<String>, ContestType, ch.evoting.xmlns.parameter._4.ContestType>, VoterTypeWithRole> assignAuthorization() {
+		return tuple -> authorizationService.assignAuthorization(tuple.getT1(), tuple.getT2(), tuple.getT3(), tuple.getT4(), tuple.getT5());
 	}
 
 	Function<Tuple2<ContestType, List<String>>, ContestType> filterContest() {

@@ -1,9 +1,9 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.evoting.xmlns.parameter._4;
 
-import javax.xml.bind.annotation.XmlRegistry;
+import jakarta.xml.bind.annotation.XmlRegistry;
 
 @XmlRegistry
 public class PluginObjectFactory extends ObjectFactory {
@@ -11,11 +11,6 @@ public class PluginObjectFactory extends ObjectFactory {
 	@Override
 	public BirthYearAuthenticationKeyType createBirthYearAuthenticationKeyType() {
 		return new BirthYearAuthenticationKeyTypeImpl();
-	}
-
-	@Override
-	public DoiLocalIdMapperType createDoiLocalIdMapperType() {
-		return new DoiLocalIdMapperTypeImpl();
 	}
 
 	@Override
@@ -29,38 +24,8 @@ public class PluginObjectFactory extends ObjectFactory {
 	}
 
 	@Override
-	public PrefetElectionType createPrefetElectionType() {
-		return new PrefetElectionTypeImpl();
-	}
-
-	@Override
-	public DoiLocalIdMunicipalityIdSetterType createDoiLocalIdMunicipalityIdSetterType() {
-		return new DoiLocalIdMunicipalityIdSetterTypeImpl();
-	}
-
-	@Override
-	public DistrictAuthorizationAppenderType createDistrictAuthorizationAppenderType() {
-		return new DistrictAuthorizationAppenderTypeImpl();
-	}
-
-	@Override
 	public ResidenceSplitterType createResidenceSplitterType() {
 		return new ResidenceSplitterTypeImpl();
-	}
-
-	@Override
-	public VoterFieldModifierPluginType createVoterFieldModifierPluginType() {
-		return new VoterFieldModifierTypeImpl();
-	}
-
-	@Override
-	public CountingCircleSetterType createCountingCircleSetterType() {
-		return new CountingCircleSetterTypeImpl();
-	}
-
-	@Override
-	public CountingCircleFilterType createCountingCircleFilterType() {
-		return new CountingCircleFilterTypeImpl();
 	}
 
 	@Override
@@ -76,11 +41,6 @@ public class PluginObjectFactory extends ObjectFactory {
 	@Override
 	public TestAndControlSplitterType createTestAndControlSplitterType() {
 		return new TestAndControlSplitterTypeImpl();
-	}
-
-	@Override
-	public VoterIdPrefixerType createVoterIdPrefixerType() {
-		return new VoterIdPrefixerTypeImpl();
 	}
 
 	@Override

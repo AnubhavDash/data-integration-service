@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.keystore;
 
@@ -8,8 +8,11 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.bouncycastle.util.Arrays;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+
+import ch.post.it.evoting.evotinglibraries.domain.ConversionUtils;
 
 @Repository
 public class KeystoreRepository {
@@ -31,6 +34,9 @@ public class KeystoreRepository {
 	}
 
 	public char[] getCantonKeystorePassword() throws IOException {
-		return Files.readString(Paths.get(keystorePasswordLocation)).toCharArray();
+		final byte[] bytes = Files.readAllBytes(Paths.get(keystorePasswordLocation));
+		final char[] password = ConversionUtils.byteArrayToCharArray(bytes);
+		Arrays.fill(bytes, (byte) 0);
+		return password;
 	}
 }

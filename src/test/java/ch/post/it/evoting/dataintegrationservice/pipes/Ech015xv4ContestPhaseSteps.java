@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.pipes;
 
@@ -46,7 +46,7 @@ public class Ech015xv4ContestPhaseSteps extends PhaseSteps {
 		new Runtime().run(uri("contest/ech015xv4/contestEch015xv4"));
 	}
 
-	@And("^draining the ech015xv4 contest phase outouts$")
+	@And("^draining the ech015xv4 contest phase outputs$")
 	public void andDrainingContestPhase() {
 		contests = new ArrayList<>();
 		elections = new ArrayList<>();

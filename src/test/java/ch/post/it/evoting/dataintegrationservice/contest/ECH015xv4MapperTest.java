@@ -1,9 +1,10 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigInteger;
 import java.util.Calendar;
@@ -100,7 +101,7 @@ class ECH015xv4MapperTest {
 				)
 				.withVoteDescriptionInfo(new VoteDescriptionInformationType.VoteDescriptionInfo()
 						.withLanguage("it")
-						.withVoteDescription("L'énergie solaire (IT")
+						.withVoteDescription("L'énergie solaire (IT)")
 				);
 	}
 
@@ -113,11 +114,31 @@ class ECH015xv4MapperTest {
 				)
 				.withBallotDescriptionInfo(new BallotDescriptionInformationType.BallotDescriptionInfo()
 						.withLanguage("fr")
-						.withBallotDescriptionLong("Nouvelle loi sur l'énergie solaire (FR")
+						.withBallotDescriptionLong("Nouvelle loi sur l'énergie solaire (FR)")
 				)
 				.withBallotDescriptionInfo(new BallotDescriptionInformationType.BallotDescriptionInfo()
 						.withLanguage("it")
 						.withBallotDescriptionShort("Nouvelle loi ES (IT)")
+				);
+	}
+
+	private BallotDescriptionInformationType createEchBallotDescriptionInformationTypeWithMissingDescriptions() {
+		return new BallotDescriptionInformationType()
+				.withBallotDescriptionInfo(new BallotDescriptionInformationType.BallotDescriptionInfo()
+						.withLanguage("de")
+						.withBallotDescriptionLong("Nouvelle loi sur l'énergie solaire (DE)")
+						.withBallotDescriptionShort("Nouvelle loi ES (DE)")
+				)
+				.withBallotDescriptionInfo(new BallotDescriptionInformationType.BallotDescriptionInfo()
+						.withLanguage("fr")
+						.withBallotDescriptionLong("Nouvelle loi sur l'énergie solaire (FR)")
+				)
+				.withBallotDescriptionInfo(new BallotDescriptionInformationType.BallotDescriptionInfo()
+						.withLanguage("it")
+						.withBallotDescriptionShort("Nouvelle loi ES (IT)")
+				)
+				.withBallotDescriptionInfo(new BallotDescriptionInformationType.BallotDescriptionInfo()
+						.withLanguage("rm")
 				);
 	}
 
@@ -369,7 +390,11 @@ class ECH015xv4MapperTest {
 
 		final Set<String> echDescriptions = source.getBallotDescriptionInfo()
 				.stream()
-				.map(d -> String.format("%s - %s - %s", d.getLanguage(), d.getBallotDescriptionShort(), d.getBallotDescriptionLong()))
+				.map(d -> {
+					final String ballotDescriptionShort = d.getBallotDescriptionShort() != null ? d.getBallotDescriptionShort() : d.getBallotDescriptionLong();
+					final String ballotDescriptionLong = d.getBallotDescriptionLong() != null ? d.getBallotDescriptionLong() : d.getBallotDescriptionShort();
+					return String.format("%s - %s - %s", d.getLanguage(), ballotDescriptionShort, ballotDescriptionLong);
+				})
 				.collect(Collectors.toSet());
 		final Set<String> descriptions = destination.getBallotDescriptionInfo()
 				.stream()
@@ -379,9 +404,16 @@ class ECH015xv4MapperTest {
 	}
 
 	@Test
+	void testBallotDescriptionInfoWithMissingDescriptions() {
+		final BallotDescriptionInformationType source = createEchBallotDescriptionInformationTypeWithMissingDescriptions();
+		final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> mapper.convert(source));
+		assertEquals("Both, ballotDescriptionLong and ballotDescriptionShort are missing.", exception.getMessage());
+	}
+
+	@Test
 	void testBallotQuestionType() {
 		final BallotQuestionType source = createEchBallotQuestionType();
-		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType destination = mapper.convert(source);
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType destination = mapper.convert(source, null);
 
 		assertEquals(source.getBallotQuestionInfo().size(), destination.getBallotQuestionInfo().size());
 	}
@@ -389,7 +421,7 @@ class ECH015xv4MapperTest {
 	@Test
 	void testBallotQuestionType_BallotQuestionInfo() {
 		final BallotQuestionType source = createEchBallotQuestionType();
-		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType destination = mapper.convert(source);
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType destination = mapper.convert(source, null);
 
 		final Set<String> echDescriptions = source.getBallotQuestionInfo()
 				.stream()

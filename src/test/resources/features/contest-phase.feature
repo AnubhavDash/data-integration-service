@@ -8,6 +8,7 @@ Feature: Contest Phase
     And user parameters "my params" has contest default language "DE"
     And user parameters "my params" has eVoting date from "2045-04-12 00:00:00"
     And user parameters "my params" has eVoting date to "2045-05-22 00:00:00"
+    And user parameters "my params" has default incumbent
 
     # PARAMETERS - writeIns and accumulation
     And user parameters "my params" has election named "election 1"
@@ -161,10 +162,10 @@ Feature: Contest Phase
     # VOTE A -standard ballot - simple question
     And the ballot "my votes"."vote A"."vote A ballot 1" has question id  "V-A_B-1_Q-0"
     And the ballot "my votes"."vote A"."vote A ballot 1" has answer type 1
-    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "DE" "Do you accept this proposal (DE)"
-    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Do you accept this proposal (FR)"
-    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "IT" "Do you accept this proposal (IT)"
-    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "RM" "Do you accept this proposal (RM)"
+    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "DE" "Proposal" "Do you accept this proposal (DE)"
+    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Proposal" "Do you accept this proposal (FR)"
+    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "IT" "Proposal" "Do you accept this proposal (IT)"
+    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "RM" "Proposal" "Do you accept this proposal (RM)"
 
     # VOTE B -variant ballot
     And a vote named "vote B" within "my votes"
@@ -186,28 +187,28 @@ Feature: Contest Phase
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has id "V-B_B-1_Q-proposal_A"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has position 3
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has answer type 2
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "DE" "Do you accept proposal A (DE)"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "FR" "Do you accept proposal A (FR)"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "IT" "Do you accept proposal A (IT)"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "RM" "Do you accept proposal A (RM)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "DE" "Proposal A" "Do you accept proposal A (DE)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "FR" "Proposal A" "Do you accept proposal A (FR)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "IT" "Proposal A" "Do you accept proposal A (IT)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "RM" "Proposal A" "Do you accept proposal A (RM)"
     # VOTE B -variant ballot - question with answer type 1 (2 answers)
     And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot standard question "vote B ballot 1 question 2"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has id "V-B_B-1_Q-proposal_B"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has position 2
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has answer type 1
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has info "DE" "Do you accept proposal B (DE)"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has info "FR" "Do you accept proposal B (FR)"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has info "IT" "Do you accept proposal B (IT)"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has info "RM" "Do you accept proposal B (RM)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has info "DE" "Proposal B" "Do you accept proposal B (DE)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has info "FR" "Proposal B" "Do you accept proposal B (FR)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has info "IT" "Proposal B" "Do you accept proposal B (IT)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has info "RM" "Proposal B" "Do you accept proposal B (RM)"
     # VOTE B -variant ballot - question with answer type 1 (2 answers - and override in parameters)
     And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot standard question "vote B ballot 1 question 3"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has id "V-B_B-1_Q-proposal_C"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has position 1
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has answer type 1
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has info "DE" "Do you accept proposal C (DE)"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has info "FR" "Do you accept proposal C (FR)"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has info "IT" "Do you accept proposal C (IT)"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has info "RM" "Do you accept proposal C (RM)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has info "DE" "Proposal C" "Do you accept proposal C (DE)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has info "FR" "Proposal C" "Do you accept proposal C (FR)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has info "IT" "Proposal C" "Do you accept proposal C (IT)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has info "RM" "Proposal C" "Do you accept proposal C (RM)"
     # VOTE B -variant ballot - tiebreak question 1 with mandatory specific answers in parameters
     And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot tiebreak question "vote B ballot 1 tb question 1"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has id "V-B_B-1_TQ-1"
@@ -215,10 +216,10 @@ Feature: Contest Phase
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion2 "V-B_B-1_Q-proposal_B"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has position 1
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has answer type 4
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has info "DE" "Do you prefer A or B (DE)"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has info "FR" "Do you prefer A or B (FR)"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has info "IT" "Do you prefer A or B (IT)"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has info "RM" "Do you prefer A or B (RM)"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has info "DE" "Tie-break question AB" "Do you prefer A or B (DE)"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has info "FR" "Tie-break question AB" "Do you prefer A or B (FR)"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has info "IT" "Tie-break question AB" "Do you prefer A or B (IT)"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has info "RM" "Tie-break question AB" "Do you prefer A or B (RM)"
    # VOTE B -variant ballot - tiebreak question 2 with mandatory specific answers in parameters
     And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot tiebreak question "vote B ballot 1 tb question 2"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has id "V-B_B-1_TQ-2"
@@ -226,10 +227,10 @@ Feature: Contest Phase
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion2 "V-B_B-1_Q-proposal_C"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has position 3
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has answer type 4
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "DE" "Do you prefer A or C (DE)"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Do you prefer A or C (FR)"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "IT" "Do you prefer A or C (IT)"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "RM" "Do you prefer A or C (RM)"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "DE" "Tie-break question AC" "Do you prefer A or C (DE)"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Tie-break question AC" "Do you prefer A or C (FR)"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "IT" "Tie-break question AC" "Do you prefer A or C (IT)"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "RM" "Tie-break question AC" "Do you prefer A or C (RM)"
    # VOTE B -variant ballot - tiebreak question 3 with mandatory specific answers in parameters
     And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot tiebreak question "vote B ballot 1 tb question 3"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has id "V-B_B-1_TQ-3"
@@ -237,10 +238,10 @@ Feature: Contest Phase
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion2 "V-B_B-1_Q-proposal_C"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has position 2
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has answer type 4
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has info "DE" "Do you prefer B or C (DE)"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has info "FR" "Do you prefer B or C (FR)"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has info "IT" "Do you prefer B or C (IT)"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has info "RM" "Do you prefer B or C (RM)"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has info "DE" "Tie-break question BC" "Do you prefer B or C (DE)"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has info "FR" "Tie-break question BC" "Do you prefer B or C (FR)"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has info "IT" "Tie-break question BC" "Do you prefer B or C (IT)"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has info "RM" "Tie-break question BC" "Do you prefer B or C (RM)"
 
     # VOTE B -variant ballot - tiebreak question 4 with an answer type 1
     #And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot tiebreak question "vote B ballot 1 tb question 4"
@@ -281,6 +282,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 1 for A" has occupational title "FR" "Candidate 1 for A title (FR)"
     And candidate "my elections"."election A"."candidate 1 for A" has occupational title "IT" "Candidate 1 for A title (IT)"
     And candidate "my elections"."election A"."candidate 1 for A" has occupational title "RM" "Candidate 1 for A title (RM)"
+    And candidate "my elections"."election A"."candidate 1 for A" has eligibility "explicit"
 
     Given a candidate named "candidate 2 for A" within "my elections"."election A"
     And candidate "my elections"."election A"."candidate 2 for A" has id "candidate-2-for-A-id"
@@ -294,6 +296,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 2 for A" has occupational title "FR" "Candidate 2 for A title (FR)"
     And candidate "my elections"."election A"."candidate 2 for A" has occupational title "IT" "Candidate 2 for A title (IT)"
     And candidate "my elections"."election A"."candidate 2 for A" has occupational title "RM" "Candidate 2 for A title (RM)"
+    And candidate "my elections"."election A"."candidate 2 for A" has eligibility "explicit"
 
     Given a candidate named "candidate 3 for A" within "my elections"."election A"
     And candidate "my elections"."election A"."candidate 3 for A" has id "candidate-3-for-A-id"
@@ -307,6 +310,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 3 for A" has occupational title "FR" "candidate 3 for A title (FR)"
     And candidate "my elections"."election A"."candidate 3 for A" has occupational title "IT" "candidate 3 for A title (IT)"
     And candidate "my elections"."election A"."candidate 3 for A" has occupational title "RM" "candidate 3 for A title (RM)"
+    And candidate "my elections"."election A"."candidate 3 for A" has eligibility "explicit"
 
     Given a candidate named "candidate 4 for A" within "my elections"."election A"
     And candidate "my elections"."election A"."candidate 4 for A" has id "candidate-4-for-A-id"
@@ -320,6 +324,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 4 for A" has occupational title "FR" "candidate 4 for A title (FR)"
     And candidate "my elections"."election A"."candidate 4 for A" has occupational title "IT" "candidate 4 for A title (IT)"
     And candidate "my elections"."election A"."candidate 4 for A" has occupational title "RM" "candidate 4 for A title (RM)"
+    And candidate "my elections"."election A"."candidate 4 for A" has eligibility "explicit"
 
     Given a candidate named "candidate 5 for A" within "my elections"."election A"
     And candidate "my elections"."election A"."candidate 5 for A" has id "candidate-5-for-A-id"
@@ -333,6 +338,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 5 for A" has occupational title "FR" "candidate 5 for A title (FR)"
     And candidate "my elections"."election A"."candidate 5 for A" has occupational title "IT" "candidate 5 for A title (IT)"
     And candidate "my elections"."election A"."candidate 5 for A" has occupational title "RM" "candidate 5 for A title (RM)"
+    And candidate "my elections"."election A"."candidate 5 for A" has eligibility "explicit"
 
     Given a list named "list 1 for A" within "my elections"."election A"
     And list "my elections"."election A"."list 1 for A" has id "list-1-for-election-A-id"
@@ -473,11 +479,11 @@ Feature: Contest Phase
     When executing the contest phase and catching exceptions
     Then it outputs an exception with text "eVotingFromDate must precede eVotingToDate"
 
-  Scenario: Throw an exception when the number of days between eVoting from and to is less than 15
+  Scenario: Throw an exception when the number of days between eVoting from and to is less than 10
     Given user parameters "my params" has eVoting date from "2045-05-11 13:00:00"
-    And user parameters "my params" has eVoting date to "2045-05-25 09:00:00"
+    And user parameters "my params" has eVoting date to "2045-05-20 09:00:00"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "the number of days between 'eVoting date from' and 'eVoting date to' must be at least 15"
+    Then it outputs an exception with text "the number of days between 'eVoting date from' and 'eVoting date to' must be at least 10"
 
   Scenario: Warn when contest date does not follow eVoting date from
     Given  the contest "my contest" has date "2045-03-12 00:00:00"
@@ -628,47 +634,47 @@ Feature: Contest Phase
 
   Scenario: Throw an exception when some standard ballot question information languages are missing
     Given the descriptions of the ballot question of ballot "my votes"."vote A"."vote A ballot 1" are cleared out
-    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Do you accept this proposal (FR)"
+    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Ballot question title (FR)" "Do you accept this proposal (FR)"
     When executing the contest phase and catching exceptions
     Then it outputs an exception with text "question 'V-A_B-1_Q-0' : ballotQuestion must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some standard ballot question information languages are duplicated
     Given the descriptions of the ballot question of ballot "my votes"."vote A"."vote A ballot 1" are cleared out
-    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "DE" "Do you accept this proposal (DE)"
-    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "RM" "Do you accept this proposal (RM)"
-    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Do you accept this proposal (FR) 1"
-    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Do you accept this proposal (FR) 2"
+    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "DE" "Proposal" "Do you accept this proposal (DE)"
+    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "RM" "Proposal" "Do you accept this proposal (RM)"
+    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Proposal" "Do you accept this proposal (FR) 1"
+    And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Proposal" "Do you accept this proposal (FR) 2"
     When executing the contest phase and catching exceptions
     Then it outputs an exception with text "question 'V-A_B-1_Q-0' : ballotQuestion must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some variant ballot question information languages are missing
     Given the descriptions of the standard question  "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" are cleared out
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "DE" "Question 1 info (DE)"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "RM" "Question 1 info (RM)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "DE" "Question 1 Title" "Question 1 info (DE)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "RM" "Question 1 Title" "Question 1 info (RM)"
     When executing the contest phase and catching exceptions
     Then it outputs an exception with text "question 'V-B_B-1_Q-proposal_A' : ballotQuestion must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some variant ballot question information languages are duplicated
     Given the descriptions of the standard question  "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" are cleared out
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "DE" "Question 1 info (DE)"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "RM" "Question 1 info (RM) 1"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "RM" "Question 1 info (RM) 2"
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "IT" "Question 1 info (IT)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "DE" "Question 1 Title" "Question 1 info (DE)"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "RM" "Question 1 Title" "Question 1 info (RM) 1"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "RM" "Question 1 Title" "Question 1 info (RM) 2"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "IT" "Question 1 Title" "Question 1 info (IT)"
     When executing the contest phase and catching exceptions
     Then it outputs an exception with text "question 'V-B_B-1_Q-proposal_A' : ballotQuestion must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some variant ballot tiebreak information languages are missing
     Given the descriptions of the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" are cleared out
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Do you prefer A or C (FR)"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Tie-break question AC" "Do you prefer A or C (FR)"
     When executing the contest phase and catching exceptions
     Then it outputs an exception with text "question 'V-B_B-1_TQ-2' : ballotQuestion must contain at least 4 distinct languages"
 
   Scenario: Throw an exception when some variant ballot tiebreak information languages are duplicated
     Given the descriptions of the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" are cleared out
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "IT" "Do you prefer A or C (IT)"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Do you prefer A or C (FR) 1"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Do you prefer A or C (FR) 2"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Do you prefer A or C (FR) 3"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "IT" "Tie-break question AC" "Do you prefer A or C (IT)"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Tie-break question AC" "Do you prefer A or C (FR) 1"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Tie-break question AC" "Do you prefer A or C (FR) 2"
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Tie-break question AC" "Do you prefer A or C (FR) 3"
     When executing the contest phase and catching exceptions
     Then it outputs an exception with text "question 'V-B_B-1_TQ-2' : ballotQuestion must contain at least 4 distinct languages"
 

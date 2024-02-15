@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.common;
 
@@ -13,8 +13,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ class XmlTransformerTest {
 
 	@Test
 	void testToXml() throws Exception {
-		toXml("XmlTransformerTest/unittest-config-5-0.xml", XsdConstants.CANTON_CONFIG_XSD);
+		toXml("XmlTransformerTest/unittest-config-6-0.xml", XsdConstants.CANTON_CONFIG_XSD);
 	}
 
 	public void toXml(final String configName, final String schemeName) throws Exception {

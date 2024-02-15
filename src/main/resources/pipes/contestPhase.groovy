@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package pipes
 
@@ -11,17 +11,17 @@ import static pipes.Tools.*
 def contestPhaseComponent = DataIntegrationServiceApplication.context.getBean(ContestPhaseComponent.class)
 
 def elections = pipe {
-    from merge( ContestPhase.contestEch015xv3.elections, ContestPhase.contestEch015xv4.elections ) \
+    from( ContestPhase.contestEch015xv4.elections ) \
     collectList()
 }
 
 def votes = pipe {
-    from merge( ContestPhase.contestEch015xv3.votes, ContestPhase.contestEch015xv4.votes ) \
+    from( ContestPhase.contestEch015xv4.votes ) \
     collectList()
 }
 
 def validatedContest = pipe {
-    from merge( ContestPhase.contestEch015xv3.contests, ContestPhase.contestEch015xv4.contests ) \
+    from( ContestPhase.contestEch015xv4.contests ) \
     transformDeferred errorIfEmpty("No ech15x contests found ! Check if ech15x file is present.") \
     scan contestPhaseComponent.checkContestSame() \
     last() \

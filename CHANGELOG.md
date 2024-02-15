@@ -1,10 +1,18 @@
 # Changelog
 
-## Release 2.7.3
+## Release 2.8.0
 
-Release 2.7.3 is a minor maintenance patch containing the following changes:
+The Data Integration Service 2.8.0 contains the following changes
 
-* Ensure that the candidate and voter title contains at least one character.
+* Removed support of the legacy eCH-version 3.
+* Removed deprecated plugins.
+* Added support for primary and secondary elections.
+* Added additional validations to prevent duplicate identifiers, inconsistent counting circles, and missing empty lists.
+* Reduced the default time between election event start and date from 15 to 10.
+* Ensured that the voter and candidate title contains at least one character.
+* Made the list and candidate display configurable.
+* Added a line to add election rules explanation.
+* Updated the data integration service to evoting-config version 6.
 * Updated dependencies and third-party libraries.
 
 ## Release 2.7.2

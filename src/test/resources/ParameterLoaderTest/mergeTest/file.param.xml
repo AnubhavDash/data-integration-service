@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/4" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/4 evoting-parameter-4-4.xsd">
+<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/4" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/4 evoting-parameter-4-9.xsd">
 	<contest>
 		<defaultLanguage>fr</defaultLanguage>
 		<evotingFromDate>2037-04-13T09:04:00+02:00</evotingFromDate>
 		<evotingToDate>2037-05-01T00:00:00+02:00</evotingToDate>
-		<swissAbroadCountingMode>
-			<registeredMunicipality/>
-		</swissAbroadCountingMode>
 		<elections>
 			<election>
 				<electionIdentification>1FA9E2EF-A59B-11E6-ACC2-00155D28151E</electionIdentification>
@@ -120,26 +117,8 @@
 	<plugins>
 		<afterReadVoter>
 			<birthYearAuthenticationKey/>
-			<voterFieldModifier>
-				<object>person.physicalAddress</object>
-				<fieldName>title</fieldName>
-			</voterFieldModifier>
 		</afterReadVoter>
-		<afterReadVoterAuthorization>
-			<districtAuthorizationAppender/>
-			<doiLocalIdMunicipalityIdSetter/>
-			<doiLocalIdMapper>
-				<type>CT</type>
-				<oldValue>2</oldValue>
-				<newValue>1</newValue>
-			</doiLocalIdMapper>
-		</afterReadVoterAuthorization>
 		<afterReadContest>
-			<prefetElection>
-				<electionId>F19669B1-A597-11E6-ACC2-00155D28151E</electionId>
-				<electionId>38D05C56-A598-11E6-ACC2-00155D28151E</electionId>
-				<electionId>1FA9E2EF-A59B-11E6-ACC2-00155D28151E</electionId>
-			</prefetElection>
 		</afterReadContest>
 	</plugins>
 </parameter>

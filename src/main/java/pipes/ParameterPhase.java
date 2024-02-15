@@ -1,14 +1,12 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package pipes;
 
 import java.util.List;
 
 import ch.evoting.xmlns.parameter._4.ContestType;
-import ch.post.it.evoting.dataintegrationservice.parameter.plugin.AuthorizationPlugin;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.ContestMapper;
-import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterAuthorizationMapper;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterCategorizer;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterWithRoleMapper;
 
@@ -24,8 +22,6 @@ public abstract class ParameterPhase extends Tools {
 		private Flux<List<VoterCategorizer>> configSplitterPlugins;
 		private Flux<ContestType> contestParameters;
 		private Flux<List<ContestMapper>> afterReadContestPlugins;
-		private Flux<List<VoterAuthorizationMapper>> afterReadVoterAuthorizationPlugins;
-		private Flux<List<AuthorizationPlugin>> buildAuthorizationPlugins;
 
 		public Flux<List<VoterWithRoleMapper>> getAfterReadVoterPlugins() {
 			return afterReadVoterPlugins;
@@ -62,22 +58,5 @@ public abstract class ParameterPhase extends Tools {
 			this.afterReadContestPlugins = afterReadContestPlugins;
 		}
 
-		public Flux<List<VoterAuthorizationMapper>> getAfterReadVoterAuthorizationPlugins() {
-			return afterReadVoterAuthorizationPlugins;
-		}
-
-		public void setAfterReadVoterAuthorizationPlugins(
-				final Flux<List<VoterAuthorizationMapper>> afterReadVoterAuthorizationPlugins) {
-			this.afterReadVoterAuthorizationPlugins = afterReadVoterAuthorizationPlugins;
-		}
-
-		public Flux<List<AuthorizationPlugin>> getBuildAuthorizationPlugins() {
-			return buildAuthorizationPlugins;
-		}
-
-		public void setBuildAuthorizationPlugins(
-				final Flux<List<AuthorizationPlugin>> buildAuthorizationPlugins) {
-			this.buildAuthorizationPlugins = buildAuthorizationPlugins;
-		}
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
@@ -8,7 +8,8 @@ import static com.google.common.base.Preconditions.checkState;
 import java.net.URL;
 import java.util.ArrayList;
 
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
+
 import javax.xml.stream.XMLStreamException;
 
 import org.slf4j.Logger;

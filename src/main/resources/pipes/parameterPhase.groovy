@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package pipes
 
@@ -37,19 +37,7 @@ def afterReadContestPlugins = pipe {
     map parameterPhaseComponent.getAfterReadContestPlugins() \
 }
 
-def afterReadVoterAuthorizationPlugins = pipe {
-    from loadParameterFile \
-    map parameterPhaseComponent.getAfterReadVoterAuthorizationPlugins()
-}
-
-def buildAuthorizationPlugins = pipe {
-    from loadParameterFile \
-    map parameterPhaseComponent.getBuildAuthorizationPlugins()
-}
-
 ParameterPhase.exports.afterReadVoterPlugins = afterReadVoterPlugins
 ParameterPhase.exports.afterReadContestPlugins = afterReadContestPlugins
-ParameterPhase.exports.afterReadVoterAuthorizationPlugins = afterReadVoterAuthorizationPlugins
 ParameterPhase.exports.configSplitterPlugins = configSplitPlugins
 ParameterPhase.exports.contestParameters = contestParameters
-ParameterPhase.exports.buildAuthorizationPlugins = buildAuthorizationPlugins

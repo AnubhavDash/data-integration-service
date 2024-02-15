@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package pipes;
 
@@ -12,9 +12,7 @@ import org.springframework.stereotype.Component;
 import ch.evoting.xmlns.parameter._4.ContestType;
 import ch.evoting.xmlns.parameter._4.Parameter;
 import ch.post.it.evoting.dataintegrationservice.parameter.ParameterLoader;
-import ch.post.it.evoting.dataintegrationservice.parameter.plugin.AuthorizationPlugin;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.ContestMapper;
-import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterAuthorizationMapper;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterCategorizer;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterWithRoleMapper;
 
@@ -65,23 +63,4 @@ public class ParameterPhaseComponent {
 		};
 	}
 
-	public Function<Parameter, List<VoterAuthorizationMapper>> getAfterReadVoterAuthorizationPlugins() {
-		return p -> {
-			if (p.getPlugins().getAfterReadVoterAuthorization() != null) {
-				return p.getPlugins().getAfterReadVoterAuthorization().getPlugins().stream().toList();
-			} else {
-				return Collections.emptyList();
-			}
-		};
-	}
-
-	public Function<Parameter, List<AuthorizationPlugin>> getBuildAuthorizationPlugins() {
-		return p -> {
-			if (p.getPlugins().getBuildAuthorization() != null) {
-				return p.getPlugins().getBuildAuthorization().getPlugins().stream().toList();
-			} else {
-				return Collections.emptyList();
-			}
-		};
-	}
 }

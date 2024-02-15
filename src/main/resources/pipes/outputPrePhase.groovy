@@ -1,12 +1,12 @@
 /*
- * (c) Copyright 2023 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package pipes
 
 import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
 
+import static li.chee.reactive.plumber.Plumbing.*
 import static pipes.Tools.*
-import static reactor.core.publisher.Flux.zip
 
 def outputPrePhaseComponent = DataIntegrationServiceApplication.context.getBean(OutputPrePhaseComponent.class)
 
