@@ -16,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.evotinglibraries.xml.XsdConstants;
@@ -24,6 +23,8 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ObjectFactory;
 
 class XmlTransformerTest {
+
+	private final XmlTransformer xmlTransformer = new XmlTransformer(false, false);
 
 	@Test
 	void testToXml() throws Exception {
@@ -33,24 +34,18 @@ class XmlTransformerTest {
 	public void toXml(final String configName, final String schemeName) throws Exception {
 
 		final InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(configName);
-		final String should = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+		final String should = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 
 		final URL schemaPath = getClass().getResource(schemeName);
 		checkState(schemaPath != null, "resource not found");
 
 		final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-		final String formatPropertyName = "formatOutput";
-		final String originalValue = System.getProperty(formatPropertyName);
-		System.setProperty(formatPropertyName, "false");
-
-		XmlTransformer.toXml(outputStream,
+		xmlTransformer.toXml(outputStream,
 				ObjectFactory.class,
 				schemaPath,
 				unmarshall(Configuration.class, should),
 				null, null);
-
-		System.setProperty(formatPropertyName, originalValue == null ? "" : originalValue);
 
 		final String result = outputStream.toString(StandardCharsets.UTF_8);
 		assertNotNull(result);

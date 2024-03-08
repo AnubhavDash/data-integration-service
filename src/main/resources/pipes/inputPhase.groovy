@@ -3,11 +3,15 @@
  */
 package pipes
 
-import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
 
-import static pipes.Tools.*
+import ch.post.it.evoting.dataintegrationservice.pipes.InputPhase
+import ch.post.it.evoting.dataintegrationservice.pipes.InputPhaseComponent
 
-def inputPhaseComponent = DataIntegrationServiceApplication.context.getBean(InputPhaseComponent.class)
+import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvider.getBean
+import static li.chee.reactive.plumber.Plumbing.tube
+import static reactor.core.publisher.Flux.fromIterable
+
+def inputPhaseComponent = getBean(InputPhaseComponent.class)
 
 def files = tube {
     fromIterable inputPhaseComponent.scanner()

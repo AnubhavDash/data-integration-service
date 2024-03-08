@@ -14,7 +14,11 @@ import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluence;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluenceInfo;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.pipes.AuthorizationPhase;
+import ch.post.it.evoting.dataintegrationservice.pipes.ContestPhase;
+import ch.post.it.evoting.dataintegrationservice.pipes.ParameterPhase;
 import ch.post.it.evoting.dataintegrationservice.pipes.PhaseSteps;
+import ch.post.it.evoting.dataintegrationservice.pipes.RegisterPhase;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
@@ -28,10 +32,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import li.chee.reactive.plumber.Runtime;
-import pipes.AuthorizationPhase;
-import pipes.ContestPhase;
-import pipes.ParameterPhase;
-import pipes.RegisterPhase;
 import reactor.core.publisher.Flux;
 
 public class AuthorizationPhaseSteps extends PhaseSteps {

@@ -3,12 +3,16 @@
  */
 package pipes
 
-import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
 
+import ch.post.it.evoting.dataintegrationservice.pipes.OutputPrePhase
+import ch.post.it.evoting.dataintegrationservice.pipes.OutputPrePhaseComponent
+
+import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvider.getBean
+import static ch.post.it.evoting.dataintegrationservice.pipes.Tools.*
 import static li.chee.reactive.plumber.Plumbing.*
-import static pipes.Tools.*
+import static reactor.core.publisher.Flux.*
 
-def outputPrePhaseComponent = DataIntegrationServiceApplication.context.getBean(OutputPrePhaseComponent.class)
+def outputPrePhaseComponent = getBean(OutputPrePhaseComponent.class)
 
 def configInfo = value pipe {
     from zip(OutputPrePhase.assigningAuthorizationPhase.filteredContest, OutputPrePhase.authorizationPhase.authorizations, OutputPrePhase.headerPhase.header)

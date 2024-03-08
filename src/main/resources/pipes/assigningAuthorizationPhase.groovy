@@ -3,15 +3,18 @@
  */
 package pipes
 
-import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
+
+import ch.post.it.evoting.dataintegrationservice.pipes.AssigningAuthorizationPhase
+import ch.post.it.evoting.dataintegrationservice.pipes.AssigningAuthorizationPhaseComponent
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType
 import org.apache.commons.lang3.StringUtils
 
+import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvider.getBean
+import static ch.post.it.evoting.dataintegrationservice.pipes.Tools.logAsInfo
 import static li.chee.reactive.plumber.Plumbing.*
-import static pipes.Tools.logAsInfo
 import static reactor.core.publisher.Flux.zip
 
-def assigningAuthorizationPhaseComponent = DataIntegrationServiceApplication.context.getBean(AssigningAuthorizationPhaseComponent.class)
+def assigningAuthorizationPhaseComponent = getBean(AssigningAuthorizationPhaseComponent.class)
 
 def voters = tube {
     from AssigningAuthorizationPhase.registerPhase.voters \

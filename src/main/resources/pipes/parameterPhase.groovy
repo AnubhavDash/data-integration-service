@@ -3,11 +3,16 @@
  */
 package pipes
 
-import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
 
-import static pipes.Tools.*
+import ch.post.it.evoting.dataintegrationservice.pipes.ParameterPhase
+import ch.post.it.evoting.dataintegrationservice.pipes.ParameterPhaseComponent
 
-def parameterPhaseComponent = DataIntegrationServiceApplication.context.getBean(ParameterPhaseComponent.class)
+import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvider.getBean
+import static ch.post.it.evoting.dataintegrationservice.pipes.Tools.*
+import static li.chee.reactive.plumber.Plumbing.from
+import static li.chee.reactive.plumber.Plumbing.pipe
+
+def parameterPhaseComponent = getBean(ParameterPhaseComponent.class)
 
 def loadParameterFile = pipe {
     from ParameterPhase.inputPhase.files \

@@ -3,27 +3,35 @@
  */
 package ch.post.it.evoting.dataintegrationservice;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 
-import com.google.common.annotations.VisibleForTesting;
-
+@SpringBootApplication
 public class DataIntegrationServiceApplication {
 
-	private static ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfiguration.class);
+	private final DataIntegrationService dataIntegrationService;
+	private final boolean applicationBootstrapEnabled;
 
-	public static void main(final String... args) {
-		final DataIntegrationService setupService = context.getBean(DataIntegrationService.class);
-		setupService.run();
+	public DataIntegrationServiceApplication(
+			final DataIntegrationService dataIntegrationService,
+			@Value("${application.bootstrap.enabled}")
+			final boolean applicationBootstrapEnabled) {
+		this.dataIntegrationService = dataIntegrationService;
+		this.applicationBootstrapEnabled = applicationBootstrapEnabled;
 	}
 
-	public static ApplicationContext getContext() {
-		return context;
+	@EventListener(ApplicationReadyEvent.class)
+	public void onApplicationReadyEvent() {
+		if (applicationBootstrapEnabled) {
+			dataIntegrationService.run();
+		}
 	}
 
-	@VisibleForTesting
-	static void resetContext() {
-		DataIntegrationServiceApplication.context = new AnnotationConfigApplicationContext(SpringConfiguration.class);
+	public static void main(final String[] args) {
+		SpringApplication.run(DataIntegrationServiceApplication.class, args);
 	}
 
 }

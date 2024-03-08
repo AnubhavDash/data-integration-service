@@ -15,7 +15,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.DomainOfInflu
 
 class AuthorizationServiceTest {
 
-	AuthorizationService authorizationService = new AuthorizationService();
+	AuthorizationService authorizationService = new AuthorizationService(900, 1000, false);
 
 	@Test
 	void appendAuthorization() {

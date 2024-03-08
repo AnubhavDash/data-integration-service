@@ -12,7 +12,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import ch.evoting.xmlns.parameter._4.BirthYearAuthenticationKeyTypeImpl;
@@ -40,7 +39,7 @@ class ParameterLoaderTest {
 
 		final InputStream out = merger.merge(new InputStream[] { is1, is2 });
 
-		final String result = IOUtils.toString(out, StandardCharsets.UTF_8);
+		final String result = new String(out.readAllBytes(), StandardCharsets.UTF_8);
 
 		final URL resource = this.getClass().getResource("/ParameterLoaderTest/mergeTest/ParameterLoaderTest_merge.xml");
 		final String expected = new String(Files.readAllBytes(Paths.get(resource.toURI())), StandardCharsets.UTF_8);

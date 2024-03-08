@@ -22,16 +22,27 @@ import org.codehaus.stax2.XMLOutputFactory2;
 import org.codehaus.stax2.XMLStreamWriter2;
 import org.codehaus.stax2.validation.XMLValidationSchema;
 import org.codehaus.stax2.validation.XMLValidationSchemaFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import com.sun.xml.txw2.output.IndentingXMLStreamWriter;
 
+@Component
 public class XmlTransformer {
 
-	private XmlTransformer() {
-		//Intentionally left blank
+	private final boolean formatOutput;
+	private final boolean bypassCheckOutputXSDValidation;
+
+	public XmlTransformer(
+			@Value("${formatOutput}")
+			final boolean formatOutput,
+			@Value("${bypass.checkOutputXSDValidation}")
+			final boolean bypassCheckOutputXSDValidation) {
+		this.formatOutput = formatOutput;
+		this.bypassCheckOutputXSDValidation = bypassCheckOutputXSDValidation;
 	}
 
-	public static <T> void toXml(final OutputStream os, final Class<?> jaxbFactoryClass, final URL xsdSchema, final T jaxbElement,
+	public <T> void toXml(final OutputStream os, final Class<?> jaxbFactoryClass, final URL xsdSchema, final T jaxbElement,
 			final QName rootElementName,
 			final Marshaller.Listener listener) {
 		try {
@@ -39,15 +50,13 @@ public class XmlTransformer {
 
 			final XMLStreamWriter2 wrTemp = (XMLStreamWriter2) factory.createXMLStreamWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));
 
-			final boolean bypassXsd = PropertyProvider.getPropertyValue("bypass.checkOutputXSDValidation", "false").equalsIgnoreCase("true");
-			if (xsdSchema != null && !bypassXsd) {
+			if (xsdSchema != null && !bypassCheckOutputXSDValidation) {
 				final XMLValidationSchemaFactory sf = XMLValidationSchemaFactory.newInstance(XMLValidationSchema.SCHEMA_ID_W3C_SCHEMA);
 				final XMLValidationSchema sv = sf.createSchema(xsdSchema);
 				wrTemp.validateAgainst(sv);
 			}
 
-			final boolean indent = "true".equalsIgnoreCase(PropertyProvider.getPropertyValue("formatOutput", "false"));
-			final XMLStreamWriter writer = indent ? new IndentingXMLStreamWriter(wrTemp) : wrTemp;
+			final XMLStreamWriter writer = formatOutput ? new IndentingXMLStreamWriter(wrTemp) : wrTemp;
 
 			final Marshaller marshaller = JAXBContext.newInstance(jaxbFactoryClass).createMarshaller();
 			marshaller.setListener(listener);

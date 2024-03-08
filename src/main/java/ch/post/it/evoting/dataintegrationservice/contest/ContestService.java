@@ -30,6 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.MoreCollectors;
@@ -41,7 +42,6 @@ import ch.evoting.xmlns.parameter._4.DisplayCandidateLineStyle;
 import ch.evoting.xmlns.parameter._4.ElectionType;
 import ch.evoting.xmlns.parameter._4.EmptyCandidateTextInfo;
 import ch.post.it.evoting.dataintegrationservice.common.MarshallTool;
-import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
 import ch.post.it.evoting.dataintegrationservice.parameter.ParameterMapper;
@@ -89,14 +89,28 @@ public class ContestService {
 	private static final int MINIMAL_REQUIRED_LANGUAGES = 4;
 	private static final int DEFAULT_VALUE = 0;
 
-	private static final BigInteger ELECTION_PROPORTIONAL_TYPE = BigInteger.ONE;
 	private static final BigInteger ELECTION_MAJORITY_TYPE = BigInteger.TWO;
-
 	private static final BigInteger ELECTION_RELATION_PRIMARY = BigInteger.ONE;
 	private static final BigInteger ELECTION_RELATION_SECONDARY = BigInteger.TWO;
 
-	public ContestService() {
-		//Intentionally left blank
+	private final boolean byPassCheckConsistencyDates;
+	private final int votesDefaultAnswerTypeStandard;
+	private final int votesDefaultAnswerTypeTiebreak;
+	private final int evotingFromToMinDeltaAllowed;
+
+	public ContestService(
+			@Value("${bypass.checkConsistency.dates}")
+			final boolean byPassCheckConsistencyDates,
+			@Value("${votes.defaultAnswerType.standard}")
+			final int votesDefaultAnswerTypeStandard,
+			@Value("${votes.defaultAnswerType.tiebreak}")
+			final int votesDefaultAnswerTypeTiebreak,
+			@Value("${eVotingFromTo.min.delta.allowed}")
+			final int evotingFromToMinDeltaAllowed) {
+		this.byPassCheckConsistencyDates = byPassCheckConsistencyDates;
+		this.votesDefaultAnswerTypeStandard = votesDefaultAnswerTypeStandard;
+		this.votesDefaultAnswerTypeTiebreak = votesDefaultAnswerTypeTiebreak;
+		this.evotingFromToMinDeltaAllowed = evotingFromToMinDeltaAllowed;
 	}
 
 	private List<StandardAnswerType> getStandardAnswers(final String questionIdentification, BigInteger answerType,
@@ -108,7 +122,7 @@ public class ContestService {
 				LOGGER.warn(
 						"There is no answerType and answerOptionIdentifcation for the question identified by '{}'. Taking answerType 2 as default.",
 						questionIdentification);
-				answerType = new BigInteger(PropertyProvider.getPropertyValue("votes.defaultAnswerType.standard", "2"));
+				answerType = BigInteger.valueOf(votesDefaultAnswerTypeStandard);
 			}
 			paramAnswers = typedAnswers.get(answerType);
 			checkState(paramAnswers != null && !paramAnswers.isEmpty(), "Process stopped. answerType %s in question %s is not supported", answerType,
@@ -126,7 +140,7 @@ public class ContestService {
 				LOGGER.warn(
 						"There is no answerType and answerOptionIdentifcation for the question identified by '{}'. Taking answerType 4 as default.",
 						questionIdentification);
-				answerType = new BigInteger(PropertyProvider.getPropertyValue("votes.defaultAnswerType.tiebreak", "4"));
+				answerType = BigInteger.valueOf(votesDefaultAnswerTypeTiebreak);
 			}
 			paramAnswers = typedAnswers.get(answerType);
 			checkState(paramAnswers != null && !paramAnswers.isEmpty(), "Process stopped. answerType %s in question %s is not supported", answerType,
@@ -616,7 +630,7 @@ public class ContestService {
 
 			if (electionGroup.getElectionGroupDescription() == null) {
 				electionGroup.setElectionGroupDescription(convertElectionDescriptionToElectionGroupDescription(
-						electionGroup.getElectionInformation().get(0).getElection().getElectionDescription()));
+						electionGroup.getElectionInformation().getFirst().getElection().getElectionDescription()));
 			}
 		});
 	}
@@ -635,7 +649,7 @@ public class ContestService {
 
 	private String determineElectionGroupIdentification(final List<ElectionInformationType> electionInformation) {
 		if (electionInformation.size() == 1) {
-			return electionInformation.get(0).getElection().getElectionIdentification();
+			return electionInformation.getFirst().getElection().getElectionIdentification();
 		} else {
 			return StringUtil.generateUUIDFromString(
 					electionInformation.stream().map(ei -> ei.getElection().getElectionIdentification()).reduce("", (s1, s2) -> s1 + s2)
@@ -1108,7 +1122,7 @@ public class ContestService {
 
 	private void checkEVotingDates(final ContestType c) {
 
-		if (PropertyProvider.getPropertyValue("bypass.checkConsistency.dates", "false").equalsIgnoreCase("true")) {
+		if (byPassCheckConsistencyDates) {
 			LOGGER.warn("As defined by configuration, bypassing the evotingDates consistency check");
 			return;
 		}
@@ -1121,12 +1135,12 @@ public class ContestService {
 
 		checkState(dtFrom.getTime().before(dtTo.getTime()), "eVotingFromDate must precede eVotingToDate");
 
-		final int minDelta = Integer.parseInt(PropertyProvider.getPropertyValue("eVotingFromTo.min.delta.allowed"));
 		final LocalDate dtFromLocal = LocalDate.of(dtFrom.get(Calendar.YEAR), dtFrom.get(Calendar.MONTH) + 1, dtFrom.get(Calendar.DAY_OF_MONTH));
 		final LocalDate dtToLocal = LocalDate.of(dtTo.get(Calendar.YEAR), dtTo.get(Calendar.MONTH) + 1, dtTo.get(Calendar.DAY_OF_MONTH));
 		final long daysBetween = DAYS.between(dtFromLocal, dtToLocal);
 
-		checkState(daysBetween >= minDelta, "the number of days between 'eVoting date from' and 'eVoting date to' must be at least %s", minDelta);
+		checkState(daysBetween >= evotingFromToMinDeltaAllowed,
+				"the number of days between 'eVoting date from' and 'eVoting date to' must be at least %s", evotingFromToMinDeltaAllowed);
 
 		if (c.getEvotingToDate().toGregorianCalendar().getTime().after(c.getContestDate().toGregorianCalendar().getTime())) {
 			LOGGER.warn("The date of the contest should follow the eVoting date from.");

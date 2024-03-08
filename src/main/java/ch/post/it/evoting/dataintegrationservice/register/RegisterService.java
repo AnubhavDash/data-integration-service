@@ -11,9 +11,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.FrankingAreaType;
@@ -27,9 +27,10 @@ public class RegisterService {
 	private final Map<String, String> diplomaticBagCache = new HashMap<>();
 	private final Set<String> knownVoters = new HashSet<>();
 
-	// used by unit tests
-	public Set<String> getKnownVoters() {
-		return knownVoters;
+	private final Environment environment;
+
+	public RegisterService(final Environment environment) {
+		this.environment = environment;
 	}
 
 	public void checkConsistency(final VoterTypeWithRole voterTypeWithRole) {
@@ -70,15 +71,15 @@ public class RegisterService {
 
 	private FrankingAreaType getFrankingAreaByCountryIso2(final String countryIso2) {
 		return frankingAreaCache.computeIfAbsent(countryIso2, key -> {
-			final String countryOFS = PropertyProvider.getPropertyValue(String.format("iso2code.%s", countryIso2.toUpperCase()));
+			final String countryOFS = environment.getProperty(String.format("iso2code.%s", countryIso2.toUpperCase()));
 			checkState(!StringUtil.isNullOrEmpty(countryOFS), "Cannot convert country ISO code to OFS code (%s)", countryIso2);
-			return FrankingAreaType.fromValue(PropertyProvider.getPropertyValue(String.format("groupOFS.%s", countryOFS),
-					PropertyProvider.getPropertyValue("groupOFS.default")));
+			return FrankingAreaType.fromValue(environment.getProperty(String.format("groupOFS.%s", countryOFS),
+					environment.getProperty("groupOFS.default", String.class)));
 		});
 	}
 
 	private String getDiplomaticBagByCountryIso2(final String countryIso2) {
 		return diplomaticBagCache.computeIfAbsent(countryIso2,
-				key -> PropertyProvider.getPropertyValue(String.format("diplomaticBag.%s", countryIso2), null));
+				key -> environment.getProperty(String.format("diplomaticBag.%s", countryIso2), String.class));
 	}
 }

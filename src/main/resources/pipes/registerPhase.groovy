@@ -3,13 +3,16 @@
  */
 package pipes
 
-import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
 
+import ch.post.it.evoting.dataintegrationservice.pipes.RegisterPhase
+import ch.post.it.evoting.dataintegrationservice.pipes.RegisterPhaseComponent
+
+import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvider.getBean
+import static ch.post.it.evoting.dataintegrationservice.pipes.Tools.apply
+import static ch.post.it.evoting.dataintegrationservice.pipes.Tools.logAsInfo
 import static li.chee.reactive.plumber.Plumbing.*
-import static pipes.Tools.apply
-import static pipes.Tools.logAsInfo
 
-def registerPhaseComponent = DataIntegrationServiceApplication.context.getBean(RegisterPhaseComponent.class)
+def registerPhaseComponent = getBean(RegisterPhaseComponent.class)
 
 def voters = tube {
     from(RegisterPhase.registerEch0045v4.voters) \

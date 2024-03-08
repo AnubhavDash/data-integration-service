@@ -17,8 +17,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import li.chee.reactive.plumber.Runtime;
-import pipes.InputPhase;
-import pipes.ParameterPhase;
 import reactor.core.publisher.Flux;
 
 public class ParameterPhaseSteps extends PhaseSteps {
