@@ -3,6 +3,7 @@
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
+import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.hasNoDuplicates;
 import static com.google.common.base.Preconditions.checkState;
 import static java.time.temporal.ChronoUnit.DAYS;
 import static org.swisspush.supermachine.BeanScanner.from;
@@ -34,6 +35,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.MoreCollectors;
+import com.google.common.collect.Streams;
 
 import ch.evoting.xmlns.parameter._4.AnswerTranslationType;
 import ch.evoting.xmlns.parameter._4.ContestType.IncumbentText;
@@ -1305,6 +1307,8 @@ public class ContestService {
 		checkAnswerConsistency(c);
 		checkParametersOfElections(c.getElectionGroupBallot(), contestParameters);
 		checkPrimarySecondaryElectionConsistency(c);
+		checkVoteIdentificationsDistinctness(c);
+		checkElectionIdentifiersDistinctness(c);
 	}
 
 	private PrimarySecondaryTuple mapToPrimarySecondaryContainer(final ElectionGroupBallotType eg) {
@@ -1426,6 +1430,54 @@ public class ContestService {
 				.forEach(e -> checkState(e.getList().stream().anyMatch(ListType::isListEmpty),
 						"The election does not contains an empty list [electionIdentification: %s]",
 						e.getElection().getElectionIdentification()));
+	}
+
+	private void checkVoteIdentificationsDistinctness(final ContestType c) {
+		final List<VoteInformationType> voteInformation = c.getVoteInformation();
+
+		final List<String> identifications = voteInformation.stream().flatMap(v -> {
+			final String voteIdentification = v.getVote().getVoteIdentification();
+			final Stream<String> ballotIdentifications = v.getVote().getBallot().stream().map(BallotType::getBallotIdentification);
+			final Stream<String> standardBallotQuestionIdentifications = v.getVote().getBallot().stream()
+					.filter(b -> b.getStandardBallot() != null)
+					.map(b -> b.getStandardBallot().getQuestionIdentification());
+			final Stream<String> variantBallotQuestionIdentifications = v.getVote().getBallot().stream().filter(b -> b.getVariantBallot() != null)
+					.flatMap(b -> Streams.concat(
+							b.getVariantBallot().getStandardQuestion().stream().map(StandardQuestionType::getQuestionIdentification),
+							b.getVariantBallot().getTieBreakQuestion().stream().map(TieBreakQuestionType::getQuestionIdentification)));
+
+			return Streams.concat(Stream.of(voteIdentification), ballotIdentifications, standardBallotQuestionIdentifications,
+					variantBallotQuestionIdentifications);
+		}).toList();
+
+		checkState(hasNoDuplicates(identifications), "The votes contain duplicate identifications");
+	}
+
+	private void checkElectionIdentifiersDistinctness(final ContestType c) {
+		final List<ElectionGroupBallotType> electionGroupBallot = c.getElectionGroupBallot();
+
+		final List<String> identifications = electionGroupBallot.stream()
+				.flatMap(eg -> checkElectionIdentifiersDistinctnessPerElection(eg).stream())
+				.toList();
+
+		checkState(hasNoDuplicates(identifications), "The elections contain duplicate identifications");
+	}
+
+	private List<String> checkElectionIdentifiersDistinctnessPerElection(final ElectionGroupBallotType electionGroupBallot) {
+		return electionGroupBallot.getElectionInformation().stream()
+				.map(electionInformation -> {
+					final String electionIdentification = electionInformation.getElection().getElectionIdentification();
+					final Stream<String> listIdentifications = electionInformation.getList().stream().map(ListType::getListIdentification);
+					final Stream<String> candidateIdentifications = electionInformation.getCandidate().stream()
+							.map(CandidateType::getCandidateIdentification);
+
+					final List<String> identifications = Streams.concat(Stream.of(electionIdentification), listIdentifications,
+									candidateIdentifications)
+							.toList();
+					checkState(hasNoDuplicates(identifications), "The election contains duplicate identifications. [election id: %s]",
+							electionIdentification);
+					return identifications;
+				}).toList().getFirst();
 	}
 
 	public ContestType cleanHtmlTags(final ContestType contest) {
