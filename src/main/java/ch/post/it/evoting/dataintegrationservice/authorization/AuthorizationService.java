@@ -3,6 +3,7 @@
  */
 package ch.post.it.evoting.dataintegrationservice.authorization;
 
+import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvider.getProperty;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
@@ -19,9 +20,9 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterCountingCircle;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluenceInfo;
@@ -39,11 +40,9 @@ import reactor.util.function.Tuples;
 public class AuthorizationService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationService.class);
 
-	private static final int GRACE_PERIOD = Integer.parseInt(PropertyProvider.getPropertyValue("authorization.gracePeriod", "900"));
-
-	private static final Integer MIN_TEST_CONTROL_VALUE = Integer.parseInt(PropertyProvider.getPropertyValue("countingCircle.testControl.minValue"));
-
-	private static final boolean COUNTING_CIRCLE_ALL_TEST = Boolean.parseBoolean(PropertyProvider.getPropertyValue("countingCircle.allTest"));
+	private final int authorizationGracePeriod;
+	private final int countingCircleTestControlMinValue;
+	private final boolean countingCircleAllTest;
 
 	private HashMap<String, Integer> authorizationTypePriority;
 	private final Comparator<AuthorizationObjectType> authorizationObjectTypeComparator = (o1, o2) -> {
@@ -69,7 +68,18 @@ public class AuthorizationService {
 		return prio1.compareTo(prio2);
 	};
 
-	public AuthorizationService() {
+	public AuthorizationService(
+			@Value("${authorization.gracePeriod}")
+			final int authorizationGracePeriod,
+			@Value("${countingCircle.testControl.minValue}")
+			final int countingCircleTestControlMinValue,
+			@Value("${countingCircle.allTest}")
+			final boolean countingCircleAllTest) {
+
+		this.authorizationGracePeriod = authorizationGracePeriod;
+		this.countingCircleTestControlMinValue = countingCircleTestControlMinValue;
+		this.countingCircleAllTest = countingCircleAllTest;
+
 		initializeAuthorizationTypePriority();
 	}
 
@@ -129,13 +139,14 @@ public class AuthorizationService {
 		}
 
 		result.setAuthorizationTest(
-				COUNTING_CIRCLE_ALL_TEST || voter.getDomainOfInfluenceInfos().stream().map(VoterDomainOfInfluenceInfo::getCountingCircle)
-						.filter(cc -> StringUtil.isInteger(cc.getId())).anyMatch(cc -> Integer.parseInt(cc.getId()) >= MIN_TEST_CONTROL_VALUE));
+				countingCircleAllTest || voter.getDomainOfInfluenceInfos().stream().map(VoterDomainOfInfluenceInfo::getCountingCircle)
+						.filter(cc -> StringUtil.isInteger(cc.getId()))
+						.anyMatch(cc -> Integer.parseInt(cc.getId()) >= countingCircleTestControlMinValue));
 		result.setAuthorizationFromDate(result.isAuthorizationTest() && contestParameters.getEvotingTestBallotBoxesFromDate() != null ?
 				contestParameters.getEvotingTestBallotBoxesFromDate() :
 				contest.getEvotingFromDate());
 		result.setAuthorizationToDate(contest.getEvotingToDate());
-		result.setAuthorizationGracePeriod(GRACE_PERIOD);
+		result.setAuthorizationGracePeriod(authorizationGracePeriod);
 
 		return result;
 	}
@@ -268,7 +279,8 @@ public class AuthorizationService {
 	}
 
 	public static void warnIfAllCountingCircleAsTestIsConfigured() {
-		if (COUNTING_CIRCLE_ALL_TEST) {
+		final boolean countingCircleAllTest = getProperty("countingCircle.allTest", Boolean.class);
+		if (countingCircleAllTest) {
 			LOGGER.warn("As defined in the configuration, all counting circles will be treated as test ones");
 		}
 	}

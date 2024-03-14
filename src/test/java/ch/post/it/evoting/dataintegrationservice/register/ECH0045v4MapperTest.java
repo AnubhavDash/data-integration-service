@@ -12,6 +12,8 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import ch.ech.xmlns.ech_0007._6.SwissMunicipalityType;
 import ch.ech.xmlns.ech_0008._3.CountryType;
@@ -30,6 +32,8 @@ import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType;
 
+@SpringBootTest
+@ActiveProfiles("test")
 class ECH0045v4MapperTest {
 
 	private final ECH0045v4Mapper mapper = ECH0045v4Mapper.INSTANCE;

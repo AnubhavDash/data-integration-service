@@ -3,12 +3,17 @@
  */
 package pipes
 
-import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
+
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.ExtendedAuthenticationKeyPlugin
+import ch.post.it.evoting.dataintegrationservice.pipes.ContestPhase
+import ch.post.it.evoting.dataintegrationservice.pipes.ContestPhaseComponent
 
-import static pipes.Tools.*
+import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvider.getBean
+import static ch.post.it.evoting.dataintegrationservice.pipes.Tools.*
+import static li.chee.reactive.plumber.Plumbing.*
+import static reactor.core.publisher.Flux.zip
 
-def contestPhaseComponent = DataIntegrationServiceApplication.context.getBean(ContestPhaseComponent.class)
+def contestPhaseComponent = getBean(ContestPhaseComponent.class)
 
 def elections = pipe {
     from( ContestPhase.contestEch015xv4.elections ) \

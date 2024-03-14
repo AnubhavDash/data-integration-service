@@ -3,6 +3,7 @@
  */
 package ch.post.it.evoting.dataintegrationservice.output;
 
+import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvider.getProperty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -24,8 +25,11 @@ import jakarta.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
-import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
+import ch.post.it.evoting.dataintegrationservice.pipes.AssigningAuthorizationPhase;
+import ch.post.it.evoting.dataintegrationservice.pipes.AuthorizationPhase;
+import ch.post.it.evoting.dataintegrationservice.pipes.HeaderPhase;
+import ch.post.it.evoting.dataintegrationservice.pipes.ParameterPhase;
 import ch.post.it.evoting.dataintegrationservice.pipes.PhaseSteps;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AdminBoardMembersType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AdminBoardType;
@@ -52,10 +56,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import li.chee.reactive.plumber.Runtime;
-import pipes.AssigningAuthorizationPhase;
-import pipes.AuthorizationPhase;
-import pipes.HeaderPhase;
-import pipes.ParameterPhase;
 import reactor.core.publisher.Flux;
 
 public class OutputPhaseSteps extends PhaseSteps {
@@ -109,7 +109,7 @@ public class OutputPhaseSteps extends PhaseSteps {
 
 	private Object getXMLObjectFromFile(final Class clazz, final String fileName) {
 		try {
-			final String targetDir = PropertyProvider.getPropertyValue("directory.target");
+			final String targetDir = getProperty("directory.target", String.class);
 			final File file = new File(targetDir + "/" + fileName);
 			final JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
 			final Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -221,16 +221,16 @@ public class OutputPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^the configuration file \"([^\"]*)\" should exist and contain (\\d+) voters$")
-	public void andConfigurationFileShouldExistAndContain(final String fname, final Long nb) {
+	public void andConfigurationFileShouldExistAndContain(final String fname, final int nb) {
 		final Configuration configuration = (Configuration) getXMLObjectFromFile(Configuration.class, fname);
-		final Long nbVoters = configuration.getRegister().getVoter().stream().count();
+		final int nbVoters = configuration.getRegister().getVoter().size();
 		assertEquals(nbVoters, nb);
 	}
 
 	@And("^the register file \"([^\"]*)\" should exist and contain (\\d+) voters$")
-	public void andRegisterFileShouldExistAndContain(final String fname, final Long nb) {
+	public void andRegisterFileShouldExistAndContain(final String fname, final int nb) {
 		final RegisterType register = (RegisterType) getXMLObjectFromFile(RegisterType.class, fname);
-		final Long nbVoters = register.getVoter().stream().count();
+		final int nbVoters = register.getVoter().size();
 		assertEquals(nbVoters, nb);
 	}
 

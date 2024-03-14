@@ -3,18 +3,19 @@
  */
 package ch.evoting.xmlns.parameter._4;
 
+import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvider.getProperty;
+
 import com.google.common.base.Strings;
 
-import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.FrankingAreaType;
 
 public class FrankingAreaSplitterTypeImpl extends FrankingAreaSplitterType {
 	@Override
 	public String apply(final VoterTypeWithRole voterTypeWithRole, final String previousSplit) {
+		final boolean diplomaticBagEnabled = getProperty("diplomaticBag.enabled", Boolean.class);
 		try {
-			if (PropertyProvider.getPropertyValue("diplomaticBag.ENABLED", "false").equalsIgnoreCase("TRUE") && !Strings
-					.isNullOrEmpty(voterTypeWithRole.getDiplomaticBag())) {
+			if (diplomaticBagEnabled && !Strings.isNullOrEmpty(voterTypeWithRole.getDiplomaticBag())) {
 				return voterTypeWithRole.getDiplomaticBag();
 			} else {
 				return voterTypeWithRole.getPerson().getPhysicalAddress().getFrankingArea().toString();

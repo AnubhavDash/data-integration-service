@@ -23,14 +23,22 @@ import li.chee.reactive.plumber.Runtime;
 @Service
 public class DataIntegrationService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataIntegrationService.class);
-	@Value("${version}")
-	private String version;
 
-	@Value("${generateGraphs:false}")
-	private String generateGraphs;
+	private final String version;
+	private final String generateGraphs;
+	private final String targetDirectory;
 
-	@Value("${directory.target:target}")
-	private String targetDirectory;
+	public DataIntegrationService(
+			@Value("${version}")
+			final String version,
+			@Value("${generateGraphs}")
+			final String generateGraphs,
+			@Value("${directory.target}")
+			final String targetDirectory) {
+		this.version = version;
+		this.generateGraphs = generateGraphs;
+		this.targetDirectory = targetDirectory;
+	}
 
 	public void run() {
 		try {

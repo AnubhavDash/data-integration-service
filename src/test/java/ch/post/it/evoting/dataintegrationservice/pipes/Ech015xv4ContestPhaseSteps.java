@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import ch.post.it.evoting.dataintegrationservice.pipes.contest.ech015xv4.ContestEch015xv4;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
@@ -26,8 +27,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import li.chee.reactive.plumber.Runtime;
-import pipes.InputPhase;
-import pipes.contest.ech015xv4.ContestEch015xv4;
 import reactor.core.publisher.Flux;
 
 public class Ech015xv4ContestPhaseSteps extends PhaseSteps {

@@ -3,16 +3,19 @@
  */
 package pipes
 
-import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
+
+import ch.post.it.evoting.dataintegrationservice.pipes.HeaderPhase
+import ch.post.it.evoting.dataintegrationservice.pipes.HeaderPhaseComponent
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType
 import org.apache.commons.lang3.StringUtils
 
+import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvider.getBean
+import static ch.post.it.evoting.dataintegrationservice.pipes.Tools.logAsInfo
+import static ch.post.it.evoting.dataintegrationservice.pipes.Tools.logItemAsInfo
 import static li.chee.reactive.plumber.Plumbing.from
 import static li.chee.reactive.plumber.Plumbing.pipe
-import static pipes.Tools.logAsInfo
-import static pipes.Tools.logItemAsInfo
 
-def headerPhaseComponent = DataIntegrationServiceApplication.context.getBean(HeaderPhaseComponent.class)
+def headerPhaseComponent = getBean(HeaderPhaseComponent.class)
 
 def countVoters = pipe {
     from HeaderPhase.assigningAuthorizationPhase.assignedVoters \

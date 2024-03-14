@@ -3,6 +3,7 @@
  */
 package ch.post.it.evoting.dataintegrationservice.register;
 
+import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvider.getProperty;
 import static ch.post.it.evoting.dataintegrationservice.common.StringUtil.isNullOrEmpty;
 import static com.google.common.base.Preconditions.checkState;
 
@@ -26,7 +27,6 @@ import ch.ech.xmlns.ech_0045._4.ForeignerPersonType;
 import ch.ech.xmlns.ech_0045._4.LanguageType;
 import ch.ech.xmlns.ech_0045._4.SwissPersonType;
 import ch.ech.xmlns.ech_0045._4.VotingPersonType;
-import ch.post.it.evoting.dataintegrationservice.common.PropertyProvider;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterCountingCircle;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluence;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluenceInfo;
@@ -275,7 +275,7 @@ public interface ECH0045v4Mapper {
 	}
 
 	default String getCountryIso2ByCountryId(final Integer countryId) {
-		final String iso2code = PropertyProvider.getPropertyValue(String.format("countryId.%s", countryId));
+		final String iso2code = getProperty(String.format("countryId.%s", countryId), String.class);
 		checkState(!isNullOrEmpty(iso2code), "Cannot convert countryId to iso2code code (%s)", countryId);
 		return iso2code;
 	}

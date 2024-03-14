@@ -41,6 +41,7 @@ import ch.evoting.xmlns.parameter._4.TiebreakAnswerType;
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
 import ch.post.it.evoting.dataintegrationservice.common.XmlTransformer;
 import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
+import ch.post.it.evoting.dataintegrationservice.pipes.contest.ech015xv4.ContestEch015xv4;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotType;
@@ -82,9 +83,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import li.chee.reactive.plumber.Runtime;
-import pipes.ContestPhase;
-import pipes.ParameterPhase;
-import pipes.contest.ech015xv4.ContestEch015xv4;
 import reactor.core.publisher.Flux;
 
 public class ContestPhaseSteps extends PhaseSteps {
@@ -114,6 +112,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 	private final Map<String, ListUnionType> listUnionMap = new HashMap<>();
 	private ContestType contest;
 	private Exception processException = null;
+	private final XmlTransformer xmlTransformer = new XmlTransformer(false, false);
 
 	public ContestPhaseSteps() {
 		final ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger("ch.post.it.evoting");
@@ -912,7 +911,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 			checkState(schemaPath != null, "contest.xsd not found");
 
 			final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			XmlTransformer.toXml(outputStream, ObjectFactory.class, schemaPath, contest, new QName("contest"), null);
+			xmlTransformer.toXml(outputStream, ObjectFactory.class, schemaPath, contest, new QName("contest"), null);
 			final String result = outputStream.toString(StandardCharsets.UTF_8);
 			LOGGER.warn(result);
 		} catch (final Exception e) {

@@ -23,7 +23,7 @@ public class DirectoryScanner {
 	private final String sourceDirectory;
 
 	public DirectoryScanner(
-			@Value("${directory.source:src}")
+			@Value("${directory.source}")
 			final String sourceDirectory) {
 		this.sourceDirectory = sourceDirectory;
 	}

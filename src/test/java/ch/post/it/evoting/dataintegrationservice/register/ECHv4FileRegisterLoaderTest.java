@@ -23,7 +23,7 @@ class ECHv4FileRegisterLoaderTest {
 		result.iterator().forEachRemaining(voters::add);
 
 		assertEquals(1, voters.size());
-		assertNotNull(voters.get(0).getPerson());
+		assertNotNull(voters.getFirst().getPerson());
 	}
 
 }

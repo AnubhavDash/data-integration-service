@@ -3,11 +3,16 @@
  */
 package pipes.contest.ech015xv4
 
-import ch.post.it.evoting.dataintegrationservice.DataIntegrationServiceApplication
 
-import static pipes.Tools.*
+import ch.post.it.evoting.dataintegrationservice.pipes.contest.ech015xv4.ContestEch015xv4
+import ch.post.it.evoting.dataintegrationservice.pipes.contest.ech015xv4.ContestEch015xv4Component
 
-def contestEch015xv4Component = DataIntegrationServiceApplication.context.getBean(ContestEch015xv4Component.class)
+import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvider.getBean
+import static ch.post.it.evoting.dataintegrationservice.pipes.Tools.fileType
+import static li.chee.reactive.plumber.Plumbing.*
+import static reactor.core.publisher.Flux.merge
+
+def contestEch015xv4Component = getBean(ContestEch015xv4Component.class)
 
 def inputFilenames = tube {
     from ContestEch015xv4.inputPhase.files
