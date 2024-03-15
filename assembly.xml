@@ -1,0 +1,41 @@
+<!--
+  ~ (c) Copyright 2024 Swiss Post Ltd.
+  -->
+<assembly xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					xmlns="http://maven.apache.org/ASSEMBLY/2.1.1"
+					xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.1 https://maven.apache.org/xsd/assembly-2.1.1.xsd">
+	<id>files</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+
+	<fileSets>
+		<!-- OpenJDK jre -->
+		<fileSet>
+			<fileMode>0644</fileMode>
+			<directoryMode>0755</directoryMode>
+			<directory>${project.build.directory}/install/OpenJDK-win64/${openjdk-jre.version}</directory>
+			<excludes>
+				<exclude>${project.build.directory}/install/OpenJDK-win64/${openjdk-jre.version}/conf/security/java.security</exclude>
+			</excludes>
+			<outputDirectory>embedded-jre</outputDirectory>
+		</fileSet>
+	</fileSets>
+
+	<files>
+		<!-- jar -->
+		<file>
+			<fileMode>0644</fileMode>
+			<source>${project.basedir}/target/data-integration-service-${project.version}.jar</source>
+			<outputDirectory/>
+		</file>
+		<!-- Java security -->
+		<file>
+			<fileMode>0644</fileMode>
+			<source>${project.basedir}/security/windows/java.security</source>
+			<outputDirectory>embedded-jre/conf/security</outputDirectory>
+		</file>
+	</files>
+
+</assembly>

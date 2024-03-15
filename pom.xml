@@ -19,6 +19,10 @@
 		<maven.compiler.target>21</maven.compiler.target>
 		<maven.compiler.release>21</maven.compiler.release>
 
+		<maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
+		<maven-enforcer-plugin.requiredJavaVersion>[21.0.1]</maven-enforcer-plugin.requiredJavaVersion>
+		<maven-enforcer-plugin.requiredMavenVersion>[3.9.4]</maven-enforcer-plugin.requiredMavenVersion>
+
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.outputTimestamp>2024-02-15T16:51:14+02:00</project.build.outputTimestamp>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -60,6 +64,13 @@
 		<woodstox-core.version>6.6.1</woodstox-core.version>
 		<xml-merge.version>0.2</xml-merge.version>
 		<xsdlib.version>2013.2</xsdlib.version>
+
+		<!-- OpenJDK -->
+		<openjdk-jre.version>jdk-21.0.1+12-jre</openjdk-jre.version>
+		<openjdk-jre.win64.url>
+			https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.1%2B12/OpenJDK21U-jre_x64_windows_hotspot_21.0.1_12.zip
+		</openjdk-jre.win64.url>
+		<openjdk-jre.win64.sha256>38bb68f9db9c85a63496570c53a1bcbac18c808677595d7e939d2f5b38e9a7aa</openjdk-jre.win64.sha256>
 
 		<!-- Sonar -->
 		<sonar.scm.disabled>true</sonar.scm.disabled>
@@ -450,6 +461,28 @@
 		</pluginManagement>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>${maven-enforcer-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireJavaVersion>
+									<version>${maven-enforcer-plugin.requiredJavaVersion}</version>
+								</requireJavaVersion>
+								<requireMavenVersion>
+									<version>${maven-enforcer-plugin.requiredMavenVersion}</version>
+								</requireMavenVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>${jacoco-maven-plugin.version}</version>
@@ -580,6 +613,44 @@
 			<plugin>
 				<groupId>ch.galinet</groupId>
 				<artifactId>reproducible-build-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>download-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>download-openjdk-jre-win64</id>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<phase>initialize</phase>
+						<configuration>
+							<followRedirects>true</followRedirects>
+							<url>${openjdk-jre.win64.url}</url>
+							<outputDirectory>${project.build.directory}/install/OpenJDK-win64</outputDirectory>
+							<unpack>true</unpack>
+							<sha256>${openjdk-jre.win64.sha256}</sha256>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>assembly.xml</descriptor>
+					</descriptors>
+					<appendAssemblyId>false</appendAssemblyId>
+				</configuration>
+				<executions>
+					<execution>
+						<id>create-archive</id>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
