@@ -1468,11 +1468,8 @@ public class ContestService {
 				.map(electionInformation -> {
 					final String electionIdentification = electionInformation.getElection().getElectionIdentification();
 					final Stream<String> listIdentifications = electionInformation.getList().stream().map(ListType::getListIdentification);
-					final Stream<String> candidateIdentifications = electionInformation.getCandidate().stream()
-							.map(CandidateType::getCandidateIdentification);
 
-					final List<String> identifications = Streams.concat(Stream.of(electionIdentification), listIdentifications,
-									candidateIdentifications)
+					final List<String> identifications = Streams.concat(Stream.of(electionIdentification), listIdentifications)
 							.toList();
 					checkState(hasNoDuplicates(identifications), "The election contains duplicate identifications. [election id: %s]",
 							electionIdentification);
