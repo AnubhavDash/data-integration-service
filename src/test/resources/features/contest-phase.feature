@@ -468,18 +468,18 @@ Feature: Contest Phase
   Scenario: Throw an exception when the eVoting date from is not future
     Given user parameters "my params" has eVoting date from "2001-01-01 00:00:00"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "eVotingFromDate must be future"
+    Then it outputs an exception with text "evotingFromDate must be in the future."
 
   Scenario: Throw an exception when the eVoting date to is not future
     Given user parameters "my params" has eVoting date to "2001-01-01 00:00:00"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "eVotingToDate must be future"
+    Then it outputs an exception with text "evotingToDate must be in the future."
 
   Scenario: Throw an exception when eVoting date from precedes eVoting date to
     Given user parameters "my params" has eVoting date from "2045-07-13 00:00:00"
     And user parameters "my params" has eVoting date to "2045-07-11 00:00:00"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "eVotingFromDate must precede eVotingToDate"
+    Then it outputs an exception with text "evotingFromDate must be before evotingToDate."
 
   Scenario: Throw an exception when the number of days between eVoting from and to is less than 10
     Given user parameters "my params" has eVoting date from "2045-05-11 13:00:00"

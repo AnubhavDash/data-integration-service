@@ -1149,22 +1149,22 @@ public class ContestService {
 	}
 
 	private void checkEVotingDates(final ContestType c) {
+		final GregorianCalendar evotingFromDate = c.getEvotingFromDate().toGregorianCalendar();
+		final GregorianCalendar evotingToDate = c.getEvotingToDate().toGregorianCalendar();
+
+		// These are mandatory checks that cannot be bypassed.
+		checkState(evotingToDate.getTime().after(new Date()), "evotingToDate must be in the future.");
+		checkState(evotingFromDate.getTime().before(evotingToDate.getTime()), "evotingFromDate must be before evotingToDate.");
 
 		if (byPassCheckConsistencyDates) {
-			LOGGER.warn("As defined by configuration, bypassing the evotingDates consistency check");
+			LOGGER.warn("As defined by configuration, bypassing the evoting dates consistency checks...");
 			return;
 		}
 
-		final GregorianCalendar dtFrom = c.getEvotingFromDate().toGregorianCalendar();
-		final GregorianCalendar dtTo = c.getEvotingToDate().toGregorianCalendar();
+		checkState(evotingFromDate.getTime().after(new Date()), "evotingFromDate must be in the future.");
 
-		checkState(dtFrom.getTime().after(new Date()), "eVotingFromDate must be future");
-		checkState(dtTo.getTime().after(new Date()), "eVotingToDate must be future");
-
-		checkState(dtFrom.getTime().before(dtTo.getTime()), "eVotingFromDate must precede eVotingToDate");
-
-		final LocalDate dtFromLocal = LocalDate.of(dtFrom.get(Calendar.YEAR), dtFrom.get(Calendar.MONTH) + 1, dtFrom.get(Calendar.DAY_OF_MONTH));
-		final LocalDate dtToLocal = LocalDate.of(dtTo.get(Calendar.YEAR), dtTo.get(Calendar.MONTH) + 1, dtTo.get(Calendar.DAY_OF_MONTH));
+		final LocalDate dtFromLocal = LocalDate.of(evotingFromDate.get(Calendar.YEAR), evotingFromDate.get(Calendar.MONTH) + 1, evotingFromDate.get(Calendar.DAY_OF_MONTH));
+		final LocalDate dtToLocal = LocalDate.of(evotingToDate.get(Calendar.YEAR), evotingToDate.get(Calendar.MONTH) + 1, evotingToDate.get(Calendar.DAY_OF_MONTH));
 		final long daysBetween = DAYS.between(dtFromLocal, dtToLocal);
 
 		checkState(daysBetween >= evotingFromToMinDeltaAllowed,
