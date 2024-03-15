@@ -330,7 +330,7 @@ ECH015xv4Mapper {
 			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
 		final BallotQuestionType.BallotQuestionInfo result = new BallotQuestionType.BallotQuestionInfo();
 
-		result.setLanguage(LanguageType.fromValue(tbqi.getLanguage()));
+		result.setLanguage(convert(tbqi.getLanguage()));
 		if (tbqi.getTieBreakQuestionTitle() != null) {
 			result.setBallotQuestionTitle(tbqi.getTieBreakQuestionTitle());
 		} else {
@@ -389,8 +389,7 @@ ECH015xv4Mapper {
 			@Context
 			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
 		final BallotQuestionType.BallotQuestionInfo result = new BallotQuestionType.BallotQuestionInfo();
-
-		result.setLanguage(LanguageType.fromValue(bqi.getLanguage()));
+		result.setLanguage(convert(bqi.getLanguage()));
 		if (bqi.getBallotQuestionTitle() != null) {
 			result.setBallotQuestionTitle(bqi.getBallotQuestionTitle());
 		} else {
