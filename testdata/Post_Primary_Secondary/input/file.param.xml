@@ -78,6 +78,8 @@
 				<positionNumber>1</positionNumber>
 			</electionGroup>
 		</sorting>
+		<defaultDisplayCandidateLineStyle>DEFAULT</defaultDisplayCandidateLineStyle>
+		<defaultDisplayListLineStyle>DEFAULT</defaultDisplayListLineStyle>
 	</contest>
 	<plugins>
 		<afterReadVoter>

@@ -256,6 +256,16 @@ public class ContestPhaseSteps extends PhaseSteps {
 				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._4.LanguageType.RM).withText("uscant")));
 	}
 
+	@And("^user parameters \"([^\"]*)\" has defaultDisplayCandidateLineStyle \"([^\"]*)\"$")
+	public void andUserParametersHasDefaultDisplayCandidateLineStyle(final String name, final String defaultDisplayCandidateLineStyleStr) {
+		paramsMap.get(name).setDefaultDisplayCandidateLineStyle(DisplayCandidateLineStyle.fromValue(defaultDisplayCandidateLineStyleStr));
+	}
+
+	@And("^user parameters \"([^\"]*)\" has defaultDisplayListLineStyle \"([^\"]*)\"$")
+	public void andUserParametersHasDefaultDisplayListLineStyle(final String name, final String defaultDisplayListLineStyleStr) {
+		paramsMap.get(name).setDefaultDisplayListLineStyle(DisplayListLineStyle.fromValue(defaultDisplayListLineStyleStr));
+	}
+
 	@And("^user parameters \"([^\"]*)\" has contest default language \"([^\"]*)\"$")
 	public void andUserParametersHasContestDefaultLanguage(final String name, final String lang) {
 		paramsMap.get(name).setDefaultLanguage(ch.evoting.xmlns.parameter._4.LanguageType.valueOf(lang));

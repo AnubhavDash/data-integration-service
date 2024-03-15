@@ -134,6 +134,8 @@
 			</question>
 		</answerTranslations>
 		<customNumberingForEmptyPositions>true</customNumberingForEmptyPositions>
+		<defaultDisplayCandidateLineStyle>DEFAULT</defaultDisplayCandidateLineStyle>
+		<defaultDisplayListLineStyle>DEFAULT</defaultDisplayListLineStyle>
 	</contest>
 	<plugins>
 		<afterReadVoter>
