@@ -55,8 +55,6 @@
 				<positionNumber>1</positionNumber>
 			</vote>
 		</sorting>
-		<defaultDisplayCandidateLineStyle>DEFAULT</defaultDisplayCandidateLineStyle>
-		<defaultDisplayListLineStyle>DEFAULT</defaultDisplayListLineStyle>
 	</contest>
 	<plugins>
 		<afterReadVoter>
