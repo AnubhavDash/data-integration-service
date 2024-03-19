@@ -20,8 +20,8 @@
 		<maven.compiler.release>21</maven.compiler.release>
 
 		<maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
-		<maven-enforcer-plugin.requiredJavaVersion>[21.0.1]</maven-enforcer-plugin.requiredJavaVersion>
-		<maven-enforcer-plugin.requiredMavenVersion>[3.9.4]</maven-enforcer-plugin.requiredMavenVersion>
+		<maven-enforcer-plugin.requiredJavaVersion>[21.0.2]</maven-enforcer-plugin.requiredJavaVersion>
+		<maven-enforcer-plugin.requiredMavenVersion>[3.9.6]</maven-enforcer-plugin.requiredMavenVersion>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.outputTimestamp>2024-02-15T16:51:14+02:00</project.build.outputTimestamp>
@@ -66,11 +66,11 @@
 		<xsdlib.version>2013.2</xsdlib.version>
 
 		<!-- OpenJDK -->
-		<openjdk-jre.version>jdk-21.0.1+12-jre</openjdk-jre.version>
+		<openjdk-jre.version>jdk-21.0.2+13-jre</openjdk-jre.version>
 		<openjdk-jre.win64.url>
-			https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.1%2B12/OpenJDK21U-jre_x64_windows_hotspot_21.0.1_12.zip
+			https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jre_x64_windows_hotspot_21.0.2_13.zip
 		</openjdk-jre.win64.url>
-		<openjdk-jre.win64.sha256>38bb68f9db9c85a63496570c53a1bcbac18c808677595d7e939d2f5b38e9a7aa</openjdk-jre.win64.sha256>
+		<openjdk-jre.win64.sha256>a29b88541bc11276de4c4cbdfac60e374ef8a34a415f61cb02a2b6a46f0e1064</openjdk-jre.win64.sha256>
 
 		<!-- Sonar -->
 		<sonar.scm.disabled>true</sonar.scm.disabled>
