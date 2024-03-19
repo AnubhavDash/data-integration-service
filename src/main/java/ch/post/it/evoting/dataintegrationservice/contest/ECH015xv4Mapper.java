@@ -114,6 +114,7 @@ ECH015xv4Mapper {
 	@Mapping(target = "referenceOnPosition", source = "candidateReference")
 	@Mapping(target = "eligibility", constant = "EXPLICIT")
 	@Mapping(target = "title", expression = "java( ct.getTitle() != null && ct.getTitle().length() > 0 ? ct.getTitle() : null )")
+	@Mapping(target = "firstName", expression = "java( ct.getFirstName() != null && ct.getFirstName().length() > 0 ? ct.getFirstName() : ct.getCallName() )")
 	CandidateType convert(ch.ech.xmlns.ech_0155._4.CandidateType ct);
 
 	PartyAffiliationformationType convert(ch.ech.xmlns.ech_0155._4.PartyAffiliationformationType pat);
@@ -329,7 +330,7 @@ ECH015xv4Mapper {
 			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
 		final BallotQuestionType.BallotQuestionInfo result = new BallotQuestionType.BallotQuestionInfo();
 
-		result.setLanguage(LanguageType.fromValue(tbqi.getLanguage()));
+		result.setLanguage(convert(tbqi.getLanguage()));
 		if (tbqi.getTieBreakQuestionTitle() != null) {
 			result.setBallotQuestionTitle(tbqi.getTieBreakQuestionTitle());
 		} else {
@@ -388,8 +389,7 @@ ECH015xv4Mapper {
 			@Context
 			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
 		final BallotQuestionType.BallotQuestionInfo result = new BallotQuestionType.BallotQuestionInfo();
-
-		result.setLanguage(LanguageType.fromValue(bqi.getLanguage()));
+		result.setLanguage(convert(bqi.getLanguage()));
 		if (bqi.getBallotQuestionTitle() != null) {
 			result.setBallotQuestionTitle(bqi.getBallotQuestionTitle());
 		} else {

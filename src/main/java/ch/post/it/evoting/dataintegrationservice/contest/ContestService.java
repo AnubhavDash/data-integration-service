@@ -10,6 +10,7 @@ import static org.swisspush.supermachine.BeanScanner.from;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -360,109 +361,134 @@ public class ContestService {
 		}
 	}
 
+	record ElectionDisplayCandidateLineStyleTuple(String electionIdentification, DisplayCandidateLineStyle displayCandidateLineStyle) {
+	}
+
 	private void addDisplayCandidateLines(final List<ElectionGroupBallotType> electionGroups,
 			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
-		if (contestParameters.getElections() != null) {
-			final DisplayCandidateLineStyle defaultDisplayCandidateLineStyle = contestParameters.getDefaultDisplayCandidateLineStyle();
-			final List<ElectionType> style1Elections = contestParameters.getElections().getElection().stream()
-					.filter(electionType -> (electionType.getDisplayCandidateLineStyle() == null && defaultDisplayCandidateLineStyle.equals(
-							DisplayCandidateLineStyle.DEFAULT)) || DisplayCandidateLineStyle.DEFAULT.equals(
-							electionType.getDisplayCandidateLineStyle()))
-					.toList();
-			addDisplayCandidateLinesStyle1(style1Elections, electionGroups);
 
-			final List<ElectionType> style2Elections = contestParameters.getElections().getElection().stream()
-					.filter(electionType -> (electionType.getDisplayCandidateLineStyle() == null && defaultDisplayCandidateLineStyle.equals(
-							DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION)) || DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION.equals(
-							electionType.getDisplayCandidateLineStyle()))
-					.toList();
-			addDisplayCandidateLinesStyle2(style2Elections, electionGroups);
+		final List<ElectionDisplayCandidateLineStyleTuple> electionDisplayCandidateLineStyleTuples =
+				contestParameters.getElections() != null ?
+						contestParameters.getElections().getElection().stream()
+								.map(e -> new ElectionDisplayCandidateLineStyleTuple(e.getElectionIdentification(), e.getDisplayCandidateLineStyle()))
+								.toList() :
+						new ArrayList<>();
 
-			final List<ElectionType> style3Elections = contestParameters.getElections().getElection().stream()
-					.filter(electionType -> (electionType.getDisplayCandidateLineStyle() == null && defaultDisplayCandidateLineStyle.equals(
-							DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE))
-							|| DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE.equals(electionType.getDisplayCandidateLineStyle()))
-					.toList();
-			addDisplayCandidateLinesStyle3(style3Elections, electionGroups);
+		final DisplayCandidateLineStyle defaultDisplayCandidateLineStyle = contestParameters.getDefaultDisplayCandidateLineStyle();
+
+		electionGroups.stream()
+				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+				.forEach(electionInformationType -> {
+					final String electionIdentification = electionInformationType.getElection().getElectionIdentification();
+					final DisplayCandidateLineStyle specificDisplayCandidateLineStyle = getSpecificDisplayCandidateLineStyle(
+							electionDisplayCandidateLineStyleTuples, electionIdentification);
+					final boolean noSpecificDisplayCandidateLineStyle = specificDisplayCandidateLineStyle == null;
+
+					electionInformationType.getCandidate()
+							.forEach(candidateType -> {
+								if ((DisplayCandidateLineStyle.DEFAULT.equals(defaultDisplayCandidateLineStyle)
+										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.DEFAULT.equals(
+										specificDisplayCandidateLineStyle)) {
+									// if the defaultDisplayCandidateLineStyle is DEFAULT and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is DEFAULT, then the default displayCandidateLineStyle is used.
+									addDefaultDisplayCandidateLinesStyle(candidateType);
+								} else if ((DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION.equals(defaultDisplayCandidateLineStyle)
+										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION.equals(
+										specificDisplayCandidateLineStyle)) {
+									// if the defaultDisplayCandidateLineStyle is WITH_PARTY_AFFILIATION and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is WITH_PARTY_AFFILIATION, then the displayCandidateLineStyle with party affiliation is used.
+									addWithPartyAffiliationDisplayCandidateLinesStyle(candidateType);
+
+								} else if ((DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE.equals(defaultDisplayCandidateLineStyle)
+										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE.equals(
+										specificDisplayCandidateLineStyle)) {
+									// if the defaultDisplayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE, then the displayCandidateLineStyle with party affiliation extra line is used.
+									addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(candidateType);
+								} else {
+									throw new IllegalStateException(String.format(
+											"Unknown displayCandidateLineStyle. [displayCandidateLineStyle: %s, electionId: %s, candidateId: %s]",
+											defaultDisplayCandidateLineStyle, electionIdentification, candidateType.getCandidateIdentification()));
+								}
+							});
+				});
+	}
+
+	private DisplayCandidateLineStyle getSpecificDisplayCandidateLineStyle(
+			final List<ElectionDisplayCandidateLineStyleTuple> electionDisplayCandidateLineStyleTuples, final String electionIdentification) {
+		final List<DisplayCandidateLineStyle> matchingDisplayCandidateLineStyles = electionDisplayCandidateLineStyleTuples.stream()
+				.filter(electionDisplayCandidateLineStyleTuple -> electionDisplayCandidateLineStyleTuple.electionIdentification()
+						.equals(electionIdentification))
+				.map(ElectionDisplayCandidateLineStyleTuple::displayCandidateLineStyle)
+				.toList();
+
+		checkState(matchingDisplayCandidateLineStyles.size() <= 1);
+
+		if (matchingDisplayCandidateLineStyles.isEmpty()) {
+			return null;
+		} else {
+			return matchingDisplayCandidateLineStyles.getFirst();
 		}
 	}
 
-	private void addDisplayCandidateLinesStyle1(final List<ElectionType> elections, final List<ElectionGroupBallotType> electionGroups) {
-		elections.stream().flatMap(e -> electionGroups.stream().flatMap(eg -> eg.getElectionInformation().stream())
-						.filter(ele -> ele.getElection().getElectionIdentification().equals(e.getElectionIdentification()))
-						.flatMap(ele -> ele.getCandidate().stream()))
-				.forEach(candidate -> {
-					final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = Arrays.stream(LanguageType.values())
-							.map(languageType -> {
-								final String displayLine1 = String.join(" ", candidate.getReferenceOnPosition(), candidate.getFamilyName(),
-										candidate.getCallName());
-								return new DisplayLineInformationType.DisplayLineInfo()
-										.withLanguage(languageType)
-										.withDisplayLineText(displayLine1);
-							})
-							.toList();
-					setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
-				});
+	private void addDefaultDisplayCandidateLinesStyle(final CandidateType candidate) {
+		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = Arrays.stream(LanguageType.values())
+				.map(languageType -> {
+					final String displayLine1 = String.join(" ", candidate.getReferenceOnPosition(), candidate.getFamilyName(),
+							candidate.getCallName());
+					return new DisplayLineInformationType.DisplayLineInfo()
+							.withLanguage(languageType)
+							.withDisplayLineText(displayLine1);
+				})
+				.toList();
+		setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
 	}
 
-	private void addDisplayCandidateLinesStyle2(final List<ElectionType> elections, final List<ElectionGroupBallotType> electionGroups) {
-		elections.stream().flatMap(e -> electionGroups.stream().flatMap(eg -> eg.getElectionInformation().stream())
-						.filter(ele -> ele.getElection().getElectionIdentification().equals(e.getElectionIdentification()))
-						.flatMap(ele -> ele.getCandidate().stream()))
-				.forEach(candidate -> {
-					final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = candidate.getPartyAffiliation()
-							.getPartyAffiliationInfo().stream()
-							.map(partyAffiliationInfo -> {
-								if (partyAffiliationInfo.getPartyAffiliationLong() == null) {
-									throw new IllegalStateException(
-											String.format("Party affiliation not provided. [displayCandidateLineStyle: 2, candidateId: %s]",
-													candidate.getCandidateIdentification()));
-								}
+	private void addWithPartyAffiliationDisplayCandidateLinesStyle(final CandidateType candidate) {
+		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = candidate.getPartyAffiliation()
+				.getPartyAffiliationInfo().stream()
+				.map(partyAffiliationInfo -> {
+					if (partyAffiliationInfo.getPartyAffiliationLong() == null) {
+						throw new IllegalStateException(
+								String.format("Party affiliation not provided. [displayCandidateLineStyle: 2, candidateId: %s]",
+										candidate.getCandidateIdentification()));
+					}
 
-								final String displayLine1 = String.join(" ", candidate.getReferenceOnPosition(), candidate.getFamilyName(),
-										candidate.getCallName(), partyAffiliationInfo.getPartyAffiliationLong());
-								return new DisplayLineInformationType.DisplayLineInfo()
-										.withLanguage(partyAffiliationInfo.getLanguage())
-										.withDisplayLineText(displayLine1);
-							})
-							.toList();
-					setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
-				});
+					final String displayLine1 = String.join(" ", candidate.getReferenceOnPosition(), candidate.getFamilyName(),
+							candidate.getCallName(), partyAffiliationInfo.getPartyAffiliationLong());
+					return new DisplayLineInformationType.DisplayLineInfo()
+							.withLanguage(partyAffiliationInfo.getLanguage())
+							.withDisplayLineText(displayLine1);
+				})
+				.toList();
+		setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
 	}
 
-	private void addDisplayCandidateLinesStyle3(final List<ElectionType> elections, final List<ElectionGroupBallotType> electionGroups) {
-		elections.stream().flatMap(e -> electionGroups.stream().flatMap(eg -> eg.getElectionInformation().stream())
-						.filter(ele -> ele.getElection().getElectionIdentification().equals(e.getElectionIdentification()))
-						.flatMap(ele -> ele.getCandidate().stream()))
-				.forEach(candidate -> {
-					final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = Arrays.stream(LanguageType.values())
-							.map(languageType -> {
-								final String displayLine1 = String.join(" ", candidate.getReferenceOnPosition(), candidate.getFamilyName(),
-										candidate.getCallName());
-								return new DisplayLineInformationType.DisplayLineInfo()
-										.withLanguage(languageType)
-										.withDisplayLineText(displayLine1);
-							})
-							.toList();
-					setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
+	private void addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(final CandidateType candidate) {
+		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = Arrays.stream(LanguageType.values())
+				.map(languageType -> {
+					final String displayLine1 = String.join(" ", candidate.getReferenceOnPosition(), candidate.getFamilyName(),
+							candidate.getCallName());
+					return new DisplayLineInformationType.DisplayLineInfo()
+							.withLanguage(languageType)
+							.withDisplayLineText(displayLine1);
+				})
+				.toList();
+		setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
 
-					final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList4 = candidate.getPartyAffiliation()
-							.getPartyAffiliationInfo().stream()
-							.map(partyAffiliationInfo -> {
-								if (partyAffiliationInfo.getPartyAffiliationLong() == null) {
-									throw new IllegalStateException(
-											String.format("Party affiliation not provided. [displayCandidateLineStyle: 3, candidateId: %s]",
-													candidate.getCandidateIdentification()));
-								}
+		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList4 = candidate.getPartyAffiliation()
+				.getPartyAffiliationInfo().stream()
+				.map(partyAffiliationInfo -> {
+					if (partyAffiliationInfo.getPartyAffiliationLong() == null) {
+						throw new IllegalStateException(
+								String.format("Party affiliation not provided. [displayCandidateLineStyle: 3, candidateId: %s]",
+										candidate.getCandidateIdentification()));
+					}
 
-								final String displayLine4 = partyAffiliationInfo.getPartyAffiliationLong();
-								return new DisplayLineInformationType.DisplayLineInfo()
-										.withLanguage(partyAffiliationInfo.getLanguage())
-										.withDisplayLineText(displayLine4);
-							})
-							.toList();
-					candidate.setDisplayCandidateLine4(new DisplayLineInformationType().withDisplayLineInfo(displayLineInfoList4));
-				});
+					final String displayLine4 = partyAffiliationInfo.getPartyAffiliationLong();
+					return new DisplayLineInformationType.DisplayLineInfo()
+							.withLanguage(partyAffiliationInfo.getLanguage())
+							.withDisplayLineText(displayLine4);
+				})
+				.toList();
+		candidate.setDisplayCandidateLine4(new DisplayLineInformationType().withDisplayLineInfo(displayLineInfoList4));
 	}
 
 	private void setCandidateDisplayLines1To3(final CandidateType candidate,
@@ -1123,22 +1149,22 @@ public class ContestService {
 	}
 
 	private void checkEVotingDates(final ContestType c) {
+		final GregorianCalendar evotingFromDate = c.getEvotingFromDate().toGregorianCalendar();
+		final GregorianCalendar evotingToDate = c.getEvotingToDate().toGregorianCalendar();
+
+		// These are mandatory checks that cannot be bypassed.
+		checkState(evotingToDate.getTime().after(new Date()), "evotingToDate must be in the future.");
+		checkState(evotingFromDate.getTime().before(evotingToDate.getTime()), "evotingFromDate must be before evotingToDate.");
 
 		if (byPassCheckConsistencyDates) {
-			LOGGER.warn("As defined by configuration, bypassing the evotingDates consistency check");
+			LOGGER.warn("As defined by configuration, bypassing the evoting dates consistency checks...");
 			return;
 		}
 
-		final GregorianCalendar dtFrom = c.getEvotingFromDate().toGregorianCalendar();
-		final GregorianCalendar dtTo = c.getEvotingToDate().toGregorianCalendar();
+		checkState(evotingFromDate.getTime().after(new Date()), "evotingFromDate must be in the future.");
 
-		checkState(dtFrom.getTime().after(new Date()), "eVotingFromDate must be future");
-		checkState(dtTo.getTime().after(new Date()), "eVotingToDate must be future");
-
-		checkState(dtFrom.getTime().before(dtTo.getTime()), "eVotingFromDate must precede eVotingToDate");
-
-		final LocalDate dtFromLocal = LocalDate.of(dtFrom.get(Calendar.YEAR), dtFrom.get(Calendar.MONTH) + 1, dtFrom.get(Calendar.DAY_OF_MONTH));
-		final LocalDate dtToLocal = LocalDate.of(dtTo.get(Calendar.YEAR), dtTo.get(Calendar.MONTH) + 1, dtTo.get(Calendar.DAY_OF_MONTH));
+		final LocalDate dtFromLocal = LocalDate.of(evotingFromDate.get(Calendar.YEAR), evotingFromDate.get(Calendar.MONTH) + 1, evotingFromDate.get(Calendar.DAY_OF_MONTH));
+		final LocalDate dtToLocal = LocalDate.of(evotingToDate.get(Calendar.YEAR), evotingToDate.get(Calendar.MONTH) + 1, evotingToDate.get(Calendar.DAY_OF_MONTH));
 		final long daysBetween = DAYS.between(dtFromLocal, dtToLocal);
 
 		checkState(daysBetween >= evotingFromToMinDeltaAllowed,
@@ -1468,11 +1494,8 @@ public class ContestService {
 				.map(electionInformation -> {
 					final String electionIdentification = electionInformation.getElection().getElectionIdentification();
 					final Stream<String> listIdentifications = electionInformation.getList().stream().map(ListType::getListIdentification);
-					final Stream<String> candidateIdentifications = electionInformation.getCandidate().stream()
-							.map(CandidateType::getCandidateIdentification);
 
-					final List<String> identifications = Streams.concat(Stream.of(electionIdentification), listIdentifications,
-									candidateIdentifications)
+					final List<String> identifications = Streams.concat(Stream.of(electionIdentification), listIdentifications)
 							.toList();
 					checkState(hasNoDuplicates(identifications), "The election contains duplicate identifications. [election id: %s]",
 							electionIdentification);

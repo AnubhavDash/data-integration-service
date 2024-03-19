@@ -312,8 +312,8 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="defaultDisplayCandidateLineStyle" type="displayCandidateLineStyle"/>
-			<xs:element name="defaultDisplayListLineStyle" type="displayListLineStyle"/>
+			<xs:element name="defaultDisplayCandidateLineStyle" type="displayCandidateLineStyle" minOccurs="0"/>
+			<xs:element name="defaultDisplayListLineStyle" type="displayListLineStyle" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="defaultAnswerTranslationType">
