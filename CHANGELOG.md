@@ -1,5 +1,18 @@
 # Changelog
 
+## Release 2.8.1
+
+Release 2.8.1 is a minor patch containing the following changes:
+
+* Fix a bug with duplicate candidate identifiers.
+* Fix a bug with uppercase language identifiers.
+* Fix a bug with missing first name elements in the eCH-0157.xml.
+* Improve the e-voting dates consistency checks.
+* Ensure that certain election-related elements in the params file remain optional.
+* Improve the packaging of the application.
+* Migrated the application to SpringBoot.
+* Updated dependencies and third-party libraries.
+
 ## Release 2.8.0
 
 The Data Integration Service 2.8.0 contains the following changes
