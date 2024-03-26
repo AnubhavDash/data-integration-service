@@ -36,6 +36,32 @@
 			<source>${project.basedir}/security/windows/java.security</source>
 			<outputDirectory>embedded-jre/conf/security</outputDirectory>
 		</file>
+		<!-- xsd -->
+		<file>
+			<fileMode>0644</fileMode>
+			<source>${project.basedir}/src/main/resources/xsd/evoting-parameter-4-9.xsd</source>
+			<outputDirectory/>
+		</file>
+		<file>
+			<fileMode>0644</fileMode>
+			<source>${project.basedir}/target/e-voting-libraries-xml/xsd/eCH-0157-4-0.xsd</source>
+			<outputDirectory/>
+		</file>
+		<file>
+			<fileMode>0644</fileMode>
+			<source>${project.basedir}/target/e-voting-libraries-xml/xsd/eCH-0159-4-0.xsd</source>
+			<outputDirectory/>
+		</file>
+		<file>
+			<fileMode>0644</fileMode>
+			<source>${project.basedir}/target/e-voting-libraries-xml/xsd/eCH-0045-4-0.xsd</source>
+			<outputDirectory/>
+		</file>
+		<file>
+			<fileMode>0644</fileMode>
+			<source>${project.basedir}/target/e-voting-libraries-xml/xsd/evoting-config-6-0.xsd</source>
+			<outputDirectory/>
+		</file>
 	</files>
 
 </assembly>
