@@ -29,7 +29,7 @@
 
 		<cloning.version>1.11.1</cloning.version>
 		<commons-lang3.version>3.14.0</commons-lang3.version>
-		<crypto-primitives.version>1.4.1.0</crypto-primitives.version>
+		<crypto-primitives.version>1.5.0.0-b0</crypto-primitives.version>
 		<cucumber-bom.version>7.16.1</cucumber-bom.version>
 		<download-maven-plugin.version>1.8.1</download-maven-plugin.version>
 		<e-voting-libraries.version>1.5.0.0-b0</e-voting-libraries.version>
