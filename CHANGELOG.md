@@ -1,5 +1,12 @@
 # Changelog
 
+## Release 2.8.2
+
+Release 2.8.2 is a minor patch containing the following changes:
+
+* Added additional eCH XSD schemas to the packaging.
+* Updated dependencies and third-party libraries.
+
 ## Release 2.8.1
 
 Release 2.8.1 is a minor patch containing the following changes:
