@@ -12,6 +12,7 @@ public class ApplicationContextProvider implements ApplicationContextAware {
 
 	private static ApplicationContext context;
 
+	@SuppressWarnings("java:S2696") // Safe usage as it is a Spring Bean.
 	@Override
 	public void setApplicationContext(final ApplicationContext applicationContext) {
 		context = applicationContext;
@@ -24,7 +25,4 @@ public class ApplicationContextProvider implements ApplicationContextAware {
 	public static <T> T getBean(final Class<T> requiredType) {
 		return context.getBean(requiredType);
 	}
-
-
 }
-
