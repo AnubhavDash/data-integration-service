@@ -42,6 +42,7 @@ import ch.evoting.xmlns.parameter._4.AnswerTranslationType;
 import ch.evoting.xmlns.parameter._4.ContestType.IncumbentText;
 import ch.evoting.xmlns.parameter._4.DefaultAnswerTranslationType;
 import ch.evoting.xmlns.parameter._4.DisplayCandidateLineStyle;
+import ch.evoting.xmlns.parameter._4.DisplayListLineStyle;
 import ch.evoting.xmlns.parameter._4.ElectionType;
 import ch.evoting.xmlns.parameter._4.EmptyCandidateTextInfo;
 import ch.post.it.evoting.dataintegrationservice.common.MarshallTool;
@@ -306,7 +307,7 @@ public class ContestService {
 		sortElectionsAndVotes(electionGroups, votes);
 
 		addCandidateEligibilityFromParameters(electionGroups, contestParameters);
-		addDisplayListLines(electionGroups);
+		addDisplayListLines(electionGroups, contestParameters);
 		addDisplayCandidateLines(electionGroups, contestParameters);
 
 		contest.getElectionGroupBallot().addAll(electionGroups);
@@ -402,6 +403,16 @@ public class ContestService {
 										specificDisplayCandidateLineStyle)) {
 									// if the defaultDisplayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE, then the displayCandidateLineStyle with party affiliation extra line is used.
 									addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(candidateType);
+								} else if ((DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED.equals(defaultDisplayCandidateLineStyle)
+										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED.equals(
+										specificDisplayCandidateLineStyle)) {
+									// if the defaultDisplayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED, then the displayCandidateLineStyle with party affiliation extra line comma separated is used.
+									addWithPartyAffiliationExtraLineCommaSeparatedDisplayCandidateLinesStyle(candidateType);
+								} else if ((DisplayCandidateLineStyle.DEFAULT_COMMA_SEPARATED.equals(defaultDisplayCandidateLineStyle)
+										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.DEFAULT_COMMA_SEPARATED.equals(
+										specificDisplayCandidateLineStyle)) {
+									// if the defaultDisplayCandidateLineStyle is DEFAULT_COMMA_SEPARATED and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is DEFAULT_COMMA_SEPARATED, then the default comma separated displayCandidateLineStyle is used.
+									addDefaultCommaSeparatedDisplayCandidateLinesStyle(candidateType);
 								} else {
 									throw new IllegalStateException(String.format(
 											"Unknown displayCandidateLineStyle. [displayCandidateLineStyle: %s, electionId: %s, candidateId: %s]",
@@ -429,9 +440,17 @@ public class ContestService {
 	}
 
 	private void addDefaultDisplayCandidateLinesStyle(final CandidateType candidate) {
+		generateCandidateDisplayLines1To3(candidate, "");
+	}
+
+	private void addDefaultCommaSeparatedDisplayCandidateLinesStyle(final CandidateType candidate) {
+		generateCandidateDisplayLines1To3(candidate, ",");
+	}
+
+	private void generateCandidateDisplayLines1To3(final CandidateType candidate, final String delimiter) {
 		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = Arrays.stream(LanguageType.values())
 				.map(languageType -> {
-					final String displayLine1 = String.join(" ", candidate.getReferenceOnPosition(), candidate.getFamilyName(),
+					final String displayLine1 = String.join(" ", candidate.getReferenceOnPosition(), candidate.getFamilyName() + delimiter,
 							candidate.getCallName());
 					return new DisplayLineInformationType.DisplayLineInfo()
 							.withLanguage(languageType)
@@ -447,8 +466,8 @@ public class ContestService {
 				.map(partyAffiliationInfo -> {
 					if (partyAffiliationInfo.getPartyAffiliationLong() == null) {
 						throw new IllegalStateException(
-								String.format("Party affiliation not provided. [displayCandidateLineStyle: 2, candidateId: %s]",
-										candidate.getCandidateIdentification()));
+								String.format("Party affiliation not provided. [displayCandidateLineStyle: %s, candidateId: %s]",
+										DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION, candidate.getCandidateIdentification()));
 					}
 
 					final String displayLine1 = String.join(" ", candidate.getReferenceOnPosition(), candidate.getFamilyName(),
@@ -462,24 +481,23 @@ public class ContestService {
 	}
 
 	private void addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(final CandidateType candidate) {
-		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = Arrays.stream(LanguageType.values())
-				.map(languageType -> {
-					final String displayLine1 = String.join(" ", candidate.getReferenceOnPosition(), candidate.getFamilyName(),
-							candidate.getCallName());
-					return new DisplayLineInformationType.DisplayLineInfo()
-							.withLanguage(languageType)
-							.withDisplayLineText(displayLine1);
-				})
-				.toList();
-		setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
+		generateCandidateDisplayLines1To3(candidate, "");
+		setDisplayCandidateLineWithAffilicationExtraLine(candidate);
+	}
 
+	private void addWithPartyAffiliationExtraLineCommaSeparatedDisplayCandidateLinesStyle(final CandidateType candidate) {
+		generateCandidateDisplayLines1To3(candidate, ",");
+		setDisplayCandidateLineWithAffilicationExtraLine(candidate);
+	}
+
+	private void setDisplayCandidateLineWithAffilicationExtraLine(final CandidateType candidate) {
 		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList4 = candidate.getPartyAffiliation()
 				.getPartyAffiliationInfo().stream()
 				.map(partyAffiliationInfo -> {
 					if (partyAffiliationInfo.getPartyAffiliationLong() == null) {
 						throw new IllegalStateException(
-								String.format("Party affiliation not provided. [displayCandidateLineStyle: 3, candidateId: %s]",
-										candidate.getCandidateIdentification()));
+								String.format("Party affiliation not provided. [displayCandidateLineStyle: %s, candidateId: %s]",
+										DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE, candidate.getCandidateIdentification()));
 					}
 
 					final String displayLine4 = partyAffiliationInfo.getPartyAffiliationLong();
@@ -759,17 +777,69 @@ public class ContestService {
 				.forEach(type -> type.setIncumbentText(ParameterMapper.INSTANCE.map(incumbentText)));
 	}
 
-	private void addDisplayListLines(final List<ElectionGroupBallotType> electionGroups) {
+	record ElectionDisplayListLineStyleTuple(String electionIdentification, DisplayListLineStyle displayListLineStyle) {
+	}
+
+	private void addDisplayListLines(final List<ElectionGroupBallotType> electionGroups, final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+
+		final List<ElectionDisplayListLineStyleTuple> electionDisplayListLineStyleTuples =
+				contestParameters.getElections() != null ?
+						contestParameters.getElections().getElection().stream()
+								.map(e -> new ElectionDisplayListLineStyleTuple(e.getElectionIdentification(), e.getDisplayListLineStyle()))
+								.toList() :
+						new ArrayList<>();
+
+		final DisplayListLineStyle defaultDisplayListLineStyle = contestParameters.getDefaultDisplayListLineStyle();
+
+
 		electionGroups.stream()
 				.flatMap(eg -> eg.getElectionInformation().stream())
 				.forEach(electionInformationType -> {
+
+					final String electionIdentification = electionInformationType.getElection().getElectionIdentification();
+					final DisplayListLineStyle specificDisplayListLineStyle = getSpecificDisplayListLineStyle(
+							electionDisplayListLineStyleTuples, electionIdentification);
+					final boolean noSpecificDisplayListLineStyle = specificDisplayListLineStyle == null;
+
+
 					final List<ListUnionType> listUnions = electionInformationType.getListUnion();
 					electionInformationType.getList().forEach(listType -> {
-						addDisplayListLine1(listType);
-						addDisplayListLine2(listType, listUnions);
-						addDisplayListLine3(listType, listUnions);
+
+						if ((DisplayListLineStyle.DEFAULT.equals(defaultDisplayListLineStyle)
+								&& noSpecificDisplayListLineStyle) || DisplayListLineStyle.DEFAULT.equals(
+								specificDisplayListLineStyle)) {
+							addDisplayListLine1(listType);
+							addDisplayListLine2(listType, listUnions);
+							addDisplayListLine3(listType, listUnions);
+						} else if ((DisplayListLineStyle.WITHOUT_SUBLISTUNION.equals(defaultDisplayListLineStyle)
+								&& noSpecificDisplayListLineStyle) || DisplayListLineStyle.WITHOUT_SUBLISTUNION.equals(
+								specificDisplayListLineStyle)) {
+							addDisplayListLine1(listType);
+							addDisplayListLine2(listType, listUnions);
+						}  else {
+							throw new IllegalStateException(String.format(
+									"Unknown displayListLineStyle. [displayListLineStyle: %s, electionId: %s, listId: %s]",
+									defaultDisplayListLineStyle, electionIdentification, listType.getListIdentification()));
+						}
 					});
 				});
+	}
+
+	private DisplayListLineStyle getSpecificDisplayListLineStyle(
+			final List<ElectionDisplayListLineStyleTuple> electionDisplayListLineStyleTuples, final String electionIdentification) {
+		final List<DisplayListLineStyle> matchingDisplayListLineStyles = electionDisplayListLineStyleTuples.stream()
+				.filter(electionDisplayListLineStyleTuple -> electionDisplayListLineStyleTuple.electionIdentification()
+						.equals(electionIdentification))
+				.map(ElectionDisplayListLineStyleTuple::displayListLineStyle)
+				.toList();
+
+		checkState(matchingDisplayListLineStyles.size() <= 1);
+
+		if (matchingDisplayListLineStyles.isEmpty()) {
+			return null;
+		} else {
+			return matchingDisplayListLineStyles.getFirst();
+		}
 	}
 
 	private void addDisplayListLine1(final ListType list) {
