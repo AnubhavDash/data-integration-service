@@ -94,6 +94,7 @@ public class ContestService {
 	private static final int DEFAULT_VALUE = 0;
 
 	private static final BigInteger ELECTION_MAJORITY_TYPE = BigInteger.TWO;
+	private static final BigInteger ELECTION_PROPORTIONAL_TYPE = BigInteger.ONE;
 	private static final BigInteger ELECTION_RELATION_PRIMARY = BigInteger.ONE;
 	private static final BigInteger ELECTION_RELATION_SECONDARY = BigInteger.TWO;
 
@@ -1233,8 +1234,10 @@ public class ContestService {
 
 		checkState(evotingFromDate.getTime().after(new Date()), "evotingFromDate must be in the future.");
 
-		final LocalDate dtFromLocal = LocalDate.of(evotingFromDate.get(Calendar.YEAR), evotingFromDate.get(Calendar.MONTH) + 1, evotingFromDate.get(Calendar.DAY_OF_MONTH));
-		final LocalDate dtToLocal = LocalDate.of(evotingToDate.get(Calendar.YEAR), evotingToDate.get(Calendar.MONTH) + 1, evotingToDate.get(Calendar.DAY_OF_MONTH));
+		final LocalDate dtFromLocal = LocalDate.of(evotingFromDate.get(Calendar.YEAR), evotingFromDate.get(Calendar.MONTH) + 1,
+				evotingFromDate.get(Calendar.DAY_OF_MONTH));
+		final LocalDate dtToLocal = LocalDate.of(evotingToDate.get(Calendar.YEAR), evotingToDate.get(Calendar.MONTH) + 1,
+				evotingToDate.get(Calendar.DAY_OF_MONTH));
 		final long daysBetween = DAYS.between(dtFromLocal, dtToLocal);
 
 		checkState(daysBetween >= evotingFromToMinDeltaAllowed,
@@ -1405,6 +1408,8 @@ public class ContestService {
 		checkPrimarySecondaryElectionConsistency(c);
 		checkVoteIdentificationsDistinctness(c);
 		checkElectionIdentifiersDistinctness(c);
+		checkProportionalElectionConsistency(c);
+		checkMajoralElectionConsistency(c);
 	}
 
 	private PrimarySecondaryTuple mapToPrimarySecondaryContainer(final ElectionGroupBallotType eg) {
@@ -1571,6 +1576,30 @@ public class ContestService {
 							electionIdentification);
 					return identifications;
 				}).toList().getFirst();
+	}
+
+	private void checkProportionalElectionConsistency(final ContestType contestType) {
+		final String electionIds = contestType.getElectionGroupBallot().stream()
+				.flatMap(electionGroupBallot -> electionGroupBallot.getElectionInformation().stream())
+				.map(ElectionInformationType::getElection)
+				.filter(election -> ELECTION_PROPORTIONAL_TYPE.equals(election.getTypeOfElection()))
+				.filter(ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionType::isWriteInsAllowed)
+				.map(ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionType::getElectionIdentification)
+				.collect(Collectors.joining(", "));
+
+		checkState(electionIds.isEmpty(), "Proportional elections cannot have write-in candidates. [electionIds: %s]", electionIds);
+	}
+
+	private void checkMajoralElectionConsistency(final ContestType contestType) {
+		final String electionIds = contestType.getElectionGroupBallot().stream()
+				.flatMap(electionGroupBallot -> electionGroupBallot.getElectionInformation().stream())
+				.map(ElectionInformationType::getElection)
+				.filter(election -> ELECTION_MAJORITY_TYPE.equals(election.getTypeOfElection()))
+				.filter(election -> election.getCandidateAccumulation().intValueExact() != 1)
+				.map(ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionType::getElectionIdentification)
+				.collect(Collectors.joining(", "));
+
+		checkState(electionIds.isEmpty(), "Candidate accumulation must be 1 for majoral elections. [electionIds: %s]", electionIds);
 	}
 
 	public ContestType cleanHtmlTags(final ContestType contest) {

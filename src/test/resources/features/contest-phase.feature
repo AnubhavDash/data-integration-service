@@ -15,10 +15,10 @@ Feature: Contest Phase
     # PARAMETERS - writeIns and accumulation
     And user parameters "my params" has election named "election 1"
     And election "my params"."election 1" has id "election-A-id"
-    And election "my params"."election 1" has accumulation 2
+    And election "my params"."election 1" has accumulation 1
     And user parameters "my params" has election named "election 2"
     And election "my params"."election 2" has id "election-B-id"
-    And election "my params"."election 2" has writeIns "true"
+    And election "my params"."election 2" has writeIns "false"
     And election "my params"."election 2" has accumulation 1
     And election "my params"."election 2" has minimalCandidateSelection 0
 
@@ -830,11 +830,11 @@ Feature: Contest Phase
     Given the elections parameters in "my params" are cleared out
     And user parameters "my params" has election named "election 1"
     And election "my params"."election 1" has id "election-A-id"
-    And election "my params"."election 1" has writeIns "true"
+    And election "my params"."election 1" has writeIns "false"
     And user parameters "my params" has election named "election 2"
     And election "my params"."election 2" has id "election-B-id"
     When executing the contest phase
-    Then election identified by "election-A-id" should have writeIns "true"
+    Then election identified by "election-A-id" should have writeIns "false"
     And election identified by "election-B-id" should have writeIns "false"
 
   Scenario: minimalCandidateSelectionInList configured from parameter
