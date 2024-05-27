@@ -20,7 +20,7 @@
 		<maven.compiler.release>21</maven.compiler.release>
 
 		<maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
-		<maven-enforcer-plugin.requiredJavaVersion>[21.0.2]</maven-enforcer-plugin.requiredJavaVersion>
+		<maven-enforcer-plugin.requiredJavaVersion>[21.0.3]</maven-enforcer-plugin.requiredJavaVersion>
 		<maven-enforcer-plugin.requiredMavenVersion>[3.9.6]</maven-enforcer-plugin.requiredMavenVersion>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,10 +29,10 @@
 
 		<cloning.version>1.11.1</cloning.version>
 		<commons-lang3.version>3.14.0</commons-lang3.version>
-		<crypto-primitives.version>1.5.0.0-b1</crypto-primitives.version>
+		<crypto-primitives.version>1.5.0.0-b3</crypto-primitives.version>
 		<cucumber-bom.version>7.17.0</cucumber-bom.version>
 		<download-maven-plugin.version>1.9.0</download-maven-plugin.version>
-		<e-voting-libraries.version>1.5.0.0-b4</e-voting-libraries.version>
+		<e-voting-libraries.version>1.5.0.0-b6</e-voting-libraries.version>
 		<gmavenplus-plugin.version>3.0.2</gmavenplus-plugin.version>
 		<groovy.version>4.0.18</groovy.version>
 		<groovy-all.version>4.0.21</groovy-all.version>
@@ -68,11 +68,11 @@
 		<xsdlib.version>2013.2</xsdlib.version>
 
 		<!-- OpenJDK -->
-		<openjdk-jre.version>jdk-21.0.2+13-jre</openjdk-jre.version>
+		<openjdk-jre.version>jdk-21.0.3+9-jre</openjdk-jre.version>
 		<openjdk-jre.win64.url>
-			https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jre_x64_windows_hotspot_21.0.2_13.zip
+			https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.3_9.zip
 		</openjdk-jre.win64.url>
-		<openjdk-jre.win64.sha256>a29b88541bc11276de4c4cbdfac60e374ef8a34a415f61cb02a2b6a46f0e1064</openjdk-jre.win64.sha256>
+		<openjdk-jre.win64.sha256>f79eaa741cb9ec4d20c7fd57a0fc52c715da183bc68eb19f4778b816b89ef003</openjdk-jre.win64.sha256>
 
 		<!-- Sonar -->
 		<sonar.scm.disabled>true</sonar.scm.disabled>
