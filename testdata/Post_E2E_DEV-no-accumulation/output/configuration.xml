@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/6">
   <header>
-    <fileDate>2024-03-11T16:14:03.053+01:00</fileDate>
+    <fileDate>2024-06-11T08:35:53.529+02:00</fileDate>
     <voterTotal>43</voterTotal>
   </header>
   <contest>
@@ -5454,5 +5454,5 @@
       </person>
     </voter>
   </register>
-  <signature>FvR7bRAidD2sGHQn19mtjutfF/1hSJr9OVZyGBJHcJMAGT6tYjQfVejesRswXfAH7HVfBjgWJyLBD1nLcXfhMhFEeJ/4HHb3r5UwtUaVa2cTM/wtyPcWhpyaiXY6/MFFcjU3nPupw1oSTlVzLm2RoxnnLKSnR/+lqXUA8iRH0NOxOlhEn7QKpPFQq3LNU0sEXiLar1FylLiviWRfRDIn0LTuIbtAKcKDCZZw9zcYjA0xEzbusW+ssCzKEJBgxzKN1i1nNKufvWswpZCZ2PMYjCeQqe1EAyxN9A0dHdV1+KhdeqVSC3ioDOHp+TNhXwedylZQ0zQlS5xV6io540g2uivspvweRuYUHdabGQNC+tDUCl9Ikklld3Cwz8E5xIs5Fu5GcbJQ/YD7/UDLu5S0QNrc0C+9WLrZlCf3H6AQGFtyKKJ7/bdDTBuAmE41fEdzVyDPDwipB2dbFer5re+KcZTk2H9M2UHObfakStsBnicHTWHaQHDv/ygcxlEoySSs</signature>
+  <signature>BnPtG3ALhT/DFpiBOD/05R6UNAVWMzpXpkEj+ib7S/uExgprM3+Smf7BTa5PK5d7CVuPj3Oz8hZ374eVYGc1NL1z3dL1HSZPBR8dq0OSZ7XphiXY1aABf0Lmv5qMK+4U1CDWesAT5wop9Iq6C13IlNwIeGDu7a1tgPxuhdbIK/jHWpzyG3N6+aFCLhV3ycayLnGsF2QxX/g4i1ZEPa5pDY5TD4jdfVyeiaF64DDiUjGo4ITIr/IvjKrkXZfknJbYoUO+RqVOedaXmN4Xk1ND2lqdnqqwjHJSFNmugzeF8fJmBGvuV902MrBuVQsynpjnq+uJWt/p0e24O1MVlA0LfSAzZo1eins5+x3e5PPofb6rWRMfBWeszdZwsD9V8r/Web3O9mpiJ5XwWFbBdISUkjQEq/OBILyS/OEla8gQnT/zZZrrrS/U0dhPu6KZEghafvV2jmShGr5gdKwZPdgLQBV0DIlkmG6x8nBDQMMu/3TTJHjxqkXS/B+qcFGgspEM</signature>
 </configuration>
