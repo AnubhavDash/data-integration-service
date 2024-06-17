@@ -1,5 +1,14 @@
 # Changelog
 
+## Release 2.8.3
+
+Release 2.8.3 is a minor patch containing the following changes:
+
+* Add two comma-separated displayCandidateLineStyle and displayListLineStyle without subListUnions.
+* Prevent write-ins for proportional elections and accumulation for majoral elections.
+* Use the ballotQuestionTitle as ballotDescriptionShort and ballotDescriptionLong (if ballotDescriptionShort and ballotDescriptionLong are missing).
+* Updated dependencies and third-party libraries.
+
 ## Release 2.8.2
 
 Release 2.8.2 is a minor patch containing the following changes:
