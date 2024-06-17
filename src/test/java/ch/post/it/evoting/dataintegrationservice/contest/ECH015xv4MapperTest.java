@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,15 +24,28 @@ import ch.ech.xmlns.ech_0010._6.AddressInformationType;
 import ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType;
 import ch.ech.xmlns.ech_0155._4.BallotQuestionType;
 import ch.ech.xmlns.ech_0155._4.BallotType;
+import ch.ech.xmlns.ech_0155._4.CandidatePositionInformationType;
+import ch.ech.xmlns.ech_0155._4.CandidateTextInformationType;
+import ch.ech.xmlns.ech_0155._4.CandidateType;
 import ch.ech.xmlns.ech_0155._4.ContestDescriptionInformationType;
 import ch.ech.xmlns.ech_0155._4.ContestType;
 import ch.ech.xmlns.ech_0155._4.EVotingPeriodType;
+import ch.ech.xmlns.ech_0155._4.ElectionDescriptionInformationType;
+import ch.ech.xmlns.ech_0155._4.ElectionType;
+import ch.ech.xmlns.ech_0155._4.ListDescriptionInformationType;
+import ch.ech.xmlns.ech_0155._4.ListType;
+import ch.ech.xmlns.ech_0155._4.ListUnionType;
+import ch.ech.xmlns.ech_0155._4.OccupationalTitleInformationType;
 import ch.ech.xmlns.ech_0155._4.QuestionInformationType;
+import ch.ech.xmlns.ech_0155._4.ReferencedElectionInformationType;
 import ch.ech.xmlns.ech_0155._4.TieBreakInformationType;
 import ch.ech.xmlns.ech_0155._4.TieBreakQuestionType;
 import ch.ech.xmlns.ech_0155._4.VoteDescriptionInformationType;
 import ch.ech.xmlns.ech_0155._4.VoteType;
+import ch.ech.xmlns.ech_0159._4.EventInitialDelivery;
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -157,7 +171,16 @@ class ECH015xv4MapperTest {
 						.withLanguage("it")
 						.withBallotQuestionTitle("Votre avis sur la loi ES (IT)")
 						.withBallotQuestion("Acceptez-vous la loi ES ? (IT)")
+				)
+				.withBallotQuestionInfo(new BallotQuestionType.BallotQuestionInfo()
+						.withLanguage("rm")
+						.withBallotQuestionTitle("Votre avis sur la loi ES (RM)")
+						.withBallotQuestion("Acceptez-vous la loi ES ? (RM)")
 				);
+	}
+
+	private BallotQuestionType createEchBallotQuestionTypeWithMissingQuestionInfo() {
+		return new BallotQuestionType();
 	}
 
 	private QuestionInformationType createEchQuestionInformationType() {
@@ -182,13 +205,40 @@ class ECH015xv4MapperTest {
 								.withTieBreakQuestionTitle("En cas de rejet des 2 variantes (FR)")
 								.withTieBreakQuestion("Laquelle choisissez-vous ? (FR)")
 						)
+						.withTieBreakQuestionInfo(new TieBreakQuestionType.TieBreakQuestionInfo()
+								.withLanguage("rm")
+								.withTieBreakQuestionTitle("En cas de rejet des 2 variantes (RM)")
+								.withTieBreakQuestion("Laquelle choisissez-vous ? (RM)")
+						)
 				);
+	}
+
+	private BallotType createEchBallot() {
+		return new BallotType()
+				.withBallotIdentification("BAL-000-432556")
+				.withBallotPosition(BigInteger.ONE)
+				.withBallotDescription(createEchBallotDescriptionInformationType())
+				.withStandardBallot(createEchStandardBallot());
+	}
+
+	private BallotType createEchBallotWithMissingQuestionInfo() {
+		return new BallotType()
+				.withBallotIdentification("BAL-000-432556")
+				.withBallotPosition(BigInteger.ONE)
+				.withBallotDescription(createEchBallotDescriptionInformationTypeWithMissingDescriptions())
+				.withStandardBallot(createEchStandardBallotWithMissingQuestionInfo());
 	}
 
 	private BallotType.StandardBallot createEchStandardBallot() {
 		return new BallotType.StandardBallot()
 				.withQuestionIdentification("QUE-000-43532532")
 				.withBallotQuestion(createEchBallotQuestionType());
+	}
+
+	private BallotType.StandardBallot createEchStandardBallotWithMissingQuestionInfo() {
+		return new BallotType.StandardBallot()
+				.withQuestionIdentification("QUE-000-43532532")
+				.withBallotQuestion(createEchBallotQuestionTypeWithMissingQuestionInfo());
 	}
 
 	private BallotType.VariantBallot createEchVariantBallot() {
@@ -199,8 +249,8 @@ class ECH015xv4MapperTest {
 				.withTieBreakInformation(createEchTieBreakInformationType());
 	}
 
-	private ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation createEchVoteInformation() {
-		final ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation echVote = new ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation();
+	private EventInitialDelivery.VoteInformation createEchVoteInformation() {
+		final EventInitialDelivery.VoteInformation echVote = new EventInitialDelivery.VoteInformation();
 		echVote
 				.withVote(createEchVoteType())
 				.withBallot(new BallotType()
@@ -222,35 +272,35 @@ class ECH015xv4MapperTest {
 	private ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation createEchElectionInformation() {
 		final ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation echElection = new ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation();
 		echElection
-				.withElection(new ch.ech.xmlns.ech_0155._4.ElectionType()
+				.withElection(new ElectionType()
 						.withElectionIdentification("elec-1")
 						//.withDomainOfInfluence("doi-1")
 						.withTypeOfElection(BigInteger.ONE)
-						.withElectionDescription(new ch.ech.xmlns.ech_0155._4.ElectionDescriptionInformationType()
-								.withElectionDescriptionInfo(new ch.ech.xmlns.ech_0155._4.ElectionDescriptionInformationType.ElectionDescriptionInfo()
+						.withElectionDescription(new ElectionDescriptionInformationType()
+								.withElectionDescriptionInfo(new ElectionDescriptionInformationType.ElectionDescriptionInfo()
 										.withLanguage("de")
 										.withElectionDescription("desc DE"))
-								.withElectionDescriptionInfo(new ch.ech.xmlns.ech_0155._4.ElectionDescriptionInformationType.ElectionDescriptionInfo()
+								.withElectionDescriptionInfo(new ElectionDescriptionInformationType.ElectionDescriptionInfo()
 										.withLanguage("fr")
 										.withElectionDescription("desc FR")
 										.withElectionDescriptionShort("desc FR short")))
 						.withNumberOfMandates(BigInteger.valueOf(16))
 						//                      writeIns : built in contestBuilder
 						//                      candidateAccumulation : built in contestBuilder
-						.withReferencedElection(new ch.ech.xmlns.ech_0155._4.ReferencedElectionInformationType()
+						.withReferencedElection(new ReferencedElectionInformationType()
 								.withReferencedElection("ref1")
 								.withElectionRelation(BigInteger.ONE))
-						.withReferencedElection(new ch.ech.xmlns.ech_0155._4.ReferencedElectionInformationType()
+						.withReferencedElection(new ReferencedElectionInformationType()
 								.withReferencedElection("ref2")
 								.withElectionRelation(BigInteger.TWO)))
-				.withCandidate(new ch.ech.xmlns.ech_0155._4.CandidateType()
+				.withCandidate(new CandidateType()
 								.withCandidateIdentification("candidate1")
 								.withMrMrs("1")
 								.withTitle("22")
 								.withFamilyName("Dupond")
 								.withFirstName("Pierre")
-								.withCandidateText(new ch.ech.xmlns.ech_0155._4.CandidateTextInformationType()
-										.withCandidateTextInfo(new ch.ech.xmlns.ech_0155._4.CandidateTextInformationType.CandidateTextInfo()
+								.withCandidateText(new CandidateTextInformationType()
+										.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo()
 												.withLanguage("de")
 												.withCandidateText("Candidate 1 text")))
 								.withDateOfBirth(DateUtil.parseToXMLGregorianCalendar("1999-04-29 00:00:00"))
@@ -261,96 +311,96 @@ class ECH015xv4MapperTest {
 										.withHouseNumber("12 bis")
 										.withSwissZipCode(1700L)
 										.withTown("Fribourg"))
-								.withSwiss(new ch.ech.xmlns.ech_0155._4.CandidateType.Swiss()
+								.withSwiss(new CandidateType.Swiss()
 										.withOrigin("Vuadens")
 										.withOrigin("Treyvaux"))
-								.withOccupationalTitle(new ch.ech.xmlns.ech_0155._4.OccupationalTitleInformationType()
-										.withOccupationalTitleInfo(new ch.ech.xmlns.ech_0155._4.OccupationalTitleInformationType.OccupationalTitleInfo()
+								.withOccupationalTitle(new OccupationalTitleInformationType()
+										.withOccupationalTitleInfo(new OccupationalTitleInformationType.OccupationalTitleInfo()
 												.withLanguage("de")
 												.withOccupationalTitle("Occupation candidate 1"))
-										.withOccupationalTitleInfo(new ch.ech.xmlns.ech_0155._4.OccupationalTitleInformationType.OccupationalTitleInfo()
+										.withOccupationalTitleInfo(new OccupationalTitleInformationType.OccupationalTitleInfo()
 												.withLanguage("it")
 												.withOccupationalTitle("Occupation candidate 1 IT")))
 						//                      position : built in contestBuilder
 						//                      referenceOnPosition : built in contestBuilder
 				)
-				.withList(new ch.ech.xmlns.ech_0155._4.ListType()
+				.withList(new ListType()
 						.withListIdentification("list1-id")
 						.withListIndentureNumber("1a")
-						.withListDescription(new ch.ech.xmlns.ech_0155._4.ListDescriptionInformationType()
-								.withListDescriptionInfo(new ch.ech.xmlns.ech_0155._4.ListDescriptionInformationType.ListDescriptionInfo()
+						.withListDescription(new ListDescriptionInformationType()
+								.withListDescriptionInfo(new ListDescriptionInformationType.ListDescriptionInfo()
 										.withLanguage("de")
 										.withListDescriptionShort("list1 short desc")
 										.withListDescription("list1 desc"))
-								.withListDescriptionInfo(new ch.ech.xmlns.ech_0155._4.ListDescriptionInformationType.ListDescriptionInfo()
+								.withListDescriptionInfo(new ListDescriptionInformationType.ListDescriptionInfo()
 										.withLanguage("rm")
 										.withListDescriptionShort("list1 short desc RM")
 										.withListDescription("list1 desc RM")))
 						.withListOrderOfPrecedence(BigInteger.ONE)
-						.withCandidatePosition(new ch.ech.xmlns.ech_0155._4.CandidatePositionInformationType()
+						.withCandidatePosition(new CandidatePositionInformationType()
 								//                              candidateListIdentification : built in contestBuilder
 								.withPositionOnList(BigInteger.ONE)
 								.withCandidateReferenceOnPosition("01.01")
 								.withCandidateIdentification("candidate1-id")
-								.withCandidateTextOnPosition(new ch.ech.xmlns.ech_0155._4.CandidateTextInformationType()
-										.withCandidateTextInfo(new ch.ech.xmlns.ech_0155._4.CandidateTextInformationType.CandidateTextInfo()
+								.withCandidateTextOnPosition(new CandidateTextInformationType()
+										.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo()
 												.withLanguage("de")
 												.withCandidateText("Candidate 1 list 1 text"))
-										.withCandidateTextInfo(new ch.ech.xmlns.ech_0155._4.CandidateTextInformationType.CandidateTextInfo()
+										.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo()
 												.withLanguage("it")
 												.withCandidateText("Candidate 1 list 1 text IT"))))
-						.withCandidatePosition(new ch.ech.xmlns.ech_0155._4.CandidatePositionInformationType()
+						.withCandidatePosition(new CandidatePositionInformationType()
 								//                               candidateListIdentification : built in contestBuilder
 								.withPositionOnList(BigInteger.TWO)
 								.withCandidateReferenceOnPosition("01.02")
 								.withCandidateIdentification("candidate2-id")
-								.withCandidateTextOnPosition(new ch.ech.xmlns.ech_0155._4.CandidateTextInformationType()
-										.withCandidateTextInfo(new ch.ech.xmlns.ech_0155._4.CandidateTextInformationType.CandidateTextInfo()
+								.withCandidateTextOnPosition(new CandidateTextInformationType()
+										.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo()
 												.withLanguage("de")
 												.withCandidateText("Candidate 2 list 1 text"))
-										.withCandidateTextInfo(new ch.ech.xmlns.ech_0155._4.CandidateTextInformationType.CandidateTextInfo()
+										.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo()
 												.withLanguage("it")
 												.withCandidateText("Candidate 2 list 1 text IT")))))
-				.withList(new ch.ech.xmlns.ech_0155._4.ListType()
+				.withList(new ListType()
 						.withListIdentification("list2-id")
 						.withListIndentureNumber("2a")
-						.withListDescription(new ch.ech.xmlns.ech_0155._4.ListDescriptionInformationType()
-								.withListDescriptionInfo(new ch.ech.xmlns.ech_0155._4.ListDescriptionInformationType.ListDescriptionInfo()
+						.withListDescription(new ListDescriptionInformationType()
+								.withListDescriptionInfo(new ListDescriptionInformationType.ListDescriptionInfo()
 										.withLanguage("de")
 										.withListDescriptionShort("list2 short desc")
 										.withListDescription("list2 desc"))
-								.withListDescriptionInfo(new ch.ech.xmlns.ech_0155._4.ListDescriptionInformationType.ListDescriptionInfo()
+								.withListDescriptionInfo(new ListDescriptionInformationType.ListDescriptionInfo()
 										.withLanguage("rm")
 										.withListDescriptionShort("list2 short desc RM")
 										.withListDescription("list2 desc RM")))
 						.withListOrderOfPrecedence(BigInteger.TWO)
-						.withCandidatePosition(new ch.ech.xmlns.ech_0155._4.CandidatePositionInformationType()
+						.withCandidatePosition(new CandidatePositionInformationType()
 								//                                      candidateListIdentification : built in contestBuilder
 								.withPositionOnList(BigInteger.TWO)
 								.withCandidateReferenceOnPosition("02.02")
 								.withCandidateIdentification("candidate2-id")
-								.withCandidateTextOnPosition(new ch.ech.xmlns.ech_0155._4.CandidateTextInformationType()
-										.withCandidateTextInfo(new ch.ech.xmlns.ech_0155._4.CandidateTextInformationType.CandidateTextInfo()
+								.withCandidateTextOnPosition(new CandidateTextInformationType()
+										.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo()
 												.withLanguage("de")
 												.withCandidateText("Candidate 2 list 2 text"))
-										.withCandidateTextInfo(new ch.ech.xmlns.ech_0155._4.CandidateTextInformationType.CandidateTextInfo()
+										.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo()
 												.withLanguage("it")
 												.withCandidateText("Candidate 2 list 2 text IT"))))
-						.withCandidatePosition(new ch.ech.xmlns.ech_0155._4.CandidatePositionInformationType()
+						.withCandidatePosition(new CandidatePositionInformationType()
 								//                                      candidateListIdentification : built in contestBuilder
 								.withPositionOnList(BigInteger.ONE)
 								.withCandidateReferenceOnPosition("02.01")
 								.withCandidateIdentification("candidate1-id")
-								.withCandidateTextOnPosition(new ch.ech.xmlns.ech_0155._4.CandidateTextInformationType()
-										.withCandidateTextInfo(new ch.ech.xmlns.ech_0155._4.CandidateTextInformationType.CandidateTextInfo()
+								.withCandidateTextOnPosition(new CandidateTextInformationType()
+										.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo()
 												.withLanguage("de")
 												.withCandidateText("Candidate 1 list 2 text"))
-										.withCandidateTextInfo(new ch.ech.xmlns.ech_0155._4.CandidateTextInformationType.CandidateTextInfo()
+										.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo()
 												.withLanguage("it")
 												.withCandidateText("Candidate 1 list 2 text IT")))))
-				.withListUnion(new ch.ech.xmlns.ech_0155._4.ListUnionType()
+				.withListUnion(new ListUnionType()
 						.withListUnionIdentification("LLL-aaa-1"))
-				.withListUnion(new ch.ech.xmlns.ech_0155._4.ListUnionType()
+				.withListUnion(new ListUnionType()
 						.withListUnionIdentification("LLL-aaa-2"));
 		return echElection;
 	}
@@ -382,7 +432,8 @@ class ECH015xv4MapperTest {
 	@Test
 	void testBallotDescriptionInformationType() {
 		final BallotDescriptionInformationType source = createEchBallotDescriptionInformationType();
-		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType destination = mapper.convert(source);
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType destination = mapper.convert(source,
+				createEchBallot());
 
 		assertEquals(source.getBallotDescriptionInfo().size(), destination.getBallotDescriptionInfo().size());
 	}
@@ -390,13 +441,37 @@ class ECH015xv4MapperTest {
 	@Test
 	void testBallotDescriptionInfo() {
 		final BallotDescriptionInformationType source = createEchBallotDescriptionInformationType();
-		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType destination = mapper.convert(source);
+		final BallotType echBallot = createEchBallot();
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType destination = mapper.convert(source,
+				echBallot);
 
 		final Set<String> echDescriptions = source.getBallotDescriptionInfo()
 				.stream()
 				.map(d -> {
-					final String ballotDescriptionShort = d.getBallotDescriptionShort() != null ? d.getBallotDescriptionShort() : d.getBallotDescriptionLong();
-					final String ballotDescriptionLong = d.getBallotDescriptionLong() != null ? d.getBallotDescriptionLong() : d.getBallotDescriptionShort();
+					final String language = d.getLanguage();
+					final Optional<BallotQuestionType.BallotQuestionInfo> ballotQuestion = echBallot.getStandardBallot().getBallotQuestion()
+							.getBallotQuestionInfo().stream()
+							.filter(bdi -> bdi.getLanguage().equals(language))
+							.findAny();
+
+					String ballotDescriptionShort = "";
+					if (d.getBallotDescriptionShort() != null){
+						ballotDescriptionShort = d.getBallotDescriptionShort();
+					} else if (d.getBallotDescriptionLong() != null) {
+						ballotDescriptionShort = d.getBallotDescriptionLong();
+					} else if (ballotQuestion.isPresent()) {
+						ballotDescriptionShort = ballotQuestion.get().getBallotQuestionTitle();
+					}
+
+					String ballotDescriptionLong = "";
+					if (d.getBallotDescriptionLong() != null){
+						ballotDescriptionLong = d.getBallotDescriptionLong();
+					} else if (d.getBallotDescriptionShort() != null) {
+						ballotDescriptionLong = d.getBallotDescriptionShort();
+					} else if (ballotQuestion.isPresent()) {
+						ballotDescriptionLong = ballotQuestion.get().getBallotQuestionTitle();
+					}
+
 					return String.format("%s - %s - %s", d.getLanguage(), ballotDescriptionShort, ballotDescriptionLong);
 				})
 				.collect(Collectors.toSet());
@@ -410,8 +485,8 @@ class ECH015xv4MapperTest {
 	@Test
 	void testBallotDescriptionInfoWithMissingDescriptions() {
 		final BallotDescriptionInformationType source = createEchBallotDescriptionInformationTypeWithMissingDescriptions();
-		final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> mapper.convert(source));
-		assertEquals("Both, ballotDescriptionLong and ballotDescriptionShort are missing.", exception.getMessage());
+		final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> mapper.convert(source, createEchBallotWithMissingQuestionInfo()));
+		assertEquals("Ballot question info is not available in expected language. [language: rm]", exception.getMessage());
 	}
 
 	@Test
@@ -440,10 +515,10 @@ class ECH015xv4MapperTest {
 
 	@Test
 	void testVoteInformation() {
-		final ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation source = createEchVoteInformation();
-		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType destination = mapper.convert(source);
+		final EventInitialDelivery.VoteInformation source = createEchVoteInformation();
+		final VoteInformationType destination = mapper.convert(source);
 
-		final ch.ech.xmlns.ech_0155._4.VoteType voteSource = source.getVote();
+		final VoteType voteSource = source.getVote();
 		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteType voteDestination = destination.getVote();
 
 		assertEquals(source.getVote() != null, destination.getVote() != null);
@@ -452,8 +527,8 @@ class ECH015xv4MapperTest {
 
 	@Test
 	void testVoteDescriptionInfo() {
-		final ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation source = createEchVoteInformation();
-		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType destination = mapper.convert(source);
+		final EventInitialDelivery.VoteInformation source = createEchVoteInformation();
+		final VoteInformationType destination = mapper.convert(source);
 
 		final Set<String> echDescriptions = source.getVote().getVoteDescription().getVoteDescriptionInfo()
 				.stream()
@@ -470,9 +545,9 @@ class ECH015xv4MapperTest {
 	void testElectionInformation() {
 
 		final ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation source = createEchElectionInformation();
-		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType destination = mapper.convert(source);
+		final ElectionInformationType destination = mapper.convert(source);
 
-		final ch.ech.xmlns.ech_0155._4.ElectionType electionSource = source.getElection();
+		final ElectionType electionSource = source.getElection();
 		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionType electionDestination = destination.getElection();
 
 		assertEquals(electionSource != null, electionDestination != null);

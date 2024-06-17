@@ -254,20 +254,34 @@ ECH015xv4Mapper {
 		final BallotType ballotType = new BallotType();
 
 		ballotType.setBallotIdentification(bt.getBallotIdentification());
+
 		Optional.ofNullable(bt.getBallotPosition())
 				.map(BigInteger::intValueExact)
 				.ifPresent(ballotType::setBallotPosition);
-		ballotType.setBallotDescription(convert(bt.getBallotDescription()));
+
+		ballotType.setBallotDescription(Optional.ofNullable(bt.getBallotDescription())
+				.map(ballotDescription -> convert(ballotDescription, bt))
+				.orElseGet(() -> {
+					LOGGER.warn(
+							"The ballot {} lacks a ballotDescriptionInformation tag. We recommend to always provide a ballotDescriptionInformation tag.",
+							bt.getBallotIdentification());
+					return convert(createEmptyBallotDescriptionInformationType(bt), bt);
+				}));
+
 		ballotType.setStandardBallot(convert(bt.getStandardBallot(), bt));
 		ballotType.setVariantBallot(convert(bt.getVariantBallot(), bt));
 
 		return ballotType;
 	}
 
-	BallotDescriptionInformationType convert(ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType value);
+	BallotDescriptionInformationType convert(ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType value,
+			@Context
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
 	default BallotDescriptionInformationType.BallotDescriptionInfo convert(
-			final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo bdi) {
+			final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo bdi,
+			@Context
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
 		final BallotDescriptionInformationType.BallotDescriptionInfo result = new BallotDescriptionInformationType.BallotDescriptionInfo();
 		result.setLanguage(convert(bdi.getLanguage()));
 
@@ -275,20 +289,21 @@ ECH015xv4Mapper {
 		final Optional<String> ballotDescriptionShort = Optional.ofNullable(bdi.getBallotDescriptionShort());
 
 		result.setBallotDescriptionShort(ballotDescriptionShort.or(() -> {
-					LOGGER.warn(String.format(
-							"The ballotDescriptionShort is missing. Using the truncated ballotDescriptionLong instead. [ballotDescriptionLong: %s]",
-							ballotDescriptionLong));
+					ballotDescriptionLong.ifPresent(description -> LOGGER.warn(
+							"The ballotDescriptionShort is missing. Using the truncated ballotDescriptionLong instead. [ballotDescriptionLong: {}]",
+							description));
 					return ballotDescriptionLong;
 				})
 				.map(description -> StringUtils.left(description, 100))
-				.orElseThrow(() -> new IllegalStateException("Both, ballotDescriptionLong and ballotDescriptionShort are missing.")));
+				.orElseGet(() -> getBallotQuestionTitle(bdi.getLanguage(), ballotType)));
 
 		result.setBallotDescriptionLong(ballotDescriptionLong.or(() -> {
-					LOGGER.warn(String.format("The ballotDescriptionLong is missing. Using the ballotDescriptionShort instead. [ballotDescriptionShort: %s]",
-							ballotDescriptionShort));
+					ballotDescriptionShort.ifPresent(description -> LOGGER.warn(
+							"The ballotDescriptionLong is missing. Using the ballotDescriptionShort instead. [ballotDescriptionShort: {}]",
+							description));
 					return ballotDescriptionShort;
 				})
-				.orElseThrow(() -> new IllegalStateException("Both, ballotDescriptionLong and ballotDescriptionShort are missing.")));
+				.orElseGet(() -> getBallotQuestionTitle(bdi.getLanguage(), ballotType)));
 
 		return result;
 	}
@@ -334,13 +349,16 @@ ECH015xv4Mapper {
 		if (tbqi.getTieBreakQuestionTitle() != null) {
 			result.setBallotQuestionTitle(tbqi.getTieBreakQuestionTitle());
 		} else {
+			Optional.ofNullable(ballotType.getBallotDescription())
+					.orElseThrow(() -> new IllegalStateException(
+							"Ballot description is missing. A ballot must include a description if no tie-break question title is available."));
+
 			final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo ballotDescriptionInfo = ballotType.getBallotDescription()
 					.getBallotDescriptionInfo().stream()
 					.filter(bdi -> bdi.getLanguage().equals(tbqi.getLanguage()))
 					.collect(MoreCollectors.onlyElement());
-			final String description = getDescription(ballotDescriptionInfo);
 
-			result.setBallotQuestionTitle(description);
+			result.setBallotQuestionTitle(getDescription(ballotDescriptionInfo));
 		}
 		result.setBallotQuestion(tbqi.getTieBreakQuestion());
 
@@ -393,17 +411,65 @@ ECH015xv4Mapper {
 		if (bqi.getBallotQuestionTitle() != null) {
 			result.setBallotQuestionTitle(bqi.getBallotQuestionTitle());
 		} else {
-			final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo ballotDescriptionInfo = ballotType.getBallotDescription()
-					.getBallotDescriptionInfo().stream()
-					.filter(bdi -> bdi.getLanguage().equals(bqi.getLanguage()))
-					.collect(MoreCollectors.onlyElement());
-			final String description = getDescription(ballotDescriptionInfo);
+			Optional.ofNullable(ballotType.getBallotDescription())
+					.orElseThrow(() -> new IllegalStateException(
+							"Ballot description is missing. A ballot must include a description if no ballot question title is available."));
 
-			result.setBallotQuestionTitle(description);
+			final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo ballotDescriptionInfo =
+					ballotType.getBallotDescription().getBallotDescriptionInfo().stream()
+							.filter(bdi -> bdi.getLanguage().equals(bqi.getLanguage()))
+							.collect(MoreCollectors.onlyElement());
+
+			result.setBallotQuestionTitle(getDescription(ballotDescriptionInfo));
 		}
 		result.setBallotQuestion(bqi.getBallotQuestion());
 
 		return result;
+	}
+
+	@Mapping(target = "answer", source = "answerText")
+	AnswerInformationType convert(ch.ech.xmlns.ech_0155._4.AnswerOptionIdentificationType.AnswerTextInformation answer);
+
+	default LanguageType convert(final String value) {
+		return LanguageType.fromValue(value.toLowerCase());
+	}
+
+	private ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType createEmptyBallotDescriptionInformationType(
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
+		LOGGER.info("Creation of an empty ballotDescriptionInformation tag from ballot questions for ballot {}.",
+				ballotType.getBallotIdentification());
+
+		final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType ballotDescriptionInformationType = new ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType();
+
+		final List<ch.ech.xmlns.ech_0155._4.BallotQuestionType.BallotQuestionInfo> ballotQuestionInfoList = getBallotQuestionInfoList(ballotType);
+		if (ballotQuestionInfoList.isEmpty()) {
+			throw new IllegalStateException("Unable to create an empty ballotDescriptionInformation tag from ballot questions.");
+		}
+		ballotDescriptionInformationType.setBallotDescriptionInfo(createBallotDescriptionInfoList(ballotQuestionInfoList));
+
+		return ballotDescriptionInformationType;
+	}
+
+	private List<ch.ech.xmlns.ech_0155._4.BallotQuestionType.BallotQuestionInfo> getBallotQuestionInfoList(
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
+		if (ballotType.getStandardBallot() != null && ballotType.getStandardBallot().getBallotQuestion() != null) {
+			return ballotType.getStandardBallot().getBallotQuestion().getBallotQuestionInfo();
+		} else if (ballotType.getVariantBallot() != null && ballotType.getVariantBallot().getQuestionInformation() != null) {
+			return ballotType.getVariantBallot().getQuestionInformation().getFirst().getBallotQuestion().getBallotQuestionInfo();
+		} else {
+			return List.of();
+		}
+	}
+
+	private List<ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo> createBallotDescriptionInfoList(
+			final List<ch.ech.xmlns.ech_0155._4.BallotQuestionType.BallotQuestionInfo> ballotQuestionInfoList) {
+		return ballotQuestionInfoList.stream()
+				.map(ballotQuestionInfo -> {
+					final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo ballotDescriptionInfo = new ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo();
+					ballotDescriptionInfo.setLanguage(ballotQuestionInfo.getLanguage());
+					return ballotDescriptionInfo;
+				})
+				.toList();
 	}
 
 	private static String getDescription(
@@ -413,14 +479,31 @@ ECH015xv4Mapper {
 		} else if (ballotDescriptionInfo.getBallotDescriptionLong() != null) {
 			return StringUtils.left(ballotDescriptionInfo.getBallotDescriptionLong(), 100);
 		} else {
-			throw new IllegalStateException("Could not extract description.");
+			throw new IllegalStateException("Could not extract description from BallotDescriptionInfo");
 		}
 	}
 
-	@Mapping(target = "answer", source = "answerText")
-	AnswerInformationType convert(ch.ech.xmlns.ech_0155._4.AnswerOptionIdentificationType.AnswerTextInformation answer);
+	private static String getBallotQuestionTitle(final String language, final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
+		LOGGER.warn("The ballot {} lacks of descriptions. We will use the ballot questions to fill those descriptions.",
+				ballotType.getBallotIdentification());
 
-	default LanguageType convert(final String value) {
-		return LanguageType.fromValue(value.toLowerCase());
+		if (ballotType.getStandardBallot() != null && ballotType.getStandardBallot().getBallotQuestion() != null) {
+			return getBallotQuestionTitleFromInfo(language, ballotType.getStandardBallot().getBallotQuestion().getBallotQuestionInfo());
+		} else if (ballotType.getVariantBallot() != null && ballotType.getVariantBallot().getQuestionInformation() != null) {
+			return getBallotQuestionTitleFromInfo(language,
+					ballotType.getVariantBallot().getQuestionInformation().getFirst().getBallotQuestion().getBallotQuestionInfo());
+		} else {
+			throw new IllegalStateException("Could not extract question title.");
+		}
+	}
+
+	private static String getBallotQuestionTitleFromInfo(final String language,
+			final List<ch.ech.xmlns.ech_0155._4.BallotQuestionType.BallotQuestionInfo> ballotQuestionInfoList) {
+		return ballotQuestionInfoList.stream()
+				.filter(bdi -> bdi.getLanguage().equals(language))
+				.findFirst()
+				.orElseThrow(() -> new IllegalStateException(
+						String.format("Ballot question info is not available in expected language. [language: %s]", language)))
+				.getBallotQuestionTitle();
 	}
 }

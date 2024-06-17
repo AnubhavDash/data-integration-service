@@ -413,11 +413,14 @@
 			<xs:enumeration value="DEFAULT"/>
 			<xs:enumeration value="WITH_PARTY_AFFILIATION"/>
 			<xs:enumeration value="WITH_PARTY_AFFILIATION_EXTRA_LINE"/>
+			<xs:enumeration value="DEFAULT_COMMA_SEPARATED"/>
+			<xs:enumeration value="WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="displayListLineStyle">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="DEFAULT"/>
+			<xs:enumeration value="WITHOUT_SUBLISTUNION"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="electionType">
