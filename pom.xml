@@ -64,7 +64,7 @@
 		<spring-boot.version>3.3.0</spring-boot.version>
 		<stax2-api.version>4.2.2</stax2-api.version>
 		<super-machine.version>0.1.0</super-machine.version>
-		<woodstox-core.version>6.6.2</woodstox-core.version>
+		<woodstox-core.version>7.0.0</woodstox-core.version>
 		<xml-merge.version>0.2</xml-merge.version>
 		<xsdlib.version>2013.2</xsdlib.version>
 
