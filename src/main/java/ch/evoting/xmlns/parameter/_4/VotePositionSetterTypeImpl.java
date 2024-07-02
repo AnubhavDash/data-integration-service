@@ -15,8 +15,8 @@ public class VotePositionSetterTypeImpl extends VotePositionSetterType {
 	@Override
 	public ContestType apply(final ContestType contestType) {
 		this.getVote().forEach(tuple -> {
-			String voteIdentification = tuple.getVoteIdentification();
-			BigInteger position = tuple.getPosition();
+			final String voteIdentification = tuple.getVoteIdentification();
+			final BigInteger position = tuple.getPosition();
 
 			contestType.getVoteInformation().stream().parallel()
 					.map(VoteInformationType::getVote)

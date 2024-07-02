@@ -186,7 +186,7 @@ class ECH0045v4MapperTest {
 	@Test
 	void testSwissVoter() throws Exception {
 		final VotingPersonType echVoter = createSwissVoter();
-		VoterTypeWithRole voter = mapper.convert(echVoter);
+		final VoterTypeWithRole voter = mapper.convert(echVoter);
 		assertEquals("Dupont", voter.getPerson().getOfficialName());
 		assertEquals("Pierre", voter.getPerson().getFirstName());
 		assertEquals("1", voter.getPerson().getSex());
@@ -214,7 +214,7 @@ class ECH0045v4MapperTest {
 	@Test
 	void testAbroadVoter() throws Exception {
 		final VotingPersonType echAbroadVoter = createAbroadVoter();
-		VoterTypeWithRole voter = mapper.convert(echAbroadVoter);
+		final VoterTypeWithRole voter = mapper.convert(echAbroadVoter);
 		assertEquals("Durand", voter.getPerson().getOfficialName());
 		assertEquals("Fabienne", voter.getPerson().getFirstName());
 		assertEquals("2", voter.getPerson().getSex());
