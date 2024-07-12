@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/6">
   <header>
-    <fileDate>2024-06-11T08:36:56.992+02:00</fileDate>
+    <fileDate>2024-07-04T14:33:36.211+02:00</fileDate>
     <voterTotal>43</voterTotal>
   </header>
   <contest>
@@ -28,16 +28,6 @@
     </contestDescription>
     <evotingFromDate>2023-12-06T07:00:00+01:00</evotingFromDate>
     <evotingToDate>2027-11-25T23:00:00+01:00</evotingToDate>
-    <adminBoard>
-      <adminBoardIdentification>Post_Primary_Secondary</adminBoardIdentification>
-      <adminBoardName>Post_Primary_Secondary</adminBoardName>
-      <adminBoardDescription>Post_Primary_Secondary</adminBoardDescription>
-      <adminBoardThresholdValue>1</adminBoardThresholdValue>
-      <adminBoardMembers>
-        <adminBoardMemberName>AB1</adminBoardMemberName>
-        <adminBoardMemberName>AB2</adminBoardMemberName>
-      </adminBoardMembers>
-    </adminBoard>
     <electoralBoard>
       <electoralBoardIdentification>Post_Primary_Secondary</electoralBoardIdentification>
       <electoralBoardName>Post_Primary_Secondary</electoralBoardName>
@@ -4021,5 +4011,5 @@
       </person>
     </voter>
   </register>
-  <signature>YkVBUeRhcmEhcIe+0YqXoMyfZ4znt6GdBHx+wj3a5EeRPgqfrsxSgYkQk0OHlPf8xNIGKT8/zv/Zj3q3Zyrpkh+ghqxnsEfMR/Ns0gXLBvtz/sLe5adpJLjsK2IHvXhw56WVsC+TcPbkRKZCU6hzoynP9NkGgLNEzrEzLQCFu1b/r/dTicnLihQdv/6CcWtSlfXhdXz9+NN+wjFV0cME7QyOB/vXoVV3iNhwu2pj2gKE7+N7bOO00kFa/bYYJgC44G7p6+joD7/gyF/FzR5f39VXGpKlN8tDzQ5nmfVlt/LDZgpVtytbD4+CIV0gFS9bZWlr+YM/wr5rgbnMF+3+/qrpIjY3d8QqpnrYLMAxIISXwG/L2HhBGMzy4J/yxOgWaeeorkaCfeAdFD+m8r0Ocxr+w0Mgs46wlCV+GsM4gXXT4lKcarvxQqwtvdE/UGT5VYxKs0fQhHFO0em8fl4wI96BJLj0LHPPPcabBj9tSB69iFg+MFFQ1ORqCV2VD9Us</signature>
+  <signature>AsA6mCq2YG2qQpz6GCZZtZYcxqXPIeMgZ8u292wf01WU92YHzWT07Yk6d6+T/ysUeiwJ7zV5d8LvO2aUhuGR+VuhdeSCa3j4zLyJ0+Scfh2LWe6ESaGg3TtCWFMRJ84T2h36XCFo1Bs1g5bzvfszzoaagLiTeLsG8dt0LTC2h9zDxJBV0c0y0sdsfLuRM91FwnkQiLLoqQa6OzxwXcbxInKvdVlhula/Nk8vo+dMpbB1SvwaudcVQXnmHAq1p0GOHSCnwRL2bno1vHb/CO/zekDv5pjTi5YtDOD3TJdmklrdJDH6P5SJN6xLD3bIGZtvuc4CmSyAXvX93KJy3f+4gSxPe04ec/lyIFn1Zmr6WZNqFtuWGIhKaC0dj1u8AjhvE27FsopUekBG4RZAIdHV0Ij5PIaHI7oLDe7ZzfkDB7F+WmrPA3wj4M9NbX6YhyH3p+nnBSiCyyyf487J2I7xKfDKDvRKFKfprvKEa/SDsfLNPxUcU8bjwUtlmXaBgXqs</signature>
 </configuration>

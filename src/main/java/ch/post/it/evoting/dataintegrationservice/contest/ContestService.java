@@ -38,13 +38,13 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.MoreCollectors;
 import com.google.common.collect.Streams;
 
-import ch.evoting.xmlns.parameter._4.AnswerTranslationType;
-import ch.evoting.xmlns.parameter._4.ContestType.IncumbentText;
-import ch.evoting.xmlns.parameter._4.DefaultAnswerTranslationType;
-import ch.evoting.xmlns.parameter._4.DisplayCandidateLineStyle;
-import ch.evoting.xmlns.parameter._4.DisplayListLineStyle;
-import ch.evoting.xmlns.parameter._4.ElectionType;
-import ch.evoting.xmlns.parameter._4.EmptyCandidateTextInfo;
+import ch.evoting.xmlns.parameter._5.AnswerTranslationType;
+import ch.evoting.xmlns.parameter._5.ContestType.IncumbentText;
+import ch.evoting.xmlns.parameter._5.DefaultAnswerTranslationType;
+import ch.evoting.xmlns.parameter._5.DisplayCandidateLineStyle;
+import ch.evoting.xmlns.parameter._5.DisplayListLineStyle;
+import ch.evoting.xmlns.parameter._5.ElectionType;
+import ch.evoting.xmlns.parameter._5.EmptyCandidateTextInfo;
 import ch.post.it.evoting.dataintegrationservice.common.MarshallTool;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
@@ -119,9 +119,9 @@ public class ContestService {
 	}
 
 	private List<StandardAnswerType> getStandardAnswers(final String questionIdentification, BigInteger answerType,
-			final Map<String, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> specificAnswers,
-			final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> typedAnswers) {
-		List<ch.evoting.xmlns.parameter._4.StandardAnswerType> paramAnswers = specificAnswers.get(questionIdentification);
+			final Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> specificAnswers,
+			final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> typedAnswers) {
+		List<ch.evoting.xmlns.parameter._5.StandardAnswerType> paramAnswers = specificAnswers.get(questionIdentification);
 		if ((paramAnswers == null || paramAnswers.isEmpty())) {
 			if (answerType == null) {
 				LOGGER.warn(
@@ -137,9 +137,9 @@ public class ContestService {
 	}
 
 	private List<TiebreakAnswerType> getTiebreakAnswers(final String questionIdentification, BigInteger answerType,
-			final Map<String, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> specificAnswers,
-			final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> typedAnswers) {
-		List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType> paramAnswers = specificAnswers.get(questionIdentification);
+			final Map<String, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> specificAnswers,
+			final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> typedAnswers) {
+		List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType> paramAnswers = specificAnswers.get(questionIdentification);
 		if ((paramAnswers == null || paramAnswers.isEmpty())) {
 			if (answerType == null) {
 				LOGGER.warn(
@@ -154,9 +154,9 @@ public class ContestService {
 		return ParameterMapper.INSTANCE.mapTiebreak(paramAnswers, questionIdentification);
 	}
 
-	private Map<BigInteger, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> getDefaultStandardAnswers(
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
-		final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> defaultAnswers;
+	private Map<BigInteger, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> getDefaultStandardAnswers(
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+		final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> defaultAnswers;
 		if (contestParameters.getDefaultAnswerTranslations() == null) {
 			defaultAnswers = new HashMap<>();
 		} else {
@@ -173,9 +173,9 @@ public class ContestService {
 		return defaultAnswers;
 	}
 
-	private Map<BigInteger, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> getDefaultTiebreakAnswers(
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
-		final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> defaultAnswers;
+	private Map<BigInteger, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> getDefaultTiebreakAnswers(
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+		final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> defaultAnswers;
 		if (contestParameters.getDefaultAnswerTranslations() == null) {
 			defaultAnswers = new HashMap<>();
 		} else {
@@ -192,9 +192,9 @@ public class ContestService {
 		return defaultAnswers;
 	}
 
-	private Map<String, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> getSpecificStandardAnswers(
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
-		final Map<String, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> specificAnswers;
+	private Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> getSpecificStandardAnswers(
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+		final Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> specificAnswers;
 		if (contestParameters.getAnswerTranslations() == null) {
 			specificAnswers = new HashMap<>();
 		} else {
@@ -209,9 +209,9 @@ public class ContestService {
 		return specificAnswers;
 	}
 
-	private Map<String, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> getSpecifiTiebreakAnswers(
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
-		final Map<String, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> specificAnswers;
+	private Map<String, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> getSpecifiTiebreakAnswers(
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+		final Map<String, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> specificAnswers;
 		if (contestParameters.getAnswerTranslations() == null) {
 			specificAnswers = new HashMap<>();
 		} else {
@@ -226,14 +226,14 @@ public class ContestService {
 		return specificAnswers;
 	}
 
-	private void addVotesAnswers(final List<VoteInformationType> votes, final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
-		final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> defaultStandardAnswers = getDefaultStandardAnswers(
+	private void addVotesAnswers(final List<VoteInformationType> votes, final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+		final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> defaultStandardAnswers = getDefaultStandardAnswers(
 				contestParameters);
-		final Map<String, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> specificStandardAnswers = getSpecificStandardAnswers(
+		final Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> specificStandardAnswers = getSpecificStandardAnswers(
 				contestParameters);
-		final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> defaultTiebreakAnswers = getDefaultTiebreakAnswers(
+		final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> defaultTiebreakAnswers = getDefaultTiebreakAnswers(
 				contestParameters);
-		final Map<String, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> specificTiebreakAnswers = getSpecifiTiebreakAnswers(
+		final Map<String, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> specificTiebreakAnswers = getSpecifiTiebreakAnswers(
 				contestParameters);
 
 		votes.forEach(vote -> vote.getVote().getBallot().forEach(ballot -> {
@@ -246,10 +246,10 @@ public class ContestService {
 		}));
 	}
 
-	private void addVotesAnswersVariantBallot(final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> defaultStandardAnswers,
-			final Map<String, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> specificStandardAnswers,
-			final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> defaultTiebreakAnswers,
-			final Map<String, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> specificTiebreakAnswers, final BallotType ballot) {
+	private void addVotesAnswersVariantBallot(final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> defaultStandardAnswers,
+			final Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> specificStandardAnswers,
+			final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> defaultTiebreakAnswers,
+			final Map<String, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> specificTiebreakAnswers, final BallotType ballot) {
 		ballot.getVariantBallot().getStandardQuestion().forEach(question -> {
 			if (question.getAnswer().isEmpty()) {
 				question.getAnswer()
@@ -266,8 +266,8 @@ public class ContestService {
 		});
 	}
 
-	private void addVotesAnswersStandardBallot(final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> defaultStandardAnswers,
-			final Map<String, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> specificStandardAnswers, final BallotType ballot) {
+	private void addVotesAnswersStandardBallot(final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> defaultStandardAnswers,
+			final Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> specificStandardAnswers, final BallotType ballot) {
 		final StandardBallotType question = ballot.getStandardBallot();
 		if (question.getAnswer().isEmpty()) {
 			question.getAnswer()
@@ -277,7 +277,7 @@ public class ContestService {
 	}
 
 	public ContestType build(final ContestType contest, final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 
 		addElectionGroupIdAndDescriptionIfNeeded(electionGroups);
 
@@ -326,8 +326,6 @@ public class ContestService {
 
 		contest.setContestDefaultLanguage(LanguageType.fromValue(contestParameters.getDefaultLanguage().value()));
 
-		contest.setAdminBoard(ParameterMapper.INSTANCE.map(contestParameters.getAdminBoard()));
-
 		contest.setElectoralBoard(ParameterMapper.INSTANCE.map(contestParameters.getElectoralBoard()));
 
 		// check to avoid list identification duplicates
@@ -346,7 +344,7 @@ public class ContestService {
 	}
 
 	private void addCandidateEligibilityFromParameters(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 		if (contestParameters.getElections() != null) {
 			contestParameters.getElections().getElection().stream()
 					.filter(e -> e.getCandidatesEligibility() != null)
@@ -367,7 +365,7 @@ public class ContestService {
 	}
 
 	private void addDisplayCandidateLines(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 
 		final List<ElectionDisplayCandidateLineStyleTuple> electionDisplayCandidateLineStyleTuples =
 				contestParameters.getElections() != null ?
@@ -544,7 +542,7 @@ public class ContestService {
 	}
 
 	private void fillPositionIfDefinedInParameters(final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 		if (contestParameters.getSorting() != null) {
 			contestParameters.getSorting().getElectionGroup().forEach(positionParameter -> {
 				final String electionGroupIdentification = positionParameter.getElectionGroupIdentification();
@@ -705,7 +703,7 @@ public class ContestService {
 	}
 
 	private Map<String, BigInteger> getParametersMinimalCandidateSelectionInList(
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 		if (contestParameters.getElections() == null) {
 			return new HashMap<>();
 		} else {
@@ -715,7 +713,7 @@ public class ContestService {
 	}
 
 	private void addElectionsMinimalCandidateSelectionInList(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 		final Map<String, BigInteger> parametersMinimalCandidateSelectionInList = getParametersMinimalCandidateSelectionInList(contestParameters);
 		electionGroups.stream()
 				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
@@ -724,7 +722,7 @@ public class ContestService {
 	}
 
 	private void addElectionRulesExplanation(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 		if (contestParameters.getElections() != null) {
 			contestParameters.getElections()
 					.getElection().stream()
@@ -781,7 +779,7 @@ public class ContestService {
 	record ElectionDisplayListLineStyleTuple(String electionIdentification, DisplayListLineStyle displayListLineStyle) {
 	}
 
-	private void addDisplayListLines(final List<ElectionGroupBallotType> electionGroups, final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+	private void addDisplayListLines(final List<ElectionGroupBallotType> electionGroups, final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 
 		final List<ElectionDisplayListLineStyleTuple> electionDisplayListLineStyleTuples =
 				contestParameters.getElections() != null ?
@@ -948,7 +946,7 @@ public class ContestService {
 	}
 
 	private void addCandidatesInEmptyListsIfNeeded(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.forEach(e -> e.getList().stream()
 						.filter(l -> l.isListEmpty() && (l.getCandidatePosition() == null || l.getCandidatePosition().isEmpty()))
@@ -956,7 +954,7 @@ public class ContestService {
 	}
 
 	private void appendCandidates(final ListType l, final int numberOfMandates,
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 		for (int i = 1; i <= numberOfMandates; i++) {
 			final String candidatePosition = String.format("%02d", i);
 
@@ -980,7 +978,7 @@ public class ContestService {
 		}
 	}
 
-	private String getEmptyCandidateText(final LanguageType language, final ch.evoting.xmlns.parameter._4.ContestType contest) {
+	private String getEmptyCandidateText(final LanguageType language, final ch.evoting.xmlns.parameter._5.ContestType contest) {
 		if (contest.getEmptyCandidateText() != null) {
 			final EmptyCandidateTextInfo emptyCandidateTextInfo = contest.getEmptyCandidateText().getEmptyCandidateTextInfo().stream()
 					.filter(ti -> ti.getLanguage().value().equals(language.value())).findFirst().orElse(null);
@@ -1010,7 +1008,7 @@ public class ContestService {
 		}
 	}
 
-	private Map<String, Boolean> getParametersWriteIns(final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+	private Map<String, Boolean> getParametersWriteIns(final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 		if (contestParameters.getElections() == null) {
 			return new HashMap<>();
 		} else {
@@ -1020,7 +1018,7 @@ public class ContestService {
 	}
 
 	private void addElectionsWriteIns(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 		final Map<String, Boolean> writeInsMap = getParametersWriteIns(contestParameters);
 		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.forEach(e -> {
@@ -1039,7 +1037,7 @@ public class ContestService {
 	}
 
 	private void checkParametersOfElections(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 		if (contestParameters.getElections() != null) {
 			final Set<String> electionsIds = electionGroups.stream()
 					.flatMap(e -> e.getElectionInformation().stream())
@@ -1054,7 +1052,7 @@ public class ContestService {
 		}
 	}
 
-	private Map<String, BigInteger> getParametersAccumulation(final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+	private Map<String, BigInteger> getParametersAccumulation(final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 		if (contestParameters.getElections() == null) {
 			return new HashMap<>();
 		} else {
@@ -1064,7 +1062,7 @@ public class ContestService {
 	}
 
 	private void addElectionsAccumulation(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 		final Map<String, BigInteger> accumulationMap = getParametersAccumulation(contestParameters);
 		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.forEach(e -> {
@@ -1394,7 +1392,7 @@ public class ContestService {
 		}));
 	}
 
-	public void checkConsistency(final ContestType c, final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+	public void checkConsistency(final ContestType c, final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 		checkContestExists(c);
 		checkEVotingDates(c);
 		checkLanguagesConsistency(c);

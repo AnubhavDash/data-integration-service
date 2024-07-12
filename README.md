@@ -28,7 +28,6 @@ manner.
 The configuration file “param.xml” contains the following definitions for the SDM:
 
 * voting period
-* admin board
 * electoral board
 * specific election definitions (candidate-accumulation, write-ins)
 * extended authentication mode (birthyear / birthdate)

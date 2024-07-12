@@ -1,7 +1,7 @@
 /*
  * (c) Copyright 2024 Swiss Post Ltd.
  */
-package ch.evoting.xmlns.parameter._4;
+package ch.evoting.xmlns.parameter._5;
 
 import java.util.Collections;
 import java.util.List;

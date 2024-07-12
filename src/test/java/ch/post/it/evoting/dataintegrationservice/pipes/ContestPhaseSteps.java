@@ -25,19 +25,17 @@ import javax.xml.namespace.QName;
 
 import org.slf4j.LoggerFactory;
 
-import ch.evoting.xmlns.parameter._4.AdminBoardMembersType;
-import ch.evoting.xmlns.parameter._4.AdminBoardType;
-import ch.evoting.xmlns.parameter._4.AnswerInformationType;
-import ch.evoting.xmlns.parameter._4.AnswerTranslationType;
-import ch.evoting.xmlns.parameter._4.DefaultAnswerTranslationType;
-import ch.evoting.xmlns.parameter._4.DisplayCandidateLineStyle;
-import ch.evoting.xmlns.parameter._4.DisplayListLineStyle;
-import ch.evoting.xmlns.parameter._4.ElectionsType;
-import ch.evoting.xmlns.parameter._4.ElectoralBoardMembersType;
-import ch.evoting.xmlns.parameter._4.ElectoralBoardType;
-import ch.evoting.xmlns.parameter._4.IncumbentTextInfo;
-import ch.evoting.xmlns.parameter._4.StandardAnswerType;
-import ch.evoting.xmlns.parameter._4.TiebreakAnswerType;
+import ch.evoting.xmlns.parameter._5.AnswerInformationType;
+import ch.evoting.xmlns.parameter._5.AnswerTranslationType;
+import ch.evoting.xmlns.parameter._5.DefaultAnswerTranslationType;
+import ch.evoting.xmlns.parameter._5.DisplayCandidateLineStyle;
+import ch.evoting.xmlns.parameter._5.DisplayListLineStyle;
+import ch.evoting.xmlns.parameter._5.ElectionsType;
+import ch.evoting.xmlns.parameter._5.ElectoralBoardMembersType;
+import ch.evoting.xmlns.parameter._5.ElectoralBoardType;
+import ch.evoting.xmlns.parameter._5.IncumbentTextInfo;
+import ch.evoting.xmlns.parameter._5.StandardAnswerType;
+import ch.evoting.xmlns.parameter._5.TiebreakAnswerType;
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
 import ch.post.it.evoting.dataintegrationservice.common.XmlTransformer;
 import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
@@ -93,7 +91,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 	private static final String DEFAULT_ELECTIONS = "my elections";
 	private final MemoryAppender memoryAppender;
 	private final Map<String, ContestType> contestMap = new HashMap<>();
-	private final Map<String, ch.evoting.xmlns.parameter._4.ContestType> paramsMap = new HashMap<>();
+	private final Map<String, ch.evoting.xmlns.parameter._5.ContestType> paramsMap = new HashMap<>();
 	private final Map<String, List<ElectionGroupBallotType>> electionsMap = new HashMap<>();
 	private final Map<String, ElectionGroupBallotType> electionMap = new HashMap<>();
 	private final Map<String, List<VoteInformationType>> votesMap = new HashMap<>();
@@ -108,7 +106,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 	private final Map<String, DefaultAnswerTranslationType.AnswerType> pAnswerTypeMap = new HashMap<>();
 	private final Map<String, StandardAnswerType> pStandardAnswerMap = new HashMap<>();
 	private final Map<String, TiebreakAnswerType> pTiebreakAnswerMap = new HashMap<>();
-	private final Map<String, ch.evoting.xmlns.parameter._4.ElectionType> pElectionMap = new HashMap<>();
+	private final Map<String, ch.evoting.xmlns.parameter._5.ElectionType> pElectionMap = new HashMap<>();
 	private final Map<String, ListUnionType> listUnionMap = new HashMap<>();
 	private ContestType contest;
 	private Exception processException = null;
@@ -179,7 +177,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 	@And("^a user parameter input$")
 	public void andUserParameterInput() {
 		ParameterPhase.exports.setContestParameters(Flux.just(
-				new ch.evoting.xmlns.parameter._4.ContestType().withDefaultAnswerTranslations(new DefaultAnswerTranslationType())
+				new ch.evoting.xmlns.parameter._5.ContestType().withDefaultAnswerTranslations(new DefaultAnswerTranslationType())
 						.withDefaultDisplayCandidateLineStyle(DisplayCandidateLineStyle.DEFAULT)
 						.withDefaultDisplayListLineStyle(DisplayListLineStyle.DEFAULT)));
 
@@ -220,16 +218,10 @@ public class ContestPhaseSteps extends PhaseSteps {
 	@Given("^user parameters named \"([^\"]*)\"$")
 	public void givenUserParametersNamed(final String name) {
 		paramsMap.put(name,
-				new ch.evoting.xmlns.parameter._4.ContestType().withAnswerTranslations(new AnswerTranslationType().withQuestion(new ArrayList<>()))
+				new ch.evoting.xmlns.parameter._5.ContestType().withAnswerTranslations(new AnswerTranslationType().withQuestion(new ArrayList<>()))
 						.withDefaultAnswerTranslations(new DefaultAnswerTranslationType())
 						.withDefaultDisplayCandidateLineStyle(DisplayCandidateLineStyle.DEFAULT)
 						.withDefaultDisplayListLineStyle(DisplayListLineStyle.DEFAULT)
-						.withAdminBoard(new AdminBoardType()
-								.withAdminBoardIdentification("ab")
-								.withAdminBoardDescription("Admin Board")
-								.withAdminBoardName("AB")
-								.withAdminBoardThresholdValue(BigInteger.TWO)
-								.withAdminBoardMembers(new AdminBoardMembersType().withAdminBoardMemberName("AB1", "AB2")))
 						.withElectoralBoard(new ElectoralBoardType()
 								.withElectoralBoardIdentification("eb")
 								.withElectoralBoardDescription("ELECTORAL BOARD")
@@ -249,11 +241,11 @@ public class ContestPhaseSteps extends PhaseSteps {
 
 	@And("^user parameters \"([^\"]*)\" has default incumbent$")
 	public void andUserParametersHasDefaultIncumbent(final String name) {
-		paramsMap.get(name).setIncumbentText(new ch.evoting.xmlns.parameter._4.ContestType.IncumbentText().withIncumbentTextInfo(
-				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._4.LanguageType.DE).withText("Bisher"),
-				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._4.LanguageType.FR).withText("sortant/e"),
-				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._4.LanguageType.IT).withText("uscente"),
-				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._4.LanguageType.RM).withText("uscant")));
+		paramsMap.get(name).setIncumbentText(new ch.evoting.xmlns.parameter._5.ContestType.IncumbentText().withIncumbentTextInfo(
+				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._5.LanguageType.DE).withText("Bisher"),
+				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._5.LanguageType.FR).withText("sortant/e"),
+				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._5.LanguageType.IT).withText("uscente"),
+				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._5.LanguageType.RM).withText("uscant")));
 	}
 
 	@And("^user parameters \"([^\"]*)\" has defaultDisplayCandidateLineStyle \"([^\"]*)\"$")
@@ -268,12 +260,12 @@ public class ContestPhaseSteps extends PhaseSteps {
 
 	@And("^user parameters \"([^\"]*)\" has contest default language \"([^\"]*)\"$")
 	public void andUserParametersHasContestDefaultLanguage(final String name, final String lang) {
-		paramsMap.get(name).setDefaultLanguage(ch.evoting.xmlns.parameter._4.LanguageType.valueOf(lang));
+		paramsMap.get(name).setDefaultLanguage(ch.evoting.xmlns.parameter._5.LanguageType.valueOf(lang));
 	}
 
 	@And("^user parameters \"([^\"]*)\" has election named \"([^\"]*)\"$")
 	public void andUserParametersHasElectionNamed(final String name, final String electionName) {
-		final ch.evoting.xmlns.parameter._4.ElectionType election = new ch.evoting.xmlns.parameter._4.ElectionType();
+		final ch.evoting.xmlns.parameter._5.ElectionType election = new ch.evoting.xmlns.parameter._5.ElectionType();
 		pElectionMap.put(electionName, election);
 		if (paramsMap.get(name).getElections() == null) {
 			paramsMap.get(name).withElections(new ElectionsType().withElection(new ArrayList<>()));
@@ -356,13 +348,13 @@ public class ContestPhaseSteps extends PhaseSteps {
 	@And("^standardAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer description \"([^\"]*)\" \"([^\"]*)\"$")
 	public void andStandardAnswer(final String name, final String at, final String answer, final String lang, final String info) {
 		pStandardAnswerMap.get(name + "." + at + "." + answer).getAnswerInfo()
-				.add(new AnswerInformationType().withLanguage(ch.evoting.xmlns.parameter._4.LanguageType.valueOf(lang)).withAnswer(info));
+				.add(new AnswerInformationType().withLanguage(ch.evoting.xmlns.parameter._5.LanguageType.valueOf(lang)).withAnswer(info));
 	}
 
 	@And("^tiebreakAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer description \"([^\"]*)\" \"([^\"]*)\"$")
 	public void andTiebreakAnswer(final String name, final String at, final String answer, final String lang, final String info) {
 		pTiebreakAnswerMap.get(name + "." + at + "." + answer).getAnswerInfo()
-				.add(new AnswerInformationType().withLanguage(ch.evoting.xmlns.parameter._4.LanguageType.valueOf(lang)).withAnswer(info));
+				.add(new AnswerInformationType().withLanguage(ch.evoting.xmlns.parameter._5.LanguageType.valueOf(lang)).withAnswer(info));
 	}
 
 	@Given("^the descriptions of the answer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")

@@ -23,48 +23,6 @@
 			<xs:enumeration value="3"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:complexType name="adminBoardType">
-		<xs:sequence>
-			<xs:element name="adminBoardIdentification" type="config:identifierType"/>
-			<xs:element name="adminBoardName">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-						<xs:maxLength value="100"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element name="adminBoardDescription">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-						<xs:maxLength value="100"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element name="adminBoardThresholdValue" default="2">
-				<xs:simpleType>
-					<xs:restriction base="xs:integer">
-						<xs:minInclusive value="1"/>
-						<xs:maxInclusive value="10"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element name="adminBoardMembers" type="config:adminBoardMembersType"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="adminBoardMembersType">
-		<xs:sequence>
-			<xs:element name="adminBoardMemberName" maxOccurs="unbounded">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-						<xs:maxLength value="100"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-		</xs:sequence>
-	</xs:complexType>
 	<xs:complexType name="electoralBoardType">
 		<xs:sequence>
 			<xs:element name="electoralBoardIdentification" type="config:identifierType"/>
@@ -870,7 +828,6 @@
 			<xs:element name="contestDescription" type="config:contestDescriptionInformationType"/>
 			<xs:element name="evotingFromDate" type="xs:dateTime"/>
 			<xs:element name="evotingToDate" type="xs:dateTime"/>
-			<xs:element name="adminBoard" type="config:adminBoardType"/>
 			<xs:element name="electoralBoard" type="config:electoralBoardType"/>
 			<xs:element name="extendedAuthenticationKeys" type="config:extendedAuthenticationKeysDefinitionType" minOccurs="0"/>
 			<xs:element name="electionGroupBallot" type="config:electionGroupBallotType" minOccurs="0" maxOccurs="unbounded"/>

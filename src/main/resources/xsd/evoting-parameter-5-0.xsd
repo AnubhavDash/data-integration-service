@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.evoting.ch/xmlns/parameter/4" xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb" targetNamespace="http://www.evoting.ch/xmlns/parameter/4" elementFormDefault="qualified" version="4.9" jaxb:version="3.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.evoting.ch/xmlns/parameter/5" xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb" targetNamespace="http://www.evoting.ch/xmlns/parameter/5" elementFormDefault="qualified" version="5.0" jaxb:version="3.0">
 	<xs:simpleType name="languageType">
 		<xs:restriction base="xs:string">
 			<xs:length value="2"/>
@@ -9,48 +9,6 @@
 			<xs:enumeration value="rm"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:complexType name="adminBoardMembersType">
-		<xs:sequence>
-			<xs:element name="adminBoardMemberName" maxOccurs="unbounded">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-						<xs:maxLength value="100"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="adminBoardType">
-		<xs:sequence>
-			<xs:element name="adminBoardIdentification">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:maxLength value="50"/>
-						<xs:minLength value="1"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element name="adminBoardName">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-						<xs:maxLength value="100"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element name="adminBoardDescription">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-						<xs:maxLength value="100"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element name="adminBoardThresholdValue" type="xs:nonNegativeInteger" default="2"/>
-			<xs:element name="adminBoardMembers" type="adminBoardMembersType"/>
-		</xs:sequence>
-	</xs:complexType>
 	<xs:complexType name="electoralBoardMembersType">
 		<xs:sequence>
 			<xs:element name="electoralBoardMemberName" maxOccurs="unbounded">
@@ -291,7 +249,6 @@
 			<xs:element name="evotingFromDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="evotingToDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="evotingTestBallotBoxesFromDate" type="xs:dateTime" minOccurs="0"/>
-			<xs:element name="adminBoard" type="adminBoardType"/>
 			<xs:element name="electoralBoard" type="electoralBoardType"/>
 			<xs:element name="elections" type="electionsType" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="sorting" type="sortingType" minOccurs="0" maxOccurs="1"/>

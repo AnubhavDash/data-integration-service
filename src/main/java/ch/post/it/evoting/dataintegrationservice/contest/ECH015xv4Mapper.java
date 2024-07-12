@@ -73,7 +73,6 @@ ECH015xv4Mapper {
 	@Mapping(target = "electionGroupBallot", ignore = true)
 	@Mapping(target = "voteInformation", ignore = true)
 	@Mapping(target = "extendedAuthenticationKeys", ignore = true)
-	@Mapping(target = "adminBoard", ignore = true)
 	@Mapping(target = "electoralBoard", ignore = true)
 	void addContestInformation(
 			@MappingTarget

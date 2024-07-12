@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/6">
   <header>
-    <fileDate>2024-06-11T08:35:53.529+02:00</fileDate>
+    <fileDate>2024-07-04T14:32:34.590+02:00</fileDate>
     <voterTotal>43</voterTotal>
   </header>
   <contest>
@@ -28,16 +28,6 @@
     </contestDescription>
     <evotingFromDate>2023-12-06T07:00:00+01:00</evotingFromDate>
     <evotingToDate>2027-11-25T23:00:00+01:00</evotingToDate>
-    <adminBoard>
-      <adminBoardIdentification>Post_E2E_DEV</adminBoardIdentification>
-      <adminBoardName>Post_E2E_DEV</adminBoardName>
-      <adminBoardDescription>Post_E2E_DEV</adminBoardDescription>
-      <adminBoardThresholdValue>1</adminBoardThresholdValue>
-      <adminBoardMembers>
-        <adminBoardMemberName>AB1</adminBoardMemberName>
-        <adminBoardMemberName>AB2</adminBoardMemberName>
-      </adminBoardMembers>
-    </adminBoard>
     <electoralBoard>
       <electoralBoardIdentification>Post_E2E_DEV</electoralBoardIdentification>
       <electoralBoardName>Post_E2E_DEV</electoralBoardName>
@@ -4379,5 +4369,5 @@
       <voterType>SWISSABROAD</voterType>
     </voter>
   </register>
-  <signature>Mk3ynCrn8OC4fOBLMItJr7jCt918odQutdDwpYyi9UBehXAHSoVO8S3+DFCOgKH4y7YKo3vEq2s6fMGHtQ65/gnDwoRffibrmHIGm4PzAArZBt0PXYCin0Cx6eOwLPJtWvDou/YyKisojFJhDeMwg2V0bfRgrTQa5JkZ+AmOkHkcZsznTXYZ2B2OMn2DOkWBNw4tygSQDBY51mSD/u6ZUU14WRd0qjbnCiXHTR3vXXdSF/RpDRvDLZSeruu7KELuYuHk+Rhr4bV+JeYodhjVZY3+zIyqnRhTAAb7DiE034MsgJ6356MnC1f3SVpCONolW9ALaMx6piM/JsOkDwvLgWg/XSXtrFEyNGSgqeartwX5JKP7gD3FraEq/PdrsFsa4bMFX3dLnWOHC02Q0vJBZ+Ar+a3PMUvENNOZ/Sp/m2d8ZOAajH8A96JkrGYN7CTlmrTuUfwk4j+Tczw1gzb57Ijh3Ya1lF/VgaJPOMFEj+lhUNfnxz6+xu8icF1jDQBH</signature>
+  <signature>Ozif2/YYysfuXrWMOqCAss5L1CwRE9KA6Q9olYxijJqT+L79KZ8Gt1Vm8THoRKj3gLlMrUMVVxuZutxyelv6mxg7iljgjr+oqbh0dAZjlbpi0mc1CvI5/xxcOeaSLwhezjuEo6eHaR8946dxG+23r4XmxmiBOdUfw1rv4Ri4LiSctQKaZUzuftxDdg2IdpHvXDhpVF/46VRlAtF1HPHcC08xDEQpLTnonqmuhXNbZPafPn+QBiAPw5gBzksJ4tTKpvy64IFKuN/gxKCTlhzfeJjbavMVA34Bu1HR89vnQGrkIJWT+u6XHy6mH2FYpiptVIL9As7D4JHmx/mBfcinpP3ebpyqnx8zhwGYNTndpnymqNwBBJYIqEOHO9ttw7DUMF5kPuE8RGJbbZzR9r8xo81pHkQMz1Z6req7NyV72ns+4aVLI1QuBtmIefT+gLX0FRlw11+U0qS/2KfI1Is43DTZWu2GLHkOF4IWsxzVwHc0bQBK6TXrxme6WMFeaZoh</signature>
 </configuration>
