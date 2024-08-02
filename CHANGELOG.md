@@ -1,5 +1,17 @@
 # Changelog
 
+## Release 2.8.3.2
+
+Release 2.8.3.2 incorporates the following change:
+
+* Update e-voting-libraries dependency to 1.4.3.2.
+
+## Release 2.8.3.1
+
+Release 2.8.3.1 incorporates the following change:
+
+* Update e-voting-libraries dependency to 1.4.3.1.
+
 ## Release 2.8.3
 
 Release 2.8.3 is a minor patch containing the following changes:
