@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +67,7 @@ abstract class ConfigurationAnonymizedReproducibleTestBase {
 		final Hashable hashableExpected = HashableCantonConfigFactory.fromConfiguration(expected);
 		final Hashable hashableActual = HashableCantonConfigFactory.fromConfiguration(actual);
 
-		return Objects.equals(hash.recursiveHash(hashableExpected), hash.recursiveHash(hashableActual));
+		return Arrays.equals(hash.recursiveHash(hashableExpected), hash.recursiveHash(hashableActual));
 	}
 
 	private static Configuration load(final String datasetName) {
