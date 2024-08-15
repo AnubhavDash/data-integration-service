@@ -3,6 +3,8 @@
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import java.math.BigInteger;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -348,9 +350,8 @@ ECH015xv4Mapper {
 		if (tbqi.getTieBreakQuestionTitle() != null) {
 			result.setBallotQuestionTitle(tbqi.getTieBreakQuestionTitle());
 		} else {
-			Optional.ofNullable(ballotType.getBallotDescription())
-					.orElseThrow(() -> new IllegalStateException(
-							"Ballot description is missing. A ballot must include a description if no tie-break question title is available."));
+			checkState(ballotType.getBallotDescription() != null,
+					"Ballot description is missing. A ballot must include a description if no tie-break question title is available.");
 
 			final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo ballotDescriptionInfo = ballotType.getBallotDescription()
 					.getBallotDescriptionInfo().stream()
@@ -410,9 +411,8 @@ ECH015xv4Mapper {
 		if (bqi.getBallotQuestionTitle() != null) {
 			result.setBallotQuestionTitle(bqi.getBallotQuestionTitle());
 		} else {
-			Optional.ofNullable(ballotType.getBallotDescription())
-					.orElseThrow(() -> new IllegalStateException(
-							"Ballot description is missing. A ballot must include a description if no ballot question title is available."));
+			checkState(ballotType.getBallotDescription() != null,
+					"Ballot description is missing. A ballot must include a description if no ballot question title is available.");
 
 			final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo ballotDescriptionInfo =
 					ballotType.getBallotDescription().getBallotDescriptionInfo().stream()

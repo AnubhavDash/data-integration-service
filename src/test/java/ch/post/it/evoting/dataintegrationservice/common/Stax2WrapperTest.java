@@ -38,7 +38,7 @@ class Stax2WrapperTest {
 
 		final Stax2Wrapper wrapper = new Stax2Wrapper("./src/test/resources/Stax2WrapperTest/file1.ech0045v4.two.xml",
 				this.getClass().getResource("./xsd/eCH-0045-4-0.xsd"), ObjectFactory.class);
-		wrapper.addElementListener("/voterDelivery/voterList/reportingAuthority", AuthorityType.class, (a) -> reportingAuthority[0] = a);
+		wrapper.addElementListener("/voterDelivery/voterList/reportingAuthority", AuthorityType.class, a -> reportingAuthority[0] = a);
 
 		wrapper.process();
 

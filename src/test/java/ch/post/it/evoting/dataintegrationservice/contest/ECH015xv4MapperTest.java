@@ -485,7 +485,9 @@ class ECH015xv4MapperTest {
 	@Test
 	void testBallotDescriptionInfoWithMissingDescriptions() {
 		final BallotDescriptionInformationType source = createEchBallotDescriptionInformationTypeWithMissingDescriptions();
-		final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> mapper.convert(source, createEchBallotWithMissingQuestionInfo()));
+		final BallotType echBallotWithMissingQuestionInfo = createEchBallotWithMissingQuestionInfo();
+		final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> mapper.convert(source,
+				echBallotWithMissingQuestionInfo));
 		assertEquals("Ballot question info is not available in expected language. [language: rm]", exception.getMessage());
 	}
 
@@ -517,9 +519,6 @@ class ECH015xv4MapperTest {
 	void testVoteInformation() {
 		final EventInitialDelivery.VoteInformation source = createEchVoteInformation();
 		final VoteInformationType destination = mapper.convert(source);
-
-		final VoteType voteSource = source.getVote();
-		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteType voteDestination = destination.getVote();
 
 		assertEquals(source.getVote() != null, destination.getVote() != null);
 		assertEquals(source.getBallot().size(), destination.getVote().getBallot().size());

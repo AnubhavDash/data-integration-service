@@ -7,6 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource("application-test.properties")
+@PropertySource("application-test.yaml")
 public class SpringTestConfiguration {
 }
