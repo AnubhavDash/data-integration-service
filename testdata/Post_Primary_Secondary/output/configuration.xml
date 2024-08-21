@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/7">
   <header>
-    <fileDate>2024-07-04T14:33:36.211+02:00</fileDate>
+    <fileDate>2024-08-16T14:19:10.695+02:00</fileDate>
     <voterTotal>43</voterTotal>
   </header>
   <contest>
@@ -1318,7 +1318,7 @@
             </displayLineInfo>
           </displayCandidateLine4>
         </candidate>
-        <list>
+        <emptyList>
           <listIdentification>641f8d10-9c47-3ac4-b076-ed4f3fe500eb</listIdentification>
           <listIndentureNumber>99</listIndentureNumber>
           <listDescription>
@@ -1344,160 +1344,266 @@
             </listDescriptionInfo>
           </listDescription>
           <listOrderOfPrecedence>99</listOrderOfPrecedence>
-          <listEmpty>true</listEmpty>
-          <candidatePosition>
-            <candidateListIdentification>37455c5c-a518-394c-a95a-bab90e424d15</candidateListIdentification>
+          <emptyPosition>
+            <emptyPositionIdentification>37455c5c-a518-394c-a95a-bab90e424d15</emptyPositionIdentification>
             <positionOnList>1</positionOnList>
-            <candidateReferenceOnPosition>99.01</candidateReferenceOnPosition>
-            <candidateTextOnPosition>
-              <candidateTextInfo>
+            <emptyPositionTextInfo>
+              <positionText>
                 <language>de</language>
-                <candidateText>Kein Name ausgewählt</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Kein Name ausgewählt</positionTextShort>
+                <positionTextLong>Kein Name ausgewählt</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>fr</language>
-                <candidateText>Aucun nom sélectionné</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Aucun nom sélectionné</positionTextShort>
+                <positionTextLong>Aucun nom sélectionné</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>it</language>
-                <candidateText>Nessun nominativo selezionato</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Nessun nominativo selezionato</positionTextShort>
+                <positionTextLong>Nessun nominativo selezionato</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>rm</language>
-                <candidateText>Nagin num selecziunà</candidateText>
-              </candidateTextInfo>
-            </candidateTextOnPosition>
-          </candidatePosition>
-          <candidatePosition>
-            <candidateListIdentification>189c0832-0cc2-32ff-9313-c938d39ce766</candidateListIdentification>
+                <positionTextShort>Nagin num selecziunà</positionTextShort>
+                <positionTextLong>Nagin num selecziunà</positionTextLong>
+              </positionText>
+            </emptyPositionTextInfo>
+          </emptyPosition>
+          <emptyPosition>
+            <emptyPositionIdentification>189c0832-0cc2-32ff-9313-c938d39ce766</emptyPositionIdentification>
             <positionOnList>2</positionOnList>
-            <candidateReferenceOnPosition>99.02</candidateReferenceOnPosition>
-            <candidateTextOnPosition>
-              <candidateTextInfo>
+            <emptyPositionTextInfo>
+              <positionText>
                 <language>de</language>
-                <candidateText>Kein Name ausgewählt</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Kein Name ausgewählt</positionTextShort>
+                <positionTextLong>Kein Name ausgewählt</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>fr</language>
-                <candidateText>Aucun nom sélectionné</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Aucun nom sélectionné</positionTextShort>
+                <positionTextLong>Aucun nom sélectionné</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>it</language>
-                <candidateText>Nessun nominativo selezionato</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Nessun nominativo selezionato</positionTextShort>
+                <positionTextLong>Nessun nominativo selezionato</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>rm</language>
-                <candidateText>Nagin num selecziunà</candidateText>
-              </candidateTextInfo>
-            </candidateTextOnPosition>
-          </candidatePosition>
-          <candidatePosition>
-            <candidateListIdentification>011548ff-7dbd-3b31-a4f8-c9b45d3cdfbf</candidateListIdentification>
+                <positionTextShort>Nagin num selecziunà</positionTextShort>
+                <positionTextLong>Nagin num selecziunà</positionTextLong>
+              </positionText>
+            </emptyPositionTextInfo>
+          </emptyPosition>
+          <emptyPosition>
+            <emptyPositionIdentification>011548ff-7dbd-3b31-a4f8-c9b45d3cdfbf</emptyPositionIdentification>
             <positionOnList>3</positionOnList>
-            <candidateReferenceOnPosition>99.03</candidateReferenceOnPosition>
-            <candidateTextOnPosition>
-              <candidateTextInfo>
+            <emptyPositionTextInfo>
+              <positionText>
                 <language>de</language>
-                <candidateText>Kein Name ausgewählt</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Kein Name ausgewählt</positionTextShort>
+                <positionTextLong>Kein Name ausgewählt</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>fr</language>
-                <candidateText>Aucun nom sélectionné</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Aucun nom sélectionné</positionTextShort>
+                <positionTextLong>Aucun nom sélectionné</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>it</language>
-                <candidateText>Nessun nominativo selezionato</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Nessun nominativo selezionato</positionTextShort>
+                <positionTextLong>Nessun nominativo selezionato</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>rm</language>
-                <candidateText>Nagin num selecziunà</candidateText>
-              </candidateTextInfo>
-            </candidateTextOnPosition>
-          </candidatePosition>
-          <candidatePosition>
-            <candidateListIdentification>56856bae-6227-350d-b4d4-e3c423d75bd1</candidateListIdentification>
+                <positionTextShort>Nagin num selecziunà</positionTextShort>
+                <positionTextLong>Nagin num selecziunà</positionTextLong>
+              </positionText>
+            </emptyPositionTextInfo>
+          </emptyPosition>
+          <emptyPosition>
+            <emptyPositionIdentification>56856bae-6227-350d-b4d4-e3c423d75bd1</emptyPositionIdentification>
             <positionOnList>4</positionOnList>
-            <candidateReferenceOnPosition>99.04</candidateReferenceOnPosition>
-            <candidateTextOnPosition>
-              <candidateTextInfo>
+            <emptyPositionTextInfo>
+              <positionText>
                 <language>de</language>
-                <candidateText>Kein Name ausgewählt</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Kein Name ausgewählt</positionTextShort>
+                <positionTextLong>Kein Name ausgewählt</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>fr</language>
-                <candidateText>Aucun nom sélectionné</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Aucun nom sélectionné</positionTextShort>
+                <positionTextLong>Aucun nom sélectionné</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>it</language>
-                <candidateText>Nessun nominativo selezionato</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Nessun nominativo selezionato</positionTextShort>
+                <positionTextLong>Nessun nominativo selezionato</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>rm</language>
-                <candidateText>Nagin num selecziunà</candidateText>
-              </candidateTextInfo>
-            </candidateTextOnPosition>
-          </candidatePosition>
-          <candidatePosition>
-            <candidateListIdentification>a8b77f79-d43d-3cda-9ef8-353c7082aa40</candidateListIdentification>
+                <positionTextShort>Nagin num selecziunà</positionTextShort>
+                <positionTextLong>Nagin num selecziunà</positionTextLong>
+              </positionText>
+            </emptyPositionTextInfo>
+          </emptyPosition>
+          <emptyPosition>
+            <emptyPositionIdentification>a8b77f79-d43d-3cda-9ef8-353c7082aa40</emptyPositionIdentification>
             <positionOnList>5</positionOnList>
-            <candidateReferenceOnPosition>99.05</candidateReferenceOnPosition>
-            <candidateTextOnPosition>
-              <candidateTextInfo>
+            <emptyPositionTextInfo>
+              <positionText>
                 <language>de</language>
-                <candidateText>Kein Name ausgewählt</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Kein Name ausgewählt</positionTextShort>
+                <positionTextLong>Kein Name ausgewählt</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>fr</language>
-                <candidateText>Aucun nom sélectionné</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Aucun nom sélectionné</positionTextShort>
+                <positionTextLong>Aucun nom sélectionné</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>it</language>
-                <candidateText>Nessun nominativo selezionato</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Nessun nominativo selezionato</positionTextShort>
+                <positionTextLong>Nessun nominativo selezionato</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>rm</language>
-                <candidateText>Nagin num selecziunà</candidateText>
-              </candidateTextInfo>
-            </candidateTextOnPosition>
-          </candidatePosition>
-          <displayListLine1>
-            <displayLineInfo>
-              <language>de</language>
-              <displayLineText>99 Leere Liste</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>fr</language>
-              <displayLineText>99 Leere Liste</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>it</language>
-              <displayLineText>99 Leere Liste</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>rm</language>
-              <displayLineText>99 Leere Liste</displayLineText>
-            </displayLineInfo>
-          </displayListLine1>
-        </list>
+                <positionTextShort>Nagin num selecziunà</positionTextShort>
+                <positionTextLong>Nagin num selecziunà</positionTextLong>
+              </positionText>
+            </emptyPositionTextInfo>
+          </emptyPosition>
+        </emptyList>
         <writeInCandidate>
           <writeInCandidateIdentification>ce7f57f0-b888-3ed0-9bd6-698217cdfa88</writeInCandidateIdentification>
           <position>1</position>
+          <returnCodeWriteInDescriptionInfo>
+            <positionText>
+              <language>de</language>
+              <positionTextShort>Nicht genannte Person</positionTextShort>
+              <positionTextLong>Nicht genannte Person</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>fr</language>
+              <positionTextShort>Vote manuscrit</positionTextShort>
+              <positionTextLong>Vote manuscrit</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>it</language>
+              <positionTextShort>Posizione write-in</positionTextShort>
+              <positionTextLong>Posizione write-in</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>rm</language>
+              <positionTextShort>Posiziun per agiuntar candidats</positionTextShort>
+              <positionTextLong>Posiziun per agiuntar candidats</positionTextLong>
+            </positionText>
+          </returnCodeWriteInDescriptionInfo>
         </writeInCandidate>
         <writeInCandidate>
           <writeInCandidateIdentification>6b008d02-115a-361b-a8df-de507956729b</writeInCandidateIdentification>
           <position>2</position>
+          <returnCodeWriteInDescriptionInfo>
+            <positionText>
+              <language>de</language>
+              <positionTextShort>Nicht genannte Person</positionTextShort>
+              <positionTextLong>Nicht genannte Person</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>fr</language>
+              <positionTextShort>Vote manuscrit</positionTextShort>
+              <positionTextLong>Vote manuscrit</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>it</language>
+              <positionTextShort>Posizione write-in</positionTextShort>
+              <positionTextLong>Posizione write-in</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>rm</language>
+              <positionTextShort>Posiziun per agiuntar candidats</positionTextShort>
+              <positionTextLong>Posiziun per agiuntar candidats</positionTextLong>
+            </positionText>
+          </returnCodeWriteInDescriptionInfo>
         </writeInCandidate>
         <writeInCandidate>
           <writeInCandidateIdentification>e4af76cb-5c85-3a07-a1cb-c89eec0a3af7</writeInCandidateIdentification>
           <position>3</position>
+          <returnCodeWriteInDescriptionInfo>
+            <positionText>
+              <language>de</language>
+              <positionTextShort>Nicht genannte Person</positionTextShort>
+              <positionTextLong>Nicht genannte Person</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>fr</language>
+              <positionTextShort>Vote manuscrit</positionTextShort>
+              <positionTextLong>Vote manuscrit</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>it</language>
+              <positionTextShort>Posizione write-in</positionTextShort>
+              <positionTextLong>Posizione write-in</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>rm</language>
+              <positionTextShort>Posiziun per agiuntar candidats</positionTextShort>
+              <positionTextLong>Posiziun per agiuntar candidats</positionTextLong>
+            </positionText>
+          </returnCodeWriteInDescriptionInfo>
         </writeInCandidate>
         <writeInCandidate>
           <writeInCandidateIdentification>3c1d73c1-6503-3e01-bbe3-644ff10b9160</writeInCandidateIdentification>
           <position>4</position>
+          <returnCodeWriteInDescriptionInfo>
+            <positionText>
+              <language>de</language>
+              <positionTextShort>Nicht genannte Person</positionTextShort>
+              <positionTextLong>Nicht genannte Person</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>fr</language>
+              <positionTextShort>Vote manuscrit</positionTextShort>
+              <positionTextLong>Vote manuscrit</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>it</language>
+              <positionTextShort>Posizione write-in</positionTextShort>
+              <positionTextLong>Posizione write-in</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>rm</language>
+              <positionTextShort>Posiziun per agiuntar candidats</positionTextShort>
+              <positionTextLong>Posiziun per agiuntar candidats</positionTextLong>
+            </positionText>
+          </returnCodeWriteInDescriptionInfo>
         </writeInCandidate>
         <writeInCandidate>
           <writeInCandidateIdentification>015b48e3-2a90-398a-94a2-8fd6a0ed7cb1</writeInCandidateIdentification>
           <position>5</position>
+          <returnCodeWriteInDescriptionInfo>
+            <positionText>
+              <language>de</language>
+              <positionTextShort>Nicht genannte Person</positionTextShort>
+              <positionTextLong>Nicht genannte Person</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>fr</language>
+              <positionTextShort>Vote manuscrit</positionTextShort>
+              <positionTextLong>Vote manuscrit</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>it</language>
+              <positionTextShort>Posizione write-in</positionTextShort>
+              <positionTextLong>Posizione write-in</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>rm</language>
+              <positionTextShort>Posiziun per agiuntar candidats</positionTextShort>
+              <positionTextLong>Posiziun per agiuntar candidats</positionTextLong>
+            </positionText>
+          </returnCodeWriteInDescriptionInfo>
         </writeInCandidate>
       </electionInformation>
       <electionInformation>
@@ -2260,7 +2366,7 @@
             </displayLineInfo>
           </displayCandidateLine4>
         </candidate>
-        <list>
+        <emptyList>
           <listIdentification>599ae7c2-9c46-3fa5-8fbb-372d5f279df9</listIdentification>
           <listIndentureNumber>99</listIndentureNumber>
           <listDescription>
@@ -2286,52 +2392,58 @@
             </listDescriptionInfo>
           </listDescription>
           <listOrderOfPrecedence>99</listOrderOfPrecedence>
-          <listEmpty>true</listEmpty>
-          <candidatePosition>
-            <candidateListIdentification>9c86dab1-6a2d-31a8-8084-18fd7ec012cc</candidateListIdentification>
+          <emptyPosition>
+            <emptyPositionIdentification>9c86dab1-6a2d-31a8-8084-18fd7ec012cc</emptyPositionIdentification>
             <positionOnList>1</positionOnList>
-            <candidateReferenceOnPosition>99.01</candidateReferenceOnPosition>
-            <candidateTextOnPosition>
-              <candidateTextInfo>
+            <emptyPositionTextInfo>
+              <positionText>
                 <language>de</language>
-                <candidateText>Kein Name ausgewählt</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Kein Name ausgewählt</positionTextShort>
+                <positionTextLong>Kein Name ausgewählt</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>fr</language>
-                <candidateText>Aucun nom sélectionné</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Aucun nom sélectionné</positionTextShort>
+                <positionTextLong>Aucun nom sélectionné</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>it</language>
-                <candidateText>Nessun nominativo selezionato</candidateText>
-              </candidateTextInfo>
-              <candidateTextInfo>
+                <positionTextShort>Nessun nominativo selezionato</positionTextShort>
+                <positionTextLong>Nessun nominativo selezionato</positionTextLong>
+              </positionText>
+              <positionText>
                 <language>rm</language>
-                <candidateText>Nagin num selecziunà</candidateText>
-              </candidateTextInfo>
-            </candidateTextOnPosition>
-          </candidatePosition>
-          <displayListLine1>
-            <displayLineInfo>
-              <language>de</language>
-              <displayLineText>99 Leere Liste</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>fr</language>
-              <displayLineText>99 Leere Liste</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>it</language>
-              <displayLineText>99 Leere Liste</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>rm</language>
-              <displayLineText>99 Leere Liste</displayLineText>
-            </displayLineInfo>
-          </displayListLine1>
-        </list>
+                <positionTextShort>Nagin num selecziunà</positionTextShort>
+                <positionTextLong>Nagin num selecziunà</positionTextLong>
+              </positionText>
+            </emptyPositionTextInfo>
+          </emptyPosition>
+        </emptyList>
         <writeInCandidate>
           <writeInCandidateIdentification>f97317bc-ba1c-37d0-8ddd-59755e1dd4da</writeInCandidateIdentification>
           <position>1</position>
+          <returnCodeWriteInDescriptionInfo>
+            <positionText>
+              <language>de</language>
+              <positionTextShort>Nicht genannte Person</positionTextShort>
+              <positionTextLong>Nicht genannte Person</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>fr</language>
+              <positionTextShort>Vote manuscrit</positionTextShort>
+              <positionTextLong>Vote manuscrit</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>it</language>
+              <positionTextShort>Posizione write-in</positionTextShort>
+              <positionTextLong>Posizione write-in</positionTextLong>
+            </positionText>
+            <positionText>
+              <language>rm</language>
+              <positionTextShort>Posiziun per agiuntar candidats</positionTextShort>
+              <positionTextLong>Posiziun per agiuntar candidats</positionTextLong>
+            </positionText>
+          </returnCodeWriteInDescriptionInfo>
         </writeInCandidate>
       </electionInformation>
     </electionGroupBallot>
@@ -4011,5 +4123,5 @@
       </person>
     </voter>
   </register>
-  <signature>AsA6mCq2YG2qQpz6GCZZtZYcxqXPIeMgZ8u292wf01WU92YHzWT07Yk6d6+T/ysUeiwJ7zV5d8LvO2aUhuGR+VuhdeSCa3j4zLyJ0+Scfh2LWe6ESaGg3TtCWFMRJ84T2h36XCFo1Bs1g5bzvfszzoaagLiTeLsG8dt0LTC2h9zDxJBV0c0y0sdsfLuRM91FwnkQiLLoqQa6OzxwXcbxInKvdVlhula/Nk8vo+dMpbB1SvwaudcVQXnmHAq1p0GOHSCnwRL2bno1vHb/CO/zekDv5pjTi5YtDOD3TJdmklrdJDH6P5SJN6xLD3bIGZtvuc4CmSyAXvX93KJy3f+4gSxPe04ec/lyIFn1Zmr6WZNqFtuWGIhKaC0dj1u8AjhvE27FsopUekBG4RZAIdHV0Ij5PIaHI7oLDe7ZzfkDB7F+WmrPA3wj4M9NbX6YhyH3p+nnBSiCyyyf487J2I7xKfDKDvRKFKfprvKEa/SDsfLNPxUcU8bjwUtlmXaBgXqs</signature>
+  <signature>qKfxNV4BPmp09hVL3TCG7V/dC3yYFlVC7aJCJmd0PWwToV4/Phxj5bhRXBLbVcv4CPBPYTySJn9gAkfBGeLlpAbPhUtN0++In95Y3LGKrbh3e2IOL7+fWgKvM1a88XCbeGedF6wRrIKr6Jt+mUGVA8blgQJgb+qIVRM933n6Jd5+9uOs7SfJgZO0O2n/xh/KZ5Up8rt/WFIKNZecAty4difUqtf2+w8vpi9lNt4Waedw5RWtkIxb+IIFFVd+gU4rLTQM37J+UtC8DDhfwKElGWCsvbyrNmaWQ/+iJ00PNKxRV4oCCL+7YD+GZuX9w2J86iW9HB9HbLAy6Nz/4qKDTD0AJWpiq35L5+EsST//AJCfEpBV8ZkrE12wO61ToMsKZQskEdWIo5tuJs4du+ccMhuwaUX5+BrQCN+IN6HaY6E2wuENTEGnnZXab9w77GQqzetRUl23QrTeq8OQ/lO8u2eIcpLx2Frg8GCGOmRvA+ykYDaJ47ZUQUYW1w7RMvMI</signature>
 </configuration>

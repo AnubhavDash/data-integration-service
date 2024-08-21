@@ -254,10 +254,17 @@
 			<xs:element name="sorting" type="sortingType" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="defaultAnswerTranslations" type="defaultAnswerTranslationType" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="answerTranslations" type="answerTranslationType" minOccurs="0" maxOccurs="1"/>
-			<xs:element name="emptyCandidateText" minOccurs="0" maxOccurs="1">
+			<xs:element name="emptyPositionTextInfo" minOccurs="0" maxOccurs="1">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="emptyCandidateTextInfo" type="emptyCandidateTextInfo" minOccurs="4" maxOccurs="unbounded"/>
+						<xs:element name="positionText" type="positionText" minOccurs="4" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="returnCodeWriteInDescriptionInfo" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="positionText" type="positionText" minOccurs="4" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -448,7 +455,7 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:complexType name="emptyCandidateTextInfo">
+	<xs:complexType name="positionText">
 		<xs:sequence>
 			<xs:element name="language" type="languageType"/>
 			<xs:element name="text">

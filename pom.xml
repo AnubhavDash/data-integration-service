@@ -30,10 +30,10 @@
 		<archunit.version>1.3.0</archunit.version>
 		<cloning.version>1.11.1</cloning.version>
 		<commons-lang3.version>3.15.0</commons-lang3.version>
-		<crypto-primitives.version>1.5.0.0-b9</crypto-primitives.version>
+		<crypto-primitives.version>1.5.0.0-b12</crypto-primitives.version>
 		<cucumber-bom.version>7.18.1</cucumber-bom.version>
 		<download-maven-plugin.version>1.9.0</download-maven-plugin.version>
-		<e-voting-libraries.version>1.5.0.0-b19</e-voting-libraries.version>
+		<e-voting-libraries.version>1.5.0.0-b28</e-voting-libraries.version>
 		<gmavenplus-plugin.version>3.0.2</gmavenplus-plugin.version>
 		<groovy.version>4.0.18</groovy.version>
 		<groovy-all.version>4.0.22</groovy-all.version>

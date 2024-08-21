@@ -55,6 +55,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroup
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EligibilityType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyListType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentTextInfoType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentTextType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentType;
@@ -756,6 +757,40 @@ public class ContestPhaseSteps extends PhaseSteps {
 		listMap.put(elections + "." + election + "." + name, list);
 	}
 
+	@Given("^the empty list within \"([^\"]*)\".\"([^\"]*)\"$")
+	public void givenTheEmptyListWithin(final String elections, final String election) {
+		final EmptyListType emptyListType = new EmptyListType()
+				.withListDescription(new ListDescriptionInformationType().withListDescriptionInfo(new ArrayList<>()));
+		electionMap.get(elections + "." + election).getElectionInformation().getFirst().setEmptyList(emptyListType);
+	}
+
+	@And("^empty list \"([^\"]*)\".\"([^\"]*)\" has id \"([^\"]*)\"$")
+	public void andEmptyListHasId(final String elections, final String election, final String id) {
+		final EmptyListType emptyList = electionMap.get(elections + "." + election).getElectionInformation().getFirst().getEmptyList();
+		emptyList.setListIdentification(id);
+	}
+
+	@And("^empty list \"([^\"]*)\".\"([^\"]*)\" has indentureNumber \"([^\"]*)\"$")
+	public void andEmptyListHasIndentureNumber(final String elections, final String election, final String number) {
+		final EmptyListType emptyList = electionMap.get(elections + "." + election).getElectionInformation().getFirst().getEmptyList();
+		emptyList.setListIndentureNumber(number);
+	}
+
+	@And("^empty list \"([^\"]*)\".\"([^\"]*)\" has listOrderOfPrecedence (\\d+)$")
+	public void andEmptyListHasListOrderOfPrecedence(final String elections, final String election, final int order) {
+		final EmptyListType emptyList = electionMap.get(elections + "." + election).getElectionInformation().getFirst().getEmptyList();
+		emptyList.setListOrderOfPrecedence(order);
+	}
+
+	@And("^empty list \"([^\"]*)\".\"([^\"]*)\" has description \"([^\"]*)\" \"([^\"]*)\"$")
+	public void andEmptyListHasDescription(final String elections, final String election, final String lang, final String text) {
+		final EmptyListType emptyList = electionMap.get(elections + "." + election).getElectionInformation().getFirst().getEmptyList();
+		emptyList.getListDescription().getListDescriptionInfo()
+				.add(new ListDescriptionInformationType.ListDescriptionInfo()
+						.withLanguage(LanguageType.valueOf(lang))
+						.withListDescription(text));
+	}
+
 	@And("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has id \"([^\"]*)\"$")
 	public void andListHasId(final String elections, final String election, final String name, final String id) {
 		listMap.get(elections + "." + election + "." + name).setListIdentification(id);
@@ -769,11 +804,6 @@ public class ContestPhaseSteps extends PhaseSteps {
 	@And("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has listOrderOfPrecedence (\\d+)$")
 	public void andListHasListOrderOfPrecedence(final String elections, final String election, final String name, final Integer order) {
 		listMap.get(elections + "." + election + "." + name).setListOrderOfPrecedence(order);
-	}
-
-	@And("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has listEmpty$")
-	public void andListHasListEmpty(final String elections, final String election, final String name) {
-		listMap.get(elections + "." + election + "." + name).setListEmpty(true);
 	}
 
 	@Given("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has no listOrderOfPrecedence$")

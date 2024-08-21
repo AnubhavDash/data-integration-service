@@ -6,6 +6,7 @@ package ch.post.it.evoting.dataintegrationservice.contest;
 import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.hasNoDuplicates;
 import static com.google.common.base.Preconditions.checkState;
 import static java.time.temporal.ChronoUnit.DAYS;
+import static java.util.function.Predicate.not;
 import static org.swisspush.supermachine.BeanScanner.from;
 
 import java.math.BigInteger;
@@ -44,7 +45,8 @@ import ch.evoting.xmlns.parameter._5.DefaultAnswerTranslationType;
 import ch.evoting.xmlns.parameter._5.DisplayCandidateLineStyle;
 import ch.evoting.xmlns.parameter._5.DisplayListLineStyle;
 import ch.evoting.xmlns.parameter._5.ElectionType;
-import ch.evoting.xmlns.parameter._5.EmptyCandidateTextInfo;
+import ch.evoting.xmlns.parameter._5.PositionText;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.dataintegrationservice.common.MarshallTool;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
@@ -65,6 +67,8 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroup
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionRulesExplanationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EligibilityType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyListType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyPositionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ExtendedAuthenticationKeysDefinitionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
@@ -73,6 +77,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionDescriptionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.OccupationalTitleInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PositionTextInfoType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswerType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardQuestionType;
@@ -402,8 +407,10 @@ public class ContestService {
 										specificDisplayCandidateLineStyle)) {
 									// if the defaultDisplayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE, then the displayCandidateLineStyle with party affiliation extra line is used.
 									addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(candidateType);
-								} else if ((DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED.equals(defaultDisplayCandidateLineStyle)
-										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED.equals(
+								} else if ((DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED.equals(
+										defaultDisplayCandidateLineStyle)
+										&& noSpecificDisplayCandidateLineStyle)
+										|| DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED.equals(
 										specificDisplayCandidateLineStyle)) {
 									// if the defaultDisplayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED, then the displayCandidateLineStyle with party affiliation extra line comma separated is used.
 									addWithPartyAffiliationExtraLineCommaSeparatedDisplayCandidateLinesStyle(candidateType);
@@ -759,12 +766,13 @@ public class ContestService {
 	}
 
 	private boolean isCandidateOnlyElection(final ElectionInformationType election) {
-		return election.getList() != null && election.getList().size() == 1 && election.getList().stream().allMatch(ListType::isListEmpty);
+		return election.getList() != null && election.getList().isEmpty();
 	}
 
 	private void warnIfCandidatesOutOfLists(final List<ElectionGroupBallotType> electionGroups) {
-		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
-				.filter(e -> e.getList().stream().anyMatch(l -> !l.isListEmpty()))
+		electionGroups.stream()
+				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+				.filter(not(this::isCandidateOnlyElection))
 				.forEach(e -> e.getCandidate().stream().filter(c -> e.getList().stream().flatMap(l -> l.getCandidatePosition().stream())
 								.noneMatch(cp -> c.getCandidateIdentification().equalsIgnoreCase(cp.getCandidateIdentification())))
 						.forEach(c -> LOGGER.warn("Candidate {} is not present in any list", c.getCandidateIdentification())));
@@ -779,7 +787,8 @@ public class ContestService {
 	record ElectionDisplayListLineStyleTuple(String electionIdentification, DisplayListLineStyle displayListLineStyle) {
 	}
 
-	private void addDisplayListLines(final List<ElectionGroupBallotType> electionGroups, final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+	private void addDisplayListLines(final List<ElectionGroupBallotType> electionGroups,
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 
 		final List<ElectionDisplayListLineStyleTuple> electionDisplayListLineStyleTuples =
 				contestParameters.getElections() != null ?
@@ -790,7 +799,6 @@ public class ContestService {
 
 		final DisplayListLineStyle defaultDisplayListLineStyle = contestParameters.getDefaultDisplayListLineStyle();
 
-
 		electionGroups.stream()
 				.flatMap(eg -> eg.getElectionInformation().stream())
 				.forEach(electionInformationType -> {
@@ -799,7 +807,6 @@ public class ContestService {
 					final DisplayListLineStyle specificDisplayListLineStyle = getSpecificDisplayListLineStyle(
 							electionDisplayListLineStyleTuples, electionIdentification);
 					final boolean noSpecificDisplayListLineStyle = specificDisplayListLineStyle == null;
-
 
 					final List<ListUnionType> listUnions = electionInformationType.getListUnion();
 					electionInformationType.getList().forEach(listType -> {
@@ -815,7 +822,7 @@ public class ContestService {
 								specificDisplayListLineStyle)) {
 							addDisplayListLine1(listType);
 							addDisplayListLine2(listType, listUnions);
-						}  else {
+						} else {
 							throw new IllegalStateException(String.format(
 									"Unknown displayListLineStyle. [displayListLineStyle: %s, electionId: %s, listId: %s]",
 									defaultDisplayListLineStyle, electionIdentification, listType.getListIdentification()));
@@ -911,14 +918,8 @@ public class ContestService {
 	}
 
 	private void addCandidatesListIdentifications(final List<ElectionGroupBallotType> elections) {
-		from(elections).find(ListType.class).stream().forEach(list -> list.getCandidatePosition().forEach(p -> {
-			if (p.getCandidateIdentification() == null) {
-				p.setCandidateListIdentification(StringUtil.generateUUIDFromString(list.getListIdentification() + "." + p.getPositionOnList()));
-			} else {
-				p.setCandidateListIdentification(
-						StringUtil.generateUUIDFromString(list.getListIdentification() + "." + p.getCandidateIdentification()));
-			}
-		}));
+		from(elections).find(ListType.class).stream().forEach(list -> list.getCandidatePosition().forEach(p -> p.setCandidateListIdentification(
+				StringUtil.generateUUIDFromString(list.getListIdentification() + "." + p.getCandidateIdentification()))));
 	}
 
 	private void addEmptyListIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
@@ -939,51 +940,57 @@ public class ContestService {
 							.withListDescription("Leere Liste"));
 		}
 
-		electionType.withList(new ListType().withListEmpty(true)
+		electionType.withEmptyList(new EmptyListType()
 				.withListIdentification(StringUtil.generateUUIDFromString(electionType.getElection().getElectionIdentification()))
-				.withListIndentureNumber("99").withListDescription(description).withListOrderOfPrecedence(99));
-
+				.withListIndentureNumber("99")
+				.withListOrderOfPrecedence(99)
+				.withListDescription(description));
 	}
 
 	private void addCandidatesInEmptyListsIfNeeded(final List<ElectionGroupBallotType> electionGroups,
 			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
-		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
-				.forEach(e -> e.getList().stream()
-						.filter(l -> l.isListEmpty() && (l.getCandidatePosition() == null || l.getCandidatePosition().isEmpty()))
-						.forEach(l -> appendCandidates(l, e.getElection().getNumberOfMandates(), contestParameters)));
+		electionGroups.stream()
+				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+				.forEach(e -> {
+					final EmptyListType emptyList = e.getEmptyList();
+					if (emptyList.getEmptyPosition() == null || emptyList.getEmptyPosition().isEmpty()) {
+						addEmptyPositions(emptyList, e.getElection().getNumberOfMandates(), contestParameters);
+					}
+				});
 	}
 
-	private void appendCandidates(final ListType l, final int numberOfMandates,
+	private void addEmptyPositions(final EmptyListType emptyList, final int numberOfMandates,
 			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
 		for (int i = 1; i <= numberOfMandates; i++) {
 			final String candidatePosition = String.format("%02d", i);
 
-			final boolean customNumberingOnEmptyPositions =
-					contestParameters.isCustomNumberingForEmptyPositions() != null && contestParameters.isCustomNumberingForEmptyPositions();
-			final String refOnPosition = customNumberingOnEmptyPositions ?
-					candidatePosition :
-					StringUtil.concat(l.getListIndentureNumber(), candidatePosition, ".");
-
-			final CandidateTextInformationType text = new CandidateTextInformationType();
+			final PositionTextInfoType text = new PositionTextInfoType();
 			for (final LanguageType lang : LanguageType.values()) {
-				final String emptyCandidateText = getEmptyCandidateText(lang, contestParameters);
-				final String value = emptyCandidateText != null ? emptyCandidateText : candidatePosition;
-				text.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo().withLanguage(lang).withCandidateText(value));
+				final String emptyPositionText = getEmptyPositionText(lang, contestParameters);
+				final String value = emptyPositionText != null ? emptyPositionText : candidatePosition;
+				text.withPositionText(new PositionTextInfoType.PositionText()
+						.withLanguage(lang)
+						.withPositionTextLong(value)
+						.withPositionTextShort(StringUtils.left(value, 100)));
 			}
 
-			final CandidatePositionType candidate = new CandidatePositionType().withCandidateReferenceOnPosition(refOnPosition)
-					.withPositionOnList(i).withCandidateTextOnPosition(text);
+			final EmptyPositionType emptyPosition = new EmptyPositionType()
+					.withEmptyPositionIdentification(StringUtil.generateUUIDFromString(emptyList.getListIdentification() + "." + i))
+					.withPositionOnList(i)
+					.withEmptyPositionTextInfo(text);
 
-			l.getCandidatePosition().add(candidate);
+			emptyList.getEmptyPosition().add(emptyPosition);
 		}
 	}
 
-	private String getEmptyCandidateText(final LanguageType language, final ch.evoting.xmlns.parameter._5.ContestType contest) {
-		if (contest.getEmptyCandidateText() != null) {
-			final EmptyCandidateTextInfo emptyCandidateTextInfo = contest.getEmptyCandidateText().getEmptyCandidateTextInfo().stream()
-					.filter(ti -> ti.getLanguage().value().equals(language.value())).findFirst().orElse(null);
-			if (emptyCandidateTextInfo != null) {
-				return emptyCandidateTextInfo.getText();
+	private String getEmptyPositionText(final LanguageType language, final ch.evoting.xmlns.parameter._5.ContestType contest) {
+		if (contest.getEmptyPositionTextInfo() != null) {
+			final PositionText emptyPositionText = contest.getEmptyPositionTextInfo().getPositionText().stream()
+					.filter(positionText -> positionText.getLanguage().value().equals(language.value()))
+					.findFirst()
+					.orElse(null);
+			if (emptyPositionText != null) {
+				return emptyPositionText.getText();
 			}
 		}
 		return null;
@@ -1019,6 +1026,20 @@ public class ContestService {
 
 	private void addElectionsWriteIns(final List<ElectionGroupBallotType> electionGroups,
 			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+
+		final List<PositionTextInfoType.PositionText> positionTexts = Arrays.stream(LanguageType.values())
+				.map(lang -> {
+					final String text = getReturnCodeWriteInDescriptionText(lang, contestParameters);
+					return new PositionTextInfoType.PositionText()
+							.withLanguage(lang)
+							.withPositionTextLong(text)
+							.withPositionTextShort(StringUtils.left(text, 100));
+				})
+				.toList();
+
+		final PositionTextInfoType returnCodeWriteInDescription = new PositionTextInfoType()
+				.withPositionText(positionTexts);
+
 		final Map<String, Boolean> writeInsMap = getParametersWriteIns(contestParameters);
 		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.forEach(e -> {
@@ -1030,10 +1051,24 @@ public class ContestService {
 							e.getWriteInCandidate().add(new WriteInCandidateType()
 									.withWriteInCandidateIdentification(
 											StringUtil.generateUUIDFromString(e.getElection().getElectionIdentification() + i))
-									.withPosition(i));
+									.withPosition(i)
+									.withReturnCodeWriteInDescriptionInfo(returnCodeWriteInDescription));
 						}
 					}
 				});
+	}
+
+	private String getReturnCodeWriteInDescriptionText(final LanguageType language, final ch.evoting.xmlns.parameter._5.ContestType contest) {
+		if(contest.getReturnCodeWriteInDescriptionInfo() != null) {
+			final PositionText returnCodeWriteInDescriptionText = contest.getReturnCodeWriteInDescriptionInfo().getPositionText().stream()
+					.filter(positionText -> positionText.getLanguage().value().equals(language.value()))
+					.findFirst()
+					.orElse(null);
+			if(returnCodeWriteInDescriptionText != null) {
+				return returnCodeWriteInDescriptionText.getText();
+			}
+		}
+		return null;
 	}
 
 	private void checkParametersOfElections(final List<ElectionGroupBallotType> electionGroups,
@@ -1400,7 +1435,6 @@ public class ContestService {
 		checkLimitOfSameOccurrencesOfCandidateInList(c);
 		checkSameNamesOfCandidates(c);
 		checkReferenceOnPositionOnCandidateIsFilled(c);
-		checkEmptyListExists(c);
 		checkAnswerConsistency(c);
 		checkParametersOfElections(c.getElectionGroupBallot(), contestParameters);
 		checkPrimarySecondaryElectionConsistency(c);
@@ -1524,13 +1558,6 @@ public class ContestService {
 						"the referenceOnPosition for the candidate must be provided. [candidateId: %s]", candidate.getCandidateIdentification()));
 	}
 
-	private void checkEmptyListExists(final ContestType c) {
-		c.getElectionGroupBallot().stream().flatMap(eg -> eg.getElectionInformation().stream())
-				.forEach(e -> checkState(e.getList().stream().anyMatch(ListType::isListEmpty),
-						"The election does not contains an empty list [electionIdentification: %s]",
-						e.getElection().getElectionIdentification()));
-	}
-
 	private void checkVoteIdentificationsDistinctness(final ContestType c) {
 		final List<VoteInformationType> voteInformation = c.getVoteInformation();
 
@@ -1549,7 +1576,7 @@ public class ContestService {
 					variantBallotQuestionIdentifications);
 		}).toList();
 
-		checkState(hasNoDuplicates(identifications), "The votes contain duplicate identifications");
+		checkState(hasNoDuplicates(ImmutableList.from(identifications)), "The votes contain duplicate identifications");
 	}
 
 	private void checkElectionIdentifiersDistinctness(final ContestType c) {
@@ -1559,7 +1586,7 @@ public class ContestService {
 				.flatMap(eg -> checkElectionIdentifiersDistinctnessPerElection(eg).stream())
 				.toList();
 
-		checkState(hasNoDuplicates(identifications), "The elections contain duplicate identifications");
+		checkState(hasNoDuplicates(ImmutableList.from(identifications)), "The elections contain duplicate identifications");
 	}
 
 	private List<String> checkElectionIdentifiersDistinctnessPerElection(final ElectionGroupBallotType electionGroupBallot) {
@@ -1570,7 +1597,7 @@ public class ContestService {
 
 					final List<String> identifications = Streams.concat(Stream.of(electionIdentification), listIdentifications)
 							.toList();
-					checkState(hasNoDuplicates(identifications), "The election contains duplicate identifications. [election id: %s]",
+					checkState(hasNoDuplicates(ImmutableList.from(identifications)), "The election contains duplicate identifications. [election id: %s]",
 							electionIdentification);
 					return identifications;
 				}).toList().getFirst();

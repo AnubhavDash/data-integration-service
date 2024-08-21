@@ -354,24 +354,42 @@
 				</tiebreakAnswer>
 			</answerType>
 		</defaultAnswerTranslations>
-		<emptyCandidateText merge:action="xsdinsert">
-			<emptyCandidateTextInfo>
+		<emptyPositionTextInfo merge:action="xsdinsert">
+			<positionText>
 				<language>de</language>
 				<text>Kein Name ausgewählt</text>
-			</emptyCandidateTextInfo>
-			<emptyCandidateTextInfo>
+			</positionText>
+			<positionText>
 				<language>fr</language>
 				<text>Aucun nom sélectionné</text>
-			</emptyCandidateTextInfo>
-			<emptyCandidateTextInfo>
+			</positionText>
+			<positionText>
 				<language>it</language>
 				<text>Nessun nominativo selezionato</text>
-			</emptyCandidateTextInfo>
-			<emptyCandidateTextInfo>
+			</positionText>
+			<positionText>
 				<language>rm</language>
 				<text>Nagin num selecziunà</text>
-			</emptyCandidateTextInfo>
-		</emptyCandidateText>
+			</positionText>
+		</emptyPositionTextInfo>
+		<returnCodeWriteInDescriptionInfo merge:action="xsdinsert">
+			<positionText>
+				<language>de</language>
+				<text>Nicht genannte Person</text>
+			</positionText>
+			<positionText>
+				<language>fr</language>
+				<text>Vote manuscrit</text>
+			</positionText>
+			<positionText>
+				<language>it</language>
+				<text>Posizione write-in</text>
+			</positionText>
+			<positionText>
+				<language>rm</language>
+				<text>Posiziun per agiuntar candidats</text>
+			</positionText>
+		</returnCodeWriteInDescriptionInfo>
 		<incumbentText merge:action="xsdinsert">
 			<incumbentTextInfo>
 				<language>de</language>

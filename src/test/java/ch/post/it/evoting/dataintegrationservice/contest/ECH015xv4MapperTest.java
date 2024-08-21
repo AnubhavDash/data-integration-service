@@ -20,6 +20,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.google.common.collect.MoreCollectors;
+
 import ch.ech.xmlns.ech_0010._6.AddressInformationType;
 import ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType;
 import ch.ech.xmlns.ech_0155._4.BallotQuestionType;
@@ -45,6 +47,7 @@ import ch.ech.xmlns.ech_0155._4.VoteType;
 import ch.ech.xmlns.ech_0159._4.EventInitialDelivery;
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyListType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
 @SpringBootTest
@@ -398,6 +401,22 @@ class ECH015xv4MapperTest {
 										.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo()
 												.withLanguage("it")
 												.withCandidateText("Candidate 1 list 2 text IT")))))
+				.withList(new ListType()
+						.withListIdentification("99")
+						.withListIndentureNumber("99")
+						.withListDescription(new ListDescriptionInformationType()
+								.withListDescriptionInfo(new ListDescriptionInformationType.ListDescriptionInfo()
+										.withLanguage("de")
+										.withListDescriptionShort("list99 short desc")
+										.withListDescription("list99 desc"))
+								.withListDescriptionInfo(new ListDescriptionInformationType.ListDescriptionInfo()
+										.withLanguage("rm")
+										.withListDescriptionShort("list99 short desc RM")
+										.withListDescription("list99 desc RM")))
+						.withIsEmptyList(true)
+						.withListOrderOfPrecedence(BigInteger.valueOf(99))
+						.withTotalPositionsOnList(BigInteger.ZERO)
+						.withEmptyListPositions(BigInteger.TWO))
 				.withListUnion(new ListUnionType()
 						.withListUnionIdentification("LLL-aaa-1"))
 				.withListUnion(new ListUnionType()
@@ -455,7 +474,7 @@ class ECH015xv4MapperTest {
 							.findAny();
 
 					String ballotDescriptionShort = "";
-					if (d.getBallotDescriptionShort() != null){
+					if (d.getBallotDescriptionShort() != null) {
 						ballotDescriptionShort = d.getBallotDescriptionShort();
 					} else if (d.getBallotDescriptionLong() != null) {
 						ballotDescriptionShort = d.getBallotDescriptionLong();
@@ -464,7 +483,7 @@ class ECH015xv4MapperTest {
 					}
 
 					String ballotDescriptionLong = "";
-					if (d.getBallotDescriptionLong() != null){
+					if (d.getBallotDescriptionLong() != null) {
 						ballotDescriptionLong = d.getBallotDescriptionLong();
 					} else if (d.getBallotDescriptionShort() != null) {
 						ballotDescriptionLong = d.getBallotDescriptionShort();
@@ -486,8 +505,8 @@ class ECH015xv4MapperTest {
 	void testBallotDescriptionInfoWithMissingDescriptions() {
 		final BallotDescriptionInformationType source = createEchBallotDescriptionInformationTypeWithMissingDescriptions();
 		final BallotType echBallotWithMissingQuestionInfo = createEchBallotWithMissingQuestionInfo();
-		final IllegalStateException exception = assertThrows(IllegalStateException.class, () -> mapper.convert(source,
-				echBallotWithMissingQuestionInfo));
+		final IllegalStateException exception = assertThrows(IllegalStateException.class,
+				() -> mapper.convert(source, echBallotWithMissingQuestionInfo));
 		assertEquals("Ballot question info is not available in expected language. [language: rm]", exception.getMessage());
 	}
 
@@ -550,7 +569,12 @@ class ECH015xv4MapperTest {
 		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionType electionDestination = destination.getElection();
 
 		assertEquals(electionSource != null, electionDestination != null);
-		assertEquals(source.getList().size(), destination.getList().size());
+		assertEquals(source.getList().size() - 1, destination.getList().size());
+
+		final ListType sourceEmptyList = source.getList().stream().filter(ListType::isIsEmptyList).collect(MoreCollectors.onlyElement());
+		final EmptyListType destinationEmptyList = destination.getEmptyList();
+		assertEquals(sourceEmptyList.getListIdentification(), destinationEmptyList.getListIdentification());
+
 		if (null != electionSource && null != electionDestination) {
 			assertEquals(electionSource.getElectionIdentification(), electionDestination.getElectionIdentification());
 			assertEquals(electionSource.getNumberOfMandates().intValue(), electionDestination.getNumberOfMandates());
