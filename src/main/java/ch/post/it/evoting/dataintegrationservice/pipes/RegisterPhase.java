@@ -5,6 +5,7 @@ package ch.post.it.evoting.dataintegrationservice.pipes;
 
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.dataintegrationservice.pipes.register.ech0045v4.RegisterEch0045v4;
+import ch.post.it.evoting.dataintegrationservice.pipes.register.ech0045v5.RegisterEch0045v5;
 
 import reactor.core.publisher.Flux;
 
@@ -12,6 +13,7 @@ public abstract class RegisterPhase extends Tools {
 
 	public static final Exports exports = new Exports();
 	static RegisterEch0045v4.Exports registerEch0045v4 = RegisterEch0045v4.exports;
+	static RegisterEch0045v5.Exports registerEch0045v5 = RegisterEch0045v5.exports;
 	static ParameterPhase.Exports parameterPhase = ParameterPhase.exports;
 
 	public static class Exports {

@@ -25,9 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.MoreCollectors;
 
-import ch.ech.xmlns.ech_0010._6.AddressInformationType;
-import ch.ech.xmlns.ech_0155._4.ElectionGroupDescriptionType;
-import ch.ech.xmlns.ech_0157._4.EventInitialDelivery;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType;
@@ -124,7 +121,7 @@ public interface ECH015xv4Mapper {
 
 	PartyAffiliationformationType.PartyAffiliationInfo convert(ch.ech.xmlns.ech_0155._4.PartyAffiliationformationType.PartyAffiliationInfo pai);
 
-	DwellingAddressType convert(AddressInformationType address);
+	DwellingAddressType convert(ch.ech.xmlns.ech_0010._6.AddressInformationType address);
 
 	CandidateType.Swiss map(ch.ech.xmlns.ech_0155._4.CandidateType.Swiss value);
 
@@ -199,7 +196,7 @@ public interface ECH015xv4Mapper {
 
 	VoteDescriptionInformationType.VoteDescriptionInfo convert(ch.ech.xmlns.ech_0155._4.VoteDescriptionInformationType.VoteDescriptionInfo value);
 
-	default ElectionGroupBallotType convert(final EventInitialDelivery.ElectionGroupBallot e) {
+	default ElectionGroupBallotType convert(final ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot e) {
 		final ElectionGroupBallotType electionGroupBallotType = new ElectionGroupBallotType();
 
 		electionGroupBallotType.setElectionGroupIdentification(e.getElectionGroupIdentification());
@@ -215,11 +212,11 @@ public interface ECH015xv4Mapper {
 	}
 
 	List<ElectionInformationType> electionInformationListToElectionInformationTypeList(
-			List<EventInitialDelivery.ElectionGroupBallot.ElectionInformation> electionInformation);
+			List<ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation> electionInformation);
 
 	@Mapping(target = "electionGroupDescriptionInfo", source = "electionDescriptionInfo")
 	ElectionGroupDescriptionInformationType electionGroupDescriptionTypeToElectionGroupDescriptionInformationType(
-			ElectionGroupDescriptionType electionGroupDescription);
+			ch.ech.xmlns.ech_0155._4.ElectionGroupDescriptionType electionGroupDescription);
 
 	// This method is called from a MapStruct java expression
 	default String mapElectionDescriptionShort(
@@ -250,7 +247,7 @@ public interface ECH015xv4Mapper {
 	@Mapping(target = "list", source = "electionInformation.list")
 	@Mapping(target = "emptyList", expression = "java( mapEmptyList(electionInformation.getList()) )")
 	@Mapping(target = "listUnion", source = "electionInformation.listUnion")
-	ElectionInformationType convert(EventInitialDelivery.ElectionGroupBallot.ElectionInformation electionInformation);
+	ElectionInformationType convert(ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation electionInformation);
 
 	default EmptyListType mapEmptyList(final List<ch.ech.xmlns.ech_0155._4.ListType> lists) {
 		// The eCH does not have an empty list in case of majority elections.

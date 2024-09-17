@@ -4,6 +4,7 @@
 package ch.post.it.evoting.dataintegrationservice.pipes;
 
 import ch.post.it.evoting.dataintegrationservice.pipes.contest.ech015xv4.ContestEch015xv4;
+import ch.post.it.evoting.dataintegrationservice.pipes.contest.ech015xv5.ContestEch015xv5;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
 
 import reactor.core.publisher.Flux;
@@ -12,6 +13,7 @@ public abstract class ContestPhase extends Tools {
 
 	public static final Exports exports = new Exports();
 	static ContestEch015xv4.Exports contestEch015xv4 = ContestEch015xv4.exports;
+	static ContestEch015xv5.Exports contestEch015xv5 = ContestEch015xv5.exports;
 	static ParameterPhase.Exports parameterPhase = ParameterPhase.exports;
 
 	public static class Exports {
