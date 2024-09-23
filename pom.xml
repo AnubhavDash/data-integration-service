@@ -61,7 +61,7 @@
 		<reactor-core.version>3.6.9</reactor-core.version>
 		<reproducible-build-maven-plugin.version>0.15.2</reproducible-build-maven-plugin.version>
 		<sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
-		<spring-boot.version>3.3.3</spring-boot.version>
+		<spring-boot.version>3.3.4</spring-boot.version>
 		<stax2-api.version>4.2.2</stax2-api.version>
 		<super-machine.version>0.1.0</super-machine.version>
 		<woodstox-core.version>7.0.0</woodstox-core.version>
