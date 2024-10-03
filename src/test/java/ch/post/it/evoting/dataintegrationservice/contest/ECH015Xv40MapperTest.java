@@ -52,9 +52,9 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformati
 
 @SpringBootTest
 @ActiveProfiles("test")
-class ECH015xv4MapperTest {
+class ECH015Xv40MapperTest {
 
-	private final ECH015xv4Mapper mapper = ECH015xv4Mapper.INSTANCE;
+	private final ECH015xv40Mapper mapper = ECH015xv40Mapper.INSTANCE;
 
 	private ContestType createEchContestType() throws Exception {
 

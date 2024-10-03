@@ -24,20 +24,20 @@ import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 @Component
-public class ECHv4FileContestLoader {
+public class ECHv40FileContestLoader {
 
 	@SuppressWarnings("java:S1075")
 	private static final String ECH157_SCHEMA_PATH = "/xsd/eCH-0157-4-0.xsd";
 	@SuppressWarnings("java:S1075")
 	private static final String ECH159_SCHEMA_PATH = "/xsd/eCH-0159-4-0.xsd";
-	private static final Logger LOGGER = LoggerFactory.getLogger(ECHv4FileContestLoader.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ECHv40FileContestLoader.class);
 
-	public Tuple2<Iterable<ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot>, ContestType> loadECH0157v4(
+	public Tuple2<Iterable<ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot>, ContestType> loadECH0157v40(
 			final String fileLocation) {
 		try {
 			LOGGER.debug("Loading eCH0157v4 : {}", fileLocation);
 
-			final URL schemaPath = ECHv4FileContestLoader.class.getResource(ECH157_SCHEMA_PATH);
+			final URL schemaPath = ECHv40FileContestLoader.class.getResource(ECH157_SCHEMA_PATH);
 			checkState(schemaPath != null, "Resource '%s' not found", ECH157_SCHEMA_PATH);
 
 			final ArrayList<ContestType> contests = new ArrayList<>();
@@ -54,12 +54,12 @@ public class ECHv4FileContestLoader {
 		}
 	}
 
-	public Tuple2<Iterable<ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation>, ContestType> loadECH0159v4(
+	public Tuple2<Iterable<ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation>, ContestType> loadECH0159v40(
 			final String fileLocation) {
 		try {
 			LOGGER.debug("Loading eCH0159v4 : {}", fileLocation);
 
-			final URL schemaPath = ECHv4FileContestLoader.class.getResource(ECH159_SCHEMA_PATH);
+			final URL schemaPath = ECHv40FileContestLoader.class.getResource(ECH159_SCHEMA_PATH);
 			checkState(schemaPath != null, "Resource '%s' not found", ECH159_SCHEMA_PATH);
 
 			final ArrayList<ContestType> contests = new ArrayList<>();

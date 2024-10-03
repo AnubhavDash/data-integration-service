@@ -20,8 +20,8 @@ import ch.post.it.evoting.dataintegrationservice.common.Stax2Wrapper;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
 @Component
-public class ECHv4FileRegisterLoader {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ECHv4FileRegisterLoader.class);
+public class ECHv40FileRegisterLoader {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ECHv40FileRegisterLoader.class);
 
 	@SuppressWarnings("java:S1075")
 	private static final String ECH45_SCHEMA_PATH = "/xsd/eCH-0045-4-0.xsd";
@@ -30,7 +30,7 @@ public class ECHv4FileRegisterLoader {
 		try {
 			LOGGER.debug("Loading eCH0045v4 : {}", fileLocation);
 
-			final URL schemaPath = ECHv4FileRegisterLoader.class.getResource(ECH45_SCHEMA_PATH);
+			final URL schemaPath = ECHv40FileRegisterLoader.class.getResource(ECH45_SCHEMA_PATH);
 			checkState(schemaPath != null, "Resource '%s' not found", ECH45_SCHEMA_PATH);
 
 			final Stax2Wrapper wrapper = new Stax2Wrapper(fileLocation, schemaPath, ch.ech.xmlns.ech_0045._4.ObjectFactory.class);

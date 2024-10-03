@@ -37,9 +37,9 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PhysicalAddre
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.SexType;
 
 @Mapper
-public interface ECH0045v4Mapper {
-	Logger LOGGER = LoggerFactory.getLogger(ECH0045v4Mapper.class);
-	ECH0045v4Mapper INSTANCE = Mappers.getMapper(ECH0045v4Mapper.class);
+public interface ECH0045v40Mapper {
+	Logger LOGGER = LoggerFactory.getLogger(ECH0045v40Mapper.class);
+	ECH0045v40Mapper INSTANCE = Mappers.getMapper(ECH0045v40Mapper.class);
 
 	@SuppressWarnings("Duplicates")
 	default VoterTypeWithRole convert(final ch.ech.xmlns.ech_0045._4.VotingPersonType voter) {

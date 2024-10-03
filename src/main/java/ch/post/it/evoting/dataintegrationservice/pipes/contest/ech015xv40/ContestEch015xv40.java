@@ -1,7 +1,7 @@
 /*
  * (c) Copyright 2024 Swiss Post Ltd.
  */
-package ch.post.it.evoting.dataintegrationservice.pipes.contest.ech015xv4;
+package ch.post.it.evoting.dataintegrationservice.pipes.contest.ech015xv40;
 
 import ch.post.it.evoting.dataintegrationservice.pipes.InputPhase;
 import ch.post.it.evoting.dataintegrationservice.pipes.Tools;
@@ -11,7 +11,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformati
 
 import reactor.core.publisher.Flux;
 
-public abstract class ContestEch015xv4 extends Tools {
+public abstract class ContestEch015xv40 extends Tools {
 
 	public static final Exports exports = new Exports();
 	static InputPhase.Exports inputPhase = InputPhase.exports;

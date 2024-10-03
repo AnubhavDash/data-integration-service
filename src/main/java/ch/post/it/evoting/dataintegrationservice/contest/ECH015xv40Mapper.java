@@ -3,6 +3,9 @@
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
+import static java.util.function.Predicate.not;
+import static com.google.common.base.Preconditions.checkState;
+
 import java.math.BigInteger;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -39,6 +42,8 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroup
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyListType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyPositionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListType;
@@ -46,6 +51,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionDesc
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.OccupationalTitleInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PartyAffiliationformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PositionTextInfoType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ReferencedElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswerType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
@@ -57,11 +63,11 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteDescripti
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
 @Mapper(imports = { UUID.class, LanguageType.class })
-public interface
-ECH015xv5Mapper {
-	ECH015xv5Mapper INSTANCE = Mappers.getMapper(ECH015xv5Mapper.class);
+public interface ECH015xv40Mapper {
 
-	Logger LOGGER = LoggerFactory.getLogger(ECH015xv5Mapper.class);
+	ECH015xv40Mapper INSTANCE = Mappers.getMapper(ECH015xv40Mapper.class);
+
+	Logger LOGGER = LoggerFactory.getLogger(ECH015xv40Mapper.class);
 
 	/* Ignore above properties because they will be manually filled in ContestBuilder class */
 	@Mapping(target = "evotingFromDate", ignore = true)
@@ -73,9 +79,9 @@ ECH015xv5Mapper {
 	@Mapping(target = "electoralBoard", ignore = true)
 	void addContestInformation(
 			@MappingTarget
-			ContestType mappedContest, ch.ech.xmlns.ech_0155._5.ContestType contest);
+			ContestType mappedContest, ch.ech.xmlns.ech_0155._4.ContestType contest);
 
-	default ContestType convert(final ch.ech.xmlns.ech_0155._5.ContestType contest) {
+	default ContestType convert(final ch.ech.xmlns.ech_0155._4.ContestType contest) {
 		final ContestType newContest = new ContestType();
 		addContestInformation(newContest, contest);
 		if (contest.getEVotingPeriod() != null) {
@@ -85,24 +91,22 @@ ECH015xv5Mapper {
 		return newContest;
 	}
 
-	ContestDescriptionInformationType convert(ch.ech.xmlns.ech_0155._5.ContestDescriptionInformationType value);
+	ContestDescriptionInformationType convert(ch.ech.xmlns.ech_0155._4.ContestDescriptionInformationType value);
 
 	ContestDescriptionInformationType.ContestDescriptionInfo convert(
-			ch.ech.xmlns.ech_0155._5.ContestDescriptionInformationType.ContestDescriptionInfo value);
-
-	ElectionInformationType convert(ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup.ElectionInformation ei);
+			ch.ech.xmlns.ech_0155._4.ContestDescriptionInformationType.ContestDescriptionInfo value);
 
 	@Mapping(target = "writeInsAllowed", ignore = true)
 	@Mapping(target = "candidateAccumulation", ignore = true)
-	ElectionType convert(ch.ech.xmlns.ech_0155._5.ElectionType et);
+	ElectionType convert(ch.ech.xmlns.ech_0155._4.ElectionType et);
 
-	ElectionDescriptionInformationType convert(ch.ech.xmlns.ech_0155._5.ElectionDescriptionInformationType value);
+	ElectionDescriptionInformationType convert(ch.ech.xmlns.ech_0155._4.ElectionDescriptionInformationType value);
 
 	@Mapping(target = "electionDescriptionShort", expression = "java( mapElectionDescriptionShort(\"electionDescriptionShort\", value) )")
 	ElectionDescriptionInformationType.ElectionDescriptionInfo convert(
-			ch.ech.xmlns.ech_0155._5.ElectionDescriptionInformationType.ElectionDescriptionInfo value);
+			ch.ech.xmlns.ech_0155._4.ElectionDescriptionInformationType.ElectionDescriptionInfo value);
 
-	ReferencedElectionInformationType convert(ch.ech.xmlns.ech_0155._5.ReferencedElectionInformationType value);
+	ReferencedElectionInformationType convert(ch.ech.xmlns.ech_0155._4.ReferencedElectionInformationType value);
 
 	@Mapping(target = "dwellingAddress", source = "dwellingAddress")
 	@Mapping(target = "position", ignore = true)
@@ -111,18 +115,18 @@ ECH015xv5Mapper {
 	@Mapping(target = "eligibility", constant = "EXPLICIT")
 	@Mapping(target = "title", expression = "java( ct.getTitle() != null && ct.getTitle().length() > 0 ? ct.getTitle() : null )")
 	@Mapping(target = "firstName", expression = "java( ct.getFirstName() != null && ct.getFirstName().length() > 0 ? ct.getFirstName() : ct.getCallName() )")
-	CandidateType convert(ch.ech.xmlns.ech_0155._5.CandidateType ct);
+	CandidateType convert(ch.ech.xmlns.ech_0155._4.CandidateType ct);
 
-	PartyAffiliationformationType convert(ch.ech.xmlns.ech_0155._5.PartyAffiliationInformationType pat);
+	PartyAffiliationformationType convert(ch.ech.xmlns.ech_0155._4.PartyAffiliationformationType pat);
 
-	PartyAffiliationformationType.PartyAffiliationInfo convert(ch.ech.xmlns.ech_0155._5.PartyAffiliationInformationType.PartyAffiliationInfo pai);
+	PartyAffiliationformationType.PartyAffiliationInfo convert(ch.ech.xmlns.ech_0155._4.PartyAffiliationformationType.PartyAffiliationInfo pai);
 
 	DwellingAddressType convert(ch.ech.xmlns.ech_0010._6.AddressInformationType address);
 
-	CandidateType.Swiss map(ch.ech.xmlns.ech_0155._5.CandidateType.Swiss value);
+	CandidateType.Swiss map(ch.ech.xmlns.ech_0155._4.CandidateType.Swiss value);
 
-	default CandidateTextInformationType convert(final ch.ech.xmlns.ech_0155._5.CandidateTextInformationType value) {
-		final CandidateTextInformationType candidateTextInformationType = new CandidateTextInformationType();
+	default CandidateTextInformationType convert(final ch.ech.xmlns.ech_0155._4.CandidateTextInformationType value) {
+		final CandidateTextInformationType candidateTextInformationType = new ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType();
 
 		if (value == null) {
 			final List<CandidateTextInformationType.CandidateTextInfo> list = new ArrayList<>();
@@ -138,7 +142,7 @@ ECH015xv5Mapper {
 	}
 
 	default List<CandidateTextInformationType.CandidateTextInfo> toCandidateTextInfoList(
-			final List<ch.ech.xmlns.ech_0155._5.CandidateTextInformationType.CandidateTextInfo> list) {
+			final List<ch.ech.xmlns.ech_0155._4.CandidateTextInformationType.CandidateTextInfo> list) {
 		if (list == null) {
 			return Collections.emptyList();
 		}
@@ -146,37 +150,41 @@ ECH015xv5Mapper {
 	}
 
 	default CandidateTextInformationType.CandidateTextInfo convert(
-			final ch.ech.xmlns.ech_0155._5.CandidateTextInformationType.CandidateTextInfo value) {
+			final ch.ech.xmlns.ech_0155._4.CandidateTextInformationType.CandidateTextInfo value) {
 		if (value == null) {
 			return null;
 		}
-		final CandidateTextInformationType.CandidateTextInfo candidateTextInfo = new CandidateTextInformationType.CandidateTextInfo();
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType.CandidateTextInfo candidateTextInfo = new ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType.CandidateTextInfo();
 		candidateTextInfo.setLanguage(convert(value.getLanguage()));
 		candidateTextInfo.setCandidateText(StringUtil.isNullOrEmpty(value.getCandidateText()) ? "No candidate text" : value.getCandidateText());
 		return candidateTextInfo;
 	}
 
-	OccupationalTitleInformationType convert(ch.ech.xmlns.ech_0155._5.OccupationalTitleInformationType value);
+	OccupationalTitleInformationType convert(ch.ech.xmlns.ech_0155._4.OccupationalTitleInformationType value);
 
 	OccupationalTitleInformationType.OccupationalTitleInfo convert(
-			ch.ech.xmlns.ech_0155._5.OccupationalTitleInformationType.OccupationalTitleInfo value);
+			ch.ech.xmlns.ech_0155._4.OccupationalTitleInformationType.OccupationalTitleInfo value);
 
 	@Mapping(target = "varListText1", ignore = true)
 	@Mapping(target = "varListText2", ignore = true)
-	ListType convert(ch.ech.xmlns.ech_0155._5.ListType list);
+	ListType convert(ch.ech.xmlns.ech_0155._4.ListType list);
+
+	default List<ListType> convert(final List<ch.ech.xmlns.ech_0155._4.ListType> list) {
+		return list.stream().filter(not(ch.ech.xmlns.ech_0155._4.ListType::isIsEmptyList)).map(this::convert).toList();
+	}
 
 	@Mapping(target = "candidateListIdentification", ignore = true)
-	CandidatePositionType convert(ch.ech.xmlns.ech_0155._5.CandidatePositionInformationType value);
+	CandidatePositionType convert(ch.ech.xmlns.ech_0155._4.CandidatePositionInformationType value);
 
-	ListDescriptionInformationType convert(ch.ech.xmlns.ech_0155._5.ListDescriptionInformationType value);
+	ListDescriptionInformationType convert(ch.ech.xmlns.ech_0155._4.ListDescriptionInformationType value);
 
-	ListDescriptionInformationType.ListDescriptionInfo convert(ch.ech.xmlns.ech_0155._5.ListDescriptionInformationType.ListDescriptionInfo value);
+	ListDescriptionInformationType.ListDescriptionInfo convert(ch.ech.xmlns.ech_0155._4.ListDescriptionInformationType.ListDescriptionInfo value);
 
-	ListUnionType convert(ch.ech.xmlns.ech_0155._5.ListUnionType lu);
+	ListUnionType convert(ch.ech.xmlns.ech_0155._4.ListUnionType lu);
 
-	ListUnionDescriptionType convert(ch.ech.xmlns.ech_0155._5.ListUnionDescriptionType ludt);
+	ListUnionDescriptionType convert(ch.ech.xmlns.ech_0155._4.ListUnionDescriptionType ludt);
 
-	ListUnionDescriptionType.ListUnionDescriptionInfo convert(ch.ech.xmlns.ech_0155._5.ListUnionDescriptionType.ListUnionDescriptionInfo value);
+	ListUnionDescriptionType.ListUnionDescriptionInfo convert(ch.ech.xmlns.ech_0155._4.ListUnionDescriptionType.ListUnionDescriptionInfo value);
 
 	@Mapping(target = "vote.voteIdentification", source = "v.vote.voteIdentification")
 	@Mapping(target = "vote.domainOfInfluence", source = "v.vote.domainOfInfluenceIdentification")
@@ -184,15 +192,15 @@ ECH015xv5Mapper {
 	@Mapping(target = "vote.ballot", source = "v.ballot")
 	VoteInformationType convert(ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation v);
 
-	VoteDescriptionInformationType convert(ch.ech.xmlns.ech_0155._5.VoteDescriptionInformationType value);
+	VoteDescriptionInformationType convert(ch.ech.xmlns.ech_0155._4.VoteDescriptionInformationType value);
 
-	VoteDescriptionInformationType.VoteDescriptionInfo convert(ch.ech.xmlns.ech_0155._5.VoteDescriptionInformationType.VoteDescriptionInfo value);
+	VoteDescriptionInformationType.VoteDescriptionInfo convert(ch.ech.xmlns.ech_0155._4.VoteDescriptionInformationType.VoteDescriptionInfo value);
 
-	default ElectionGroupBallotType convert(final ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup e) {
+	default ElectionGroupBallotType convert(final ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot e) {
 		final ElectionGroupBallotType electionGroupBallotType = new ElectionGroupBallotType();
 
 		electionGroupBallotType.setElectionGroupIdentification(e.getElectionGroupIdentification());
-		electionGroupBallotType.withDomainOfInfluence(e.getDomainOfInfluence().getDomainOfInfluenceIdentification());
+		electionGroupBallotType.withDomainOfInfluence(e.getDomainOfInfluenceIdentification());
 		electionGroupBallotType.setElectionGroupDescription(
 				electionGroupDescriptionTypeToElectionGroupDescriptionInformationType(e.getElectionGroupDescription()));
 		if (e.getElectionGroupPosition() != null) {
@@ -204,16 +212,16 @@ ECH015xv5Mapper {
 	}
 
 	List<ElectionInformationType> electionInformationListToElectionInformationTypeList(
-			List<ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup.ElectionInformation> electionInformation);
+			List<ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation> electionInformation);
 
 	@Mapping(target = "electionGroupDescriptionInfo", source = "electionDescriptionInfo")
 	ElectionGroupDescriptionInformationType electionGroupDescriptionTypeToElectionGroupDescriptionInformationType(
-			ch.ech.xmlns.ech_0155._5.ElectionGroupDescriptionType electionGroupDescription);
+			ch.ech.xmlns.ech_0155._4.ElectionGroupDescriptionType electionGroupDescription);
 
 	// This method is called from a MapStruct java expression
 	default String mapElectionDescriptionShort(
 			final String fieldName,
-			final ch.ech.xmlns.ech_0155._5.ElectionDescriptionInformationType.ElectionDescriptionInfo electionDescriptionInfo) {
+			final ch.ech.xmlns.ech_0155._4.ElectionDescriptionInformationType.ElectionDescriptionInfo electionDescriptionInfo) {
 		if (electionDescriptionInfo.getElectionDescriptionShort() != null && !electionDescriptionInfo.getElectionDescriptionShort().isEmpty()) {
 			return electionDescriptionInfo.getElectionDescriptionShort();
 		} else {
@@ -226,7 +234,7 @@ ECH015xv5Mapper {
 	@Mapping(target = "electionGroupDescription", source = "electionDescription")
 	@Mapping(target = "electionGroupDescriptionShort", expression = "java( mapElectionDescriptionShort(\"electionGroupDescriptionShort\", electionDescriptionInfo) )")
 	ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo electionDescriptionInfoToElectionGroupDescriptionInfo(
-			ch.ech.xmlns.ech_0155._5.ElectionDescriptionInformationType.ElectionDescriptionInfo electionDescriptionInfo);
+			ch.ech.xmlns.ech_0155._4.ElectionDescriptionInformationType.ElectionDescriptionInfo electionDescriptionInfo);
 
 	@Mapping(target = "election.electionIdentification", source = "electionInformation.election.electionIdentification")
 	@Mapping(target = "election.typeOfElection", source = "electionInformation.election.typeOfElection")
@@ -237,51 +245,93 @@ ECH015xv5Mapper {
 	@Mapping(target = "election.referencedElection", source = "electionInformation.election.referencedElection")
 	@Mapping(target = "candidate", source = "electionInformation.candidate")
 	@Mapping(target = "list", source = "electionInformation.list")
+	@Mapping(target = "emptyList", expression = "java( mapEmptyList(electionInformation.getList()) )")
 	@Mapping(target = "listUnion", source = "electionInformation.listUnion")
-	ElectionInformationType convert(String domainOfInfluenceIdentification,
-			ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup.ElectionInformation electionInformation);
+	ElectionInformationType convert(ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation electionInformation);
 
-	default BallotType convert(final ch.ech.xmlns.ech_0155._5.ElectronicBallotType bt) {
+	default EmptyListType mapEmptyList(final List<ch.ech.xmlns.ech_0155._4.ListType> lists) {
+		// The eCH does not have an empty list in case of majority elections.
+		if (lists.isEmpty()) {
+			return null;
+		}
+
+		final ch.ech.xmlns.ech_0155._4.ListType emptyListSource = lists.stream()
+				.filter(ch.ech.xmlns.ech_0155._4.ListType::isIsEmptyList)
+				.collect(MoreCollectors.onlyElement());
+
+		final List<EmptyPositionType> emptyCandidatePositions = emptyListSource.getCandidatePosition().stream()
+				.map(this::convert)
+				.map(candidatePositionType -> {
+					final CandidateTextInformationType candidateTextOnPosition = candidatePositionType.getCandidateTextOnPosition();
+					final List<PositionTextInfoType.PositionText> positionTexts = candidateTextOnPosition.getCandidateTextInfo().stream()
+							.map(candidateTextInfo ->
+									new PositionTextInfoType.PositionText()
+											.withLanguage(candidateTextInfo.getLanguage())
+											.withPositionTextLong(candidateTextInfo.getCandidateText())
+											.withPositionTextShort(StringUtils.left(candidateTextInfo.getCandidateText(), 100)))
+							.toList();
+					final PositionTextInfoType positionTextType = new PositionTextInfoType()
+							.withPositionText(positionTexts);
+					return new EmptyPositionType()
+							.withEmptyPositionIdentification(candidatePositionType.getCandidateListIdentification())
+							.withPositionOnList(candidatePositionType.getPositionOnList())
+							.withEmptyPositionTextInfo(positionTextType);
+				})
+				.toList();
+
+		final EmptyListType emptyListType = new EmptyListType()
+				.withListIdentification(emptyListSource.getListIdentification())
+				.withListIndentureNumber(emptyListSource.getListIndentureNumber())
+				.withListDescription(convert(emptyListSource.getListDescription()))
+				.withEmptyPosition(emptyCandidatePositions);
+		if (emptyListSource.getListOrderOfPrecedence() != null) {
+			emptyListType.withListOrderOfPrecedence(emptyListSource.getListOrderOfPrecedence().intValueExact());
+		}
+
+		return emptyListType;
+	}
+
+	default BallotType convert(final ch.ech.xmlns.ech_0155._4.BallotType bt) {
 		if (bt == null) {
 			return null;
 		}
 
 		final BallotType ballotType = new BallotType();
 
-		ballotType.setBallotIdentification(bt.getElectronicBallotIdentification());
+		ballotType.setBallotIdentification(bt.getBallotIdentification());
 
-		Optional.ofNullable(bt.getElectronicBallotPosition())
+		Optional.ofNullable(bt.getBallotPosition())
 				.map(BigInteger::intValueExact)
 				.ifPresent(ballotType::setBallotPosition);
 
-		ballotType.setBallotDescription(Optional.ofNullable(bt.getElectronicBallotDescription())
+		ballotType.setBallotDescription(Optional.ofNullable(bt.getBallotDescription())
 				.map(ballotDescription -> convert(ballotDescription, bt))
 				.orElseGet(() -> {
 					LOGGER.warn(
 							"The ballot {} lacks a ballotDescriptionInformation tag. We recommend to always provide a ballotDescriptionInformation tag.",
-							bt.getElectronicBallotDescription());
+							bt.getBallotIdentification());
 					return convert(createEmptyBallotDescriptionInformationType(bt), bt);
 				}));
 
-		ballotType.setStandardBallot(convert(bt.getStandardElectronicBallot(), bt));
-		ballotType.setVariantBallot(convert(bt.getVariantElectronicBallot(), bt));
+		ballotType.setStandardBallot(convert(bt.getStandardBallot(), bt));
+		ballotType.setVariantBallot(convert(bt.getVariantBallot(), bt));
 
 		return ballotType;
 	}
 
-	BallotDescriptionInformationType convert(ch.ech.xmlns.ech_0155._5.ElectronicBallotDescriptionInformationType value,
+	BallotDescriptionInformationType convert(ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType value,
 			@Context
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType);
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
 	default BallotDescriptionInformationType.BallotDescriptionInfo convert(
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo bdi,
+			final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo bdi,
 			@Context
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType) {
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
 		final BallotDescriptionInformationType.BallotDescriptionInfo result = new BallotDescriptionInformationType.BallotDescriptionInfo();
 		result.setLanguage(convert(bdi.getLanguage()));
 
-		final Optional<String> ballotDescriptionLong = Optional.ofNullable(bdi.getElectronicBallotDescriptionLong());
-		final Optional<String> ballotDescriptionShort = Optional.ofNullable(bdi.getElectronicBallotDescriptionShort());
+		final Optional<String> ballotDescriptionLong = Optional.ofNullable(bdi.getBallotDescriptionLong());
+		final Optional<String> ballotDescriptionShort = Optional.ofNullable(bdi.getBallotDescriptionShort());
 
 		result.setBallotDescriptionShort(ballotDescriptionShort.or(() -> {
 					ballotDescriptionLong.ifPresent(description -> LOGGER.warn(
@@ -305,10 +355,10 @@ ECH015xv5Mapper {
 
 	@Mapping(target = "answerType", source = "answerInformation.answerType")
 	@Mapping(target = "answer", source = "answerInformation.answerOptionIdentification")
-	@Mapping(target = "questionNumber", source = "electronicBallotQuestionNumber")
-	StandardQuestionType convert(ch.ech.xmlns.ech_0155._5.QuestionInformationType qit,
+	@Mapping(target = "questionNumber", source = "ballotQuestionNumber")
+	StandardQuestionType convert(ch.ech.xmlns.ech_0155._4.QuestionInformationType qit,
 			@Context
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType);
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
 	@Mapping(target = "ballotQuestion", source = "tieBreakQuestion")
 	@Mapping(target = "answerType", source = "tbit.answerInformation.answerType")
@@ -316,13 +366,13 @@ ECH015xv5Mapper {
 	@Mapping(target = "questionNumber", source = "tbit.tieBreakQuestionNumber")
 	void appendTieBreakQuestionType(
 			@MappingTarget
-			TieBreakQuestionType tb, ch.ech.xmlns.ech_0155._5.TieBreakInformationType tbit,
+			TieBreakQuestionType tb, ch.ech.xmlns.ech_0155._4.TieBreakInformationType tbit,
 			@Context
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType);
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
-	default TieBreakQuestionType convert(final ch.ech.xmlns.ech_0155._5.TieBreakInformationType tbit,
+	default TieBreakQuestionType convert(final ch.ech.xmlns.ech_0155._4.TieBreakInformationType tbit,
 			@Context
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType) {
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
 		final TieBreakQuestionTypeWithReferences result = new TieBreakQuestionTypeWithReferences();
 		appendTieBreakQuestionType(result, tbit, ballotType);
 		result.setReferencedQuestion1(tbit.getReferencedQuestion1());
@@ -331,25 +381,24 @@ ECH015xv5Mapper {
 	}
 
 	@Mapping(target = "ballotQuestionInfo", source = "tieBreakQuestionInfo")
-	BallotQuestionType convert(ch.ech.xmlns.ech_0155._5.TieBreakQuestionType tbqt,
+	BallotQuestionType convert(ch.ech.xmlns.ech_0155._4.TieBreakQuestionType tbqt,
 			@Context
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType);
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
-	default BallotQuestionType.BallotQuestionInfo convert(final ch.ech.xmlns.ech_0155._5.TieBreakQuestionType.TieBreakQuestionInfo tbqi,
+	default BallotQuestionType.BallotQuestionInfo convert(final ch.ech.xmlns.ech_0155._4.TieBreakQuestionType.TieBreakQuestionInfo tbqi,
 			@Context
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType) {
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
 		final BallotQuestionType.BallotQuestionInfo result = new BallotQuestionType.BallotQuestionInfo();
 
 		result.setLanguage(convert(tbqi.getLanguage()));
 		if (tbqi.getTieBreakQuestionTitle() != null) {
 			result.setBallotQuestionTitle(tbqi.getTieBreakQuestionTitle());
 		} else {
-			Optional.ofNullable(ballotType.getElectronicBallotDescription())
-					.orElseThrow(() -> new IllegalStateException(
-							"Ballot description is missing. A ballot must include a description if no tie-break question title is available."));
+			checkState(ballotType.getBallotDescription() != null,
+					"Ballot description is missing. A ballot must include a description if no tie-break question title is available.");
 
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo ballotDescriptionInfo = ballotType.getElectronicBallotDescription()
-					.getElectronicBallotDescriptionInfo().stream()
+			final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo ballotDescriptionInfo = ballotType.getBallotDescription()
+					.getBallotDescriptionInfo().stream()
 					.filter(bdi -> bdi.getLanguage().equals(tbqi.getLanguage()))
 					.collect(MoreCollectors.onlyElement());
 
@@ -362,27 +411,27 @@ ECH015xv5Mapper {
 
 	@Mapping(target = "standardQuestion", source = "questionInformation")
 	@Mapping(target = "tieBreakQuestion", source = "tieBreakInformation")
-	VariantBallotType convert(ch.ech.xmlns.ech_0155._5.ElectronicBallotType.VariantElectronicBallot vb,
+	VariantBallotType convert(ch.ech.xmlns.ech_0155._4.BallotType.VariantBallot vb,
 			@Context
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType);
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
 	@Mapping(target = "answerType", source = "answerInformation.answerType")
 	@Mapping(target = "answer", source = "answerInformation.answerOptionIdentification")
-	@Mapping(target = "questionNumber", source = "electronicBallotQuestionNumber")
-	StandardBallotType convert(ch.ech.xmlns.ech_0155._5.ElectronicBallotType.StandardElectronicBallot sb,
+	@Mapping(target = "questionNumber", source = "ballotQuestionNumber")
+	StandardBallotType convert(ch.ech.xmlns.ech_0155._4.BallotType.StandardBallot sb,
 			@Context
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType);
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
 	@Mapping(target = "answerIdentification", source = "answerIdentification")
 	@Mapping(target = "answerPosition", source = "answerSequenceNumber")
 	@Mapping(target = "answerInfo", source = "answerTextInformation")
 	@Mapping(target = "standardAnswerType", expression = "java( mapStandardAnswerType(answerOption.getAnswerSequenceNumber()) )")
-	StandardAnswerType convertStandardAnswer(ch.ech.xmlns.ech_0155._5.AnswerOptionIdentificationType answerOption);
+	StandardAnswerType convertStandardAnswer(ch.ech.xmlns.ech_0155._4.AnswerOptionIdentificationType answerOption);
 
 	@Mapping(target = "answerIdentification", source = "answerIdentification")
 	@Mapping(target = "answerPosition", source = "answerSequenceNumber")
 	@Mapping(target = "answerInfo", source = "answerTextInformation")
-	TiebreakAnswerType convertTiebreakAnswer(ch.ech.xmlns.ech_0155._5.AnswerOptionIdentificationType answerOption);
+	TiebreakAnswerType convertTiebreakAnswer(ch.ech.xmlns.ech_0155._4.AnswerOptionIdentificationType answerOption);
 
 	default String mapStandardAnswerType(final BigInteger answerSequenceNumber) {
 		return switch (answerSequenceNumber.intValue()) {
@@ -393,74 +442,73 @@ ECH015xv5Mapper {
 		};
 	}
 
-	@Mapping(target = "ballotQuestionInfo", source = "electronicBallotQuestionInfo")
-	BallotQuestionType convert(final ch.ech.xmlns.ech_0155._5.ElectronicBallotQuestionType bqt,
+	@Mapping(target = "ballotQuestionInfo", source = "ballotQuestionInfo")
+	BallotQuestionType convert(final ch.ech.xmlns.ech_0155._4.BallotQuestionType bqt,
 			@Context
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType);
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
-	default BallotQuestionType.BallotQuestionInfo convert(final ch.ech.xmlns.ech_0155._5.ElectronicBallotQuestionType.ElectronicBallotQuestionInfo bqi,
+	default BallotQuestionType.BallotQuestionInfo convert(final ch.ech.xmlns.ech_0155._4.BallotQuestionType.BallotQuestionInfo bqi,
 			@Context
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType) {
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
 		final BallotQuestionType.BallotQuestionInfo result = new BallotQuestionType.BallotQuestionInfo();
 		result.setLanguage(convert(bqi.getLanguage()));
-		if (bqi.getElectronicBallotQuestionTitle() != null) {
-			result.setBallotQuestionTitle(bqi.getElectronicBallotQuestionTitle());
+		if (bqi.getBallotQuestionTitle() != null) {
+			result.setBallotQuestionTitle(bqi.getBallotQuestionTitle());
 		} else {
-			Optional.ofNullable(ballotType.getElectronicBallotDescription())
-					.orElseThrow(() -> new IllegalStateException(
-							"Ballot description is missing. A ballot must include a description if no ballot question title is available."));
+			checkState(ballotType.getBallotDescription() != null,
+					"Ballot description is missing. A ballot must include a description if no ballot question title is available.");
 
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo ballotDescriptionInfo =
-					ballotType.getElectronicBallotDescription().getElectronicBallotDescriptionInfo().stream()
+			final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo ballotDescriptionInfo =
+					ballotType.getBallotDescription().getBallotDescriptionInfo().stream()
 							.filter(bdi -> bdi.getLanguage().equals(bqi.getLanguage()))
 							.collect(MoreCollectors.onlyElement());
 
 			result.setBallotQuestionTitle(getDescription(ballotDescriptionInfo));
 		}
-		result.setBallotQuestion(bqi.getElectronicBallotQuestion());
+		result.setBallotQuestion(bqi.getBallotQuestion());
 
 		return result;
 	}
 
 	@Mapping(target = "answer", source = "answerText")
-	AnswerInformationType convert(ch.ech.xmlns.ech_0155._5.AnswerOptionIdentificationType.AnswerTextInformation answer);
+	AnswerInformationType convert(ch.ech.xmlns.ech_0155._4.AnswerOptionIdentificationType.AnswerTextInformation answer);
 
 	default LanguageType convert(final String value) {
 		return LanguageType.fromValue(value.toLowerCase());
 	}
 
-	private ch.ech.xmlns.ech_0155._5.ElectronicBallotDescriptionInformationType createEmptyBallotDescriptionInformationType(
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType) {
+	private ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType createEmptyBallotDescriptionInformationType(
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
 		LOGGER.info("Creation of an empty ballotDescriptionInformation tag from ballot questions for ballot {}.",
-				ballotType.getElectronicBallotIdentification());
+				ballotType.getBallotIdentification());
 
-		final ch.ech.xmlns.ech_0155._5.ElectronicBallotDescriptionInformationType ballotDescriptionInformationType = new ch.ech.xmlns.ech_0155._5.ElectronicBallotDescriptionInformationType();
+		final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType ballotDescriptionInformationType = new ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType();
 
-		final List<ch.ech.xmlns.ech_0155._5.ElectronicBallotQuestionType.ElectronicBallotQuestionInfo> ballotQuestionInfoList = getBallotQuestionInfoList(ballotType);
+		final List<ch.ech.xmlns.ech_0155._4.BallotQuestionType.BallotQuestionInfo> ballotQuestionInfoList = getBallotQuestionInfoList(ballotType);
 		if (ballotQuestionInfoList.isEmpty()) {
 			throw new IllegalStateException("Unable to create an empty ballotDescriptionInformation tag from ballot questions.");
 		}
-		ballotDescriptionInformationType.setElectronicBallotDescriptionInfo(createBallotDescriptionInfoList(ballotQuestionInfoList));
+		ballotDescriptionInformationType.setBallotDescriptionInfo(createBallotDescriptionInfoList(ballotQuestionInfoList));
 
 		return ballotDescriptionInformationType;
 	}
 
-	private List<ch.ech.xmlns.ech_0155._5.ElectronicBallotQuestionType.ElectronicBallotQuestionInfo> getBallotQuestionInfoList(
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType) {
-		if (ballotType.getStandardElectronicBallot() != null && ballotType.getStandardElectronicBallot().getElectronicBallotQuestion() != null) {
-			return ballotType.getStandardElectronicBallot().getElectronicBallotQuestion().getElectronicBallotQuestionInfo();
-		} else if (ballotType.getVariantElectronicBallot() != null && ballotType.getVariantElectronicBallot().getQuestionInformation() != null) {
-			return ballotType.getVariantElectronicBallot().getQuestionInformation().getFirst().getElectronicBallotQuestion().getElectronicBallotQuestionInfo();
+	private List<ch.ech.xmlns.ech_0155._4.BallotQuestionType.BallotQuestionInfo> getBallotQuestionInfoList(
+			final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
+		if (ballotType.getStandardBallot() != null && ballotType.getStandardBallot().getBallotQuestion() != null) {
+			return ballotType.getStandardBallot().getBallotQuestion().getBallotQuestionInfo();
+		} else if (ballotType.getVariantBallot() != null && ballotType.getVariantBallot().getQuestionInformation() != null) {
+			return ballotType.getVariantBallot().getQuestionInformation().getFirst().getBallotQuestion().getBallotQuestionInfo();
 		} else {
 			return List.of();
 		}
 	}
 
-	private List<ch.ech.xmlns.ech_0155._5.ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo> createBallotDescriptionInfoList(
-			final List<ch.ech.xmlns.ech_0155._5.ElectronicBallotQuestionType.ElectronicBallotQuestionInfo> ballotQuestionInfoList) {
+	private List<ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo> createBallotDescriptionInfoList(
+			final List<ch.ech.xmlns.ech_0155._4.BallotQuestionType.BallotQuestionInfo> ballotQuestionInfoList) {
 		return ballotQuestionInfoList.stream()
 				.map(ballotQuestionInfo -> {
-					final ch.ech.xmlns.ech_0155._5.ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo ballotDescriptionInfo = new ch.ech.xmlns.ech_0155._5.ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo();
+					final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo ballotDescriptionInfo = new ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo();
 					ballotDescriptionInfo.setLanguage(ballotQuestionInfo.getLanguage());
 					return ballotDescriptionInfo;
 				})
@@ -468,37 +516,37 @@ ECH015xv5Mapper {
 	}
 
 	private static String getDescription(
-			final ch.ech.xmlns.ech_0155._5.ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo ballotDescriptionInfo) {
-		if (ballotDescriptionInfo.getElectronicBallotDescriptionShort() != null) {
-			return ballotDescriptionInfo.getElectronicBallotDescriptionShort();
-		} else if (ballotDescriptionInfo.getElectronicBallotDescriptionLong() != null) {
-			return StringUtils.left(ballotDescriptionInfo.getElectronicBallotDescriptionLong(), 100);
+			final ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType.BallotDescriptionInfo ballotDescriptionInfo) {
+		if (ballotDescriptionInfo.getBallotDescriptionShort() != null) {
+			return ballotDescriptionInfo.getBallotDescriptionShort();
+		} else if (ballotDescriptionInfo.getBallotDescriptionLong() != null) {
+			return StringUtils.left(ballotDescriptionInfo.getBallotDescriptionLong(), 100);
 		} else {
 			throw new IllegalStateException("Could not extract description from BallotDescriptionInfo");
 		}
 	}
 
-	private static String getBallotQuestionTitle(final String language, final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType) {
+	private static String getBallotQuestionTitle(final String language, final ch.ech.xmlns.ech_0155._4.BallotType ballotType) {
 		LOGGER.warn("The ballot {} lacks of descriptions. We will use the ballot questions to fill those descriptions.",
-				ballotType.getElectronicBallotIdentification());
+				ballotType.getBallotIdentification());
 
-		if (ballotType.getStandardElectronicBallot() != null && ballotType.getStandardElectronicBallot().getElectronicBallotQuestion() != null) {
-			return getBallotQuestionTitleFromInfo(language, ballotType.getStandardElectronicBallot().getElectronicBallotQuestion().getElectronicBallotQuestionInfo());
-		} else if (ballotType.getVariantElectronicBallot() != null && ballotType.getVariantElectronicBallot().getQuestionInformation() != null) {
+		if (ballotType.getStandardBallot() != null && ballotType.getStandardBallot().getBallotQuestion() != null) {
+			return getBallotQuestionTitleFromInfo(language, ballotType.getStandardBallot().getBallotQuestion().getBallotQuestionInfo());
+		} else if (ballotType.getVariantBallot() != null && ballotType.getVariantBallot().getQuestionInformation() != null) {
 			return getBallotQuestionTitleFromInfo(language,
-					ballotType.getVariantElectronicBallot().getQuestionInformation().getFirst().getElectronicBallotQuestion().getElectronicBallotQuestionInfo());
+					ballotType.getVariantBallot().getQuestionInformation().getFirst().getBallotQuestion().getBallotQuestionInfo());
 		} else {
 			throw new IllegalStateException("Could not extract question title.");
 		}
 	}
 
 	private static String getBallotQuestionTitleFromInfo(final String language,
-			final List<ch.ech.xmlns.ech_0155._5.ElectronicBallotQuestionType.ElectronicBallotQuestionInfo> ballotQuestionInfoList) {
+			final List<ch.ech.xmlns.ech_0155._4.BallotQuestionType.BallotQuestionInfo> ballotQuestionInfoList) {
 		return ballotQuestionInfoList.stream()
 				.filter(bdi -> bdi.getLanguage().equals(language))
 				.findFirst()
 				.orElseThrow(() -> new IllegalStateException(
 						String.format("Ballot question info is not available in expected language. [language: %s]", language)))
-				.getElectronicBallotQuestionTitle();
+				.getBallotQuestionTitle();
 	}
 }

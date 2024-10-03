@@ -22,20 +22,20 @@ import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 @Component
-public class ECHv5FileContestLoader {
+public class ECHv42FileContestLoader {
 
 	@SuppressWarnings("java:S1075")
-	private static final String ECH157_SCHEMA_PATH = "/xsd/eCH-0157-4-0.xsd";
+	private static final String ECH157_SCHEMA_PATH = "/xsd/eCH-0157-5-1.xsd";
 	@SuppressWarnings("java:S1075")
-	private static final String ECH159_SCHEMA_PATH = "/xsd/eCH-0159-4-0.xsd";
-	private static final Logger LOGGER = LoggerFactory.getLogger(ECHv5FileContestLoader.class);
+	private static final String ECH159_SCHEMA_PATH = "/xsd/eCH-0159-5-1.xsd";
+	private static final Logger LOGGER = LoggerFactory.getLogger(ECHv42FileContestLoader.class);
 
-	public Tuple2<Iterable<ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup>, ch.ech.xmlns.ech_0155._5.ContestType> loadECH0157v5(
+	public Tuple2<Iterable<ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup>, ch.ech.xmlns.ech_0155._5.ContestType> loadECH0157v42(
 			final String fileLocation) {
 		try {
 			LOGGER.debug("Loading eCH0157v5 : {}", fileLocation);
 
-			final URL schemaPath = ECHv5FileContestLoader.class.getResource(ECH157_SCHEMA_PATH);
+			final URL schemaPath = ECHv42FileContestLoader.class.getResource(ECH157_SCHEMA_PATH);
 			checkState(schemaPath != null, "Resource '%s' not found", ECH157_SCHEMA_PATH);
 
 			final ArrayList<ch.ech.xmlns.ech_0155._5.ContestType> contests = new ArrayList<>();
@@ -52,12 +52,12 @@ public class ECHv5FileContestLoader {
 		}
 	}
 
-	public Tuple2<Iterable<ch.ech.xmlns.ech_0159._5.EventInitialDelivery.VoteInformation>, ch.ech.xmlns.ech_0155._5.ContestType> loadECH0159v5(
+	public Tuple2<Iterable<ch.ech.xmlns.ech_0159._5.EventInitialDelivery.VoteInformation>, ch.ech.xmlns.ech_0155._5.ContestType> loadECH0159v42(
 			final String fileLocation) {
 		try {
 			LOGGER.debug("Loading eCH0159v5 : {}", fileLocation);
 
-			final URL schemaPath = ECHv5FileContestLoader.class.getResource(ECH159_SCHEMA_PATH);
+			final URL schemaPath = ECHv42FileContestLoader.class.getResource(ECH159_SCHEMA_PATH);
 			checkState(schemaPath != null, "Resource '%s' not found", ECH159_SCHEMA_PATH);
 
 			final ArrayList<ch.ech.xmlns.ech_0155._5.ContestType> contests = new ArrayList<>();

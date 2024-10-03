@@ -13,10 +13,10 @@ import org.junit.jupiter.api.Test;
 
 import ch.ech.xmlns.ech_0045._4.VotingPersonType;
 
-class ECHv4FileRegisterLoaderTest {
+class ECHv40FileRegisterLoaderTest {
 	@Test
 	void loadECH0045v4() {
-		final Iterable<VotingPersonType> result = new ECHv4FileRegisterLoader().loadECH0045v4(
+		final Iterable<VotingPersonType> result = new ECHv40FileRegisterLoader().loadECH0045v4(
 				"./src/test/resources/ECHv4FileRegisterLoaderTest/file1.ech0045v4.one.xml");
 
 		final List<VotingPersonType> voters = new ArrayList<>();

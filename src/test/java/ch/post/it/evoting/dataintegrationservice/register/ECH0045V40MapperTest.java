@@ -34,9 +34,9 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType
 
 @SpringBootTest
 @ActiveProfiles("test")
-class ECH0045v4MapperTest {
+class ECH0045V40MapperTest {
 
-	private final ECH0045v4Mapper mapper = ECH0045v4Mapper.INSTANCE;
+	private final ECH0045v40Mapper mapper = ECH0045v40Mapper.INSTANCE;
 
 	private VotingPersonType createSwissVoter() throws Exception {
 		final XMLGregorianCalendar gc = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());
