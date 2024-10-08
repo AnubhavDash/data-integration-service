@@ -49,7 +49,7 @@
 		<!-- DIS xsd -->
 		<file>
 			<fileMode>0644</fileMode>
-			<source>${project.basedir}/src/main/resources/xsd/evoting-parameter-4-9.xsd</source>
+			<source>${project.basedir}/src/main/resources/xsd/evoting-parameter-5-0.xsd</source>
 			<outputDirectory/>
 		</file>
 	</files>

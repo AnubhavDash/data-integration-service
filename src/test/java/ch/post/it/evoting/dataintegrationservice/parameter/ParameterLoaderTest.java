@@ -14,8 +14,8 @@ import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
-import ch.evoting.xmlns.parameter._4.BirthYearAuthenticationKeyTypeImpl;
-import ch.evoting.xmlns.parameter._4.Parameter;
+import ch.evoting.xmlns.parameter._5.BirthYearAuthenticationKeyTypeImpl;
+import ch.evoting.xmlns.parameter._5.Parameter;
 import ch.galinet.xml.xmlmerge.XmlMerge;
 import ch.galinet.xml.xmlmerge.config.AttributeMergeConfigurer;
 import ch.galinet.xml.xmlmerge.config.ConfigurableXmlMerge;

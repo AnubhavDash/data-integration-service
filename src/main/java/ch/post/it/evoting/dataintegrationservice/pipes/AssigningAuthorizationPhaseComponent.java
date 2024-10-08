@@ -29,7 +29,7 @@ public class AssigningAuthorizationPhaseComponent {
 		this.contestService = contestService;
 	}
 
-	Function<Tuple5<VoterTypeWithRole, AuthorizationsType, List<String>, ContestType, ch.evoting.xmlns.parameter._4.ContestType>, VoterTypeWithRole> assignAuthorization() {
+	Function<Tuple5<VoterTypeWithRole, AuthorizationsType, List<String>, ContestType, ch.evoting.xmlns.parameter._5.ContestType>, VoterTypeWithRole> assignAuthorization() {
 		return tuple -> authorizationService.assignAuthorization(tuple.getT1(), tuple.getT2(), tuple.getT3(), tuple.getT4(), tuple.getT5());
 	}
 

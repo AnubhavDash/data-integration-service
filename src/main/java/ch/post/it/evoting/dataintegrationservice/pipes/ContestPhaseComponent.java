@@ -42,7 +42,7 @@ public class ContestPhaseComponent {
 		return tuple -> contestService.setExtendedAuthenticationKeyNames(tuple.getT1(), tuple.getT2());
 	}
 
-	public Consumer<Tuple2<ContestType, ch.evoting.xmlns.parameter._4.ContestType>> checkContestConsistency() {
+	public Consumer<Tuple2<ContestType, ch.evoting.xmlns.parameter._5.ContestType>> checkContestConsistency() {
 		return tuple -> contestService.checkConsistency(tuple.getT1(), tuple.getT2());
 	}
 
@@ -50,7 +50,7 @@ public class ContestPhaseComponent {
 		return contestService::checkSame;
 	}
 
-	public Function<Tuple4<ContestType, List<VoteInformationType>, List<ElectionGroupBallotType>, ch.evoting.xmlns.parameter._4.ContestType>, ContestType> buildContest() {
+	public Function<Tuple4<ContestType, List<VoteInformationType>, List<ElectionGroupBallotType>, ch.evoting.xmlns.parameter._5.ContestType>, ContestType> buildContest() {
 		return tuple -> contestService.build(tuple.getT1(), tuple.getT2(), tuple.getT3(), tuple.getT4());
 	}
 }
