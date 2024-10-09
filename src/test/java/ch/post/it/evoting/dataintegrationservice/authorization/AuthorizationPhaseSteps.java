@@ -60,7 +60,7 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 							.withContestDescription("Desc RM")
 					)
 			);
-	private final ch.evoting.xmlns.parameter._5.ContestType contestParameters = new ch.evoting.xmlns.parameter._5.ContestType();
+	private final ch.evoting.xmlns.parameter._4.ContestType contestParameters = new ch.evoting.xmlns.parameter._4.ContestType();
 	private Exception processException = null;
 	private List<VoterTypeWithRole> voters;
 

@@ -474,7 +474,7 @@
 							<eCH-0155:listDescription>Vid</eCH-0155:listDescription>
 						</eCH-0155:listDescriptionInfo>
 					</eCH-0155:listDescription>
-					<eCH-0155:isEmptyList>true</eCH-0155:isEmptyList>
+					<eCH-0155:isEmptyList>false</eCH-0155:isEmptyList>
 					<eCH-0155:totalPositionsOnList>2</eCH-0155:totalPositionsOnList>
 					<eCH-0155:emptyListPositions>2</eCH-0155:emptyListPositions>
 				</list>

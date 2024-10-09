@@ -5,7 +5,7 @@ package ch.post.it.evoting.dataintegrationservice.pipes;
 
 import java.util.List;
 
-import ch.evoting.xmlns.parameter._5.ContestType;
+import ch.evoting.xmlns.parameter._4.ContestType;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.ContestMapper;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterCategorizer;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterWithRoleMapper;

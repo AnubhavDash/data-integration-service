@@ -14032,7 +14032,7 @@
 							<eCH-0155:listDescription>Vid</eCH-0155:listDescription>
 						</eCH-0155:listDescriptionInfo>
 					</eCH-0155:listDescription>
-					<eCH-0155:isEmptyList>true</eCH-0155:isEmptyList>
+					<eCH-0155:isEmptyList>false</eCH-0155:isEmptyList>
 					<eCH-0155:listOrderOfPrecedence>99</eCH-0155:listOrderOfPrecedence>
 					<eCH-0155:totalPositionsOnList>12</eCH-0155:totalPositionsOnList>
 					<eCH-0155:emptyListPositions>12</eCH-0155:emptyListPositions>

@@ -32,7 +32,7 @@ public class AuthorizationPhaseComponent {
 		return authorizationService::mapDomainOfInfluenceIds;
 	}
 
-	public Function<Tuple4<VoterTypeWithRole, List<String>, ContestType, ch.evoting.xmlns.parameter._5.ContestType>, AuthorizationType> buildAuthorization() {
+	public Function<Tuple4<VoterTypeWithRole, List<String>, ContestType, ch.evoting.xmlns.parameter._4.ContestType>, AuthorizationType> buildAuthorization() {
 		return tuple -> authorizationService.build(tuple.getT1(), tuple.getT2(), tuple.getT3(), tuple.getT4());
 	}
 

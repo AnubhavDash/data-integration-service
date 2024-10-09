@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/5" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/5">
+<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/4" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/4">
 	<contest>
 		<defaultLanguage>de</defaultLanguage>
 		<evotingFromDate>2023-12-06T07:00:00+01:00</evotingFromDate>
 		<evotingToDate>2027-11-25T23:00:00+01:00</evotingToDate>
 		<evotingTestBallotBoxesFromDate>2023-12-06T07:00:00+01:00</evotingTestBallotBoxesFromDate>
+		<adminBoard>
+			<adminBoardIdentification>Post_Primary_Secondary</adminBoardIdentification>
+			<adminBoardName>Post_Primary_Secondary</adminBoardName>
+			<adminBoardDescription>Post_Primary_Secondary</adminBoardDescription>
+			<adminBoardThresholdValue>1</adminBoardThresholdValue>
+			<adminBoardMembers>
+				<adminBoardMemberName>AB1</adminBoardMemberName>
+				<adminBoardMemberName>AB2</adminBoardMemberName>
+			</adminBoardMembers>
+		</adminBoard>
 		<electoralBoard>
 			<electoralBoardIdentification>Post_Primary_Secondary</electoralBoardIdentification>
 			<electoralBoardName>Post_Primary_Secondary</electoralBoardName>

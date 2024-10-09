@@ -15,7 +15,7 @@ import static li.chee.reactive.plumber.Plumbing.*
 def registerPhaseComponent = getBean(RegisterPhaseComponent.class)
 
 def voters = tube {
-    from merge(RegisterPhase.registerEch0045v4.voters, RegisterPhase.registerEch0045v42.voters) \
+    from(RegisterPhase.registerEch0045v4.voters) \
     transformDeferred logAsInfo("Building the register...")
 }
 

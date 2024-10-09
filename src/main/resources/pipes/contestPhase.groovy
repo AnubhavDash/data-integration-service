@@ -16,17 +16,17 @@ import static reactor.core.publisher.Flux.zip
 def contestPhaseComponent = getBean(ContestPhaseComponent.class)
 
 def elections = pipe {
-    from( merge(ContestPhase.contestEch015xv40.elections, ContestPhase.contestEch015xv42.elections) ) \
+    from( ContestPhase.contestEch015xv4.elections ) \
     collectList()
 }
 
 def votes = pipe {
-    from( merge(ContestPhase.contestEch015xv40.votes, ContestPhase.contestEch015xv42.votes) ) \
+    from( ContestPhase.contestEch015xv4.votes ) \
     collectList()
 }
 
 def validatedContest = pipe {
-    from( merge(ContestPhase.contestEch015xv40.contests, ContestPhase.contestEch015xv42.contests) ) \
+    from( ContestPhase.contestEch015xv4.contests ) \
     transformDeferred errorIfEmpty("No ech15x contests found ! Check if ech15x file is present.") \
     scan contestPhaseComponent.checkContestSame() \
     last() \

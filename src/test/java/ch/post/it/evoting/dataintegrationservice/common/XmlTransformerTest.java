@@ -28,7 +28,7 @@ class XmlTransformerTest {
 
 	@Test
 	void testToXml() throws Exception {
-		toXml("XmlTransformerTest/unittest-config-7-0.xml", XsdConstants.CANTON_CONFIG_XSD);
+		toXml("XmlTransformerTest/unittest-config-6-0.xml", XsdConstants.CANTON_CONFIG_XSD);
 	}
 
 	public void toXml(final String configName, final String schemeName) throws Exception {

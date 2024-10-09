@@ -98,7 +98,7 @@ public class AuthorizationService {
 	}
 
 	public AuthorizationType build(final VoterTypeWithRole voter, final List<String> usedDOIids,
-			final ContestType contest, final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+			final ContestType contest, final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 
 		final AuthorizationType result = new AuthorizationType();
 
@@ -235,7 +235,7 @@ public class AuthorizationService {
 
 	public VoterTypeWithRole assignAuthorization(final VoterTypeWithRole voter, final AuthorizationsType authorizations,
 			final List<String> contestUsedDOIs, final ContestType contest,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 
 		final AuthorizationType auth = build(voter, contestUsedDOIs, contest, contestParameters);
 

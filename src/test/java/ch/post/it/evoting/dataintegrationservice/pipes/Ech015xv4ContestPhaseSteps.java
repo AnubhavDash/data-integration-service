@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import ch.post.it.evoting.dataintegrationservice.pipes.contest.ech015xv40.ContestEch015xv40;
+import ch.post.it.evoting.dataintegrationservice.pipes.contest.ech015xv4.ContestEch015xv4;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
@@ -42,7 +42,7 @@ public class Ech015xv4ContestPhaseSteps extends PhaseSteps {
 
 	@When("^executing the ech015xv4 contest phase pipeline$")
 	public void whenExecutingContestPhase() {
-		new Runtime().run(uri("contest/ech015xv40/contestEch015xv40"));
+		new Runtime().run(uri("contest/ech015xv4/contestEch015xv4"));
 	}
 
 	@And("^draining the ech015xv4 contest phase outputs$")
@@ -51,9 +51,9 @@ public class Ech015xv4ContestPhaseSteps extends PhaseSteps {
 		elections = new ArrayList<>();
 		votes = new ArrayList<>();
 		drain(
-				ContestEch015xv40.exports.getContests().doOnNext(contests::add),
-				ContestEch015xv40.exports.getElections().doOnNext(elections::add),
-				ContestEch015xv40.exports.getVotes().doOnNext(votes::add)
+				ContestEch015xv4.exports.getContests().doOnNext(contests::add),
+				ContestEch015xv4.exports.getElections().doOnNext(elections::add),
+				ContestEch015xv4.exports.getVotes().doOnNext(votes::add)
 		);
 	}
 
