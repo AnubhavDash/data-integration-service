@@ -1,5 +1,12 @@
 # Changelog
 
+## Release 2.8.4
+
+Release 2.8.4 incorporates the following change:
+
+* Minor code improvements
+* Updated dependencies and third-party libraries.
+
 ## Release 2.8.3.2
 
 Release 2.8.3.2 incorporates the following change:
