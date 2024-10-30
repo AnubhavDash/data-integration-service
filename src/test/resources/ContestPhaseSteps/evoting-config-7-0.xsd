@@ -1147,14 +1147,6 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="authorizationAlias">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:minLength value="1"/>
-						<xs:maxLength value="250"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
 			<xs:element name="authorizationTest" type="xs:boolean"/>
 			<xs:element name="authorizationFromDate" type="xs:dateTime"/>
 			<xs:element name="authorizationToDate" type="xs:dateTime"/>

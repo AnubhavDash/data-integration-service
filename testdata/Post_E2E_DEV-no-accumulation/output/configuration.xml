@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/7">
   <header>
-    <fileDate>2024-09-26T16:55:16.370+02:00</fileDate>
+    <fileDate>2024-10-24T10:06:24.175+02:00</fileDate>
     <voterTotal>43</voterTotal>
   </header>
   <contest>
@@ -3763,7 +3763,6 @@
     <authorization>
       <authorizationIdentification>516e2551-ee42-3401-9988-7dfebd0ac0c0</authorizationIdentification>
       <authorizationName>CH_Testurne1</authorizationName>
-      <authorizationAlias>516e2551-ee42-3401-9988-7dfebd0ac0c0</authorizationAlias>
       <authorizationTest>true</authorizationTest>
       <authorizationFromDate>2023-12-06T07:00:00+01:00</authorizationFromDate>
       <authorizationToDate>2027-11-25T23:00:00+01:00</authorizationToDate>
@@ -3783,7 +3782,6 @@
     <authorization>
       <authorizationIdentification>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorizationIdentification>
       <authorizationName>CH_Testurne2</authorizationName>
-      <authorizationAlias>ec1ce02e-9b9b-3756-8d99-5bfd68678f6b</authorizationAlias>
       <authorizationTest>true</authorizationTest>
       <authorizationFromDate>2023-12-06T07:00:00+01:00</authorizationFromDate>
       <authorizationToDate>2027-11-25T23:00:00+01:00</authorizationToDate>
@@ -3814,7 +3812,6 @@
     <authorization>
       <authorizationIdentification>7228df42-9812-3434-a123-7af149a88672</authorizationIdentification>
       <authorizationName>CH_Testurne3</authorizationName>
-      <authorizationAlias>7228df42-9812-3434-a123-7af149a88672</authorizationAlias>
       <authorizationTest>true</authorizationTest>
       <authorizationFromDate>2023-12-06T07:00:00+01:00</authorizationFromDate>
       <authorizationToDate>2027-11-25T23:00:00+01:00</authorizationToDate>
@@ -3834,7 +3831,6 @@
     <authorization>
       <authorizationIdentification>88ac0932-b73a-3d2b-b04a-44a16176a5e9</authorizationIdentification>
       <authorizationName>CH_Testurne4</authorizationName>
-      <authorizationAlias>88ac0932-b73a-3d2b-b04a-44a16176a5e9</authorizationAlias>
       <authorizationTest>true</authorizationTest>
       <authorizationFromDate>2023-12-06T07:00:00+01:00</authorizationFromDate>
       <authorizationToDate>2027-11-25T23:00:00+01:00</authorizationToDate>
@@ -5445,5 +5441,5 @@
       </person>
     </voter>
   </register>
-  <signature>O8VVdc4/bpETA/g+bRoo4yT0q38a7/Q4/29ddarn0CEtOUaib1M5k4QYqBJXL36xeGR0wVfqRnLfMu1T4voDPBdRVOjjqllSnPej6nhJrJ+wmG5gnNcEIJBmXPyel6Qzv0x7iNoDt5KCYFulX/nAkqaZWCc5z1qr4qR5l9QNCbiWJOe8AbeKmzHg58jgT7p8rRlGq4HXiay0CQvLSCSsJA/ebOECpQKmxOt/19OxYHpBaVXWVD0xsFBU5LL6uHFCeRFaKFxpvoUxpXhsBphHGNQof92zwJjd76qrWBML4rGTUOC0eEbvSCuNAUiAh9n25PlWuVKE5JcxgKlgD8gvsE0z/I81ciBKKqYA9rQwTEKz6I1mn+f/7/PgVtNjQHR3/nBtmf1Gakvg+Z/7tEFMQ96kt4ZuPplDGfL+OceFN5ZmsYxX9hRDldX5Tq+MUMo5nIAcSNHV3cVKBFXzTEyQlIWO+5T7KjSutzfg0HCXv30Sln6+m9gqsyrW4AxXoVvT</signature>
+  <signature>TPTM60a8DETSRYzDgYVA5RpZf7jdXTYc/848dgPvrpmgOfM5/Gcb8fLGXyECQBZC4l/W6QI3BVe0mVaZmFnq23ISxjZEN+0BNpDcKttosOj8DZdvGr0E5Tw3FL9d6i/I3GSl0z0vkIAH+OwKZb3ULV2qKwNhaUgN8VgfierJz4sgEvK3epjEcDC4xGSnAS0qKYvaH9ESdfCgEd6XlMAyh40rGOEYWNYtfMYYfJ6zCUn5HKOPLzbtVlguu/zRBGw7dxHYt9kyjvfmDUVfoNDQbOaILfeA3MQwtQy8SminAnELtJhyv+jdoTI5b9KdyPxcfIVMlpmbZZmHhcp4oMOk1OMjyGptkntI4StluzfERHLqkbEJ3A054CI3E81lTPrI+wszgvnpWMXfYBRSUeafEJ+Ns44eaSRcHO+sM8pG+dixW/TW9lVzABXiruA/3b7LHoLKrAXYh2vQE0SDPgoBh2hUejI0rdqsh4qW8qyxGNm0MfgA2tuBG5O4q5Jt5EJS</signature>
 </configuration>

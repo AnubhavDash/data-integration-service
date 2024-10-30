@@ -22,7 +22,7 @@ class AuthorizationServiceTest {
 		AuthorizationsType authorizations = new AuthorizationsType();
 		final AuthorizationType auth = new AuthorizationType()
 				.withAuthorizationIdentification("id")
-				.withAuthorizationAlias("1234").withAuthorizationName("Toto").withAuthorizationObject(
+				.withAuthorizationName("Toto").withAuthorizationObject(
 						new AuthorizationObjectType()
 								.withDomainOfInfluence(new DomainOfInfluenceType().withDomainOfInfluenceIdentification("doi"))
 								.withCountingCircle(new CountingCircleType().withCountingCircleIdentification("cc"))

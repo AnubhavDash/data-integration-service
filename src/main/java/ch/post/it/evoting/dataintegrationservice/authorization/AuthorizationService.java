@@ -128,10 +128,6 @@ public class AuthorizationService {
 						.map(tuple -> StringUtil.concat(tuple.getT1(), tuple.getT2(), "|"))
 						.reduce("", (s1, s2) -> StringUtil.concat(s1, s2, "+"))));
 
-		result.setAuthorizationAlias(result.getAuthorizationIdentification());
-
-		checkAuthorizationAliasLength(result);
-
 		if (contestParameters.getEvotingTestBallotBoxesFromDate() != null
 				&& contestParameters.getEvotingTestBallotBoxesFromDate().compare(contest.getEvotingFromDate()) > 0) {
 			LOGGER.warn(
@@ -149,13 +145,6 @@ public class AuthorizationService {
 		result.setAuthorizationGracePeriod(authorizationGracePeriod);
 
 		return result;
-	}
-
-	private void checkAuthorizationAliasLength(final AuthorizationType result) {
-		if (result.getAuthorizationAlias().length() > 100) {
-			LOGGER.warn("Authorization alias ({}) is too long. Cutting it to get only 100 characters", result.getAuthorizationAlias());
-			result.setAuthorizationAlias(result.getAuthorizationAlias().substring(0, 97) + "...");
-		}
 	}
 
 	private AuthorizationObjectType map(final VoterTypeWithRole voter, final VoterDomainOfInfluenceInfo voterDomainOfInfluenceInfo) {

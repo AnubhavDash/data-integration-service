@@ -82,7 +82,7 @@ public class OutputPhaseSteps extends PhaseSteps {
 					.withElectoralBoardMembers(new ElectoralBoardMembersType().withElectoralBoardMemberName("EB1", "EB2")));
 
 	private final AuthorizationsType authorization = new AuthorizationsType().withAuthorization(
-			new AuthorizationType().withAuthorizationIdentification("auth-000-abc").withAuthorizationAlias("auth-000-abc-alias")
+			new AuthorizationType().withAuthorizationIdentification("auth-000-abc")
 					.withAuthorizationName("auth-000-abc-name").withAuthorizationFromDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
 					.withAuthorizationToDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00")).withAuthorizationTest(false)
 					.withAuthorizationGracePeriod(900).withAuthorizationObject(
