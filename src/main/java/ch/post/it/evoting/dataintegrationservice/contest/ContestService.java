@@ -1059,12 +1059,12 @@ public class ContestService {
 	}
 
 	private String getReturnCodeWriteInDescriptionText(final LanguageType language, final ch.evoting.xmlns.parameter._5.ContestType contest) {
-		if(contest.getReturnCodeWriteInDescriptionInfo() != null) {
+		if (contest.getReturnCodeWriteInDescriptionInfo() != null) {
 			final PositionText returnCodeWriteInDescriptionText = contest.getReturnCodeWriteInDescriptionInfo().getPositionText().stream()
 					.filter(positionText -> positionText.getLanguage().value().equals(language.value()))
 					.findFirst()
 					.orElse(null);
-			if(returnCodeWriteInDescriptionText != null) {
+			if (returnCodeWriteInDescriptionText != null) {
 				return returnCodeWriteInDescriptionText.getText();
 			}
 		}
@@ -1109,26 +1109,28 @@ public class ContestService {
 				});
 	}
 
-	private void addVotesQuestionPositionIfNeeded(final List<VoteInformationType> votes) {
-		votes.stream().flatMap(v -> v.getVote().getBallot().stream()).filter(b -> b.getVariantBallot() != null).map(b -> {
-			final Map<String, VariantBallotType> hm = new HashMap<>();
-			hm.put(b.getBallotIdentification(), b.getVariantBallot());
-			return hm;
-		}).forEach(h -> {
-			final VariantBallotType vb = h.values().stream().findFirst().get();
-			if (vb.getStandardQuestion().stream().anyMatch(b -> b.getQuestionPosition() == DEFAULT_VALUE)) {
-				final AtomicInteger counter = new AtomicInteger();
-				LOGGER.info("Variant ballot '{}' : missing standard question positions; resetting all values",
-						h.keySet().stream().findFirst().get());
-				vb.getStandardQuestion().forEach(q -> q.setQuestionPosition(counter.incrementAndGet()));
-			}
-			if (vb.getTieBreakQuestion().stream().anyMatch(b -> b.getQuestionPosition() == DEFAULT_VALUE)) {
-				final AtomicInteger counter = new AtomicInteger();
-				LOGGER.info("Variant ballot '{}' : missing tie-break question positions; resetting all values",
-						h.keySet().stream().findFirst().get());
-				vb.getTieBreakQuestion().forEach(q -> q.setQuestionPosition(counter.incrementAndGet()));
-			}
-		});
+	private void addVotesQuestionPositionIfNeeded(final List<VoteInformationType> votesInformation) {
+		votesInformation.stream()
+				.flatMap(voteInformation -> voteInformation.getVote().getBallot().stream())
+				.filter(ballot -> ballot.getVariantBallot() != null)
+				.forEach(ballot -> {
+					final AtomicInteger counter = new AtomicInteger();
+					final VariantBallotType variantBallot = ballot.getVariantBallot();
+					final String ballotIdentification = ballot.getBallotIdentification();
+
+					final boolean standardQuestionWithoutPosition = variantBallot.getStandardQuestion().stream()
+							.anyMatch(standardQuestion -> standardQuestion.getQuestionPosition() == DEFAULT_VALUE);
+					final boolean tieBreakQuestionWithoutPosition = variantBallot.getTieBreakQuestion().stream()
+							.anyMatch(tieBreakQuestion -> tieBreakQuestion.getQuestionPosition() == DEFAULT_VALUE);
+
+					if (standardQuestionWithoutPosition || tieBreakQuestionWithoutPosition) {
+						LOGGER.info("Variant ballot '{}' : missing at least one question position; resetting all values", ballotIdentification);
+						variantBallot.getStandardQuestion()
+								.forEach(standardQuestion -> standardQuestion.setQuestionPosition(counter.incrementAndGet()));
+						variantBallot.getTieBreakQuestion()
+								.forEach(tieBreakQuestion -> tieBreakQuestion.setQuestionPosition(counter.incrementAndGet()));
+					}
+				});
 	}
 
 	public ContestType checkSame(final ContestType c1, final ContestType c2) {
@@ -1597,7 +1599,8 @@ public class ContestService {
 
 					final List<String> identifications = Streams.concat(Stream.of(electionIdentification), listIdentifications)
 							.toList();
-					checkState(hasNoDuplicates(ImmutableList.from(identifications)), "The election contains duplicate identifications. [election id: %s]",
+					checkState(hasNoDuplicates(ImmutableList.from(identifications)),
+							"The election contains duplicate identifications. [election id: %s]",
 							electionIdentification);
 					return identifications;
 				}).toList().getFirst();

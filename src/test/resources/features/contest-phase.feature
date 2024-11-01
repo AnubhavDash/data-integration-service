@@ -580,16 +580,16 @@ Feature: Contest Phase
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has position cleared out
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has position cleared out
     When executing the contest phase
-    Then the variant ballot tiebreak question "V-B_B-1_TQ-1" should have position 1
-    And the variant ballot tiebreak question "V-B_B-1_TQ-2" should have position 2
-    And the variant ballot tiebreak question "V-B_B-1_TQ-3" should have position 3
+    Then the variant ballot tiebreak question "V-B_B-1_TQ-1" should have position 4
+    And the variant ballot tiebreak question "V-B_B-1_TQ-2" should have position 5
+    And the variant ballot tiebreak question "V-B_B-1_TQ-3" should have position 6
 
   Scenario: For a variant ballot, one of the tiebreak questions position is missing
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has position cleared out
     When executing the contest phase
-    Then the variant ballot tiebreak question "V-B_B-1_TQ-1" should have position 1
-    And the variant ballot tiebreak question "V-B_B-1_TQ-2" should have position 2
-    And the variant ballot tiebreak question "V-B_B-1_TQ-3" should have position 3
+    Then the variant ballot tiebreak question "V-B_B-1_TQ-1" should have position 4
+    And the variant ballot tiebreak question "V-B_B-1_TQ-2" should have position 5
+    And the variant ballot tiebreak question "V-B_B-1_TQ-3" should have position 6
 
   Scenario: Throw an exception when some contest descriptions languages are missing
     Given the descriptions of the contest "my contest" are cleared out

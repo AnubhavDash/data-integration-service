@@ -974,7 +974,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@Then("^the variant ballot tiebreak question \"([^\"]*)\" should have position (\\d+)$")
-	public void thenTheVariantVallotTiebreakQuestionShouldHavePosition(final String questionId, final Integer pos) {
+	public void thenTheVariantBallotTiebreakQuestionShouldHavePosition(final String questionId, final Integer pos) {
 		final TieBreakQuestionType question = from(contest).find(TieBreakQuestionType.class)
 				.filter(q -> q.getQuestionIdentification().equals(questionId))
 				.stream().findFirst().get();
