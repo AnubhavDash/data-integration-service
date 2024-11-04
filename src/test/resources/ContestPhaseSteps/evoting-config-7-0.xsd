@@ -370,6 +370,15 @@
 			<xs:element name="emptyList" type="config:emptyListType"/>
 			<xs:element name="listUnion" type="config:listUnionType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="writeInCandidate" type="config:writeInCandidateType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="implicitWriteInCandidate" minOccurs="0" maxOccurs="unbounded">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:pattern value="[# '(),-\./0-9A-Za-z¢ŠšŽžŒœŸÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ]+"/>
+						<xs:minLength value="1"/>
+						<xs:maxLength value="400"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="incumbentTextInfoType">
@@ -400,7 +409,6 @@
 		<xs:restriction base="xs:token">
 			<xs:enumeration value="explicit"/>
 			<xs:enumeration value="implicit"/>
-			<xs:enumeration value="implicitDiscreet"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="candidateType">

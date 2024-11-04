@@ -303,6 +303,7 @@ public class ContestService {
 		addIncumbentTextIfNeeded(electionGroups, contestParameters.getIncumbentText());
 
 		addElectionsWriteIns(electionGroups, contestParameters);
+		addElectionsImplicitWriteInCandidatesIfNeeded(electionGroups, contestParameters);
 		addElectionsAccumulation(electionGroups, contestParameters);
 		addElectionsMinimalCandidateSelectionInList(electionGroups, contestParameters);
 		addElectionRulesExplanation(electionGroups, contestParameters);
@@ -1058,6 +1059,21 @@ public class ContestService {
 				});
 	}
 
+	private void addElectionsImplicitWriteInCandidatesIfNeeded(final List<ElectionGroupBallotType> electionGroups,
+			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+		if (contestParameters.getElections() != null) {
+			electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+					.forEach(electionInformationType ->
+							contestParameters.getElections().getElection().stream()
+									.filter(electionType -> electionType.getElectionIdentification()
+											.equals(electionInformationType.getElection().getElectionIdentification()))
+									.findFirst()
+									.ifPresent(election ->
+											electionInformationType.setImplicitWriteInCandidate(election.getImplicitWriteInCandidate()))
+					);
+		}
+	}
+
 	private String getReturnCodeWriteInDescriptionText(final LanguageType language, final ch.evoting.xmlns.parameter._5.ContestType contest) {
 		if (contest.getReturnCodeWriteInDescriptionInfo() != null) {
 			final PositionText returnCodeWriteInDescriptionText = contest.getReturnCodeWriteInDescriptionInfo().getPositionText().stream()
@@ -1444,6 +1460,7 @@ public class ContestService {
 		checkElectionIdentifiersDistinctness(c);
 		checkProportionalElectionConsistency(c);
 		checkMajoralElectionConsistency(c);
+		checkWriteInsConsistency(c);
 	}
 
 	private PrimarySecondaryTuple mapToPrimarySecondaryContainer(final ElectionGroupBallotType eg) {
@@ -1514,26 +1531,16 @@ public class ContestService {
 				CandidateType::getCandidateIdentification).toList();
 
 		final List<CandidateType> secondaryCandidates = primarySecondaryTuple.secondary().getCandidate();
-		checkState(secondaryCandidates.stream().allMatch(
-						c -> (primaryCandidateIds.contains(c.getCandidateIdentification()) && c.getEligibility() == EligibilityType.EXPLICIT)
-								|| c.getEligibility() == EligibilityType.IMPLICIT
-								|| c.getEligibility() == EligibilityType.IMPLICIT_DISCREET),
+		checkState(secondaryCandidates.stream()
+						.filter(c -> c.getEligibility() == EligibilityType.EXPLICIT)
+						.allMatch(c -> primaryCandidateIds.contains(c.getCandidateIdentification())),
 				"At least one non already elected candidate in the secondary election is not candidate in the primary election. [electionGroupId: %s]",
 				eg.getElectionGroupIdentification());
 
 		checkState(secondaryCandidates.stream()
-						.filter(c -> c.getEligibility() == EligibilityType.IMPLICIT || c.getEligibility() == EligibilityType.IMPLICIT_DISCREET)
+						.filter(c -> c.getEligibility() == EligibilityType.IMPLICIT)
 						.noneMatch(c -> primaryCandidateIds.contains(c.getCandidateIdentification())),
-				"At least one implicit or implicit discreet candidate in the secondary election is also a candidate in the primary election. [electionGroupId: %s]",
-				eg.getElectionGroupIdentification());
-
-		final List<CandidateType> implicitCandidates = secondaryCandidates.stream()
-				.filter(c -> c.getEligibility() == EligibilityType.IMPLICIT)
-				.toList();
-		checkState(secondaryCandidates.stream()
-						.filter(c -> c.getEligibility() == EligibilityType.IMPLICIT_DISCREET)
-						.noneMatch(implicitCandidates::contains),
-				"At least one candidate in the secondary election is both implicitly eligible and discreet. [electionGroupId: %s]",
+				"At least one implicit candidate in the secondary election is also a candidate in the primary election. [electionGroupId: %s]",
 				eg.getElectionGroupIdentification());
 	}
 
@@ -1628,6 +1635,22 @@ public class ContestService {
 				.collect(Collectors.joining(", "));
 
 		checkState(electionIds.isEmpty(), "Candidate accumulation must be 1 for majoral elections. [electionIds: %s]", electionIds);
+	}
+
+	private void checkWriteInsConsistency(final ContestType contestType) {
+		contestType.getElectionGroupBallot().stream()
+				.flatMap(electionGroupBallot -> electionGroupBallot.getElectionInformation().stream())
+				.forEach(electionInformation -> {
+					if (electionInformation.getElection().isWriteInsAllowed()) {
+						checkState(electionInformation.getWriteInCandidate() != null && electionInformation.getWriteInCandidate().size() == electionInformation.getElection().getNumberOfMandates(),
+								"The election allows write-ins and must contain as many write-in candidates as there are mandates. [electionId: %s, numberOfMandates: %s]", electionInformation.getElection().getElectionIdentification(), electionInformation.getElection().getNumberOfMandates());
+					} else {
+						checkState(electionInformation.getWriteInCandidate() == null || electionInformation.getWriteInCandidate().isEmpty(),
+								"The election does not allow write-ins and must therefore not have any write-in candidates. [electionId: %s]", electionInformation.getElection().getElectionIdentification());
+						checkState(electionInformation.getImplicitWriteInCandidate() == null || electionInformation.getWriteInCandidate().isEmpty(),
+								"The election does not allow write-ins and must therefore not have any implicit write-in candidates. [electionId: %s]", electionInformation.getElection().getElectionIdentification());
+					}
+				});
 	}
 
 	public ContestType cleanHtmlTags(final ContestType contest) {

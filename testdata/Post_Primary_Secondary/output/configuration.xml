@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <configuration xmlns="http://www.evoting.ch/xmlns/config/7">
   <header>
-    <fileDate>2024-10-24T10:07:01.244+02:00</fileDate>
+    <fileDate>2024-10-31T15:54:40.316+01:00</fileDate>
     <voterTotal>43</voterTotal>
   </header>
   <contest>
@@ -1795,140 +1795,6 @@
           </displayCandidateLine4>
         </candidate>
         <candidate>
-          <candidateIdentification>233c00a5-4042-4388-9dc9-c967dcd8e3d5</candidateIdentification>
-          <mrMrs>1</mrMrs>
-          <familyName>II</familyName>
-          <firstName>Baptist</firstName>
-          <callName>Baptist</callName>
-          <candidateText>
-            <candidateTextInfo>
-              <language>de</language>
-              <candidateText>02.02.1991, Wil</candidateText>
-            </candidateTextInfo>
-            <candidateTextInfo>
-              <language>fr</language>
-              <candidateText>02.02.1991, Wil</candidateText>
-            </candidateTextInfo>
-            <candidateTextInfo>
-              <language>it</language>
-              <candidateText>02.02.1991, Wil</candidateText>
-            </candidateTextInfo>
-            <candidateTextInfo>
-              <language>rm</language>
-              <candidateText>02.02.1991, Wil</candidateText>
-            </candidateTextInfo>
-          </candidateText>
-          <dateOfBirth>1991-02-02</dateOfBirth>
-          <sex>1</sex>
-          <incumbent>
-            <incumbent>false</incumbent>
-          </incumbent>
-          <dwellingAddress>
-            <swissZipCode>9500</swissZipCode>
-            <town>Wil</town>
-          </dwellingAddress>
-          <swiss>
-            <origin>Verrat ich nicht</origin>
-          </swiss>
-          <occupationalTitle>
-            <occupationalTitleInfo>
-              <language>de</language>
-              <occupationalTitle>Kandidat</occupationalTitle>
-            </occupationalTitleInfo>
-            <occupationalTitleInfo>
-              <language>fr</language>
-              <occupationalTitle>Candidat</occupationalTitle>
-            </occupationalTitleInfo>
-            <occupationalTitleInfo>
-              <language>it</language>
-              <occupationalTitle>Candidato</occupationalTitle>
-            </occupationalTitleInfo>
-            <occupationalTitleInfo>
-              <language>rm</language>
-              <occupationalTitle>Candidat</occupationalTitle>
-            </occupationalTitleInfo>
-          </occupationalTitle>
-          <position>2</position>
-          <referenceOnPosition>2</referenceOnPosition>
-          <partyAffiliation>
-            <partyAffiliationInfo>
-              <language>de</language>
-              <partyAffiliationShort>GePa</partyAffiliationShort>
-              <partyAffiliationLong>Gelbe Partei</partyAffiliationLong>
-            </partyAffiliationInfo>
-            <partyAffiliationInfo>
-              <language>fr</language>
-              <partyAffiliationShort>GePa</partyAffiliationShort>
-              <partyAffiliationLong>Gelbe Partei</partyAffiliationLong>
-            </partyAffiliationInfo>
-            <partyAffiliationInfo>
-              <language>it</language>
-              <partyAffiliationShort>GePa</partyAffiliationShort>
-              <partyAffiliationLong>Gelbe Partei</partyAffiliationLong>
-            </partyAffiliationInfo>
-            <partyAffiliationInfo>
-              <language>rm</language>
-              <partyAffiliationShort>GePa</partyAffiliationShort>
-              <partyAffiliationLong>Gelbe Partei</partyAffiliationLong>
-            </partyAffiliationInfo>
-          </partyAffiliation>
-          <eligibility>implicitDiscreet</eligibility>
-          <displayCandidateLine1>
-            <displayLineInfo>
-              <language>de</language>
-              <displayLineText>2 II Baptist</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>fr</language>
-              <displayLineText>2 II Baptist</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>it</language>
-              <displayLineText>2 II Baptist</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>rm</language>
-              <displayLineText>2 II Baptist</displayLineText>
-            </displayLineInfo>
-          </displayCandidateLine1>
-          <displayCandidateLine2>
-            <displayLineInfo>
-              <language>de</language>
-              <displayLineText>02.02.1991, Wil</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>fr</language>
-              <displayLineText>02.02.1991, Wil</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>it</language>
-              <displayLineText>02.02.1991, Wil</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>rm</language>
-              <displayLineText>02.02.1991, Wil</displayLineText>
-            </displayLineInfo>
-          </displayCandidateLine2>
-          <displayCandidateLine4>
-            <displayLineInfo>
-              <language>de</language>
-              <displayLineText>Gelbe Partei</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>fr</language>
-              <displayLineText>Gelbe Partei</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>it</language>
-              <displayLineText>Gelbe Partei</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>rm</language>
-              <displayLineText>Gelbe Partei</displayLineText>
-            </displayLineInfo>
-          </displayCandidateLine4>
-        </candidate>
-        <candidate>
           <candidateIdentification>d7a1753f-de89-4aaf-a6a8-6fee3b21dc8a</candidateIdentification>
           <mrMrs>2</mrMrs>
           <familyName>III</familyName>
@@ -2000,7 +1866,7 @@
               <occupationalTitle>Candidata</occupationalTitle>
             </occupationalTitleInfo>
           </occupationalTitle>
-          <position>3</position>
+          <position>2</position>
           <referenceOnPosition>3</referenceOnPosition>
           <partyAffiliation>
             <partyAffiliationInfo>
@@ -2152,7 +2018,7 @@
               <occupationalTitle>Candidat</occupationalTitle>
             </occupationalTitleInfo>
           </occupationalTitle>
-          <position>4</position>
+          <position>3</position>
           <referenceOnPosition>4</referenceOnPosition>
           <partyAffiliation>
             <partyAffiliationInfo>
@@ -2211,140 +2077,6 @@
             <displayLineInfo>
               <language>rm</language>
               <displayLineText>04.04.1993, Wil</displayLineText>
-            </displayLineInfo>
-          </displayCandidateLine2>
-          <displayCandidateLine4>
-            <displayLineInfo>
-              <language>de</language>
-              <displayLineText>Rote Partei</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>fr</language>
-              <displayLineText>Rote Partei</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>it</language>
-              <displayLineText>Rote Partei</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>rm</language>
-              <displayLineText>Rote Partei</displayLineText>
-            </displayLineInfo>
-          </displayCandidateLine4>
-        </candidate>
-        <candidate>
-          <candidateIdentification>476f6642-ec69-4970-b732-1ce26695cef4</candidateIdentification>
-          <mrMrs>1</mrMrs>
-          <familyName>X</familyName>
-          <firstName>Valentin</firstName>
-          <callName>Valentin</callName>
-          <candidateText>
-            <candidateTextInfo>
-              <language>de</language>
-              <candidateText>10.10.1999, Wil</candidateText>
-            </candidateTextInfo>
-            <candidateTextInfo>
-              <language>fr</language>
-              <candidateText>10.10.1999, Wil</candidateText>
-            </candidateTextInfo>
-            <candidateTextInfo>
-              <language>it</language>
-              <candidateText>10.10.1999, Wil</candidateText>
-            </candidateTextInfo>
-            <candidateTextInfo>
-              <language>rm</language>
-              <candidateText>10.10.1999, Wil</candidateText>
-            </candidateTextInfo>
-          </candidateText>
-          <dateOfBirth>1999-10-10</dateOfBirth>
-          <sex>1</sex>
-          <incumbent>
-            <incumbent>false</incumbent>
-          </incumbent>
-          <dwellingAddress>
-            <swissZipCode>9500</swissZipCode>
-            <town>Wil</town>
-          </dwellingAddress>
-          <swiss>
-            <origin>Darf ich nicht sagen</origin>
-          </swiss>
-          <occupationalTitle>
-            <occupationalTitleInfo>
-              <language>de</language>
-              <occupationalTitle>Kandidat</occupationalTitle>
-            </occupationalTitleInfo>
-            <occupationalTitleInfo>
-              <language>fr</language>
-              <occupationalTitle>Candidat</occupationalTitle>
-            </occupationalTitleInfo>
-            <occupationalTitleInfo>
-              <language>it</language>
-              <occupationalTitle>Candidato</occupationalTitle>
-            </occupationalTitleInfo>
-            <occupationalTitleInfo>
-              <language>rm</language>
-              <occupationalTitle>Candidat</occupationalTitle>
-            </occupationalTitleInfo>
-          </occupationalTitle>
-          <position>5</position>
-          <referenceOnPosition>10</referenceOnPosition>
-          <partyAffiliation>
-            <partyAffiliationInfo>
-              <language>de</language>
-              <partyAffiliationShort>RP</partyAffiliationShort>
-              <partyAffiliationLong>Rote Partei</partyAffiliationLong>
-            </partyAffiliationInfo>
-            <partyAffiliationInfo>
-              <language>fr</language>
-              <partyAffiliationShort>RP</partyAffiliationShort>
-              <partyAffiliationLong>Rote Partei</partyAffiliationLong>
-            </partyAffiliationInfo>
-            <partyAffiliationInfo>
-              <language>it</language>
-              <partyAffiliationShort>RP</partyAffiliationShort>
-              <partyAffiliationLong>Rote Partei</partyAffiliationLong>
-            </partyAffiliationInfo>
-            <partyAffiliationInfo>
-              <language>rm</language>
-              <partyAffiliationShort>RP</partyAffiliationShort>
-              <partyAffiliationLong>Rote Partei</partyAffiliationLong>
-            </partyAffiliationInfo>
-          </partyAffiliation>
-          <eligibility>implicitDiscreet</eligibility>
-          <displayCandidateLine1>
-            <displayLineInfo>
-              <language>de</language>
-              <displayLineText>10 X Valentin</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>fr</language>
-              <displayLineText>10 X Valentin</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>it</language>
-              <displayLineText>10 X Valentin</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>rm</language>
-              <displayLineText>10 X Valentin</displayLineText>
-            </displayLineInfo>
-          </displayCandidateLine1>
-          <displayCandidateLine2>
-            <displayLineInfo>
-              <language>de</language>
-              <displayLineText>10.10.1999, Wil</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>fr</language>
-              <displayLineText>10.10.1999, Wil</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>it</language>
-              <displayLineText>10.10.1999, Wil</displayLineText>
-            </displayLineInfo>
-            <displayLineInfo>
-              <language>rm</language>
-              <displayLineText>10.10.1999, Wil</displayLineText>
             </displayLineInfo>
           </displayCandidateLine2>
           <displayCandidateLine4>
@@ -2445,6 +2177,8 @@
             </positionText>
           </returnCodeWriteInDescriptionInfo>
         </writeInCandidate>
+        <implicitWriteInCandidate>Baptist II</implicitWriteInCandidate>
+        <implicitWriteInCandidate>Valentin X</implicitWriteInCandidate>
       </electionInformation>
     </electionGroupBallot>
   </contest>
@@ -4119,5 +3853,5 @@
       </person>
     </voter>
   </register>
-  <signature>iGzvnEYnkJPSXYxpN7GcGSxTFukg2GzoZbyBilAE67Z1vpA9oH2PEPW6p4882tc0dsclJSzcZfgEa0W3SZrIsvcS6d3G6GrFJwYUbcSxqpdmXIZtB6Rn5c6p2rCgvd15sf1mhrOZdOT4g0QC2pyI4LCWPTa8tjjU/Vz4t4tLMYgHb/B1K9lK+nyejsVXbaxjX0efLtCI5zmxyXhnvgd9j83UHPZDzREqj5+svmQoE76CQWGq3H7E84+Ax/iZ+0yk3XE1GMO33IyYza25+6StAYii3R8uyAqSoyPEeIRd19zpt4hFLfjfQGKTqqPCSzy/ncG4v6O0ek8tGakmWWtmgBts4kEp4C/KDS3brhOkZw1fjSx1lzC3b6tDeSr8gbLsEc8mND2/tWQVC4t8ceLOtw+D9AAywMmlH8a6y0cy+YXYwIusUzE/3HNFjo4nDhwtVJdrs+76/fcn54mbk7bJGLfxwbwAt2lZkxdr/fU3aV3zjKXDfMoeSjh7vXrmvCll</signature>
+  <signature>HgRCYSzNR1qUKMsmH47Jv9SHc2i2fGQuQS5PLu18roZx2W4+zQ4UoV/1r837F8PPUU5mh1gK2+5bSQ/4juDCbuFXhn12fMlHwAWRfa4Duq2VFsjFh2bciUfOTIPAXk/dSEt04Q6gqM0O55zALVpIXBeT36GqzHo1YxbxuZxnjHXiHsmEKuTf9Q0jIjDPUibqs+/4Je6eJWp8O5NQAJaFgD77T9zRi2/Bll+r+/5veuRGyat8X30ZYFOOYxmr/5FIvKb2ukMnPOnC0rTza3u2bW0G9bFCENiIs6xVPO9xwz6yG2cRALMYLI0B6vocWcwJLaI8IM87d0kdxJb/2vieg3V4vDfItv34BPnRiXl/VJi5CO7d1GRpfGAbGJefi1IQvSeOfFAvnSSm96LvW8TRdqoYH+NJn8e+6LWokTE2tHOurrT4xQGSyxfyWGQ0JPhDiWcxxHyrmkAuoD445UaVVvfT/WExsTLzf1FIzLxozLceljHFscuWxOo8vQNlh7TO</signature>
 </configuration>

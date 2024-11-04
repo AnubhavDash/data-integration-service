@@ -25,19 +25,13 @@
 			<election>
 				<electionIdentification>833341d6-26cb-46e7-9367-2c8353762cc1</electionIdentification>
 				<writeInsAllowed>true</writeInsAllowed>
+				<implicitWriteInCandidate>Baptist II</implicitWriteInCandidate>
+				<implicitWriteInCandidate>Valentin X</implicitWriteInCandidate>
 				<candidateAccumulation>1</candidateAccumulation>
 				<candidatesEligibility>
 					<candidateEligibility>
 						<candidateIdentification>e4be5aac-c058-4b45-a248-09a8d3945c72</candidateIdentification>
 						<eligibility>implicit</eligibility>
-					</candidateEligibility>
-					<candidateEligibility>
-						<candidateIdentification>233c00a5-4042-4388-9dc9-c967dcd8e3d5</candidateIdentification>
-						<eligibility>implicitDiscreet</eligibility>
-					</candidateEligibility>
-					<candidateEligibility>
-						<candidateIdentification>476f6642-ec69-4970-b732-1ce26695cef4</candidateIdentification>
-						<eligibility>implicitDiscreet</eligibility>
 					</candidateEligibility>
 				</candidatesEligibility>
 				<displayCandidateLineStyle>WITH_PARTY_AFFILIATION_EXTRA_LINE</displayCandidateLineStyle>
