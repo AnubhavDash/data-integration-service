@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import ch.evoting.xmlns.parameter._4.ContestType;
-import ch.evoting.xmlns.parameter._4.Parameter;
+import ch.evoting.xmlns.parameter._5.ContestType;
+import ch.evoting.xmlns.parameter._5.Parameter;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterWithRoleMapper;
 
 import io.cucumber.java.en.And;

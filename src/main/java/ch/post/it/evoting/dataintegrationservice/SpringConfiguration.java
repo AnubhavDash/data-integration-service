@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 import ch.post.it.evoting.cryptoprimitives.signing.SignatureKeystore;
 import ch.post.it.evoting.dataintegrationservice.keystore.KeystoreRepository;
@@ -18,7 +17,6 @@ import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 
 @Configuration
 @ComponentScan(basePackages = { "ch.post.it.evoting", "pipes" })
-@PropertySource("application.properties")
 public class SpringConfiguration {
 
 	@Value("${direct.trust.keystore.location.canton}")

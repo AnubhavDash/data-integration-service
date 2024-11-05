@@ -9,8 +9,8 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
-import ch.evoting.xmlns.parameter._4.ContestType;
-import ch.evoting.xmlns.parameter._4.Parameter;
+import ch.evoting.xmlns.parameter._5.ContestType;
+import ch.evoting.xmlns.parameter._5.Parameter;
 import ch.post.it.evoting.dataintegrationservice.parameter.ParameterLoader;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.ContestMapper;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterCategorizer;

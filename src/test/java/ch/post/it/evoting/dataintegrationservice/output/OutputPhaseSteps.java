@@ -31,8 +31,6 @@ import ch.post.it.evoting.dataintegrationservice.pipes.AuthorizationPhase;
 import ch.post.it.evoting.dataintegrationservice.pipes.HeaderPhase;
 import ch.post.it.evoting.dataintegrationservice.pipes.ParameterPhase;
 import ch.post.it.evoting.dataintegrationservice.pipes.PhaseSteps;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AdminBoardMembersType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AdminBoardType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationObjectType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
@@ -77,12 +75,6 @@ public class OutputPhaseSteps extends PhaseSteps {
 									.withContestDescription("Desc IT")).withContestDescriptionInfo(
 							new ContestDescriptionInformationType.ContestDescriptionInfo().withLanguage(LanguageType.RM)
 									.withContestDescription("Desc RM")))
-			.withAdminBoard(new AdminBoardType()
-					.withAdminBoardIdentification("AB")
-					.withAdminBoardThresholdValue(2)
-					.withAdminBoardName("AB")
-					.withAdminBoardDescription("AB")
-					.withAdminBoardMembers(new AdminBoardMembersType().withAdminBoardMemberName("AB1", "AB2")))
 			.withElectoralBoard(new ElectoralBoardType()
 					.withElectoralBoardIdentification("EB")
 					.withElectoralBoardName("EB")
@@ -90,7 +82,7 @@ public class OutputPhaseSteps extends PhaseSteps {
 					.withElectoralBoardMembers(new ElectoralBoardMembersType().withElectoralBoardMemberName("EB1", "EB2")));
 
 	private final AuthorizationsType authorization = new AuthorizationsType().withAuthorization(
-			new AuthorizationType().withAuthorizationIdentification("auth-000-abc").withAuthorizationAlias("auth-000-abc-alias")
+			new AuthorizationType().withAuthorizationIdentification("auth-000-abc")
 					.withAuthorizationName("auth-000-abc-name").withAuthorizationFromDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
 					.withAuthorizationToDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00")).withAuthorizationTest(false)
 					.withAuthorizationGracePeriod(900).withAuthorizationObject(

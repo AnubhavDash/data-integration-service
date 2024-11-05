@@ -19,9 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import ch.evoting.xmlns.parameter._4.ObjectFactory;
-import ch.evoting.xmlns.parameter._4.Parameter;
-import ch.evoting.xmlns.parameter._4.PluginObjectFactory;
+import ch.evoting.xmlns.parameter._5.ObjectFactory;
+import ch.evoting.xmlns.parameter._5.Parameter;
+import ch.evoting.xmlns.parameter._5.PluginObjectFactory;
 import ch.galinet.xml.xmlmerge.config.AttributeMergeConfigurer;
 import ch.galinet.xml.xmlmerge.config.ConfigurableXmlMerge;
 import ch.post.it.evoting.dataintegrationservice.common.Stax2Wrapper;
@@ -32,7 +32,7 @@ public class ParameterLoader {
 
 	private static final String DEFAULT_PARAMETER_PATH = "xml/default.param.xml";
 	@SuppressWarnings("java:S1075")
-	private static final String PARAMETER_SCHEMA_PATH = "/xsd/evoting-parameter-4-9.xsd";
+	private static final String PARAMETER_SCHEMA_PATH = "/xsd/evoting-parameter-5-0.xsd";
 
 	public Parameter loadParameter(final String fileLocation) {
 		LOGGER.debug("Loading parameter : {}", fileLocation);
