@@ -698,37 +698,65 @@ public class ContestService {
 
 	private void addElectionGroupIdAndDescriptionIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
 		electionGroups.forEach(electionGroup -> {
-			if (StringUtils.isEmpty(electionGroup.getElectionGroupIdentification())) {
-				electionGroup.setElectionGroupIdentification(determineElectionGroupIdentification(electionGroup.getElectionInformation()));
-			}
+			final List<ElectionInformationType> electionsInformation = electionGroup.getElectionInformation();
 
-			if (electionGroup.getElectionGroupDescription() == null) {
-				electionGroup.setElectionGroupDescription(convertElectionDescriptionToElectionGroupDescription(
-						electionGroup.getElectionInformation().getFirst().getElection().getElectionDescription()));
+			electionsInformation.forEach(electionInformation ->
+					checkState(electionInformation.getElection().getElectionDescription() != null,
+							"Missing election description. [electionIdentification: %s]",
+							electionInformation.getElection().getElectionIdentification())
+			);
+
+			final ElectionGroupDescriptionInformationType electionGroupDescription = electionGroup.getElectionGroupDescription();
+
+			if (electionsInformation.size() == 1) {
+				final ElectionInformationType electionInformation = electionsInformation.getFirst();
+
+				if (StringUtils.isEmpty(electionGroup.getElectionGroupIdentification())) {
+					final String electionIdentification = electionInformation.getElection().getElectionIdentification();
+
+					electionGroup.setElectionGroupIdentification(electionIdentification);
+
+					LOGGER.warn(
+							"Election group with single election is missing election group identification. Used election identification as election group identification. [electionIdentification: {}]",
+							electionIdentification);
+				}
+
+				if (electionGroupDescription == null) {
+					final ElectionDescriptionInformationType electionDescription = electionInformation.getElection().getElectionDescription();
+					// Election group identification may have been updated by previous if statement.
+					final String electionGroupIdentification = electionGroup.getElectionGroupIdentification();
+
+					electionGroup.setElectionGroupDescription(convertElectionDescriptionToElectionGroupDescription(electionDescription));
+
+					LOGGER.warn(
+							"Election group with single election is missing election group description. Used election description as election group description. [electionGroupIdentification: {}]",
+							electionGroupIdentification);
+				}
+			} else {
+				// If there are multiple elections, the election group identification and description must be provided.
+				final String electionGroupIdentification = electionGroup.getElectionGroupIdentification();
+
+				checkState(!StringUtils.isEmpty(electionGroupIdentification),
+						"Missing election group identification. [contained electionIdentification: %s]",
+						electionsInformation.getFirst().getElection().getElectionIdentification());
+				checkState(electionGroupDescription != null, "Missing election group description. [electionGroupIdentification: %s]",
+						electionGroupIdentification);
 			}
 		});
 	}
 
 	private ElectionGroupDescriptionInformationType convertElectionDescriptionToElectionGroupDescription(
 			final ElectionDescriptionInformationType electionDescription) {
-		return new ElectionGroupDescriptionInformationType().withElectionGroupDescriptionInfo(
-				electionDescription.getElectionDescriptionInfo().stream().map(electionDescriptionInfo -> {
-					final ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo res = new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo();
-					res.setLanguage(electionDescriptionInfo.getLanguage());
-					res.setElectionGroupDescription(electionDescriptionInfo.getElectionDescription());
-					res.setElectionGroupDescriptionShort(electionDescriptionInfo.getElectionDescriptionShort());
-					return res;
-				}).toList());
-	}
 
-	private String determineElectionGroupIdentification(final List<ElectionInformationType> electionInformation) {
-		if (electionInformation.size() == 1) {
-			return electionInformation.getFirst().getElection().getElectionIdentification();
-		} else {
-			return StringUtil.generateUUIDFromString(
-					electionInformation.stream().map(ei -> ei.getElection().getElectionIdentification()).reduce("", (s1, s2) -> s1 + s2)
-			);
-		}
+		return new ElectionGroupDescriptionInformationType().withElectionGroupDescriptionInfo(
+				electionDescription.getElectionDescriptionInfo().stream()
+						.map(electionDescriptionInfo ->
+								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo()
+										.withLanguage(electionDescriptionInfo.getLanguage())
+										.withElectionGroupDescription(electionDescriptionInfo.getElectionDescription())
+										.withElectionGroupDescriptionShort(electionDescriptionInfo.getElectionDescriptionShort()))
+						.toList()
+		);
 	}
 
 	private Map<String, BigInteger> getParametersMinimalCandidateSelectionInList(
