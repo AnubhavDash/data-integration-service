@@ -216,7 +216,7 @@ Feature: Contest Phase
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has id "V-B_B-1_TQ-1"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion1 "V-B_B-1_Q-proposal_A"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion2 "V-B_B-1_Q-proposal_B"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has position 1
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has position 4
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has answer type 4
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has info "DE" "Tie-break question AB" "Do you prefer A or B (DE)"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has info "FR" "Tie-break question AB" "Do you prefer A or B (FR)"
@@ -227,7 +227,7 @@ Feature: Contest Phase
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has id "V-B_B-1_TQ-2"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion1 "V-B_B-1_Q-proposal_A"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion2 "V-B_B-1_Q-proposal_C"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has position 3
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has position 6
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has answer type 4
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "DE" "Tie-break question AC" "Do you prefer A or C (DE)"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Tie-break question AC" "Do you prefer A or C (FR)"
@@ -238,7 +238,7 @@ Feature: Contest Phase
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has id "V-B_B-1_TQ-3"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion1 "V-B_B-1_Q-proposal_B"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has referenceQuestion2 "V-B_B-1_Q-proposal_C"
-    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has position 2
+    And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has position 5
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has answer type 4
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has info "DE" "Tie-break question BC" "Do you prefer B or C (DE)"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has info "FR" "Tie-break question BC" "Do you prefer B or C (FR)"
@@ -248,7 +248,7 @@ Feature: Contest Phase
     # VOTE B -variant ballot - tiebreak question 4 with an answer type 1
     #And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot tiebreak question "vote B ballot 1 tb question 4"
     #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has id "V-B_B-1_TQ-4"
-    #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has position 4
+    #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has position 7
     #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has answer type 1
     #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has info "DE" "In this case, do you agree ? (DE)"
     #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has info "FR" "In this case, do you agree ? (FR)"
@@ -562,34 +562,28 @@ Feature: Contest Phase
     And the variant ballot standard question "V-B_B-1_Q-proposal_B" should have position 2
     And the variant ballot standard question "V-B_B-1_Q-proposal_C" should have position 3
 
-  Scenario: For a variant ballot, one the standard questions position is missing
+  Scenario: Throw an exception when, for a variant ballot, one of the standard questions position is missing
     Given the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has position cleared out
-    When executing the contest phase
-    Then the variant ballot standard question "V-B_B-1_Q-proposal_A" should have position 1
-    And the variant ballot standard question "V-B_B-1_Q-proposal_B" should have position 2
-    And the variant ballot standard question "V-B_B-1_Q-proposal_C" should have position 3
+    When executing the contest phase and catching exceptions
+    Then it outputs an exception with text "Variant ballot 'vote-B-ballot-1-id' : missing position for some questions; either all questions must have a position or none"
 
   Scenario: For a variant ballot, all the tiebreak questions positions are given (background scenario)
     When executing the contest phase
-    Then the variant ballot tiebreak question "V-B_B-1_TQ-1" should have position 1
-    And the variant ballot tiebreak question "V-B_B-1_TQ-2" should have position 3
-    And the variant ballot tiebreak question "V-B_B-1_TQ-3" should have position 2
+    Then the variant ballot tiebreak question "V-B_B-1_TQ-1" should have position 4
+    And the variant ballot tiebreak question "V-B_B-1_TQ-2" should have position 6
+    And the variant ballot tiebreak question "V-B_B-1_TQ-3" should have position 5
 
-  Scenario: For a variant ballot, all the tiebreak questions positions are missing
+  Scenario: Throw an exception when, for a variant ballot, all the tiebreak questions positions are missing
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 1" has position cleared out
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has position cleared out
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has position cleared out
-    When executing the contest phase
-    Then the variant ballot tiebreak question "V-B_B-1_TQ-1" should have position 4
-    And the variant ballot tiebreak question "V-B_B-1_TQ-2" should have position 5
-    And the variant ballot tiebreak question "V-B_B-1_TQ-3" should have position 6
+    When executing the contest phase and catching exceptions
+    Then it outputs an exception with text "Variant ballot 'vote-B-ballot-1-id' : questions positions must be a strictly increasing sequence from 1 to 6"
 
-  Scenario: For a variant ballot, one of the tiebreak questions position is missing
+  Scenario: Throw an exception when, for a variant ballot, one of the tiebreak questions position is missing
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has position cleared out
-    When executing the contest phase
-    Then the variant ballot tiebreak question "V-B_B-1_TQ-1" should have position 4
-    And the variant ballot tiebreak question "V-B_B-1_TQ-2" should have position 5
-    And the variant ballot tiebreak question "V-B_B-1_TQ-3" should have position 6
+    When executing the contest phase and catching exceptions
+    Then it outputs an exception with text "Variant ballot 'vote-B-ballot-1-id' : questions positions must be a strictly increasing sequence from 1 to 6"
 
   Scenario: Throw an exception when some contest descriptions languages are missing
     Given the descriptions of the contest "my contest" are cleared out
@@ -934,4 +928,4 @@ Feature: Contest Phase
     Given tiebreakAnswer "my params"."tiebreak question 3"."answer 1" is as blank defined
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" is as blank defined
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "vote 'vote-B-id' variant ballot tiebreak question 2 has more than one blank answer"
+    Then it outputs an exception with text "vote 'vote-B-id' variant ballot tiebreak question 5 has more than one blank answer"

@@ -141,7 +141,7 @@
         <eCH-0155:variantBallot>
           <eCH-0155:questionInformation>
             <eCH-0155:questionIdentification>16f99be5-0ce6-4a81-ae8b-1817ceecaebc</eCH-0155:questionIdentification>
-            <eCH-0155:questionPosition>2</eCH-0155:questionPosition>
+            <eCH-0155:questionPosition>1</eCH-0155:questionPosition>
             <eCH-0155:answerInformation>
               <eCH-0155:answerType>2</eCH-0155:answerType>
             </eCH-0155:answerInformation>
@@ -170,7 +170,7 @@
           </eCH-0155:questionInformation>
           <eCH-0155:questionInformation>
             <eCH-0155:questionIdentification>b173aebb-7b2c-476a-97fa-c81d640e498a</eCH-0155:questionIdentification>
-            <eCH-0155:questionPosition>3</eCH-0155:questionPosition>
+            <eCH-0155:questionPosition>2</eCH-0155:questionPosition>
             <eCH-0155:answerInformation>
               <eCH-0155:answerType>2</eCH-0155:answerType>
             </eCH-0155:answerInformation>
@@ -202,7 +202,7 @@
               <eCH-0155:answerType>4</eCH-0155:answerType>
             </eCH-0155:answerInformation>
             <eCH-0155:questionIdentification>1129f74b-1e49-4636-9731-84dba618bec6</eCH-0155:questionIdentification>
-            <eCH-0155:questionPosition>4</eCH-0155:questionPosition>
+            <eCH-0155:questionPosition>3</eCH-0155:questionPosition>
             <eCH-0155:tieBreakQuestion>
               <eCH-0155:tieBreakQuestionInfo>
                 <eCH-0155:language>de</eCH-0155:language>

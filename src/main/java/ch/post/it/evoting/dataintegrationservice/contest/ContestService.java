@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
@@ -86,6 +87,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TiebreakAnswe
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VariantBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.WriteInCandidateType;
 
 @Service
@@ -289,7 +291,8 @@ public class ContestService {
 		fillPositionIfDefinedInParameters(votes, electionGroups, contestParameters);
 
 		addVotesAnswers(votes, contestParameters);
-		addVotesQuestionPositionIfNeeded(votes);
+		checkVotesQuestionsPositionsConsistency(votes);
+		checkVotesBallotsPositionsConsistency(votes);
 		addVotesStandardQuestionReferenceIfNeeded(votes);
 		addVotesPositionIfNeeded(votes);
 		addVotesQuestionNumberIfNeeded(votes);
@@ -309,7 +312,7 @@ public class ContestService {
 		addElectionRulesExplanation(electionGroups, contestParameters);
 
 		addElectionGroupPositionIfNeeded(electionGroups);
-		addElectionPositionIfNeeded(electionGroups);
+		checkElectionsPositionsConsistency(electionGroups);
 
 		sortElectionsAndVotes(electionGroups, votes);
 
@@ -655,24 +658,42 @@ public class ContestService {
 		});
 	}
 
-	private void addElectionPositionIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
+	private void checkElectionsPositionsConsistency(final List<ElectionGroupBallotType> electionGroups) {
+		electionGroups
+				.forEach(electionGroupBallot -> {
+					final int totalNbrOfElections = electionGroupBallot.getElectionInformation().size();
+					final String electionGroupIdentification = electionGroupBallot.getElectionGroupIdentification();
 
-		electionGroups.forEach(eg -> {
-			final List<Integer> usedPositions = eg.getElectionInformation().stream()
-					.map(ei -> ei.getElection().getElectionPosition())
-					.filter(val -> val > 0)
-					.toList();
+					final long electionsWithoutPosition = electionGroupBallot.getElectionInformation().stream()
+							.filter(electionInformation -> electionInformation.getElection().getElectionPosition() == DEFAULT_VALUE)
+							.count();
 
-			final AtomicInteger counter = new AtomicInteger(1);
-			eg.getElectionInformation().forEach(ei -> {
-				if (ei.getElection().getElectionPosition() == DEFAULT_VALUE) {
-					while (usedPositions.contains(counter.get())) {
-						counter.getAndIncrement();
+					if (electionsWithoutPosition == 0) {
+						LOGGER.debug("Election group '{}' : all elections have a position; checking monotonicity", electionGroupIdentification);
+
+						final TreeSet<Integer> sortedElectionsPositions = electionGroupBallot.getElectionInformation().stream()
+								.map(electionInformation -> electionInformation.getElection().getElectionPosition())
+								.collect(Collectors.toCollection(TreeSet::new));
+
+						checkState(sortedElectionsPositions.size() == totalNbrOfElections && sortedElectionsPositions.getFirst() == 1
+										&& sortedElectionsPositions.getLast() == totalNbrOfElections,
+								"Election group '%s' : elections positions must be a strictly increasing sequence from 1 to %s",
+								electionGroupIdentification, totalNbrOfElections);
+
+						// Positions sequence is valid, sort for display.
+						electionGroupBallot.getElectionInformation()
+								.sort(Comparator.comparingInt(electionInformation -> electionInformation.getElection().getElectionPosition()));
+					} else if (electionsWithoutPosition == totalNbrOfElections) {
+						LOGGER.warn("Election group '{}' : missing all elections positions; setting all values", electionGroupIdentification);
+						final AtomicInteger counter = new AtomicInteger();
+						electionGroupBallot.getElectionInformation().stream()
+								.map(ElectionInformationType::getElection)
+								.forEach(election -> election.setElectionPosition(counter.incrementAndGet()));
+					} else {
+						throw new IllegalStateException(String.format(
+								"Election group '%s' : all elections must have a position or none of them", electionGroupIdentification));
 					}
-					ei.getElection().setElectionPosition(counter.getAndIncrement());
-				}
-			});
-		});
+				});
 	}
 
 	private void addElectionGroupIdAndDescriptionIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
@@ -1125,26 +1146,91 @@ public class ContestService {
 				});
 	}
 
-	private void addVotesQuestionPositionIfNeeded(final List<VoteInformationType> votesInformation) {
+	private void checkVotesQuestionsPositionsConsistency(final List<VoteInformationType> votesInformation) {
 		votesInformation.stream()
 				.flatMap(voteInformation -> voteInformation.getVote().getBallot().stream())
 				.filter(ballot -> ballot.getVariantBallot() != null)
 				.forEach(ballot -> {
-					final AtomicInteger counter = new AtomicInteger();
 					final VariantBallotType variantBallot = ballot.getVariantBallot();
 					final String ballotIdentification = ballot.getBallotIdentification();
 
-					final boolean standardQuestionWithoutPosition = variantBallot.getStandardQuestion().stream()
-							.anyMatch(standardQuestion -> standardQuestion.getQuestionPosition() == DEFAULT_VALUE);
-					final boolean tieBreakQuestionWithoutPosition = variantBallot.getTieBreakQuestion().stream()
-							.anyMatch(tieBreakQuestion -> tieBreakQuestion.getQuestionPosition() == DEFAULT_VALUE);
+					final int nbrOfStandardQuestions = variantBallot.getStandardQuestion().size();
+					final int nbrOfTieBreakQuestions = variantBallot.getTieBreakQuestion().size();
+					final int totalNbrOfQuestions = nbrOfStandardQuestions + nbrOfTieBreakQuestions;
 
-					if (standardQuestionWithoutPosition || tieBreakQuestionWithoutPosition) {
-						LOGGER.info("Variant ballot '{}' : missing at least one question position; resetting all values", ballotIdentification);
+					final long standardQuestionsWithoutPosition = variantBallot.getStandardQuestion().stream()
+							.filter(standardQuestion -> standardQuestion.getQuestionPosition() == DEFAULT_VALUE)
+							.count();
+					final long tieBreakQuestionsWithoutPosition = variantBallot.getStandardQuestion().stream()
+							.filter(standardQuestion -> standardQuestion.getQuestionPosition() == DEFAULT_VALUE)
+							.count();
+					final long questionsWithoutPosition = standardQuestionsWithoutPosition + tieBreakQuestionsWithoutPosition;
+
+					if (questionsWithoutPosition == 0) {
+						LOGGER.debug("Variant ballot '{}' : all questions have a position; checking monotonicity", ballotIdentification);
+
+						final TreeSet<Integer> sortedQuestionPositions = Stream.concat(
+										variantBallot.getStandardQuestion().stream().map(StandardQuestionType::getQuestionPosition),
+										variantBallot.getTieBreakQuestion().stream().map(TieBreakQuestionType::getQuestionPosition))
+								.collect(Collectors.toCollection(TreeSet::new));
+
+						checkState(sortedQuestionPositions.size() == totalNbrOfQuestions && sortedQuestionPositions.getFirst() == 1
+										&& sortedQuestionPositions.getLast() == totalNbrOfQuestions,
+								"Variant ballot '%s' : questions positions must be a strictly increasing sequence from 1 to %s",
+								ballotIdentification, totalNbrOfQuestions);
+
+						// Positions sequence is valid, sort for display.
+						variantBallot.getStandardQuestion().sort(Comparator.comparingInt(StandardQuestionType::getQuestionPosition));
+						variantBallot.getTieBreakQuestion().sort(Comparator.comparingInt(TieBreakQuestionType::getQuestionPosition));
+					} else if (questionsWithoutPosition == totalNbrOfQuestions) {
+						LOGGER.warn("Variant ballot '{}' : missing all questions positions; setting all values", ballotIdentification);
+						final AtomicInteger counter = new AtomicInteger();
 						variantBallot.getStandardQuestion()
 								.forEach(standardQuestion -> standardQuestion.setQuestionPosition(counter.incrementAndGet()));
 						variantBallot.getTieBreakQuestion()
 								.forEach(tieBreakQuestion -> tieBreakQuestion.setQuestionPosition(counter.incrementAndGet()));
+					} else {
+						throw new IllegalStateException(String.format(
+								"Variant ballot '%s' : missing position for some questions; either all questions must have a position or none",
+								ballotIdentification));
+					}
+				});
+	}
+
+	private void checkVotesBallotsPositionsConsistency(final List<VoteInformationType> votesInformation) {
+		votesInformation
+				.forEach(voteInformation -> {
+					final VoteType vote = voteInformation.getVote();
+					final List<BallotType> ballots = vote.getBallot();
+					final String voteIdentification = vote.getVoteIdentification();
+					final int totalNbrOfBallots = ballots.size();
+
+					final long ballotsWithoutPosition = ballots.stream()
+							.filter(ballot -> ballot.getBallotPosition() == DEFAULT_VALUE)
+							.count();
+
+					if (ballotsWithoutPosition == 0) {
+						LOGGER.debug("Vote '{}' : all ballots have a position; checking monotonicity", voteIdentification);
+
+						final TreeSet<Integer> sortedBallotPositions = ballots.stream()
+								.map(BallotType::getBallotPosition)
+								.collect(Collectors.toCollection(TreeSet::new));
+
+						checkState(sortedBallotPositions.size() == totalNbrOfBallots && sortedBallotPositions.getFirst() == 1
+										&& sortedBallotPositions.getLast() == totalNbrOfBallots,
+								"Vote '%s' : ballots positions must be a strictly increasing sequence from 1 to %s", voteIdentification,
+								totalNbrOfBallots);
+
+						// Positions sequence is valid, sort for display.
+						ballots.sort(Comparator.comparing(BallotType::getBallotPosition));
+					} else if (ballotsWithoutPosition == totalNbrOfBallots) {
+						LOGGER.warn("Vote '{}' : missing all ballots positions; setting all values", voteIdentification);
+						final AtomicInteger counter = new AtomicInteger();
+						ballots.forEach(ballot -> ballot.setBallotPosition(counter.incrementAndGet()));
+					} else {
+						throw new IllegalStateException(String.format(
+								"Vote '%s' : missing position for some ballots; either all ballots must have a position or none",
+								voteIdentification));
 					}
 				});
 	}
@@ -1642,13 +1728,18 @@ public class ContestService {
 				.flatMap(electionGroupBallot -> electionGroupBallot.getElectionInformation().stream())
 				.forEach(electionInformation -> {
 					if (electionInformation.getElection().isWriteInsAllowed()) {
-						checkState(electionInformation.getWriteInCandidate() != null && electionInformation.getWriteInCandidate().size() == electionInformation.getElection().getNumberOfMandates(),
-								"The election allows write-ins and must contain as many write-in candidates as there are mandates. [electionId: %s, numberOfMandates: %s]", electionInformation.getElection().getElectionIdentification(), electionInformation.getElection().getNumberOfMandates());
+						checkState(electionInformation.getWriteInCandidate() != null
+										&& electionInformation.getWriteInCandidate().size() == electionInformation.getElection().getNumberOfMandates(),
+								"The election allows write-ins and must contain as many write-in candidates as there are mandates. [electionId: %s, numberOfMandates: %s]",
+								electionInformation.getElection().getElectionIdentification(),
+								electionInformation.getElection().getNumberOfMandates());
 					} else {
 						checkState(electionInformation.getWriteInCandidate() == null || electionInformation.getWriteInCandidate().isEmpty(),
-								"The election does not allow write-ins and must therefore not have any write-in candidates. [electionId: %s]", electionInformation.getElection().getElectionIdentification());
+								"The election does not allow write-ins and must therefore not have any write-in candidates. [electionId: %s]",
+								electionInformation.getElection().getElectionIdentification());
 						checkState(electionInformation.getImplicitWriteInCandidate() == null || electionInformation.getWriteInCandidate().isEmpty(),
-								"The election does not allow write-ins and must therefore not have any implicit write-in candidates. [electionId: %s]", electionInformation.getElection().getElectionIdentification());
+								"The election does not allow write-ins and must therefore not have any implicit write-in candidates. [electionId: %s]",
+								electionInformation.getElection().getElectionIdentification());
 					}
 				});
 	}
