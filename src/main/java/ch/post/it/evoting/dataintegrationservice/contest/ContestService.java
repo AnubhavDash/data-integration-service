@@ -47,6 +47,7 @@ import ch.evoting.xmlns.parameter._5.DisplayCandidateLineStyle;
 import ch.evoting.xmlns.parameter._5.DisplayListLineStyle;
 import ch.evoting.xmlns.parameter._5.ElectionType;
 import ch.evoting.xmlns.parameter._5.PositionText;
+import ch.evoting.xmlns.parameter._5.SortingType;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.dataintegrationservice.common.MarshallTool;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
@@ -543,8 +544,23 @@ public class ContestService {
 
 	private void fillPositionIfDefinedInParameters(final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups,
 			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
-		if (contestParameters.getSorting() != null) {
-			contestParameters.getSorting().getElectionGroup().forEach(positionParameter -> {
+
+		final SortingType sorting = contestParameters.getSorting();
+		if (sorting != null) {
+			final List<SortingType.ElectionGroup> sortingElectionGroups = sorting.getElectionGroup();
+			final List<SortingType.Vote> sortingVotes = sorting.getVote();
+			final int totalNbrOfPositions = sortingElectionGroups.size() + sortingVotes.size();
+
+			final TreeSet<Integer> sortedPositions = Stream.concat(
+							sortingElectionGroups.stream().map(electionGroup -> electionGroup.getPositionNumber().intValueExact()),
+							sortingVotes.stream().map(vote -> vote.getPositionNumber().intValueExact()))
+					.collect(Collectors.toCollection(TreeSet::new));
+
+			checkState(sortedPositions.size() == totalNbrOfPositions && sortedPositions.getFirst() == 1
+							&& sortedPositions.getLast() == totalNbrOfPositions,
+					"The sorting positions must be a strictly increasing sequence from 1 to %s.", totalNbrOfPositions);
+
+			sortingElectionGroups.forEach(positionParameter -> {
 				final String electionGroupIdentification = positionParameter.getElectionGroupIdentification();
 				final int position = positionParameter.getPositionNumber().intValueExact();
 				electionGroups.stream()
@@ -556,19 +572,7 @@ public class ContestService {
 						.setElectionGroupPosition(position);
 			});
 
-			contestParameters.getSorting().getElection().forEach(positionParameter -> {
-				final String electionIdentification = positionParameter.getElectionIdentification();
-				final int position = positionParameter.getPositionNumber().intValueExact();
-				electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
-						.filter(e -> e.getElection().getElectionIdentification().equals(electionIdentification))
-						.findFirst()
-						.orElseThrow(() -> new IllegalStateException(String.format(
-								"Unknown electionIdentification defined in sorting definition of parameters file. [electionIdentification: %s",
-								electionIdentification)))
-						.getElection().setElectionPosition(position);
-			});
-
-			contestParameters.getSorting().getVote().forEach(positionParameter -> {
+			sortingVotes.forEach(positionParameter -> {
 				final String voteIdentification = positionParameter.getVoteIdentification();
 				final BigInteger position = positionParameter.getPositionNumber();
 				votes.stream()
