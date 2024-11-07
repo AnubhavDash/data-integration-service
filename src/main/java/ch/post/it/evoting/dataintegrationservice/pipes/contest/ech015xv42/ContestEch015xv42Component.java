@@ -19,18 +19,18 @@ import reactor.util.function.Tuple2;
 @Component
 public class ContestEch015xv42Component {
 
-	private final ECHv42FileContestLoader ECHv42FileContestLoader;
+	private final ECHv42FileContestLoader eCHv42FileContestLoader;
 
-	public ContestEch015xv42Component(final ECHv42FileContestLoader ECHv42FileContestLoader) {
-		this.ECHv42FileContestLoader = ECHv42FileContestLoader;
+	public ContestEch015xv42Component(final ECHv42FileContestLoader eCHv42FileContestLoader) {
+		this.eCHv42FileContestLoader = eCHv42FileContestLoader;
 	}
 
 	public Function<String, Tuple2<Iterable<EventInitialDelivery.ElectionGroup>, ContestType>> loadECH0157v42() {
-		return ECHv42FileContestLoader::loadECH0157v42;
+		return eCHv42FileContestLoader::loadECH0157v42;
 	}
 
 	public Function<String, Tuple2<Iterable<ch.ech.xmlns.ech_0159._5.EventInitialDelivery.VoteInformation>, ContestType>> loadECH0159v42() {
-		return ECHv42FileContestLoader::loadECH0159v42;
+		return eCHv42FileContestLoader::loadECH0159v42;
 	}
 
 	public Function<Tuple2<Iterable<EventInitialDelivery.ElectionGroup>, ContestType>, Iterable<EventInitialDelivery.ElectionGroup>> elections() {

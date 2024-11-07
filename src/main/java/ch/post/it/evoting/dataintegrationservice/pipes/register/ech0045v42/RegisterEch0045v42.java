@@ -13,7 +13,7 @@ public abstract class RegisterEch0045v42 extends Tools {
 
 	public static final Exports exports = new Exports();
 
-	public static InputPhase.Exports inputPhase = InputPhase.exports;
+	public static final InputPhase.Exports inputPhase = InputPhase.exports;
 
 	public static class Exports {
 		private Flux<VoterTypeWithRole> voters;

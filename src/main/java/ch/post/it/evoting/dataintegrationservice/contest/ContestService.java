@@ -105,21 +105,21 @@ public class ContestService {
 	private static final BigInteger ELECTION_RELATION_PRIMARY = BigInteger.ONE;
 	private static final BigInteger ELECTION_RELATION_SECONDARY = BigInteger.TWO;
 
-	private final boolean byPassCheckConsistencyDates;
+	private final boolean bypassCheckConsistencyDates;
 	private final int votesDefaultAnswerTypeStandard;
 	private final int votesDefaultAnswerTypeTiebreak;
 	private final int evotingFromToMinDeltaAllowed;
 
 	public ContestService(
 			@Value("${bypass.checkConsistency.dates}")
-			final boolean byPassCheckConsistencyDates,
+			final boolean bypassCheckConsistencyDates,
 			@Value("${votes.defaultAnswerType.standard}")
 			final int votesDefaultAnswerTypeStandard,
 			@Value("${votes.defaultAnswerType.tiebreak}")
 			final int votesDefaultAnswerTypeTiebreak,
 			@Value("${eVotingFromTo.min.delta.allowed}")
 			final int evotingFromToMinDeltaAllowed) {
-		this.byPassCheckConsistencyDates = byPassCheckConsistencyDates;
+		this.bypassCheckConsistencyDates = bypassCheckConsistencyDates;
 		this.votesDefaultAnswerTypeStandard = votesDefaultAnswerTypeStandard;
 		this.votesDefaultAnswerTypeTiebreak = votesDefaultAnswerTypeTiebreak;
 		this.evotingFromToMinDeltaAllowed = evotingFromToMinDeltaAllowed;
@@ -394,42 +394,31 @@ public class ContestService {
 					final boolean noSpecificDisplayCandidateLineStyle = specificDisplayCandidateLineStyle == null;
 
 					electionInformationType.getCandidate()
-							.forEach(candidateType -> {
-								if ((DisplayCandidateLineStyle.DEFAULT.equals(defaultDisplayCandidateLineStyle)
-										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.DEFAULT.equals(
-										specificDisplayCandidateLineStyle)) {
-									// if the defaultDisplayCandidateLineStyle is DEFAULT and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is DEFAULT, then the default displayCandidateLineStyle is used.
-									addDefaultDisplayCandidateLinesStyle(candidateType);
-								} else if ((DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION.equals(defaultDisplayCandidateLineStyle)
-										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION.equals(
-										specificDisplayCandidateLineStyle)) {
-									// if the defaultDisplayCandidateLineStyle is WITH_PARTY_AFFILIATION and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is WITH_PARTY_AFFILIATION, then the displayCandidateLineStyle with party affiliation is used.
-									addWithPartyAffiliationDisplayCandidateLinesStyle(candidateType);
-
-								} else if ((DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE.equals(defaultDisplayCandidateLineStyle)
-										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE.equals(
-										specificDisplayCandidateLineStyle)) {
-									// if the defaultDisplayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE, then the displayCandidateLineStyle with party affiliation extra line is used.
-									addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(candidateType);
-								} else if ((DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED.equals(
-										defaultDisplayCandidateLineStyle)
-										&& noSpecificDisplayCandidateLineStyle)
-										|| DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED.equals(
-										specificDisplayCandidateLineStyle)) {
-									// if the defaultDisplayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED, then the displayCandidateLineStyle with party affiliation extra line comma separated is used.
-									addWithPartyAffiliationExtraLineCommaSeparatedDisplayCandidateLinesStyle(candidateType);
-								} else if ((DisplayCandidateLineStyle.DEFAULT_COMMA_SEPARATED.equals(defaultDisplayCandidateLineStyle)
-										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.DEFAULT_COMMA_SEPARATED.equals(
-										specificDisplayCandidateLineStyle)) {
-									// if the defaultDisplayCandidateLineStyle is DEFAULT_COMMA_SEPARATED and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is DEFAULT_COMMA_SEPARATED, then the default comma separated displayCandidateLineStyle is used.
-									addDefaultCommaSeparatedDisplayCandidateLinesStyle(candidateType);
-								} else {
-									throw new IllegalStateException(String.format(
-											"Unknown displayCandidateLineStyle. [displayCandidateLineStyle: %s, electionId: %s, candidateId: %s]",
-											defaultDisplayCandidateLineStyle, electionIdentification, candidateType.getCandidateIdentification()));
-								}
-							});
+							.forEach(candidateType ->
+									addDisplayCandidateLineStyle(candidateType, noSpecificDisplayCandidateLineStyle, defaultDisplayCandidateLineStyle,
+											specificDisplayCandidateLineStyle, electionIdentification)
+							);
 				});
+	}
+
+	private void addDisplayCandidateLineStyle(final CandidateType candidateType, final boolean noSpecificDisplayCandidateLineStyle,
+			final DisplayCandidateLineStyle defaultDisplayCandidateLineStyle, final DisplayCandidateLineStyle specificDisplayCandidateLineStyle,
+			final String electionIdentification) {
+
+		final DisplayCandidateLineStyle effectiveDisplayCandidateLineStyle =
+				noSpecificDisplayCandidateLineStyle ? defaultDisplayCandidateLineStyle : specificDisplayCandidateLineStyle;
+
+		switch (effectiveDisplayCandidateLineStyle) {
+		case DEFAULT -> addDefaultDisplayCandidateLinesStyle(candidateType);
+		case DEFAULT_COMMA_SEPARATED -> addDefaultCommaSeparatedDisplayCandidateLinesStyle(candidateType);
+		case WITH_PARTY_AFFILIATION -> addWithPartyAffiliationDisplayCandidateLinesStyle(candidateType);
+		case WITH_PARTY_AFFILIATION_EXTRA_LINE -> addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(candidateType);
+		case WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED ->
+				addWithPartyAffiliationExtraLineCommaSeparatedDisplayCandidateLinesStyle(candidateType);
+		default -> throw new IllegalStateException(String.format(
+				"Unknown displayCandidateLineStyle. [displayCandidateLineStyle: %s, electionId: %s, candidateId: %s]",
+				effectiveDisplayCandidateLineStyle, electionIdentification, candidateType.getCandidateIdentification()));
+		}
 	}
 
 	private DisplayCandidateLineStyle getSpecificDisplayCandidateLineStyle(
@@ -1392,7 +1381,7 @@ public class ContestService {
 		checkState(evotingToDate.getTime().after(new Date()), "evotingToDate must be in the future.");
 		checkState(evotingFromDate.getTime().before(evotingToDate.getTime()), "evotingFromDate must be before evotingToDate.");
 
-		if (byPassCheckConsistencyDates) {
+		if (bypassCheckConsistencyDates) {
 			LOGGER.warn("As defined by configuration, bypassing the evoting dates consistency checks...");
 			return;
 		}
