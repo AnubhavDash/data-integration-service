@@ -33,7 +33,7 @@
 		<crypto-primitives.version>1.5.0.0-b19</crypto-primitives.version>
 		<cucumber-bom.version>7.20.1</cucumber-bom.version>
 		<download-maven-plugin.version>1.11.2</download-maven-plugin.version>
-		<e-voting-libraries.version>1.5.0.0-b58</e-voting-libraries.version>
+		<e-voting-libraries.version>1.5.0.0-b61</e-voting-libraries.version>
 		<gmavenplus-plugin.version>4.0.1</gmavenplus-plugin.version>
 		<groovy.version>4.0.18</groovy.version>
 		<groovy-all.version>4.0.23</groovy-all.version>
@@ -64,6 +64,7 @@
 		<spring-boot.version>3.3.5</spring-boot.version>
 		<stax2-api.version>4.2.2</stax2-api.version>
 		<super-machine.version>0.1.0</super-machine.version>
+		<testdata.version>1.5.0.0-b7</testdata.version>
 		<woodstox-core.version>7.1.0</woodstox-core.version>
 		<xml-merge.version>0.2</xml-merge.version>
 		<xsdlib.version>2013.2</xsdlib.version>
@@ -535,6 +536,25 @@
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/e-voting-libraries-xml</outputDirectory>
 									<includes>**/*.xsd</includes>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+					<execution>
+						<id>unpack-testdata</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>ch.post.it.evoting</groupId>
+									<artifactId>testdata</artifactId>
+									<version>${testdata.version}</version>
+									<classifier>resources</classifier>
+									<type>zip</type>
+									<outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
 								</artifactItem>
 							</artifactItems>
 						</configuration>

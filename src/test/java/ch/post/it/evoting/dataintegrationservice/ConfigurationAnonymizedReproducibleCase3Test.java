@@ -11,7 +11,7 @@ import org.springframework.test.context.DynamicPropertySource;
 @DisplayName("Generating a configuration anonymized file")
 class ConfigurationAnonymizedReproducibleCase3Test extends ConfigurationAnonymizedReproducibleTestBase {
 
-	private static final String datasetName = "Post_Primary_Secondary";
+	private static final String datasetName = "Post_E2E_DEV_1000";
 
 	@DynamicPropertySource
 	static void registerPgProperties(final DynamicPropertyRegistry registry) {

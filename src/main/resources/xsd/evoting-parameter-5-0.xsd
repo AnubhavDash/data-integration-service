@@ -241,6 +241,7 @@
 			<xs:element name="evotingFromDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="evotingToDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="evotingTestBallotBoxesFromDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="abstentionAllowed" type="xs:boolean" minOccurs="0"/>
 			<xs:element name="electoralBoard" type="electoralBoardType"/>
 			<xs:element name="elections" type="electionsType" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="sorting" type="sortingType" minOccurs="0" maxOccurs="1"/>

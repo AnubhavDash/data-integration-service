@@ -306,6 +306,8 @@ public class ContestService {
 		addCandidatePositionInCandidateOnlyElections(electionGroups);
 		addIncumbentTextIfNeeded(electionGroups, contestParameters.getIncumbentText());
 
+		addAbstentionAllowed(contestParameters, votes, electionGroups);
+
 		addElectionsWriteIns(electionGroups, contestParameters);
 		addElectionsImplicitWriteInCandidatesIfNeeded(electionGroups, contestParameters);
 		addElectionsAccumulation(electionGroups, contestParameters);
@@ -351,6 +353,15 @@ public class ContestService {
 				});
 
 		return contest;
+	}
+
+	private void addAbstentionAllowed(final ch.evoting.xmlns.parameter._5.ContestType contestParameters, final List<VoteInformationType> votes,
+			final List<ElectionGroupBallotType> electionGroups) {
+
+		final boolean abstentionAllowed = Boolean.TRUE.equals(contestParameters.isAbstentionAllowed());
+
+		votes.forEach(vote -> vote.getVote().setAbstentionAllowed(abstentionAllowed));
+		electionGroups.forEach(electionGroupBallotType -> electionGroupBallotType.setAbstentionAllowed(abstentionAllowed));
 	}
 
 	private void addCandidateEligibilityFromParameters(final List<ElectionGroupBallotType> electionGroups,
