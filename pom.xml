@@ -33,7 +33,7 @@
 		<crypto-primitives.version>1.5.0.0-b19</crypto-primitives.version>
 		<cucumber-bom.version>7.20.1</cucumber-bom.version>
 		<download-maven-plugin.version>1.11.2</download-maven-plugin.version>
-		<e-voting-libraries.version>1.5.0.0-b61</e-voting-libraries.version>
+		<e-voting-libraries.version>1.5.0.0-b62</e-voting-libraries.version>
 		<gmavenplus-plugin.version>4.0.1</gmavenplus-plugin.version>
 		<groovy.version>4.0.18</groovy.version>
 		<groovy-all.version>4.0.23</groovy-all.version>
