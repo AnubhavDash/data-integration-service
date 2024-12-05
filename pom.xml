@@ -32,11 +32,11 @@
 		<commons-lang3.version>3.17.0</commons-lang3.version>
 		<crypto-primitives.version>1.5.0.0-b19</crypto-primitives.version>
 		<cucumber-bom.version>7.20.1</cucumber-bom.version>
-		<download-maven-plugin.version>1.11.2</download-maven-plugin.version>
-		<e-voting-libraries.version>1.5.0.0-b62</e-voting-libraries.version>
+		<download-maven-plugin.version>1.13.0</download-maven-plugin.version>
+		<e-voting-libraries.version>1.5.0.0-b66</e-voting-libraries.version>
 		<gmavenplus-plugin.version>4.0.1</gmavenplus-plugin.version>
 		<groovy.version>4.0.18</groovy.version>
-		<groovy-all.version>4.0.23</groovy-all.version>
+		<groovy-all.version>4.0.24</groovy-all.version>
 		<guava.version>33.3.1-jre</guava.version>
 		<hamcrest-core.version>3.0</hamcrest-core.version>
 		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
@@ -45,8 +45,8 @@
 		<jaxb-maven-plugin.version>4.0.8</jaxb-maven-plugin.version>
 		<junit-bom.version>5.11.3</junit-bom.version>
 		<logback-classic.version>1.5.12</logback-classic.version>
-		<lombok.version>1.18.34</lombok.version>
-		<mapstruct.version>1.6.2</mapstruct.version>
+		<lombok.version>1.18.36</lombok.version>
+		<mapstruct.version>1.6.3</mapstruct.version>
 		<maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
 		<maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
 		<maven-dependency-check.version>11.1.0</maven-dependency-check.version>
@@ -58,10 +58,10 @@
 		<maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
 		<msv-rngconverter.version>2022.7</msv-rngconverter.version>
 		<reactive-plumber.version>0.26.0</reactive-plumber.version>
-		<reactor-core.version>3.6.11</reactor-core.version>
+		<reactor-core.version>3.7.0</reactor-core.version>
 		<reproducible-build-maven-plugin.version>0.17.0</reproducible-build-maven-plugin.version>
 		<sonar-maven-plugin.version>5.0.0.4389</sonar-maven-plugin.version>
-		<spring-boot.version>3.3.5</spring-boot.version>
+		<spring-boot.version>3.4.0</spring-boot.version>
 		<stax2-api.version>4.2.2</stax2-api.version>
 		<super-machine.version>0.1.0</super-machine.version>
 		<testdata.version>1.5.0.0-b7</testdata.version>
