@@ -210,14 +210,6 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="election" minOccurs="0" maxOccurs="unbounded">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="electionIdentification" type="xs:token" minOccurs="1" maxOccurs="1"/>
-						<xs:element name="positionNumber" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
 			<xs:element name="vote" minOccurs="0" maxOccurs="unbounded">
 				<xs:complexType>
 					<xs:sequence>
@@ -249,6 +241,7 @@
 			<xs:element name="evotingFromDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="evotingToDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="evotingTestBallotBoxesFromDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="abstentionAllowed" type="xs:boolean" minOccurs="0"/>
 			<xs:element name="electoralBoard" type="electoralBoardType"/>
 			<xs:element name="elections" type="electionsType" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="sorting" type="sortingType" minOccurs="0" maxOccurs="1"/>

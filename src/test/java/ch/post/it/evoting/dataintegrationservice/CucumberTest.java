@@ -18,7 +18,7 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @CucumberContextConfiguration
 @SpringBootTest(
 		properties = {
-				"directory.source=testdata/Post_E2E_DEV/input",
+				"directory.source=target/test-classes/testdata/election-events/Post_E2E_DEV/D0",
 				"directory.target=target"}
 )
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)

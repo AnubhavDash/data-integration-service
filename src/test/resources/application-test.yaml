@@ -6,10 +6,10 @@ direct:
   trust:
     keystore:
       location:
-        canton: testdata/direct-trust/signing_keystore_canton.p12
+        canton: target/test-classes/testdata/direct-trust/canton/local_direct_trust_keystore_canton.p12
       password:
         location:
-          canton: testdata/direct-trust/signing_pw_canton.txt
+          canton: target/test-classes/testdata/direct-trust/canton/local_direct_trust_pw_canton.txt
 
 # App settings
 application:

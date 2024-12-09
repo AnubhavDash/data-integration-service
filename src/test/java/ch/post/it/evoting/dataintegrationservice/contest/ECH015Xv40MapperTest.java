@@ -3,6 +3,7 @@
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
+import static ch.ech.xmlns.ech_0155._4.PartyAffiliationformationType.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -48,6 +49,8 @@ import ch.ech.xmlns.ech_0159._4.EventInitialDelivery;
 import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyListType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType.ListDescriptionInfo;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PartyAffiliationformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
 @SpringBootTest
@@ -424,6 +427,32 @@ class ECH015Xv40MapperTest {
 		return echElection;
 	}
 
+	private ListDescriptionInformationType.ListDescriptionInfo createListDescriptionInfo(
+			final boolean listDescriptionShortProvided) {
+
+		final ListDescriptionInformationType.ListDescriptionInfo listDescriptionInfo = new ListDescriptionInformationType.ListDescriptionInfo()
+				.withLanguage("de")
+				.withListDescription("list1 long");
+
+		if (!listDescriptionShortProvided) {
+			return listDescriptionInfo;
+		}
+
+		return listDescriptionInfo.withListDescriptionShort("list1 short");
+	}
+
+	private PartyAffiliationInfo createPartyAffiliationInfo(final boolean partyAffiliationShortProvided) {
+		final PartyAffiliationInfo partyAffiliationInfo = new PartyAffiliationInfo()
+				.withLanguage("de")
+				.withPartyAffiliationShort("partei1 short");
+
+		if (!partyAffiliationShortProvided) {
+			return partyAffiliationInfo;
+		}
+
+		return partyAffiliationInfo.withPartyAffiliationLong("partei1 long");
+	}
+
 	@Test
 	void testContestType() throws Exception {
 
@@ -580,5 +609,49 @@ class ECH015Xv40MapperTest {
 			assertEquals(electionSource.getNumberOfMandates().intValue(), electionDestination.getNumberOfMandates());
 			assertEquals(electionSource.getReferencedElection().size(), electionDestination.getReferencedElection().size());
 		}
+	}
+
+	@Test
+	void testListDescriptionShortMissing() {
+		final ListDescriptionInformationType.ListDescriptionInfo source = createListDescriptionInfo(false);
+
+		final ListDescriptionInfo destination = mapper.convert(source);
+
+		assertEquals(source.getLanguage(), destination.getLanguage().value());
+		assertEquals(source.getListDescription(), destination.getListDescription());
+		assertEquals(source.getListDescription(), destination.getListDescriptionShort());
+	}
+
+	@Test
+	void testListDescriptionShortProvided() {
+		final ListDescriptionInformationType.ListDescriptionInfo source = createListDescriptionInfo(true);
+
+		final ListDescriptionInfo destination = mapper.convert(source);
+
+		assertEquals(source.getLanguage(), destination.getLanguage().value());
+		assertEquals(source.getListDescription(), destination.getListDescription());
+		assertEquals(source.getListDescriptionShort(), destination.getListDescriptionShort());
+	}
+
+	@Test
+	void testPartyAffiliationLongMissing() {
+		final PartyAffiliationInfo partyAffiliationInfo = createPartyAffiliationInfo(false);
+
+		final PartyAffiliationformationType.PartyAffiliationInfo destination = mapper.convert(partyAffiliationInfo);
+
+		assertEquals(partyAffiliationInfo.getLanguage(), destination.getLanguage().value());
+		assertEquals(partyAffiliationInfo.getPartyAffiliationShort(), destination.getPartyAffiliationShort());
+		assertEquals(partyAffiliationInfo.getPartyAffiliationShort(), destination.getPartyAffiliationLong());
+	}
+
+	@Test
+	void testPartyAffiliationLongProvided() {
+		final PartyAffiliationInfo partyAffiliationInfo = createPartyAffiliationInfo(true);
+
+		final PartyAffiliationformationType.PartyAffiliationInfo destination = mapper.convert(partyAffiliationInfo);
+
+		assertEquals(partyAffiliationInfo.getLanguage(), destination.getLanguage().value());
+		assertEquals(partyAffiliationInfo.getPartyAffiliationShort(), destination.getPartyAffiliationShort());
+		assertEquals(partyAffiliationInfo.getPartyAffiliationLong(), destination.getPartyAffiliationLong());
 	}
 }

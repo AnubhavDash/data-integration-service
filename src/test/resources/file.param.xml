@@ -5,6 +5,7 @@
 		<defaultLanguage>fr</defaultLanguage>
 		<evotingFromDate>2037-04-13T09:04:00+02:00</evotingFromDate>
 		<evotingToDate>2037-05-01T00:00:00+02:00</evotingToDate>
+		<abstentionAllowed>true</abstentionAllowed>
 		<electoralBoard>
 			<electoralBoardIdentification>EB</electoralBoardIdentification>
 			<electoralBoardName>EB</electoralBoardName>

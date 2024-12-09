@@ -35,7 +35,7 @@ abstract class ConfigurationAnonymizedReproducibleTestBase {
 	private static final Hash hash = HashFactory.createHash();
 	private static final String configurationAnonymized = "configuration-anonymized.xml";
 	private static final XmlFileRepository<Configuration> xmlFileRepository = new XmlFileRepository<>();
-	protected static final String testData = "testdata";
+	protected static final String testData = "target/test-classes/testdata/election-events";
 
 	@TempDir
 	protected static Path temporaryDirectory;
@@ -44,7 +44,7 @@ abstract class ConfigurationAnonymizedReproducibleTestBase {
 	private DataIntegrationService dataIntegrationService;
 
 	protected static void registerPgProperties(final DynamicPropertyRegistry registry, final String datasetName) {
-		registry.add("directory.source", () -> String.format("%s/%s/input", testData, datasetName));
+		registry.add("directory.source", () -> String.format("%s/%s/D0", testData, datasetName));
 		registry.add("directory.target", temporaryDirectory::toString);
 	}
 
@@ -71,7 +71,7 @@ abstract class ConfigurationAnonymizedReproducibleTestBase {
 	}
 
 	private static Configuration load(final String datasetName) {
-		return xmlFileRepository.read(Paths.get(testData, datasetName, "output", configurationAnonymized), XsdConstants.CANTON_CONFIG_XSD,
+		return xmlFileRepository.read(Paths.get(testData, datasetName, "D1/data-integration-service", configurationAnonymized), XsdConstants.CANTON_CONFIG_XSD,
 				Configuration.class);
 	}
 

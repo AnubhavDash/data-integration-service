@@ -858,6 +858,7 @@
 			<xs:element name="voteDescription" type="config:voteDescriptionInformationType"/>
 			<xs:element name="votePosition" type="xs:nonNegativeInteger"/>
 			<xs:element name="ballot" type="config:ballotType" maxOccurs="unbounded"/>
+			<xs:element name="abstentionAllowed" type="xs:boolean"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="voteInformationType">
@@ -892,6 +893,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
+			<xs:element name="abstentionAllowed" type="xs:boolean"/>
 			<xs:element name="electionInformation" type="config:electionInformationType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>

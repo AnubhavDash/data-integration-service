@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
@@ -46,6 +47,7 @@ import ch.evoting.xmlns.parameter._5.DisplayCandidateLineStyle;
 import ch.evoting.xmlns.parameter._5.DisplayListLineStyle;
 import ch.evoting.xmlns.parameter._5.ElectionType;
 import ch.evoting.xmlns.parameter._5.PositionText;
+import ch.evoting.xmlns.parameter._5.SortingType;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.dataintegrationservice.common.MarshallTool;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
@@ -86,6 +88,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TiebreakAnswe
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VariantBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.WriteInCandidateType;
 
 @Service
@@ -103,21 +106,21 @@ public class ContestService {
 	private static final BigInteger ELECTION_RELATION_PRIMARY = BigInteger.ONE;
 	private static final BigInteger ELECTION_RELATION_SECONDARY = BigInteger.TWO;
 
-	private final boolean byPassCheckConsistencyDates;
+	private final boolean bypassCheckConsistencyDates;
 	private final int votesDefaultAnswerTypeStandard;
 	private final int votesDefaultAnswerTypeTiebreak;
 	private final int evotingFromToMinDeltaAllowed;
 
 	public ContestService(
 			@Value("${bypass.checkConsistency.dates}")
-			final boolean byPassCheckConsistencyDates,
+			final boolean bypassCheckConsistencyDates,
 			@Value("${votes.defaultAnswerType.standard}")
 			final int votesDefaultAnswerTypeStandard,
 			@Value("${votes.defaultAnswerType.tiebreak}")
 			final int votesDefaultAnswerTypeTiebreak,
 			@Value("${eVotingFromTo.min.delta.allowed}")
 			final int evotingFromToMinDeltaAllowed) {
-		this.byPassCheckConsistencyDates = byPassCheckConsistencyDates;
+		this.bypassCheckConsistencyDates = bypassCheckConsistencyDates;
 		this.votesDefaultAnswerTypeStandard = votesDefaultAnswerTypeStandard;
 		this.votesDefaultAnswerTypeTiebreak = votesDefaultAnswerTypeTiebreak;
 		this.evotingFromToMinDeltaAllowed = evotingFromToMinDeltaAllowed;
@@ -289,7 +292,8 @@ public class ContestService {
 		fillPositionIfDefinedInParameters(votes, electionGroups, contestParameters);
 
 		addVotesAnswers(votes, contestParameters);
-		addVotesQuestionPositionIfNeeded(votes);
+		checkVotesQuestionsPositionsConsistency(votes);
+		checkVotesBallotsPositionsConsistency(votes);
 		addVotesStandardQuestionReferenceIfNeeded(votes);
 		addVotesPositionIfNeeded(votes);
 		addVotesQuestionNumberIfNeeded(votes);
@@ -302,6 +306,8 @@ public class ContestService {
 		addCandidatePositionInCandidateOnlyElections(electionGroups);
 		addIncumbentTextIfNeeded(electionGroups, contestParameters.getIncumbentText());
 
+		addAbstentionAllowed(contestParameters, votes, electionGroups);
+
 		addElectionsWriteIns(electionGroups, contestParameters);
 		addElectionsImplicitWriteInCandidatesIfNeeded(electionGroups, contestParameters);
 		addElectionsAccumulation(electionGroups, contestParameters);
@@ -309,7 +315,7 @@ public class ContestService {
 		addElectionRulesExplanation(electionGroups, contestParameters);
 
 		addElectionGroupPositionIfNeeded(electionGroups);
-		addElectionPositionIfNeeded(electionGroups);
+		checkElectionsPositionsConsistency(electionGroups);
 
 		sortElectionsAndVotes(electionGroups, votes);
 
@@ -347,6 +353,15 @@ public class ContestService {
 				});
 
 		return contest;
+	}
+
+	private void addAbstentionAllowed(final ch.evoting.xmlns.parameter._5.ContestType contestParameters, final List<VoteInformationType> votes,
+			final List<ElectionGroupBallotType> electionGroups) {
+
+		final boolean abstentionAllowed = Boolean.TRUE.equals(contestParameters.isAbstentionAllowed());
+
+		votes.forEach(vote -> vote.getVote().setAbstentionAllowed(abstentionAllowed));
+		electionGroups.forEach(electionGroupBallotType -> electionGroupBallotType.setAbstentionAllowed(abstentionAllowed));
 	}
 
 	private void addCandidateEligibilityFromParameters(final List<ElectionGroupBallotType> electionGroups,
@@ -391,42 +406,31 @@ public class ContestService {
 					final boolean noSpecificDisplayCandidateLineStyle = specificDisplayCandidateLineStyle == null;
 
 					electionInformationType.getCandidate()
-							.forEach(candidateType -> {
-								if ((DisplayCandidateLineStyle.DEFAULT.equals(defaultDisplayCandidateLineStyle)
-										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.DEFAULT.equals(
-										specificDisplayCandidateLineStyle)) {
-									// if the defaultDisplayCandidateLineStyle is DEFAULT and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is DEFAULT, then the default displayCandidateLineStyle is used.
-									addDefaultDisplayCandidateLinesStyle(candidateType);
-								} else if ((DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION.equals(defaultDisplayCandidateLineStyle)
-										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION.equals(
-										specificDisplayCandidateLineStyle)) {
-									// if the defaultDisplayCandidateLineStyle is WITH_PARTY_AFFILIATION and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is WITH_PARTY_AFFILIATION, then the displayCandidateLineStyle with party affiliation is used.
-									addWithPartyAffiliationDisplayCandidateLinesStyle(candidateType);
-
-								} else if ((DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE.equals(defaultDisplayCandidateLineStyle)
-										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE.equals(
-										specificDisplayCandidateLineStyle)) {
-									// if the defaultDisplayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE, then the displayCandidateLineStyle with party affiliation extra line is used.
-									addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(candidateType);
-								} else if ((DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED.equals(
-										defaultDisplayCandidateLineStyle)
-										&& noSpecificDisplayCandidateLineStyle)
-										|| DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED.equals(
-										specificDisplayCandidateLineStyle)) {
-									// if the defaultDisplayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED, then the displayCandidateLineStyle with party affiliation extra line comma separated is used.
-									addWithPartyAffiliationExtraLineCommaSeparatedDisplayCandidateLinesStyle(candidateType);
-								} else if ((DisplayCandidateLineStyle.DEFAULT_COMMA_SEPARATED.equals(defaultDisplayCandidateLineStyle)
-										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.DEFAULT_COMMA_SEPARATED.equals(
-										specificDisplayCandidateLineStyle)) {
-									// if the defaultDisplayCandidateLineStyle is DEFAULT_COMMA_SEPARATED and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is DEFAULT_COMMA_SEPARATED, then the default comma separated displayCandidateLineStyle is used.
-									addDefaultCommaSeparatedDisplayCandidateLinesStyle(candidateType);
-								} else {
-									throw new IllegalStateException(String.format(
-											"Unknown displayCandidateLineStyle. [displayCandidateLineStyle: %s, electionId: %s, candidateId: %s]",
-											defaultDisplayCandidateLineStyle, electionIdentification, candidateType.getCandidateIdentification()));
-								}
-							});
+							.forEach(candidateType ->
+									addDisplayCandidateLineStyle(candidateType, noSpecificDisplayCandidateLineStyle, defaultDisplayCandidateLineStyle,
+											specificDisplayCandidateLineStyle, electionIdentification)
+							);
 				});
+	}
+
+	private void addDisplayCandidateLineStyle(final CandidateType candidateType, final boolean noSpecificDisplayCandidateLineStyle,
+			final DisplayCandidateLineStyle defaultDisplayCandidateLineStyle, final DisplayCandidateLineStyle specificDisplayCandidateLineStyle,
+			final String electionIdentification) {
+
+		final DisplayCandidateLineStyle effectiveDisplayCandidateLineStyle =
+				noSpecificDisplayCandidateLineStyle ? defaultDisplayCandidateLineStyle : specificDisplayCandidateLineStyle;
+
+		switch (effectiveDisplayCandidateLineStyle) {
+		case DEFAULT -> addDefaultDisplayCandidateLinesStyle(candidateType);
+		case DEFAULT_COMMA_SEPARATED -> addDefaultCommaSeparatedDisplayCandidateLinesStyle(candidateType);
+		case WITH_PARTY_AFFILIATION -> addWithPartyAffiliationDisplayCandidateLinesStyle(candidateType);
+		case WITH_PARTY_AFFILIATION_EXTRA_LINE -> addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(candidateType);
+		case WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED ->
+				addWithPartyAffiliationExtraLineCommaSeparatedDisplayCandidateLinesStyle(candidateType);
+		default -> throw new IllegalStateException(String.format(
+				"Unknown displayCandidateLineStyle. [displayCandidateLineStyle: %s, electionId: %s, candidateId: %s]",
+				effectiveDisplayCandidateLineStyle, electionIdentification, candidateType.getCandidateIdentification()));
+		}
 	}
 
 	private DisplayCandidateLineStyle getSpecificDisplayCandidateLineStyle(
@@ -551,8 +555,23 @@ public class ContestService {
 
 	private void fillPositionIfDefinedInParameters(final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups,
 			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
-		if (contestParameters.getSorting() != null) {
-			contestParameters.getSorting().getElectionGroup().forEach(positionParameter -> {
+
+		final SortingType sorting = contestParameters.getSorting();
+		if (sorting != null) {
+			final List<SortingType.ElectionGroup> sortingElectionGroups = sorting.getElectionGroup();
+			final List<SortingType.Vote> sortingVotes = sorting.getVote();
+			final int totalNbrOfPositions = sortingElectionGroups.size() + sortingVotes.size();
+
+			final TreeSet<Integer> sortedPositions = Stream.concat(
+							sortingElectionGroups.stream().map(electionGroup -> electionGroup.getPositionNumber().intValueExact()),
+							sortingVotes.stream().map(vote -> vote.getPositionNumber().intValueExact()))
+					.collect(Collectors.toCollection(TreeSet::new));
+
+			checkState(sortedPositions.size() == totalNbrOfPositions && sortedPositions.getFirst() == 1
+							&& sortedPositions.getLast() == totalNbrOfPositions,
+					"The sorting positions must be a strictly increasing sequence from 1 to %s.", totalNbrOfPositions);
+
+			sortingElectionGroups.forEach(positionParameter -> {
 				final String electionGroupIdentification = positionParameter.getElectionGroupIdentification();
 				final int position = positionParameter.getPositionNumber().intValueExact();
 				electionGroups.stream()
@@ -564,19 +583,7 @@ public class ContestService {
 						.setElectionGroupPosition(position);
 			});
 
-			contestParameters.getSorting().getElection().forEach(positionParameter -> {
-				final String electionIdentification = positionParameter.getElectionIdentification();
-				final int position = positionParameter.getPositionNumber().intValueExact();
-				electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
-						.filter(e -> e.getElection().getElectionIdentification().equals(electionIdentification))
-						.findFirst()
-						.orElseThrow(() -> new IllegalStateException(String.format(
-								"Unknown electionIdentification defined in sorting definition of parameters file. [electionIdentification: %s",
-								electionIdentification)))
-						.getElection().setElectionPosition(position);
-			});
-
-			contestParameters.getSorting().getVote().forEach(positionParameter -> {
+			sortingVotes.forEach(positionParameter -> {
 				final String voteIdentification = positionParameter.getVoteIdentification();
 				final BigInteger position = positionParameter.getPositionNumber();
 				votes.stream()
@@ -655,59 +662,105 @@ public class ContestService {
 		});
 	}
 
-	private void addElectionPositionIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
+	private void checkElectionsPositionsConsistency(final List<ElectionGroupBallotType> electionGroups) {
+		electionGroups
+				.forEach(electionGroupBallot -> {
+					final int totalNbrOfElections = electionGroupBallot.getElectionInformation().size();
+					final String electionGroupIdentification = electionGroupBallot.getElectionGroupIdentification();
 
-		electionGroups.forEach(eg -> {
-			final List<Integer> usedPositions = eg.getElectionInformation().stream()
-					.map(ei -> ei.getElection().getElectionPosition())
-					.filter(val -> val > 0)
-					.toList();
+					final long electionsWithoutPosition = electionGroupBallot.getElectionInformation().stream()
+							.filter(electionInformation -> electionInformation.getElection().getElectionPosition() == DEFAULT_VALUE)
+							.count();
 
-			final AtomicInteger counter = new AtomicInteger(1);
-			eg.getElectionInformation().forEach(ei -> {
-				if (ei.getElection().getElectionPosition() == DEFAULT_VALUE) {
-					while (usedPositions.contains(counter.get())) {
-						counter.getAndIncrement();
+					if (electionsWithoutPosition == 0) {
+						LOGGER.debug("Election group '{}' : all elections have a position; checking monotonicity", electionGroupIdentification);
+
+						final TreeSet<Integer> sortedElectionsPositions = electionGroupBallot.getElectionInformation().stream()
+								.map(electionInformation -> electionInformation.getElection().getElectionPosition())
+								.collect(Collectors.toCollection(TreeSet::new));
+
+						checkState(sortedElectionsPositions.size() == totalNbrOfElections && sortedElectionsPositions.getFirst() == 1
+										&& sortedElectionsPositions.getLast() == totalNbrOfElections,
+								"Election group '%s' : elections positions must be a strictly increasing sequence from 1 to %s",
+								electionGroupIdentification, totalNbrOfElections);
+
+						// Positions sequence is valid, sort for display.
+						electionGroupBallot.getElectionInformation()
+								.sort(Comparator.comparingInt(electionInformation -> electionInformation.getElection().getElectionPosition()));
+					} else if (electionsWithoutPosition == totalNbrOfElections) {
+						LOGGER.warn("Election group '{}' : missing all elections positions; setting all values", electionGroupIdentification);
+						final AtomicInteger counter = new AtomicInteger();
+						electionGroupBallot.getElectionInformation().stream()
+								.map(ElectionInformationType::getElection)
+								.forEach(election -> election.setElectionPosition(counter.incrementAndGet()));
+					} else {
+						throw new IllegalStateException(String.format(
+								"Election group '%s' : all elections must have a position or none of them", electionGroupIdentification));
 					}
-					ei.getElection().setElectionPosition(counter.getAndIncrement());
-				}
-			});
-		});
+				});
 	}
 
 	private void addElectionGroupIdAndDescriptionIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
 		electionGroups.forEach(electionGroup -> {
-			if (StringUtils.isEmpty(electionGroup.getElectionGroupIdentification())) {
-				electionGroup.setElectionGroupIdentification(determineElectionGroupIdentification(electionGroup.getElectionInformation()));
-			}
+			final List<ElectionInformationType> electionsInformation = electionGroup.getElectionInformation();
 
-			if (electionGroup.getElectionGroupDescription() == null) {
-				electionGroup.setElectionGroupDescription(convertElectionDescriptionToElectionGroupDescription(
-						electionGroup.getElectionInformation().getFirst().getElection().getElectionDescription()));
+			electionsInformation.forEach(electionInformation ->
+					checkState(electionInformation.getElection().getElectionDescription() != null,
+							"Missing election description. [electionIdentification: %s]",
+							electionInformation.getElection().getElectionIdentification())
+			);
+
+			final ElectionGroupDescriptionInformationType electionGroupDescription = electionGroup.getElectionGroupDescription();
+
+			if (electionsInformation.size() == 1) {
+				final ElectionInformationType electionInformation = electionsInformation.getFirst();
+
+				if (StringUtils.isEmpty(electionGroup.getElectionGroupIdentification())) {
+					final String electionIdentification = electionInformation.getElection().getElectionIdentification();
+
+					electionGroup.setElectionGroupIdentification(electionIdentification);
+
+					LOGGER.warn(
+							"Election group with single election is missing election group identification. Used election identification as election group identification. [electionIdentification: {}]",
+							electionIdentification);
+				}
+
+				if (electionGroupDescription == null) {
+					final ElectionDescriptionInformationType electionDescription = electionInformation.getElection().getElectionDescription();
+					// Election group identification may have been updated by previous if statement.
+					final String electionGroupIdentification = electionGroup.getElectionGroupIdentification();
+
+					electionGroup.setElectionGroupDescription(convertElectionDescriptionToElectionGroupDescription(electionDescription));
+
+					LOGGER.warn(
+							"Election group with single election is missing election group description. Used election description as election group description. [electionGroupIdentification: {}]",
+							electionGroupIdentification);
+				}
+			} else {
+				// If there are multiple elections, the election group identification and description must be provided.
+				final String electionGroupIdentification = electionGroup.getElectionGroupIdentification();
+
+				checkState(!StringUtils.isEmpty(electionGroupIdentification),
+						"Missing election group identification. [contained electionIdentification: %s]",
+						electionsInformation.getFirst().getElection().getElectionIdentification());
+				checkState(electionGroupDescription != null, "Missing election group description. [electionGroupIdentification: %s]",
+						electionGroupIdentification);
 			}
 		});
 	}
 
 	private ElectionGroupDescriptionInformationType convertElectionDescriptionToElectionGroupDescription(
 			final ElectionDescriptionInformationType electionDescription) {
-		return new ElectionGroupDescriptionInformationType().withElectionGroupDescriptionInfo(
-				electionDescription.getElectionDescriptionInfo().stream().map(electionDescriptionInfo -> {
-					final ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo res = new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo();
-					res.setLanguage(electionDescriptionInfo.getLanguage());
-					res.setElectionGroupDescription(electionDescriptionInfo.getElectionDescription());
-					res.setElectionGroupDescriptionShort(electionDescriptionInfo.getElectionDescriptionShort());
-					return res;
-				}).toList());
-	}
 
-	private String determineElectionGroupIdentification(final List<ElectionInformationType> electionInformation) {
-		if (electionInformation.size() == 1) {
-			return electionInformation.getFirst().getElection().getElectionIdentification();
-		} else {
-			return StringUtil.generateUUIDFromString(
-					electionInformation.stream().map(ei -> ei.getElection().getElectionIdentification()).reduce("", (s1, s2) -> s1 + s2)
-			);
-		}
+		return new ElectionGroupDescriptionInformationType().withElectionGroupDescriptionInfo(
+				electionDescription.getElectionDescriptionInfo().stream()
+						.map(electionDescriptionInfo ->
+								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo()
+										.withLanguage(electionDescriptionInfo.getLanguage())
+										.withElectionGroupDescription(electionDescriptionInfo.getElectionDescription())
+										.withElectionGroupDescriptionShort(electionDescriptionInfo.getElectionDescriptionShort()))
+						.toList()
+		);
 	}
 
 	private Map<String, BigInteger> getParametersMinimalCandidateSelectionInList(
@@ -1125,26 +1178,91 @@ public class ContestService {
 				});
 	}
 
-	private void addVotesQuestionPositionIfNeeded(final List<VoteInformationType> votesInformation) {
+	private void checkVotesQuestionsPositionsConsistency(final List<VoteInformationType> votesInformation) {
 		votesInformation.stream()
 				.flatMap(voteInformation -> voteInformation.getVote().getBallot().stream())
 				.filter(ballot -> ballot.getVariantBallot() != null)
 				.forEach(ballot -> {
-					final AtomicInteger counter = new AtomicInteger();
 					final VariantBallotType variantBallot = ballot.getVariantBallot();
 					final String ballotIdentification = ballot.getBallotIdentification();
 
-					final boolean standardQuestionWithoutPosition = variantBallot.getStandardQuestion().stream()
-							.anyMatch(standardQuestion -> standardQuestion.getQuestionPosition() == DEFAULT_VALUE);
-					final boolean tieBreakQuestionWithoutPosition = variantBallot.getTieBreakQuestion().stream()
-							.anyMatch(tieBreakQuestion -> tieBreakQuestion.getQuestionPosition() == DEFAULT_VALUE);
+					final int nbrOfStandardQuestions = variantBallot.getStandardQuestion().size();
+					final int nbrOfTieBreakQuestions = variantBallot.getTieBreakQuestion().size();
+					final int totalNbrOfQuestions = nbrOfStandardQuestions + nbrOfTieBreakQuestions;
 
-					if (standardQuestionWithoutPosition || tieBreakQuestionWithoutPosition) {
-						LOGGER.info("Variant ballot '{}' : missing at least one question position; resetting all values", ballotIdentification);
+					final long standardQuestionsWithoutPosition = variantBallot.getStandardQuestion().stream()
+							.filter(standardQuestion -> standardQuestion.getQuestionPosition() == DEFAULT_VALUE)
+							.count();
+					final long tieBreakQuestionsWithoutPosition = variantBallot.getStandardQuestion().stream()
+							.filter(standardQuestion -> standardQuestion.getQuestionPosition() == DEFAULT_VALUE)
+							.count();
+					final long questionsWithoutPosition = standardQuestionsWithoutPosition + tieBreakQuestionsWithoutPosition;
+
+					if (questionsWithoutPosition == 0) {
+						LOGGER.debug("Variant ballot '{}' : all questions have a position; checking monotonicity", ballotIdentification);
+
+						final TreeSet<Integer> sortedQuestionPositions = Stream.concat(
+										variantBallot.getStandardQuestion().stream().map(StandardQuestionType::getQuestionPosition),
+										variantBallot.getTieBreakQuestion().stream().map(TieBreakQuestionType::getQuestionPosition))
+								.collect(Collectors.toCollection(TreeSet::new));
+
+						checkState(sortedQuestionPositions.size() == totalNbrOfQuestions && sortedQuestionPositions.getFirst() == 1
+										&& sortedQuestionPositions.getLast() == totalNbrOfQuestions,
+								"Variant ballot '%s' : questions positions must be a strictly increasing sequence from 1 to %s",
+								ballotIdentification, totalNbrOfQuestions);
+
+						// Positions sequence is valid, sort for display.
+						variantBallot.getStandardQuestion().sort(Comparator.comparingInt(StandardQuestionType::getQuestionPosition));
+						variantBallot.getTieBreakQuestion().sort(Comparator.comparingInt(TieBreakQuestionType::getQuestionPosition));
+					} else if (questionsWithoutPosition == totalNbrOfQuestions) {
+						LOGGER.warn("Variant ballot '{}' : missing all questions positions; setting all values", ballotIdentification);
+						final AtomicInteger counter = new AtomicInteger();
 						variantBallot.getStandardQuestion()
 								.forEach(standardQuestion -> standardQuestion.setQuestionPosition(counter.incrementAndGet()));
 						variantBallot.getTieBreakQuestion()
 								.forEach(tieBreakQuestion -> tieBreakQuestion.setQuestionPosition(counter.incrementAndGet()));
+					} else {
+						throw new IllegalStateException(String.format(
+								"Variant ballot '%s' : missing position for some questions; either all questions must have a position or none",
+								ballotIdentification));
+					}
+				});
+	}
+
+	private void checkVotesBallotsPositionsConsistency(final List<VoteInformationType> votesInformation) {
+		votesInformation
+				.forEach(voteInformation -> {
+					final VoteType vote = voteInformation.getVote();
+					final List<BallotType> ballots = vote.getBallot();
+					final String voteIdentification = vote.getVoteIdentification();
+					final int totalNbrOfBallots = ballots.size();
+
+					final long ballotsWithoutPosition = ballots.stream()
+							.filter(ballot -> ballot.getBallotPosition() == DEFAULT_VALUE)
+							.count();
+
+					if (ballotsWithoutPosition == 0) {
+						LOGGER.debug("Vote '{}' : all ballots have a position; checking monotonicity", voteIdentification);
+
+						final TreeSet<Integer> sortedBallotPositions = ballots.stream()
+								.map(BallotType::getBallotPosition)
+								.collect(Collectors.toCollection(TreeSet::new));
+
+						checkState(sortedBallotPositions.size() == totalNbrOfBallots && sortedBallotPositions.getFirst() == 1
+										&& sortedBallotPositions.getLast() == totalNbrOfBallots,
+								"Vote '%s' : ballots positions must be a strictly increasing sequence from 1 to %s", voteIdentification,
+								totalNbrOfBallots);
+
+						// Positions sequence is valid, sort for display.
+						ballots.sort(Comparator.comparing(BallotType::getBallotPosition));
+					} else if (ballotsWithoutPosition == totalNbrOfBallots) {
+						LOGGER.warn("Vote '{}' : missing all ballots positions; setting all values", voteIdentification);
+						final AtomicInteger counter = new AtomicInteger();
+						ballots.forEach(ballot -> ballot.setBallotPosition(counter.incrementAndGet()));
+					} else {
+						throw new IllegalStateException(String.format(
+								"Vote '%s' : missing position for some ballots; either all ballots must have a position or none",
+								voteIdentification));
 					}
 				});
 	}
@@ -1278,7 +1396,7 @@ public class ContestService {
 		checkState(evotingToDate.getTime().after(new Date()), "evotingToDate must be in the future.");
 		checkState(evotingFromDate.getTime().before(evotingToDate.getTime()), "evotingFromDate must be before evotingToDate.");
 
-		if (byPassCheckConsistencyDates) {
+		if (bypassCheckConsistencyDates) {
 			LOGGER.warn("As defined by configuration, bypassing the evoting dates consistency checks...");
 			return;
 		}
@@ -1642,13 +1760,18 @@ public class ContestService {
 				.flatMap(electionGroupBallot -> electionGroupBallot.getElectionInformation().stream())
 				.forEach(electionInformation -> {
 					if (electionInformation.getElection().isWriteInsAllowed()) {
-						checkState(electionInformation.getWriteInCandidate() != null && electionInformation.getWriteInCandidate().size() == electionInformation.getElection().getNumberOfMandates(),
-								"The election allows write-ins and must contain as many write-in candidates as there are mandates. [electionId: %s, numberOfMandates: %s]", electionInformation.getElection().getElectionIdentification(), electionInformation.getElection().getNumberOfMandates());
+						checkState(electionInformation.getWriteInCandidate() != null
+										&& electionInformation.getWriteInCandidate().size() == electionInformation.getElection().getNumberOfMandates(),
+								"The election allows write-ins and must contain as many write-in candidates as there are mandates. [electionId: %s, numberOfMandates: %s]",
+								electionInformation.getElection().getElectionIdentification(),
+								electionInformation.getElection().getNumberOfMandates());
 					} else {
 						checkState(electionInformation.getWriteInCandidate() == null || electionInformation.getWriteInCandidate().isEmpty(),
-								"The election does not allow write-ins and must therefore not have any write-in candidates. [electionId: %s]", electionInformation.getElection().getElectionIdentification());
+								"The election does not allow write-ins and must therefore not have any write-in candidates. [electionId: %s]",
+								electionInformation.getElection().getElectionIdentification());
 						checkState(electionInformation.getImplicitWriteInCandidate() == null || electionInformation.getWriteInCandidate().isEmpty(),
-								"The election does not allow write-ins and must therefore not have any implicit write-in candidates. [electionId: %s]", electionInformation.getElection().getElectionIdentification());
+								"The election does not allow write-ins and must therefore not have any implicit write-in candidates. [electionId: %s]",
+								electionInformation.getElection().getElectionIdentification());
 					}
 				});
 	}

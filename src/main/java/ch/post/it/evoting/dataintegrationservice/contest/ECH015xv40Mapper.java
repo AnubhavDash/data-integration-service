@@ -3,8 +3,9 @@
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
-import static java.util.function.Predicate.not;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static java.util.function.Predicate.not;
 
 import java.math.BigInteger;
 import java.security.InvalidParameterException;
@@ -119,7 +120,26 @@ public interface ECH015xv40Mapper {
 
 	PartyAffiliationformationType convert(ch.ech.xmlns.ech_0155._4.PartyAffiliationformationType pat);
 
-	PartyAffiliationformationType.PartyAffiliationInfo convert(ch.ech.xmlns.ech_0155._4.PartyAffiliationformationType.PartyAffiliationInfo pai);
+	@Mapping(target = "language", source = "partyAffiliationInfo.language")
+	@Mapping(target = "partyAffiliationShort", source = "partyAffiliationInfo.partyAffiliationShort")
+	@Mapping(target = "partyAffiliationLong", expression = "java( mapPartyAffiliationLong(partyAffiliationInfo) )")
+	PartyAffiliationformationType.PartyAffiliationInfo convert(
+			ch.ech.xmlns.ech_0155._4.PartyAffiliationformationType.PartyAffiliationInfo partyAffiliationInfo);
+
+	// This method is called from a MapStruct java expression
+	default String mapPartyAffiliationLong(final ch.ech.xmlns.ech_0155._4.PartyAffiliationformationType.PartyAffiliationInfo partyAffiliationInfo) {
+		checkNotNull(partyAffiliationInfo);
+
+		final String partyAffiliationLong = partyAffiliationInfo.getPartyAffiliationLong();
+		if (partyAffiliationLong != null) {
+			return partyAffiliationLong;
+		}
+
+		final String partyAffiliationShort = partyAffiliationInfo.getPartyAffiliationShort();
+		LOGGER.warn("Field partyAffiliationLong is missing. Filling its value with the short one. [partyAffiliationShort: {}]",
+				partyAffiliationShort);
+		return partyAffiliationShort;
+	}
 
 	DwellingAddressType convert(ch.ech.xmlns.ech_0010._6.AddressInformationType address);
 
@@ -178,7 +198,26 @@ public interface ECH015xv40Mapper {
 
 	ListDescriptionInformationType convert(ch.ech.xmlns.ech_0155._4.ListDescriptionInformationType value);
 
-	ListDescriptionInformationType.ListDescriptionInfo convert(ch.ech.xmlns.ech_0155._4.ListDescriptionInformationType.ListDescriptionInfo value);
+	@Mapping(target = "language", source = "listDescriptionInfo.language")
+	@Mapping(target = "listDescriptionShort", expression = "java( mapListDescriptionShort(listDescriptionInfo) )")
+	@Mapping(target = "listDescription", source = "listDescriptionInfo.listDescription")
+	ListDescriptionInformationType.ListDescriptionInfo convert(
+			ch.ech.xmlns.ech_0155._4.ListDescriptionInformationType.ListDescriptionInfo listDescriptionInfo);
+
+	// This method is called from a MapStruct java expression
+	default String mapListDescriptionShort(final ch.ech.xmlns.ech_0155._4.ListDescriptionInformationType.ListDescriptionInfo listDescriptionInfo) {
+		checkNotNull(listDescriptionInfo);
+
+		final String listDescriptionShort = listDescriptionInfo.getListDescriptionShort();
+		if (listDescriptionShort != null) {
+			return listDescriptionShort;
+		}
+
+		final String listDescription = listDescriptionInfo.getListDescription();
+		LOGGER.warn("Field listDescriptionShort is missing. Filling its value with a truncated value of the list description. [listDescription: {}]",
+				listDescription);
+		return listDescription.substring(0, Math.min(listDescription.length(), 20));
+	}
 
 	ListUnionType convert(ch.ech.xmlns.ech_0155._4.ListUnionType lu);
 

@@ -143,24 +143,30 @@ public class ContestPhaseSteps extends PhaseSteps {
 		ContestEch015xv40.exports.setElections(
 				Flux.just(new ElectionGroupBallotType().withElectionGroupIdentification(electionId)
 						.withElectionGroupDescription(new ElectionGroupDescriptionInformationType().withElectionGroupDescriptionInfo(
-								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.DE)
-										.withElectionGroupDescription("Desc DE").withElectionGroupDescriptionShort("Desc DE")).withElectionGroupDescriptionInfo(
-								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.FR)
-										.withElectionGroupDescription("Desc FR").withElectionGroupDescriptionShort("Desc FR")).withElectionGroupDescriptionInfo(
-								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.IT)
-										.withElectionGroupDescription("Desc IT").withElectionGroupDescriptionShort("Desc IT")).withElectionGroupDescriptionInfo(
-								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.RM)
-										.withElectionGroupDescription("Desc RM").withElectionGroupDescriptionShort("Desc RM")))
+										new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.DE)
+												.withElectionGroupDescription("Desc DE").withElectionGroupDescriptionShort("Desc DE"))
+								.withElectionGroupDescriptionInfo(
+										new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.FR)
+												.withElectionGroupDescription("Desc FR").withElectionGroupDescriptionShort("Desc FR"))
+								.withElectionGroupDescriptionInfo(
+										new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.IT)
+												.withElectionGroupDescription("Desc IT").withElectionGroupDescriptionShort("Desc IT"))
+								.withElectionGroupDescriptionInfo(
+										new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo().withLanguage(LanguageType.RM)
+												.withElectionGroupDescription("Desc RM").withElectionGroupDescriptionShort("Desc RM")))
 						.withElectionInformation(new ElectionInformationType().withElection(new ElectionType().withElectionIdentification(electionId)
 								.withElectionDescription(new ElectionDescriptionInformationType().withElectionDescriptionInfo(
-										new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.DE)
-												.withElectionDescription("Desc DE").withElectionDescriptionShort("Desc DE")).withElectionDescriptionInfo(
-										new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.FR)
-												.withElectionDescription("Desc FR").withElectionDescriptionShort("Desc FR")).withElectionDescriptionInfo(
-										new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.IT)
-												.withElectionDescription("Desc IT").withElectionDescriptionShort("Desc IT")).withElectionDescriptionInfo(
-										new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.RM)
-												.withElectionDescription("Desc RM").withElectionDescriptionShort("Desc RM")))))));
+												new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.DE)
+														.withElectionDescription("Desc DE").withElectionDescriptionShort("Desc DE"))
+										.withElectionDescriptionInfo(
+												new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.FR)
+														.withElectionDescription("Desc FR").withElectionDescriptionShort("Desc FR"))
+										.withElectionDescriptionInfo(
+												new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.IT)
+														.withElectionDescription("Desc IT").withElectionDescriptionShort("Desc IT"))
+										.withElectionDescriptionInfo(
+												new ElectionDescriptionInformationType.ElectionDescriptionInfo().withLanguage(LanguageType.RM)
+														.withElectionDescription("Desc RM").withElectionDescriptionShort("Desc RM")))))));
 	}
 
 	@And("^a votation input eCHv4 with an Id \"([^\"]*)\"$")
@@ -635,7 +641,8 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^the ballot question of ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has info \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andBallotQuestionOfBallotHasInfo(final String votes, final String vote, final String ballot, final String lang, final String title, final String info) {
+	public void andBallotQuestionOfBallotHasInfo(final String votes, final String vote, final String ballot, final String lang, final String title,
+			final String info) {
 		ballotMap.get(votes + "." + vote + "." + ballot).getStandardBallot().getBallotQuestion().getBallotQuestionInfo()
 				.add(new BallotQuestionType.BallotQuestionInfo()
 						.withLanguage(LanguageType.valueOf(lang))

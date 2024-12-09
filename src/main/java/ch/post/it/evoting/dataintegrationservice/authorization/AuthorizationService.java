@@ -10,7 +10,6 @@ import static com.google.common.base.Preconditions.checkState;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -103,7 +102,7 @@ public class AuthorizationService {
 		final AuthorizationType result = new AuthorizationType();
 
 		//DOI and CC are given from the voter information (from ech-0045 v4)
-		result.getAuthorizationObject().addAll(new LinkedList<>(voter.getDomainOfInfluenceInfos().stream()
+		result.getAuthorizationObject().addAll(voter.getDomainOfInfluenceInfos().stream()
 				.filter(doiInfo -> usedDOIids.contains(doiInfo.getDomainOfInfluence().getLocalId())).map(doiInfo -> map(voter, doiInfo))
 				.collect(Collectors.toMap(
 						ao -> ao.getDomainOfInfluence().getDomainOfInfluenceIdentification() + "|" + ao.getCountingCircle()
@@ -114,7 +113,7 @@ public class AuthorizationService {
 									voter.getVoterIdentification());
 							return ao1;
 						}
-				)).values()));
+				)).values());
 
 		result.setAuthorizationName(
 				voter.getDomainOfInfluenceInfos().stream().filter(doiInfo -> usedDOIids.contains(doiInfo.getDomainOfInfluence().getLocalId()))

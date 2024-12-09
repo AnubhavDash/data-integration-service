@@ -15,14 +15,14 @@ import ch.post.it.evoting.dataintegrationservice.register.ECHv42FileRegisterLoad
 @Component
 public class RegisterEch0045v42Component {
 
-	private final ECHv42FileRegisterLoader ECHv42FileRegisterLoader;
+	private final ECHv42FileRegisterLoader eCHv42FileRegisterLoader;
 
-	public RegisterEch0045v42Component(final ECHv42FileRegisterLoader ECHv42FileRegisterLoader) {
-		this.ECHv42FileRegisterLoader = ECHv42FileRegisterLoader;
+	public RegisterEch0045v42Component(final ECHv42FileRegisterLoader eCHv42FileRegisterLoader) {
+		this.eCHv42FileRegisterLoader = eCHv42FileRegisterLoader;
 	}
 
 	public Function<String, Iterable<VotingPersonType>> loadECH0045v42() {
-		return ECHv42FileRegisterLoader::loadECH0045v42;
+		return eCHv42FileRegisterLoader::loadECH0045v42;
 	}
 
 	public Function<VotingPersonType, VoterTypeWithRole> fromECHv42Voter() {
@@ -30,6 +30,6 @@ public class RegisterEch0045v42Component {
 	}
 
 	public Function<VoterTypeWithRole, VoterTypeWithRole> checkConsistency() {
-		return ECHv42FileRegisterLoader::checkConsistency;
+		return eCHv42FileRegisterLoader::checkConsistency;
 	}
 }
