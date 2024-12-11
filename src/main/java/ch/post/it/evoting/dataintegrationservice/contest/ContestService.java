@@ -27,7 +27,9 @@ import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -302,6 +304,7 @@ public class ContestService {
 		addEmptyListIfNeeded(electionGroups);
 		addCandidatesInEmptyListsIfNeeded(electionGroups, contestParameters);
 		addCandidatesListIdentifications(electionGroups);
+		checkCandidateTextsAreSet(electionGroups);
 		warnIfCandidatesOutOfLists(electionGroups);
 		addCandidatePositionInCandidateOnlyElections(electionGroups);
 		addIncumbentTextIfNeeded(electionGroups, contestParameters.getIncumbentText());
@@ -975,6 +978,47 @@ public class ContestService {
 		from(elections).find(ListType.class).stream().forEach(list -> list.getCandidatePosition().forEach(p -> p.setCandidateListIdentification(
 				StringUtil.generateUUIDFromString(list.getListIdentification() + "." + p.getCandidateIdentification()))));
 	}
+
+	private void checkCandidateTextsAreSet(final List<ElectionGroupBallotType> electionGroups) {
+		final Predicate<CandidateType> hasText = (c) -> c.getCandidateText() != null && !c.getCandidateText().getCandidateTextInfo().isEmpty();
+
+		electionGroups.stream()
+				.flatMap(eg -> eg.getElectionInformation().stream())
+				.forEach(e -> {
+					if (e.getCandidate().isEmpty()) {
+						return;
+					}
+
+					final boolean allCandidatesHaveText = e.getCandidate().stream().allMatch(hasText);
+					final boolean noCandidateHasText = e.getCandidate().stream().noneMatch(hasText);
+
+					if (!allCandidatesHaveText && !noCandidateHasText) {
+						throw new IllegalStateException(
+								"The field candidateText for one or more candidates was not provided: [electionIdentification: %s, candidateId: %s]".formatted(
+										e.getElection().getElectionIdentification(),
+										e.getCandidate().stream().filter(not(hasText)).findFirst().map(CandidateType::getCandidateIdentification)
+												.orElseThrow()));
+					}
+
+					if (noCandidateHasText) {
+						e.getCandidate().forEach(c -> {
+							final CandidateTextInformationType candidateTextInformationType = new CandidateTextInformationType();
+
+							final List<CandidateTextInformationType.CandidateTextInfo> list = Arrays.stream(LanguageType.values())
+									.map(languageType -> new CandidateTextInformationType.CandidateTextInfo().withLanguage(languageType)
+											.withCandidateText("No candidate text"))
+									.toList();
+
+							candidateTextInformationType.setCandidateTextInfo(list);
+							c.setCandidateText(candidateTextInformationType);
+						});
+						LOGGER.warn(
+								"The candidateText in the election were not provided and dummy texts were assigned automatically. [electionIdentification: {}]",
+								e.getElection().getElectionIdentification());
+					}
+				});
+	}
+
 
 	private void addEmptyListIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
 		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
@@ -1677,12 +1721,32 @@ public class ContestService {
 				eg.getElectionGroupIdentification());
 	}
 
-	private void checkReferenceOnPositionOnCandidateIsFilled(final ContestType c) {
-		c.getElectionGroupBallot().stream()
+	private void checkReferenceOnPositionOnCandidateIsFilled(final ContestType contest) {
+		contest.getElectionGroupBallot().stream()
 				.flatMap(eg -> eg.getElectionInformation().stream())
-				.flatMap(e -> e.getCandidate().stream())
-				.forEach(candidate -> checkState(!StringUtil.isNullOrEmpty(candidate.getReferenceOnPosition()),
-						"the referenceOnPosition for the candidate must be provided. [candidateId: %s]", candidate.getCandidateIdentification()));
+				.forEach(e -> {
+					final List<CandidateType> candidates = e.getCandidate();
+					if (candidates.isEmpty()) {
+						return;
+					}
+
+					final List<CandidateType> candidatesWithoutReferenceOnPosition = candidates.stream()
+							.filter(c -> StringUtil.isNullOrEmpty(c.getReferenceOnPosition()))
+							.toList();
+
+					if (candidates.size() == candidatesWithoutReferenceOnPosition.size()) {
+						IntStream.rangeClosed(1, candidates.size())
+								.forEach(i -> candidates.get(i - 1).setReferenceOnPosition(String.valueOf(i)));
+						LOGGER.warn(
+								"The candidateReference in the election were not provided and were assigned automatically. [electionIdentification: {}]",
+								e.getElection().getElectionIdentification());
+					} else if (!candidatesWithoutReferenceOnPosition.isEmpty()) {
+						throw new IllegalStateException(
+								"The field candidateReference for one or more candidates was not provided: [electionIdentification: %s, candidateId: %s]".formatted(
+										e.getElection().getElectionIdentification(),
+										candidatesWithoutReferenceOnPosition.getFirst().getCandidateIdentification()));
+					}
+				});
 	}
 
 	private void checkVoteIdentificationsDistinctness(final ContestType c) {

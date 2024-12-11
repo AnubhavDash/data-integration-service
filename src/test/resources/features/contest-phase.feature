@@ -752,6 +752,20 @@ Feature: Contest Phase
     When executing the contest phase and catching exceptions
     Then it outputs an exception with text "candidate 'candidate-2-for-A-id' : candidateText must contain at least 4 distinct languages"
 
+  Scenario: Throw an exception when some but not all candidate texts are missing
+    Given the text descriptions of the candidate "my elections"."election A"."candidate 1 for A" are cleared out
+    When executing the contest phase and catching exceptions
+    Then it outputs an exception with text "The field candidateText for one or more candidates was not provided: [electionIdentification: election-A-id, candidateId: candidate-1-for-A-id]"
+
+  Scenario: Log a warning when all candidate texts are missing
+    Given the text descriptions of the candidate "my elections"."election A"."candidate 1 for A" are cleared out
+    And the text descriptions of the candidate "my elections"."election A"."candidate 2 for A" are cleared out
+    And the text descriptions of the candidate "my elections"."election A"."candidate 3 for A" are cleared out
+    And the text descriptions of the candidate "my elections"."election A"."candidate 4 for A" are cleared out
+    And the text descriptions of the candidate "my elections"."election A"."candidate 5 for A" are cleared out
+    When executing the contest phase
+    Then a log with text "The candidateText in the election were not provided and dummy texts were assigned automatically. [electionIdentification: election-A-id]" must exist
+
   Scenario: Throw an exception when some candidates occupational title descriptions languages are missing
     Given the title descriptions of the candidate "my elections"."election A"."candidate 1 for A" are cleared out
     And candidate "my elections"."election A"."candidate 1 for A" has occupational title "FR" "Candidate 1 for A title (FR)"
@@ -899,6 +913,20 @@ Feature: Contest Phase
     Given candidate "my elections"."election A"."candidate 3 for A" has name "first-name-4" "last-name-4"
     When executing the contest phase
     Then a log with text "same candidate 'first-name-4' 'last-name-4' name found multiple times. [ElectionId : election-A-id]" must exist
+
+  Scenario: Throw an exception when some but not all candidate's referenceOnPosition is missing
+      Given the referenceOnPosition of the candidate "my elections"."election A"."candidate 1 for A" is cleared out
+      When executing the contest phase and catching exceptions
+      Then it outputs an exception with text "The field candidateReference for one or more candidates was not provided: [electionIdentification: election-A-id, candidateId: candidate-1-for-A-id]"
+
+  Scenario: Warn if all candidates have their referenceOnPosition missing
+    Given the referenceOnPosition of the candidate "my elections"."election A"."candidate 1 for A" is cleared out
+    Given the referenceOnPosition of the candidate "my elections"."election A"."candidate 2 for A" is cleared out
+    Given the referenceOnPosition of the candidate "my elections"."election A"."candidate 3 for A" is cleared out
+    Given the referenceOnPosition of the candidate "my elections"."election A"."candidate 4 for A" is cleared out
+    Given the referenceOnPosition of the candidate "my elections"."election A"."candidate 5 for A" is cleared out
+    When executing the contest phase
+    Then a log with text "The candidateReference in the election were not provided and were assigned automatically. [electionIdentification: election-A-id]" must exist
 
   Scenario: Merging all contest formats
     When executing the contest phase with parameters "my params" and contest "my contest" and votes "my votes" and elections "my elections"

@@ -749,8 +749,13 @@ public class ContestPhaseSteps extends PhaseSteps {
 	}
 
 	@And("^the text descriptions of the candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")
-	public void andTextDescriptionfOfCandidateAreClearedOut(final String elections, final String election, final String name) {
+	public void andTextDescriptionOfCandidateAreClearedOut(final String elections, final String election, final String name) {
 		candidateMap.get(elections + "." + election + "." + name).getCandidateText().setCandidateTextInfo(new ArrayList<>());
+	}
+
+	@Given("^the referenceOnPosition of the candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" is cleared out$")
+	public void givenReferenceOnPositionOfCandidateIsClearedOut(final String elections, final String election, final String name) {
+		candidateMap.get(elections + "." + election + "." + name).setReferenceOnPosition(null);
 	}
 
 	@Given("^the title descriptions of the candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")
@@ -990,7 +995,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 
 	@Then("^a log with text \"([^\"]*)\" must exist$")
 	public void thenALogWithTextMustExist(final String message) {
-		assertTrue(memoryAppender.list.stream().anyMatch(m -> m.getMessage().equals(message)));
+		assertTrue(memoryAppender.list.stream().anyMatch(m -> m.getFormattedMessage().equals(message)));
 	}
 
 	@Given("^the elections parameters in \"([^\"]*)\" are cleared out$")

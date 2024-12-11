@@ -149,12 +149,7 @@ public interface ECH015xv40Mapper {
 		final CandidateTextInformationType candidateTextInformationType = new ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType();
 
 		if (value == null) {
-			final List<CandidateTextInformationType.CandidateTextInfo> list = new ArrayList<>();
-			list.add(new CandidateTextInformationType.CandidateTextInfo().withLanguage(LanguageType.DE).withCandidateText("No candidate text"));
-			list.add(new CandidateTextInformationType.CandidateTextInfo().withLanguage(LanguageType.FR).withCandidateText("No candidate text"));
-			list.add(new CandidateTextInformationType.CandidateTextInfo().withLanguage(LanguageType.IT).withCandidateText("No candidate text"));
-			list.add(new CandidateTextInformationType.CandidateTextInfo().withLanguage(LanguageType.RM).withCandidateText("No candidate text"));
-			candidateTextInformationType.setCandidateTextInfo(list);
+			candidateTextInformationType.setCandidateTextInfo(new ArrayList<>());
 		} else {
 			candidateTextInformationType.setCandidateTextInfo(toCandidateTextInfoList(value.getCandidateTextInfo()));
 		}
