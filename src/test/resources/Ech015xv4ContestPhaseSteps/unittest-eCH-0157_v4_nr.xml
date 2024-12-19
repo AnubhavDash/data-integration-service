@@ -46,6 +46,18 @@
 					<eCH-0155:language>de</eCH-0155:language>
 					<eCH-0155:electionDescription>nr_electionGroup</eCH-0155:electionDescription>
 				</eCH-0155:electionDescriptionInfo>
+				<eCH-0155:electionDescriptionInfo>
+					<eCH-0155:language>fr</eCH-0155:language>
+					<eCH-0155:electionDescription>nr_electionGroup</eCH-0155:electionDescription>
+				</eCH-0155:electionDescriptionInfo>
+				<eCH-0155:electionDescriptionInfo>
+					<eCH-0155:language>it</eCH-0155:language>
+					<eCH-0155:electionDescription>nr_electionGroup</eCH-0155:electionDescription>
+				</eCH-0155:electionDescriptionInfo>
+				<eCH-0155:electionDescriptionInfo>
+					<eCH-0155:language>rm</eCH-0155:language>
+					<eCH-0155:electionDescription>nr_electionGroup</eCH-0155:electionDescription>
+				</eCH-0155:electionDescriptionInfo>
 			</electionGroupDescription>
 			<domainOfInfluenceIdentification>1033803945</domainOfInfluenceIdentification>
 			<electionInformation>

@@ -74,6 +74,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EligibilityTy
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyListType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyPositionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ExtendedAuthenticationKeysDefinitionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentTextInfoType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType;
@@ -81,12 +82,14 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionDescriptionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.OccupationalTitleInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PartyAffiliationformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PositionTextInfoType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswerType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TiebreakAnswerType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VarListTextInfoType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VariantBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
@@ -100,7 +103,7 @@ public class ContestService {
 
 	private static final String VALUE_NOT_UNIQUE_WITHIN_PARAMETERS_MESSAGE = "%s '%s' not unique within the parameters";
 
-	private static final int MINIMAL_REQUIRED_LANGUAGES = 4;
+	private static final List<String> LANGUAGES = Arrays.stream(LanguageType.values()).map(LanguageType::value).toList();
 	private static final int DEFAULT_VALUE = 0;
 
 	private static final BigInteger ELECTION_MAJORITY_TYPE = BigInteger.TWO;
@@ -1319,60 +1322,106 @@ public class ContestService {
 		return c1;
 	}
 
-	private <T> void checkLanguageCount(final List<T> list, final Function<T, ?> getLanguage, final String name) {
-		checkState(list.stream().map(getLanguage).distinct().count() >= MINIMAL_REQUIRED_LANGUAGES,
-				"%s must contain at least 4 distinct languages",
-				name);
+	private <T> void checkLanguageCorrectness(final List<T> list, final Function<T, LanguageType> getLanguage, final String name) {
+		final List<LanguageType> languages = Arrays.asList(LanguageType.values());
+		checkState(list.stream().map(getLanguage).sorted().toList().equals(languages),
+				"%s must contain exactly the defined languages %s", name, LANGUAGES);
 	}
 
-	private <T> void checkLanguageCount(final List<T> list, final Function<T, ?> getLanguage, final String id, final String elementName,
+	private <T> void checkLanguageCorrectness(final List<T> list, final Function<T, LanguageType> getLanguage, final String id, final String elementName,
 			final String fieldName) {
-		checkState(list.stream().map(getLanguage).distinct().count() >= MINIMAL_REQUIRED_LANGUAGES,
-				"%s '%s' : %s must contain at least 4 distinct languages", elementName, id, fieldName);
+		final List<LanguageType> languages = Arrays.asList(LanguageType.values());
+		checkState(list.stream().map(getLanguage).sorted().toList().equals(languages),
+				"%s '%s' : %s must contain exactly the defined languages %s", elementName, id, fieldName,
+				LANGUAGES);
 	}
 
 	private void checkLanguagesConsistency(final ContestType contest) {
 		// contest
 		checkState(contest.getContestDescription() != null, "ContestDescription must be defined in source file");
 
-		checkLanguageCount(contest.getContestDescription().getContestDescriptionInfo(),
+		checkLanguageCorrectness(contest.getContestDescription().getContestDescriptionInfo(),
 				ContestDescriptionInformationType.ContestDescriptionInfo::getLanguage, "contestDescription");
+
+		// election group
+		contest.getElectionGroupBallot().forEach(eg -> {
+			checkState(eg.getElectionGroupDescription() != null, "ElectionGroupDescription must be defined");
+
+			checkLanguageCorrectness(eg.getElectionGroupDescription().getElectionGroupDescriptionInfo(),
+					ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo::getLanguage,
+					eg.getElectionGroupIdentification(),
+					"electionGroupBallot",
+					"electionGroupDescription");
+		});
 
 		//election
 		contest.getElectionGroupBallot().stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.forEach(e -> {
 					checkState(e.getElection().getElectionDescription() != null, "ElectionDescription must be defined in source file");
 
-					checkLanguageCount(e.getElection().getElectionDescription().getElectionDescriptionInfo(),
+					checkLanguageCorrectness(e.getElection().getElectionDescription().getElectionDescriptionInfo(),
 							ElectionDescriptionInformationType.ElectionDescriptionInfo::getLanguage, e.getElection().getElectionIdentification(),
 							"election",
 							"electionDescription");
 
 					final String CANDIDATE_ELEMENT_NAME = "candidate";
+					final String LIST_ELEMENT_NAME = "list";
 
 					e.getCandidate().forEach(c -> {
 						checkState(c.getCandidateText() != null, "CandidateText must be defined in source file");
 
-						checkLanguageCount(c.getCandidateText().getCandidateTextInfo(),
+						checkLanguageCorrectness(c.getCandidateText().getCandidateTextInfo(),
 								CandidateTextInformationType.CandidateTextInfo::getLanguage,
 								c.getCandidateIdentification(), CANDIDATE_ELEMENT_NAME, "candidateText");
 						if (c.getOccupationalTitle() != null) {
-							checkLanguageCount(c.getOccupationalTitle().getOccupationalTitleInfo(),
+							checkLanguageCorrectness(c.getOccupationalTitle().getOccupationalTitleInfo(),
 									OccupationalTitleInformationType.OccupationalTitleInfo::getLanguage, c.getCandidateIdentification(),
 									CANDIDATE_ELEMENT_NAME,
 									"occupationalTitle");
 						}
+
+						if (c.getPartyAffiliation() != null) {
+							checkLanguageCorrectness(c.getPartyAffiliation().getPartyAffiliationInfo(),
+									PartyAffiliationformationType.PartyAffiliationInfo::getLanguage,
+									c.getCandidateIdentification(),
+									CANDIDATE_ELEMENT_NAME,
+									"partyAffiliation");
+						}
+
+						if (c.getIncumbent() != null && c.getIncumbent().getIncumbentText() != null) {
+							checkLanguageCorrectness(c.getIncumbent().getIncumbentText().getIncumbentTextInfo(),
+									IncumbentTextInfoType::getLanguage,
+									c.getCandidateIdentification(),
+									CANDIDATE_ELEMENT_NAME,
+									"incumbentText");
+						}
 					});
 					e.getList().forEach(l -> {
-						checkLanguageCount(l.getListDescription().getListDescriptionInfo(),
+						checkLanguageCorrectness(l.getListDescription().getListDescriptionInfo(),
 								ListDescriptionInformationType.ListDescriptionInfo::getLanguage,
-								l.getListIdentification(), "list", "listDescription");
-						l.getCandidatePosition().forEach(cp -> checkLanguageCount(cp.getCandidateTextOnPosition().getCandidateTextInfo(),
+								l.getListIdentification(), LIST_ELEMENT_NAME, "listDescription");
+						l.getCandidatePosition().forEach(cp -> checkLanguageCorrectness(cp.getCandidateTextOnPosition().getCandidateTextInfo(),
 								CandidateTextInformationType.CandidateTextInfo::getLanguage, cp.getCandidateIdentification(),
 								CANDIDATE_ELEMENT_NAME,
 								"candidateTextOnPosition"));
+
+						if (l.getVarListText1() != null) {
+							checkLanguageCorrectness(l.getVarListText1().getVarListTextInfo(),
+									VarListTextInfoType::getLanguage,
+									l.getListIdentification(),
+									LIST_ELEMENT_NAME,
+									"varListText1");
+						}
+
+						if (l.getVarListText2() != null) {
+							checkLanguageCorrectness(l.getVarListText2().getVarListTextInfo(),
+									VarListTextInfoType::getLanguage,
+									l.getListIdentification(),
+									LIST_ELEMENT_NAME,
+									"varListText2");
+						}
 					});
-					e.getListUnion().forEach(l -> checkLanguageCount(l.getListUnionDescription().getListUnionDescriptionInfo(),
+					e.getListUnion().forEach(l -> checkLanguageCorrectness(l.getListUnionDescription().getListUnionDescriptionInfo(),
 							ListUnionDescriptionType.ListUnionDescriptionInfo::getLanguage, l.getListUnionIdentification(), "list-union",
 							"listUnionDescription"));
 				});
@@ -1380,12 +1429,12 @@ public class ContestService {
 		contest.getVoteInformation().forEach(v -> {
 			checkState(v.getVote().getVoteDescription() != null, "VoteDescription must be defined in source file");
 
-			checkLanguageCount(v.getVote().getVoteDescription().getVoteDescriptionInfo(),
+			checkLanguageCorrectness(v.getVote().getVoteDescription().getVoteDescriptionInfo(),
 					VoteDescriptionInformationType.VoteDescriptionInfo::getLanguage, v.getVote().getVoteIdentification(), "vote",
 					"voteDescription");
 			v.getVote().getBallot().forEach(b -> {
 				if (b.getBallotDescription() != null) {
-					checkLanguageCount(b.getBallotDescription().getBallotDescriptionInfo(),
+					checkLanguageCorrectness(b.getBallotDescription().getBallotDescriptionInfo(),
 							BallotDescriptionInformationType.BallotDescriptionInfo::getLanguage, b.getBallotIdentification(), "ballot",
 							"ballotDescription");
 				}
@@ -1397,29 +1446,29 @@ public class ContestService {
 
 				if (b.getStandardBallot() != null) {
 					//standardBallot
-					checkLanguageCount(b.getStandardBallot().getBallotQuestion().getBallotQuestionInfo(),
+					checkLanguageCorrectness(b.getStandardBallot().getBallotQuestion().getBallotQuestionInfo(),
 							BallotQuestionType.BallotQuestionInfo::getLanguage, b.getStandardBallot().getQuestionIdentification(),
 							QUESTION_ELEMENT_NAME,
 							BALLOT_QUESTION_FIELD_NAME);
 					b.getStandardBallot().getAnswer().forEach(
-							a -> checkLanguageCount(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
+							a -> checkLanguageCorrectness(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
 									ANSWER_ELEMENT_NAME,
 									ANSWER_FIELD_NAME));
 				} else {
 					//variantBallot
 					b.getVariantBallot().getStandardQuestion().forEach(sq -> {
-						checkLanguageCount(sq.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionType.BallotQuestionInfo::getLanguage,
+						checkLanguageCorrectness(sq.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionType.BallotQuestionInfo::getLanguage,
 								sq.getQuestionIdentification(), QUESTION_ELEMENT_NAME, BALLOT_QUESTION_FIELD_NAME);
 						sq.getAnswer().forEach(
-								a -> checkLanguageCount(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
+								a -> checkLanguageCorrectness(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
 										ANSWER_ELEMENT_NAME,
 										ANSWER_FIELD_NAME));
 					});
 					b.getVariantBallot().getTieBreakQuestion().forEach(tbq -> {
-						checkLanguageCount(tbq.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionType.BallotQuestionInfo::getLanguage,
+						checkLanguageCorrectness(tbq.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionType.BallotQuestionInfo::getLanguage,
 								tbq.getQuestionIdentification(), QUESTION_ELEMENT_NAME, BALLOT_QUESTION_FIELD_NAME);
 						tbq.getAnswer().forEach(
-								a -> checkLanguageCount(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
+								a -> checkLanguageCorrectness(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
 										ANSWER_ELEMENT_NAME,
 										ANSWER_FIELD_NAME));
 					});

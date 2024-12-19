@@ -59,7 +59,7 @@
 	</xs:complexType>
 	<xs:complexType name="contestDescriptionInformationType">
 		<xs:sequence>
-			<xs:element name="contestDescriptionInfo" minOccurs="4" maxOccurs="unbounded">
+			<xs:element name="contestDescriptionInfo" minOccurs="4" maxOccurs="4">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="language" type="config:languageType"/>
@@ -78,7 +78,7 @@
 	</xs:complexType>
 	<xs:complexType name="voteDescriptionInformationType">
 		<xs:sequence>
-			<xs:element name="voteDescriptionInfo" minOccurs="4" maxOccurs="unbounded">
+			<xs:element name="voteDescriptionInfo" minOccurs="4" maxOccurs="4">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="language" type="config:languageType"/>
@@ -97,7 +97,7 @@
 	</xs:complexType>
 	<xs:complexType name="ballotDescriptionInformationType">
 		<xs:sequence>
-			<xs:element name="ballotDescriptionInfo" minOccurs="4" maxOccurs="unbounded">
+			<xs:element name="ballotDescriptionInfo" minOccurs="4" maxOccurs="4">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="language" type="config:languageType"/>
@@ -124,7 +124,7 @@
 	</xs:complexType>
 	<xs:complexType name="electionRulesExplanationType">
 		<xs:sequence>
-			<xs:element name="displayLineInfo" minOccurs="4" maxOccurs="unbounded">
+			<xs:element name="displayLineInfo" minOccurs="4" maxOccurs="4">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="language" type="config:languageType"/>
@@ -143,7 +143,7 @@
 	</xs:complexType>
 	<xs:complexType name="electionDescriptionInformationType">
 		<xs:sequence>
-			<xs:element name="electionDescriptionInfo" minOccurs="4" maxOccurs="unbounded">
+			<xs:element name="electionDescriptionInfo" minOccurs="4" maxOccurs="4">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="language" type="config:languageType"/>
@@ -170,7 +170,7 @@
 	</xs:complexType>
 	<xs:complexType name="candidateTextInformationType">
 		<xs:sequence>
-			<xs:element name="candidateTextInfo" minOccurs="4" maxOccurs="unbounded">
+			<xs:element name="candidateTextInfo" minOccurs="4" maxOccurs="4">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="language" type="config:languageType"/>
@@ -189,7 +189,7 @@
 	</xs:complexType>
 	<xs:complexType name="displayLineInformationType">
 		<xs:sequence>
-			<xs:element name="displayLineInfo" minOccurs="4" maxOccurs="unbounded">
+			<xs:element name="displayLineInfo" minOccurs="4" maxOccurs="4">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="language" type="config:languageType"/>
@@ -208,7 +208,7 @@
 	</xs:complexType>
 	<xs:complexType name="occupationalTitleInformationType">
 		<xs:sequence>
-			<xs:element name="occupationalTitleInfo" minOccurs="4" maxOccurs="unbounded">
+			<xs:element name="occupationalTitleInfo" minOccurs="4" maxOccurs="4">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="language" type="config:languageType"/>
@@ -227,7 +227,7 @@
 	</xs:complexType>
 	<xs:complexType name="partyAffiliationformationType">
 		<xs:sequence>
-			<xs:element name="partyAffiliationInfo" maxOccurs="unbounded">
+			<xs:element name="partyAffiliationInfo" minOccurs="4" maxOccurs="4">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="language" type="config:languageType"/>
@@ -239,7 +239,7 @@
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:element>
-						<xs:element name="partyAffiliationLong" minOccurs="0">
+						<xs:element name="partyAffiliationLong">
 							<xs:simpleType>
 								<xs:restriction base="xs:token">
 									<xs:minLength value="1"/>
@@ -254,11 +254,11 @@
 	</xs:complexType>
 	<xs:complexType name="listDescriptionInformationType">
 		<xs:sequence>
-			<xs:element name="listDescriptionInfo" minOccurs="4" maxOccurs="unbounded">
+			<xs:element name="listDescriptionInfo" minOccurs="4" maxOccurs="4">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="language" type="config:languageType"/>
-						<xs:element name="listDescriptionShort" minOccurs="0">
+						<xs:element name="listDescriptionShort">
 							<xs:simpleType>
 								<xs:restriction base="xs:token">
 									<xs:minLength value="1"/>
@@ -396,7 +396,7 @@
 	</xs:complexType>
 	<xs:complexType name="incumbentTextType">
 		<xs:sequence>
-			<xs:element name="incumbentTextInfo" type="config:incumbentTextInfoType" minOccurs="4" maxOccurs="unbounded"/>
+			<xs:element name="incumbentTextInfo" type="config:incumbentTextInfoType" minOccurs="4" maxOccurs="4"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="incumbentType">
@@ -515,7 +515,7 @@
 	</xs:complexType>
 	<xs:complexType name="varListTextType">
 		<xs:sequence>
-			<xs:element name="varListTextInfo" type="config:varListTextInfoType" minOccurs="4" maxOccurs="unbounded"/>
+			<xs:element name="varListTextInfo" type="config:varListTextInfoType" minOccurs="4" maxOccurs="4"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="listType">
@@ -701,7 +701,7 @@
 	</xs:complexType>
 	<xs:complexType name="ballotQuestionType">
 		<xs:sequence>
-			<xs:element name="ballotQuestionInfo" minOccurs="4" maxOccurs="unbounded">
+			<xs:element name="ballotQuestionInfo" minOccurs="4" maxOccurs="4">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="language" type="config:languageType"/>
@@ -825,7 +825,7 @@
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="hiddenAnswer" type="xs:boolean" minOccurs="0"/>
-			<xs:element name="answerInfo" type="config:answerInformationType" minOccurs="4" maxOccurs="unbounded"/>
+			<xs:element name="answerInfo" type="config:answerInformationType" minOccurs="4" maxOccurs="4"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="tiebreakAnswerType">
@@ -848,7 +848,7 @@
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="hiddenAnswer" type="xs:boolean" minOccurs="0"/>
-			<xs:element name="answerInfo" type="config:answerInformationType" minOccurs="4" maxOccurs="unbounded"/>
+			<xs:element name="answerInfo" type="config:answerInformationType" minOccurs="4" maxOccurs="4"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="voteType">
@@ -899,7 +899,7 @@
 	</xs:complexType>
 	<xs:complexType name="electionGroupDescriptionInformationType">
 		<xs:sequence>
-			<xs:element name="electionGroupDescriptionInfo" minOccurs="4" maxOccurs="unbounded">
+			<xs:element name="electionGroupDescriptionInfo" minOccurs="4" maxOccurs="4">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="language" type="config:languageType"/>
@@ -1207,7 +1207,7 @@
 	</xs:complexType>
 	<xs:complexType name="positionTextInfoType">
 		<xs:sequence>
-			<xs:element name="positionText" minOccurs="4" maxOccurs="unbounded">
+			<xs:element name="positionText" minOccurs="4" maxOccurs="4">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="language" type="config:languageType"/>
@@ -1234,7 +1234,7 @@
 	</xs:complexType>
 	<xs:complexType name="listUnionDescriptionType">
 		<xs:sequence>
-			<xs:element name="listUnionDescriptionInfo" minOccurs="4" maxOccurs="unbounded">
+			<xs:element name="listUnionDescriptionInfo" minOccurs="4" maxOccurs="4">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="language" type="config:languageType"/>

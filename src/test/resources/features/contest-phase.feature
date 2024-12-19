@@ -271,6 +271,10 @@ Feature: Contest Phase
     And the election "my elections"."election B" has description "FR" "Test election B (FR)"
     And the election "my elections"."election B" has description "IT" "Test election B (IT)"
     And the election "my elections"."election B" has description "RM" "Test election B (RM)"
+    And the list of elections "my elections" has description "DE" "Test election group (DE)"
+    And the list of elections "my elections" has description "FR" "Test election group (FR)"
+    And the list of elections "my elections" has description "IT" "Test election group (IT)"
+    And the list of elections "my elections" has description "RM" "Test election group (RM)"
 
     Given a candidate named "candidate 1 for A" within "my elections"."election A"
     And candidate "my elections"."election A"."candidate 1 for A" has id "candidate-1-for-A-id"
@@ -346,37 +350,37 @@ Feature: Contest Phase
     And list "my elections"."election A"."list 1 for A" has id "list-1-for-election-A-id"
     And list "my elections"."election A"."list 1 for A" has indentureNumber "5"
     And list "my elections"."election A"."list 1 for A" has listOrderOfPrecedence 1
-    And list "my elections"."election A"."list 1 for A" has description "DE" "list 1 for election A (DE)"
-    And list "my elections"."election A"."list 1 for A" has description "FR" "list 1 for election A (FR)"
-    And list "my elections"."election A"."list 1 for A" has description "IT" "list 1 for election A (IT)"
-    And list "my elections"."election A"."list 1 for A" has description "RM" "list 1 for election A (RM)"
+    And list "my elections"."election A"."list 1 for A" has description "DE" "list 1A (DE)" "list 1 for election A (DE)"
+    And list "my elections"."election A"."list 1 for A" has description "FR" "list 1A (FR)" "list 1 for election A (FR)"
+    And list "my elections"."election A"."list 1 for A" has description "IT" "list 1A (IT)" "list 1 for election A (IT)"
+    And list "my elections"."election A"."list 1 for A" has description "RM" "list 1A (RM)" "list 1 for election A (RM)"
 
     Given a list named "list 2 for A" within "my elections"."election A"
     And list "my elections"."election A"."list 2 for A" has id "list-2-for-election-A-id"
     And list "my elections"."election A"."list 2 for A" has indentureNumber "4"
     And list "my elections"."election A"."list 2 for A" has listOrderOfPrecedence 2
-    And list "my elections"."election A"."list 2 for A" has description "DE" "list 2 for election A (DE)"
-    And list "my elections"."election A"."list 2 for A" has description "FR" "list 2 for election A (FR)"
-    And list "my elections"."election A"."list 2 for A" has description "IT" "list 2 for election A (IT)"
-    And list "my elections"."election A"."list 2 for A" has description "RM" "list 2 for election A (RM)"
+    And list "my elections"."election A"."list 2 for A" has description "DE" "list 2A (DE)" "list 2 for election A (DE)"
+    And list "my elections"."election A"."list 2 for A" has description "FR" "list 2A (FR)" "list 2 for election A (FR)"
+    And list "my elections"."election A"."list 2 for A" has description "IT" "list 2A (IT)" "list 2 for election A (IT)"
+    And list "my elections"."election A"."list 2 for A" has description "RM" "list 2A (RM)" "list 2 for election A (RM)"
 
     Given a list named "list 3 for A" within "my elections"."election A"
     And list "my elections"."election A"."list 3 for A" has id "list-3-for-election-A-id"
     And list "my elections"."election A"."list 3 for A" has indentureNumber "3"
     And list "my elections"."election A"."list 3 for A" has listOrderOfPrecedence 3
-    And list "my elections"."election A"."list 3 for A" has description "DE" "list 3 for election A (DE)"
-    And list "my elections"."election A"."list 3 for A" has description "FR" "list 3 for election A (FR)"
-    And list "my elections"."election A"."list 3 for A" has description "IT" "list 3 for election A (IT)"
-    And list "my elections"."election A"."list 3 for A" has description "RM" "list 3 for election A (RM)"
+    And list "my elections"."election A"."list 3 for A" has description "DE" "list 3A (DE)" "list 3 for election A (DE)"
+    And list "my elections"."election A"."list 3 for A" has description "FR" "list 3A (FR)" "list 3 for election A (FR)"
+    And list "my elections"."election A"."list 3 for A" has description "IT" "list 3A (IT)" "list 3 for election A (IT)"
+    And list "my elections"."election A"."list 3 for A" has description "RM" "list 3A (RM)" "list 3 for election A (RM)"
 
     Given the empty list within "my elections"."election A"
     And empty list "my elections"."election A" has id "empty-list-for-election-A-id"
     And empty list "my elections"."election A" has indentureNumber "99"
     And empty list "my elections"."election A" has listOrderOfPrecedence 99
-    And empty list "my elections"."election A" has description "DE" "empty list for election A (DE)"
-    And empty list "my elections"."election A" has description "FR" "empty list for election A (FR)"
-    And empty list "my elections"."election A" has description "IT" "empty list for election A (IT)"
-    And empty list "my elections"."election A" has description "RM" "empty list for election A (RM)"
+    And empty list "my elections"."election A" has description "DE" "empty list A (DE)" "empty list for election A (DE)"
+    And empty list "my elections"."election A" has description "FR" "empty list A (FR)" "empty list for election A (FR)"
+    And empty list "my elections"."election A" has description "IT" "empty list A (IT)" "empty list for election A (IT)"
+    And empty list "my elections"."election A" has description "RM" "empty list A (RM)" "empty list for election A (RM)"
 
     Given a list-union named "list-union 1" within "my elections"."election A"
     And list-union  "my elections"."election A"."list-union 1" has id "list-union-1-id"
@@ -590,7 +594,7 @@ Feature: Contest Phase
     And the contest "my contest" has description "DE" "Test contest (DE)"
     And the contest "my contest" has description "FR" "Test contest (FR)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "contestDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "contestDescription must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some contest descriptions languages are duplicated
     Given the descriptions of the contest "my contest" are cleared out
@@ -599,39 +603,42 @@ Feature: Contest Phase
     And the contest "my contest" has description "IT" "Test contest (IT) 1"
     And the contest "my contest" has description "IT" "Test contest (IT) 2"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "contestDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "contestDescription must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some vote descriptions languages are missing
     Given the descriptions of the vote "my votes"."vote A" are cleared out
     And the vote "my votes"."vote A" has description "IT" "Test vote A (IT)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "vote 'vote-A-id' : voteDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "vote 'vote-A-id' : voteDescription must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some vote descriptions languages are duplicated
     Given the descriptions of the vote "my votes"."vote A" are cleared out
+    And the vote "my votes"."vote A" has description "DE" "Test vote A (DE)"
+    And the vote "my votes"."vote A" has description "FR" "Test vote A (FR)"
     And the vote "my votes"."vote A" has description "IT" "Test vote A (IT) 1"
     And the vote "my votes"."vote A" has description "IT" "Test vote A (IT) 2"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "vote 'vote-A-id' : voteDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "vote 'vote-A-id' : voteDescription must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some ballot descriptions languages are missing
     Given the descriptions of the ballot "my votes"."vote B"."vote B ballot 1" are cleared out
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "ballot 'vote-B-ballot-1-id' : ballotDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "ballot 'vote-B-ballot-1-id' : ballotDescription must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some ballot descriptions languages are duplicated
     Given the descriptions of the ballot "my votes"."vote B"."vote B ballot 1" are cleared out
+    And the ballot "my votes"."vote B"."vote B ballot 1" has description "IT" "vote B ballot 1 description (IT)"
     And the ballot "my votes"."vote B"."vote B ballot 1" has description "RM" "vote B ballot 1 description (RM)"
     And the ballot "my votes"."vote B"."vote B ballot 1" has description "FR" "vote B ballot 1 description (FR) 1"
     And the ballot "my votes"."vote B"."vote B ballot 1" has description "FR" "vote B ballot 1 description (FR) 2"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "ballot 'vote-B-ballot-1-id' : ballotDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "ballot 'vote-B-ballot-1-id' : ballotDescription must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some standard ballot question information languages are missing
     Given the descriptions of the ballot question of ballot "my votes"."vote A"."vote A ballot 1" are cleared out
     And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Ballot question title (FR)" "Do you accept this proposal (FR)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "question 'V-A_B-1_Q-0' : ballotQuestion must contain at least 4 distinct languages"
+    Then it outputs an exception with text "question 'V-A_B-1_Q-0' : ballotQuestion must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some standard ballot question information languages are duplicated
     Given the descriptions of the ballot question of ballot "my votes"."vote A"."vote A ballot 1" are cleared out
@@ -640,14 +647,14 @@ Feature: Contest Phase
     And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Proposal" "Do you accept this proposal (FR) 1"
     And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Proposal" "Do you accept this proposal (FR) 2"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "question 'V-A_B-1_Q-0' : ballotQuestion must contain at least 4 distinct languages"
+    Then it outputs an exception with text "question 'V-A_B-1_Q-0' : ballotQuestion must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some variant ballot question information languages are missing
     Given the descriptions of the standard question  "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" are cleared out
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "DE" "Question 1 Title" "Question 1 info (DE)"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "RM" "Question 1 Title" "Question 1 info (RM)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "question 'V-B_B-1_Q-proposal_A' : ballotQuestion must contain at least 4 distinct languages"
+    Then it outputs an exception with text "question 'V-B_B-1_Q-proposal_A' : ballotQuestion must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some variant ballot question information languages are duplicated
     Given the descriptions of the standard question  "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" are cleared out
@@ -656,13 +663,13 @@ Feature: Contest Phase
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "RM" "Question 1 Title" "Question 1 info (RM) 2"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "IT" "Question 1 Title" "Question 1 info (IT)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "question 'V-B_B-1_Q-proposal_A' : ballotQuestion must contain at least 4 distinct languages"
+    Then it outputs an exception with text "question 'V-B_B-1_Q-proposal_A' : ballotQuestion must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some variant ballot tiebreak information languages are missing
     Given the descriptions of the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" are cleared out
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Tie-break question AC" "Do you prefer A or C (FR)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "question 'V-B_B-1_TQ-2' : ballotQuestion must contain at least 4 distinct languages"
+    Then it outputs an exception with text "question 'V-B_B-1_TQ-2' : ballotQuestion must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some variant ballot tiebreak information languages are duplicated
     Given the descriptions of the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" are cleared out
@@ -671,13 +678,13 @@ Feature: Contest Phase
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Tie-break question AC" "Do you prefer A or C (FR) 2"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 2" has info "FR" "Tie-break question AC" "Do you prefer A or C (FR) 3"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "question 'V-B_B-1_TQ-2' : ballotQuestion must contain at least 4 distinct languages"
+    Then it outputs an exception with text "question 'V-B_B-1_TQ-2' : ballotQuestion must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some default answers descriptions languages are missing
     Given the descriptions of the answer "my params"."answer type 2"."answer 2" are cleared out
     And standardAnswer "my params"."answer type 2"."answer 2" has answer description "DE" "Ja"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer '463caf46-4f2b-3893-a956-c7b21feca3d1' : answer must contain at least 4 distinct languages"
+    Then it outputs an exception with text "answer '463caf46-4f2b-3893-a956-c7b21feca3d1' : answer must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some default answers descriptions languages are duplicated
     Given the descriptions of the answer "my params"."answer type 2"."answer 2" are cleared out
@@ -686,13 +693,13 @@ Feature: Contest Phase
     And standardAnswer "my params"."answer type 2"."answer 2" has answer description "FR" "Oui"
     And standardAnswer "my params"."answer type 2"."answer 2" has answer description "IT" "Si"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer '463caf46-4f2b-3893-a956-c7b21feca3d1' : answer must contain at least 4 distinct languages"
+    Then it outputs an exception with text "answer '463caf46-4f2b-3893-a956-c7b21feca3d1' : answer must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some specific answers descriptions languages are missing
     Given the descriptions of the answer "my params"."question variant C"."answer 2" are cleared out
     And standardAnswer "my params"."question variant C"."answer 2" has answer description "DE" "Nein Nein"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer '20edcbea-8bd1-32b0-9e82-ea624ed4beb5' : answer must contain at least 4 distinct languages"
+    Then it outputs an exception with text "answer '20edcbea-8bd1-32b0-9e82-ea624ed4beb5' : answer must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some specific answers descriptions languages are duplicated
     Given the descriptions of the answer "my params"."question variant C"."answer 2" are cleared out
@@ -701,14 +708,14 @@ Feature: Contest Phase
     And standardAnswer "my params"."question variant C"."answer 2" has answer description "FR" "Oui Oui 2"
     And standardAnswer "my params"."question variant C"."answer 2" has answer description "IT" "Si Si"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer '20edcbea-8bd1-32b0-9e82-ea624ed4beb5' : answer must contain at least 4 distinct languages"
+    Then it outputs an exception with text "answer '20edcbea-8bd1-32b0-9e82-ea624ed4beb5' : answer must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some tiebreak answers descriptions languages are missing
     Given the descriptions of the answer "my params"."tiebreak question 3"."answer 1" are cleared out
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer description "RM" "I prefer B (RM)"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer description "IT" "I prefer B (IT)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer '2a0f687a-83cb-3ceb-98eb-5a5c27d07361' : answer must contain at least 4 distinct languages"
+    Then it outputs an exception with text "answer '2a0f687a-83cb-3ceb-98eb-5a5c27d07361' : answer must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario:Throw an exception when some tiebreak answers descriptions languages are duplicated
     Given the descriptions of the answer "my params"."tiebreak question 3"."answer 1" are cleared out
@@ -717,7 +724,7 @@ Feature: Contest Phase
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer description "IT" "I prefer B (IT) 2"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer description "FR" "I prefer B (FR)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer '2a0f687a-83cb-3ceb-98eb-5a5c27d07361' : answer must contain at least 4 distinct languages"
+    Then it outputs an exception with text "answer '2a0f687a-83cb-3ceb-98eb-5a5c27d07361' : answer must contain exactly the defined languages [de, fr, it, rm]"
 
 
   Scenario: Throw an exception when some election descriptions languages are missing
@@ -725,7 +732,7 @@ Feature: Contest Phase
     And the election "my elections"."election A" has description "DE" "Test election A (DE)"
     And the election "my elections"."election A" has description "FR" "Test election A (FR)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "election 'election-A-id' : electionDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "election 'election-A-id' : electionDescription must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some election descriptions languages are duplicated
     Given the descriptions of the election "my elections"."election B" are cleared out
@@ -734,14 +741,14 @@ Feature: Contest Phase
     And the election "my elections"."election B" has description "RM" "Test election B (RM) 1"
     And the election "my elections"."election B" has description "RM" "Test election B (RM) 2"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "election 'election-B-id' : electionDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "election 'election-B-id' : electionDescription must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some candidate descriptions languages are missing
     Given the text descriptions of the candidate "my elections"."election A"."candidate 1 for A" are cleared out
     And candidate "my elections"."election A"."candidate 1 for A" has text "FR" "Candidate 1 for A text (FR)"
     And candidate "my elections"."election A"."candidate 1 for A" has text "IT" "Candidate 1 for A text (IT)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "candidate 'candidate-1-for-A-id' : candidateText must contain at least 4 distinct languages"
+    Then it outputs an exception with text "candidate 'candidate-1-for-A-id' : candidateText must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some candidate descriptions languages are duplicated
     Given the text descriptions of the candidate "my elections"."election A"."candidate 2 for A" are cleared out
@@ -750,7 +757,7 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 2 for A" has text "IT" "Candidate 2 for A text (IT) 2"
     And candidate "my elections"."election A"."candidate 2 for A" has text "RM" "Candidate 2 for A text (RM)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "candidate 'candidate-2-for-A-id' : candidateText must contain at least 4 distinct languages"
+    Then it outputs an exception with text "candidate 'candidate-2-for-A-id' : candidateText must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some but not all candidate texts are missing
     Given the text descriptions of the candidate "my elections"."election A"."candidate 1 for A" are cleared out
@@ -770,7 +777,7 @@ Feature: Contest Phase
     Given the title descriptions of the candidate "my elections"."election A"."candidate 1 for A" are cleared out
     And candidate "my elections"."election A"."candidate 1 for A" has occupational title "FR" "Candidate 1 for A title (FR)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "candidate 'candidate-1-for-A-id' : occupationalTitle must contain at least 4 distinct languages"
+    Then it outputs an exception with text "candidate 'candidate-1-for-A-id' : occupationalTitle must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some candidates occupational title descriptions languages are duplicated
     Given the title descriptions of the candidate "my elections"."election A"."candidate 2 for A" are cleared out
@@ -779,23 +786,23 @@ Feature: Contest Phase
     And candidate "my elections"."election A"."candidate 2 for A" has occupational title "FR" "Candidate 2 for A title (FR) 2"
     And candidate "my elections"."election A"."candidate 2 for A" has occupational title "IT" "Candidate 2 for A title (IT)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "candidate 'candidate-2-for-A-id' : occupationalTitle must contain at least 4 distinct languages"
+    Then it outputs an exception with text "candidate 'candidate-2-for-A-id' : occupationalTitle must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some list descriptions languages are missing
     Given the list descriptions of the list "my elections"."election A"."list 2 for A" are cleared out
-    And list "my elections"."election A"."list 2 for A" has description "IT" "list 2 for election A (IT)"
-    And list "my elections"."election A"."list 2 for A" has description "RM" "list 2 for election A (RM)"
+    And list "my elections"."election A"."list 2 for A" has description "IT" "list 2A (IT)" "list 2 for election A (IT)"
+    And list "my elections"."election A"."list 2 for A" has description "RM" "list 2A (RM)" "list 2 for election A (RM)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "list 'list-2-for-election-A-id' : listDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "list 'list-2-for-election-A-id' : listDescription must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some list descriptions languages are duplicated
     Given the list descriptions of the list "my elections"."election A"."list 1 for A" are cleared out
-    And list "my elections"."election A"."list 1 for A" has description "IT" "list 1 for election A (IT) 1"
-    And list "my elections"."election A"."list 1 for A" has description "IT" "list 1 for election A (IT) 2"
-    And list "my elections"."election A"."list 1 for A" has description "IT" "list 1 for election A (IT) 3"
-    And list "my elections"."election A"."list 1 for A" has description "RM" "list 1 for election A (RM)"
+    And list "my elections"."election A"."list 1 for A" has description "IT" "list 1A (IT)" "list 1 for election A (IT) 1"
+    And list "my elections"."election A"."list 1 for A" has description "IT" "list 1A (IT)" "list 1 for election A (IT) 2"
+    And list "my elections"."election A"."list 1 for A" has description "IT" "list 1A (IT)" "list 1 for election A (IT) 3"
+    And list "my elections"."election A"."list 1 for A" has description "RM" "list 1A (RM)" "list 1 for election A (RM)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "list 'list-1-for-election-A-id' : listDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "list 'list-1-for-election-A-id' : listDescription must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when a candidate identification in election is not unique
     Given candidate "my elections"."election A"."candidate 4 for A" has id "candidate-3-for-A-id"
@@ -817,7 +824,7 @@ Feature: Contest Phase
     And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has text "FR" "candidate 2 for A list text (FR)"
     And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has text "IT" "candidate 2 for A list text (IT)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "candidate 'candidate-2-for-A-id' : candidateTextOnPosition must contain at least 4 distinct languages"
+    Then it outputs an exception with text "candidate 'candidate-2-for-A-id' : candidateTextOnPosition must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some candidate text descriptions languages are duplicated
     Given the candidate text descriptions at position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" are cleared out
@@ -826,7 +833,7 @@ Feature: Contest Phase
     And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has text "IT" "candidate 2 for A list text (IT) 1"
     And position "my elections"."election A"."list 1 for A"."pos 1 list 1 for A" has text "IT" "candidate 2 for A list text (IT) 2"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "candidate 'candidate-2-for-A-id' : candidateTextOnPosition must contain at least 4 distinct languages"
+    Then it outputs an exception with text "candidate 'candidate-2-for-A-id' : candidateTextOnPosition must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: No writeIns in parameter will produce elections with default values (=false)
     Given the elections parameters in "my params" are cleared out
@@ -898,7 +905,7 @@ Feature: Contest Phase
     Given the list-union descriptions for "my elections"."election A"."list-union 2" are cleared out
     And list-union  "my elections"."election A"."list-union 2" has description "DE" "list-union-2 text (DE)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "list-union 'list-union-2-id' : listUnionDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "list-union 'list-union-2-id' : listUnionDescription must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some list-union descriptions languages are duplicated
     Given the list-union descriptions for "my elections"."election A"."list-union 2" are cleared out
@@ -907,7 +914,7 @@ Feature: Contest Phase
     And list-union  "my elections"."election A"."list-union 2" has description "FR" "list-union-2 text (FR) 2"
     And list-union  "my elections"."election A"."list-union 2" has description "RM" "list-union-2 text (RM)"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "list-union 'list-union-2-id' : listUnionDescription must contain at least 4 distinct languages"
+    Then it outputs an exception with text "list-union 'list-union-2-id' : listUnionDescription must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Warn if a candidate name is found multiple times in an election
     Given candidate "my elections"."election A"."candidate 3 for A" has name "first-name-4" "last-name-4"

@@ -434,6 +434,24 @@ public class ContestPhaseSteps extends PhaseSteps {
 		electionsMap.put(elections, new ArrayList<>());
 	}
 
+	@And("^the list of elections \"([^\"]*)\" has description \"([^\"]*)\" \"([^\"]*)\"$")
+	public void andListOfElectionsHasDescription(final String elections, final String lang, final String desc) {
+		electionMap.keySet().stream()
+				.filter(key -> key.startsWith(elections))
+				.forEach(key -> {
+					ElectionGroupDescriptionInformationType descInfo = electionMap.get(key).getElectionGroupDescription();
+					if (descInfo == null) {
+						descInfo = new ElectionGroupDescriptionInformationType();
+					}
+					descInfo.getElectionGroupDescriptionInfo()
+							.add(new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo()
+									.withLanguage(LanguageType.valueOf(lang))
+									.withElectionGroupDescriptionShort(desc)
+									.withElectionGroupDescription(desc));
+					electionMap.get(key).setElectionGroupDescription(descInfo);
+				});
+	}
+
 	@And("^an election named \"([^\"]*)\" within \"([^\"]*)\"$")
 	public void andElectionNamedWithin(final String election, final String elections) {
 		final ElectionInformationType e = new ElectionInformationType().withElection(
@@ -795,12 +813,13 @@ public class ContestPhaseSteps extends PhaseSteps {
 		emptyList.setListOrderOfPrecedence(order);
 	}
 
-	@And("^empty list \"([^\"]*)\".\"([^\"]*)\" has description \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andEmptyListHasDescription(final String elections, final String election, final String lang, final String text) {
+	@And("^empty list \"([^\"]*)\".\"([^\"]*)\" has description \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
+	public void andEmptyListHasDescription(final String elections, final String election, final String lang, final String textShort, final String text) {
 		final EmptyListType emptyList = electionMap.get(elections + "." + election).getElectionInformation().getFirst().getEmptyList();
 		emptyList.getListDescription().getListDescriptionInfo()
 				.add(new ListDescriptionInformationType.ListDescriptionInfo()
 						.withLanguage(LanguageType.valueOf(lang))
+						.withListDescriptionShort(textShort)
 						.withListDescription(text));
 	}
 
@@ -824,10 +843,13 @@ public class ContestPhaseSteps extends PhaseSteps {
 		listMap.get(elections + "." + election + "." + name).setListOrderOfPrecedence(0);
 	}
 
-	@And("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has description \"([^\"]*)\" \"([^\"]*)\"$")
-	public void andListHasDescription(final String elections, final String election, final String name, final String lang, final String text) {
+	@And("^list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has description \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
+	public void andListHasDescription(final String elections, final String election, final String name, final String lang, final String textShort, final String text) {
 		listMap.get(elections + "." + election + "." + name).getListDescription().getListDescriptionInfo()
-				.add(new ListDescriptionInformationType.ListDescriptionInfo().withLanguage(LanguageType.valueOf(lang)).withListDescription(text));
+				.add(new ListDescriptionInformationType.ListDescriptionInfo()
+						.withLanguage(LanguageType.valueOf(lang))
+						.withListDescriptionShort(textShort)
+						.withListDescription(text));
 	}
 
 	@Given("^the list descriptions of the list \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")

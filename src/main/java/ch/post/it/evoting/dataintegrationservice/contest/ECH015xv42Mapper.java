@@ -3,12 +3,14 @@
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.math.BigInteger;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -65,6 +67,8 @@ ECH015xv42Mapper {
 	ECH015xv42Mapper INSTANCE = Mappers.getMapper(ECH015xv42Mapper.class);
 
 	Logger LOGGER = LoggerFactory.getLogger(ECH015xv42Mapper.class);
+
+	List<String> LANGUAGES = Arrays.stream(LanguageType.values()).map(LanguageType::value).toList();
 
 	/* Ignore above properties because they will be manually filled in ContestBuilder class */
 	@Mapping(target = "evotingFromDate", ignore = true)
@@ -458,6 +462,8 @@ ECH015xv42Mapper {
 	AnswerInformationType convert(ch.ech.xmlns.ech_0155._5.AnswerOptionIdentificationType.AnswerTextInformation answer);
 
 	default LanguageType convert(final String value) {
+		checkArgument(Arrays.stream(LanguageType.values()).anyMatch(lang -> lang.value().equals(value)),
+				"Invalid language type: %s. Must be one of %s", value, LANGUAGES);
 		return LanguageType.fromValue(value.toLowerCase());
 	}
 
