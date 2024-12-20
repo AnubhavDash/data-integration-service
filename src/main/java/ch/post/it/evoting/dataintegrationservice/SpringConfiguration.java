@@ -19,9 +19,9 @@ import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 @ComponentScan(basePackages = { "ch.post.it.evoting", "pipes" })
 public class SpringConfiguration {
 
-	@Value("${direct.trust.keystore.location.canton}")
+	@Value("${direct-trust.keystore.location}")
 	private String keystoreLocationCanton;
-	@Value("${direct.trust.keystore.password.location.canton}")
+	@Value("${direct-trust.password.location}")
 	private String keystorePasswordLocationCanton;
 
 	@Bean

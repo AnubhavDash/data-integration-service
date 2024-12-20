@@ -1,14 +1,11 @@
 # (c) Copyright 2024 Swiss Post Ltd.
 
 # Direct trust keystore. Default is empty. Must be set.
-direct:
-  trust:
-    keystore:
-      location:
-        canton: ""
-      password:
-        location:
-          canton: ""
+direct-trust:
+  keystore:
+    location: ""
+  password:
+    location: ""
 
 # Source / target directories. Default is empty. Must be set.
 directory:

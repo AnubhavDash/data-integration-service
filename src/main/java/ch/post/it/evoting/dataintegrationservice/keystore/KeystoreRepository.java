@@ -23,9 +23,9 @@ public class KeystoreRepository {
 	private final Alias alias;
 
 	public KeystoreRepository(
-			@Value("${direct.trust.keystore.location.canton}")
+			@Value("${direct-trust.keystore.location}")
 			final String keystoreLocation,
-			@Value("${direct.trust.keystore.password.location.canton}")
+			@Value("${direct-trust.password.location}")
 			final String keystorePasswordLocation) {
 		this.keystoreLocation = keystoreLocation;
 		this.keystorePasswordLocation = keystorePasswordLocation;
