@@ -3,6 +3,7 @@
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.MoreCollectors;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType;
@@ -73,7 +74,7 @@ public interface ECH015xv40Mapper {
 
 	Logger LOGGER = LoggerFactory.getLogger(ECH015xv40Mapper.class);
 
-	List<String> LANGUAGES = Arrays.stream(LanguageType.values()).map(LanguageType::value).toList();
+	ImmutableList<String> LANGUAGES = Arrays.stream(LanguageType.values()).map(LanguageType::value).collect(toImmutableList());
 
 	/* Ignore above properties because they will be manually filled in ContestBuilder class */
 	@Mapping(target = "evotingFromDate", ignore = true)
@@ -284,19 +285,17 @@ public interface ECH015xv40Mapper {
 	@Mapping(target = "election.referencedElection", source = "electionInformation.election.referencedElection")
 	@Mapping(target = "candidate", source = "electionInformation.candidate")
 	@Mapping(target = "list", source = "electionInformation.list")
-	@Mapping(target = "emptyList", expression = "java( mapEmptyList(electionInformation.getList()) )")
+	@Mapping(target = "emptyList", expression = "java( mapEmptyList(electionInformation.getList(), electionInformation.getElection().getElectionIdentification()) )")
 	@Mapping(target = "listUnion", source = "electionInformation.listUnion")
 	ElectionInformationType convert(ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation electionInformation);
 
-	default EmptyListType mapEmptyList(final List<ch.ech.xmlns.ech_0155._4.ListType> lists) {
+	default EmptyListType mapEmptyList(final List<ch.ech.xmlns.ech_0155._4.ListType> lists, final String electionIdentification) {
 		// The eCH does not have an empty list in case of majority elections.
 		if (lists.isEmpty()) {
 			return null;
 		}
 
-		final ch.ech.xmlns.ech_0155._4.ListType emptyListSource = lists.stream()
-				.filter(ch.ech.xmlns.ech_0155._4.ListType::isIsEmptyList)
-				.collect(MoreCollectors.onlyElement());
+		final ch.ech.xmlns.ech_0155._4.ListType emptyListSource = getEmptyList(lists, electionIdentification);
 
 		final List<EmptyPositionType> emptyCandidatePositions = emptyListSource.getCandidatePosition().stream()
 				.map(this::convert)
@@ -328,6 +327,18 @@ public interface ECH015xv40Mapper {
 		}
 
 		return emptyListType;
+	}
+
+	private ch.ech.xmlns.ech_0155._4.ListType getEmptyList(final List<ch.ech.xmlns.ech_0155._4.ListType> lists, final String electionIdentification) {
+		final ImmutableList<ch.ech.xmlns.ech_0155._4.ListType> emptyLists = lists.stream()
+				.filter(ch.ech.xmlns.ech_0155._4.ListType::isIsEmptyList)
+				.collect(toImmutableList());
+
+		return switch (emptyLists.size()) {
+			case 0 -> throw new IllegalArgumentException(String.format("The election does not contain any empty list. [electionIdentification: %s]", electionIdentification));
+			case 1 -> emptyLists.get(0);
+			default -> throw new IllegalArgumentException(String.format("The election contains more than one empty list. [electionIdentification: %s]", electionIdentification));
+		};
 	}
 
 	default BallotType convert(final ch.ech.xmlns.ech_0155._4.BallotType bt) {

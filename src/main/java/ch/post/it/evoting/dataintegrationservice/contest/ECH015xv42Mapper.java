@@ -3,6 +3,7 @@
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -27,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.MoreCollectors;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType;
@@ -68,7 +70,7 @@ ECH015xv42Mapper {
 
 	Logger LOGGER = LoggerFactory.getLogger(ECH015xv42Mapper.class);
 
-	List<String> LANGUAGES = Arrays.stream(LanguageType.values()).map(LanguageType::value).toList();
+	ImmutableList<String> LANGUAGES = Arrays.stream(LanguageType.values()).map(LanguageType::value).collect(toImmutableList());
 
 	/* Ignore above properties because they will be manually filled in ContestBuilder class */
 	@Mapping(target = "evotingFromDate", ignore = true)
