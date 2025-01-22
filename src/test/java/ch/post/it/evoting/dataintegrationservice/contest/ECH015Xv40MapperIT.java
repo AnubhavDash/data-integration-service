@@ -55,7 +55,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformati
 
 @SpringBootTest
 @ActiveProfiles("test")
-class ECH015Xv40MapperTest {
+class ECH015Xv40MapperIT {
 
 	private final ECH015xv40Mapper mapper = ECH015xv40Mapper.INSTANCE;
 
@@ -280,7 +280,6 @@ class ECH015Xv40MapperTest {
 		echElection
 				.withElection(new ElectionType()
 						.withElectionIdentification("elec-1")
-						//.withDomainOfInfluence("doi-1")
 						.withTypeOfElection(BigInteger.ONE)
 						.withElectionDescription(new ElectionDescriptionInformationType()
 								.withElectionDescriptionInfo(new ElectionDescriptionInformationType.ElectionDescriptionInfo()

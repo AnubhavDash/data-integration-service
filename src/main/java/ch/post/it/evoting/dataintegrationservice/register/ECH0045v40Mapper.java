@@ -59,13 +59,6 @@ public interface ECH0045v40Mapper {
 			throw new IllegalArgumentException("Unimplemented personType");
 		}
 
-		if (StringUtils.isNumeric(voterType.getPerson().getSex()) && Integer.parseInt(voterType.getPerson().getSex()) > 2) {
-			//This code will be removed when VE-2116 will be implemented
-			LOGGER.warn("sexCode value ({}) not handled for voter ({}). Resetting its value to 2 (female)", voterType.getPerson().getSex(),
-					voterType.getVoterIdentification());
-			voterType.getPerson().setSex("2");
-		}
-
 		if (voter.getDeliveryAddress() != null) {
 			voterType.getPerson().setPhysicalAddress(convert(voter.getDeliveryAddress()));
 		} else if (voter.getElectoralAddress() != null) {
@@ -205,14 +198,14 @@ public interface ECH0045v40Mapper {
 
 		//manage locality to belowTown
 		if (!isNullOrEmpty(echAddress.getAddressInformation().getLocality())) {
-			address.setBelowTownLine(Collections.singletonList(echAddress.getAddressInformation().getLocality()));
+			address.setBelowTownLine(List.of(echAddress.getAddressInformation().getLocality()));
 		}
 
-		if (address.getCountry().equalsIgnoreCase("XZ")) {
+		if ("XZ".equalsIgnoreCase(address.getCountry())) {
 			address.setCountry("XK");
 		}
 
-		if ((address.getCountry().equalsIgnoreCase("US") || address.getCountry().equalsIgnoreCase("CA")) && !isNullOrEmpty(
+		if (("US".equalsIgnoreCase(address.getCountry()) || "CA".equalsIgnoreCase(address.getCountry())) && !isNullOrEmpty(
 				echAddress.getAddressInformation().getLocality())) {
 			address.setTown(address.getTown() + " " + echAddress.getAddressInformation().getLocality());
 		}

@@ -1323,14 +1323,14 @@ public class ContestService {
 	}
 
 	private <T> void checkLanguageCorrectness(final List<T> list, final Function<T, LanguageType> getLanguage, final String name) {
-		final List<LanguageType> languages = Arrays.asList(LanguageType.values());
+		final List<LanguageType> languages = Arrays.stream(LanguageType.values()).sorted().toList();
 		checkState(list.stream().map(getLanguage).sorted().toList().equals(languages),
 				"%s must contain exactly the defined languages %s", name, LANGUAGES);
 	}
 
 	private <T> void checkLanguageCorrectness(final List<T> list, final Function<T, LanguageType> getLanguage, final String id, final String elementName,
 			final String fieldName) {
-		final List<LanguageType> languages = Arrays.asList(LanguageType.values());
+		final List<LanguageType> languages = Arrays.stream(LanguageType.values()).sorted().toList();
 		checkState(list.stream().map(getLanguage).sorted().toList().equals(languages),
 				"%s '%s' : %s must contain exactly the defined languages %s", elementName, id, fieldName,
 				LANGUAGES);

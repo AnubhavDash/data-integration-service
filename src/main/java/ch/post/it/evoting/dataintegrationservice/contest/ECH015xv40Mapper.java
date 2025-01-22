@@ -240,7 +240,7 @@ public interface ECH015xv40Mapper {
 		final ElectionGroupBallotType electionGroupBallotType = new ElectionGroupBallotType();
 
 		electionGroupBallotType.setElectionGroupIdentification(e.getElectionGroupIdentification());
-		electionGroupBallotType.withDomainOfInfluence(e.getDomainOfInfluenceIdentification());
+		electionGroupBallotType.setDomainOfInfluence(e.getDomainOfInfluenceIdentification());
 		electionGroupBallotType.setElectionGroupDescription(
 				electionGroupDescriptionTypeToElectionGroupDescriptionInformationType(e.getElectionGroupDescription()));
 		if (e.getElectionGroupPosition() != null) {
@@ -290,12 +290,14 @@ public interface ECH015xv40Mapper {
 	ElectionInformationType convert(ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation electionInformation);
 
 	default EmptyListType mapEmptyList(final List<ch.ech.xmlns.ech_0155._4.ListType> lists, final String electionIdentification) {
-		// The eCH does not have an empty list in case of majority elections.
+		// The eCH may not have an empty list in case of majority elections.
 		if (lists.isEmpty()) {
 			return null;
 		}
 
-		final ch.ech.xmlns.ech_0155._4.ListType emptyListSource = getEmptyList(lists, electionIdentification);
+		final ch.ech.xmlns.ech_0155._4.ListType emptyListSource = lists.stream()
+				.filter(ch.ech.xmlns.ech_0155._4.ListType::isIsEmptyList)
+				.collect(MoreCollectors.onlyElement());
 
 		final List<EmptyPositionType> emptyCandidatePositions = emptyListSource.getCandidatePosition().stream()
 				.map(this::convert)
@@ -327,18 +329,6 @@ public interface ECH015xv40Mapper {
 		}
 
 		return emptyListType;
-	}
-
-	private ch.ech.xmlns.ech_0155._4.ListType getEmptyList(final List<ch.ech.xmlns.ech_0155._4.ListType> lists, final String electionIdentification) {
-		final ImmutableList<ch.ech.xmlns.ech_0155._4.ListType> emptyLists = lists.stream()
-				.filter(ch.ech.xmlns.ech_0155._4.ListType::isIsEmptyList)
-				.collect(toImmutableList());
-
-		return switch (emptyLists.size()) {
-			case 0 -> throw new IllegalArgumentException(String.format("The election does not contain any empty list. [electionIdentification: %s]", electionIdentification));
-			case 1 -> emptyLists.get(0);
-			default -> throw new IllegalArgumentException(String.format("The election contains more than one empty list. [electionIdentification: %s]", electionIdentification));
-		};
 	}
 
 	default BallotType convert(final ch.ech.xmlns.ech_0155._4.BallotType bt) {

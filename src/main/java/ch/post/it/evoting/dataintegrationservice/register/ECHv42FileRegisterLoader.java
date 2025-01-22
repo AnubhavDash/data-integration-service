@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import ch.ech.xmlns.ech_0045._4.VotingPersonType;
+import ch.ech.xmlns.ech_0045._6.VotingPersonType;
 import ch.post.it.evoting.dataintegrationservice.common.Stax2Wrapper;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
@@ -33,7 +33,7 @@ public class ECHv42FileRegisterLoader {
 			final URL schemaPath = ECHv42FileRegisterLoader.class.getResource(ECH45_SCHEMA_PATH);
 			checkState(schemaPath != null, "Resource '%s' not found", ECH45_SCHEMA_PATH);
 
-			final Stax2Wrapper wrapper = new Stax2Wrapper(fileLocation, schemaPath, ch.ech.xmlns.ech_0045._4.ObjectFactory.class);
+			final Stax2Wrapper wrapper = new Stax2Wrapper(fileLocation, schemaPath, ch.ech.xmlns.ech_0045._6.ObjectFactory.class);
 			return wrapper.processByIteration("/voterDelivery/voterList/voter", VotingPersonType.class);
 		} catch (final XMLStreamException | JAXBException e) {
 			throw new IllegalArgumentException("Unable to load file", e);

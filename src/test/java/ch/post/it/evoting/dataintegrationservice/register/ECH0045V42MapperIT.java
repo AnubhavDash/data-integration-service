@@ -19,24 +19,24 @@ import ch.ech.xmlns.ech_0007._6.SwissMunicipalityType;
 import ch.ech.xmlns.ech_0008._3.CountryType;
 import ch.ech.xmlns.ech_0010._6.AddressInformationType;
 import ch.ech.xmlns.ech_0010._6.PersonMailAddressInfoType;
-import ch.ech.xmlns.ech_0010._6.PersonMailAddressType;
 import ch.ech.xmlns.ech_0044._4.DatePartiallyKnownType;
 import ch.ech.xmlns.ech_0044._4.NamedPersonIdType;
 import ch.ech.xmlns.ech_0044._4.PersonIdentificationType;
-import ch.ech.xmlns.ech_0045._4.EmailType;
-import ch.ech.xmlns.ech_0045._4.SwissAbroadType;
-import ch.ech.xmlns.ech_0045._4.SwissDomesticType;
-import ch.ech.xmlns.ech_0045._4.SwissPersonType;
-import ch.ech.xmlns.ech_0045._4.VotingPersonType;
+import ch.ech.xmlns.ech_0045._6.ElectoralAddressType;
+import ch.ech.xmlns.ech_0045._6.EmailType;
+import ch.ech.xmlns.ech_0045._6.SwissAbroadType;
+import ch.ech.xmlns.ech_0045._6.SwissDomesticType;
+import ch.ech.xmlns.ech_0045._6.SwissPersonType;
+import ch.ech.xmlns.ech_0045._6.VotingPersonType;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class ECH0045V40MapperTest {
+class ECH0045V42MapperIT {
 
-	private final ECH0045v40Mapper mapper = ECH0045v40Mapper.INSTANCE;
+	private final ECH0045v42Mapper mapper = ECH0045v42Mapper.INSTANCE;
 
 	private VotingPersonType createSwissVoter() throws Exception {
 		final XMLGregorianCalendar gc = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());
@@ -49,7 +49,7 @@ class ECH0045V40MapperTest {
 										.withMunicipalityName("Fribourg")
 										.withMunicipalityId(1))
 								.withSwissDomesticPerson(new SwissPersonType()
-										.withLanguageOfCorrespondance(ch.ech.xmlns.ech_0045._4.LanguageType.DE)
+										.withLanguageOfCorrespondance(ch.ech.xmlns.ech_0045._6.LanguageType.DE)
 										.withPersonIdentification(new PersonIdentificationType()
 												.withLocalPersonId(new NamedPersonIdType().withPersonId("1234"))
 												.withOfficialName("Dupont")
@@ -61,7 +61,7 @@ class ECH0045V40MapperTest {
 										)
 								)
 						)
-				).withElectoralAddress(new PersonMailAddressType()
+				).withElectoralAddress(new ElectoralAddressType()
 						.withPerson(new PersonMailAddressInfoType()
 								.withFirstName("Pierre-Henri")
 								.withLastName("Dupont-Duchêne")
@@ -92,7 +92,7 @@ class ECH0045V40MapperTest {
 										.withMunicipalityName("Genève")
 										.withMunicipalityId(2))
 								.withSwissAbroadPerson(new SwissPersonType()
-										.withLanguageOfCorrespondance(ch.ech.xmlns.ech_0045._4.LanguageType.IT)
+										.withLanguageOfCorrespondance(ch.ech.xmlns.ech_0045._6.LanguageType.IT)
 										.withPersonIdentification(new PersonIdentificationType()
 												.withLocalPersonId(new NamedPersonIdType().withPersonId("43210"))
 												.withOfficialName("Durand")
@@ -105,7 +105,7 @@ class ECH0045V40MapperTest {
 								)
 						)
 				)
-				.withElectoralAddress(new PersonMailAddressType()
+				.withElectoralAddress(new ElectoralAddressType()
 						.withPerson(new PersonMailAddressInfoType()
 								.withTitle("Sa Sainteté")
 								.withLastName("Durand-Duparis")

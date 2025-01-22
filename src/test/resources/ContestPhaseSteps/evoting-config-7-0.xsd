@@ -479,7 +479,7 @@
 				<xs:simpleType>
 					<xs:restriction base="xs:integer">
 						<xs:minInclusive value="1"/>
-						<xs:maxInclusive value="120"/>
+						<xs:maxInclusive value="5000"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -894,7 +894,7 @@
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="abstentionAllowed" type="xs:boolean"/>
-			<xs:element name="electionInformation" type="config:electionInformationType" maxOccurs="unbounded"/>
+			<xs:element name="electionInformation" type="config:electionInformationType" maxOccurs="2"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="electionGroupDescriptionInformationType">
@@ -958,6 +958,7 @@
 					<xs:restriction base="xs:string">
 						<xs:enumeration value="1"/>
 						<xs:enumeration value="2"/>
+						<xs:enumeration value="3"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1298,6 +1299,7 @@
 						<xs:enumeration value="OG"/>
 						<xs:enumeration value="KO"/>
 						<xs:enumeration value="SK"/>
+						<xs:enumeration value="GT"/>
 						<xs:enumeration value="AN"/>
 					</xs:restriction>
 				</xs:simpleType>

@@ -44,7 +44,7 @@ public class ECHv42FileContestLoader {
 					ch.ech.xmlns.ech_0157._5.ObjectFactory.class);
 			wrapper.addElementListener("/delivery/initialDelivery/contest", ch.ech.xmlns.ech_0155._5.ContestType.class, contests::add);
 			final Iterable<ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup> itElections = wrapper.processByIteration(
-					"/delivery/initialDelivery/electionGroupBallot", ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup.class);
+					"/delivery/initialDelivery/electionGroup", ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup.class);
 
 			return Tuples.of(itElections, contests.get(0));
 		} catch (final XMLStreamException | JAXBException e) {

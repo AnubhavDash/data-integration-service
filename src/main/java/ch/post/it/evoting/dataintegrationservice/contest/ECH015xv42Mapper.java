@@ -7,6 +7,7 @@ import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImm
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static java.util.function.Predicate.not;
 
 import java.math.BigInteger;
 import java.security.InvalidParameterException;
@@ -46,6 +47,8 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroup
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyListType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyPositionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListType;
@@ -53,6 +56,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionDesc
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.OccupationalTitleInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PartyAffiliationformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PositionTextInfoType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ReferencedElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswerType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
@@ -64,8 +68,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteDescripti
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
 @Mapper(imports = { UUID.class, LanguageType.class })
-public interface
-ECH015xv42Mapper {
+public interface ECH015xv42Mapper {
 	ECH015xv42Mapper INSTANCE = Mappers.getMapper(ECH015xv42Mapper.class);
 
 	Logger LOGGER = LoggerFactory.getLogger(ECH015xv42Mapper.class);
@@ -98,8 +101,6 @@ ECH015xv42Mapper {
 
 	ContestDescriptionInformationType.ContestDescriptionInfo convert(
 			ch.ech.xmlns.ech_0155._5.ContestDescriptionInformationType.ContestDescriptionInfo value);
-
-	ElectionInformationType convert(ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup.ElectionInformation ei);
 
 	@Mapping(target = "writeInsAllowed", ignore = true)
 	@Mapping(target = "candidateAccumulation", ignore = true)
@@ -187,6 +188,10 @@ ECH015xv42Mapper {
 	@Mapping(target = "varListText2", ignore = true)
 	ListType convert(ch.ech.xmlns.ech_0155._5.ListType list);
 
+	default List<ListType> convert(final List<ch.ech.xmlns.ech_0155._5.ListType> list) {
+		return list.stream().filter(not(ch.ech.xmlns.ech_0155._5.ListType::isIsEmptyList)).map(this::convert).toList();
+	}
+
 	@Mapping(target = "candidateListIdentification", ignore = true)
 	CandidatePositionType convert(ch.ech.xmlns.ech_0155._5.CandidatePositionInformationType value);
 
@@ -219,10 +224,10 @@ ECH015xv42Mapper {
 	ListUnionDescriptionType.ListUnionDescriptionInfo convert(ch.ech.xmlns.ech_0155._5.ListUnionDescriptionType.ListUnionDescriptionInfo value);
 
 	@Mapping(target = "vote.voteIdentification", source = "v.vote.voteIdentification")
-	@Mapping(target = "vote.domainOfInfluence", source = "v.vote.domainOfInfluenceIdentification")
+	@Mapping(target = "vote.domainOfInfluence", source = "v.vote.domainOfInfluence.domainOfInfluenceIdentification")
 	@Mapping(target = "vote.voteDescription", source = "v.vote.voteDescription")
-	@Mapping(target = "vote.ballot", source = "v.ballot")
-	VoteInformationType convert(ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation v);
+	@Mapping(target = "vote.ballot", source = "v.electronicBallot")
+	VoteInformationType convert(ch.ech.xmlns.ech_0159._5.EventInitialDelivery.VoteInformation v);
 
 	VoteDescriptionInformationType convert(ch.ech.xmlns.ech_0155._5.VoteDescriptionInformationType value);
 
@@ -232,7 +237,7 @@ ECH015xv42Mapper {
 		final ElectionGroupBallotType electionGroupBallotType = new ElectionGroupBallotType();
 
 		electionGroupBallotType.setElectionGroupIdentification(e.getElectionGroupIdentification());
-		electionGroupBallotType.withDomainOfInfluence(e.getDomainOfInfluence().getDomainOfInfluenceIdentification());
+		electionGroupBallotType.setDomainOfInfluence(e.getDomainOfInfluence().getDomainOfInfluenceIdentification());
 		electionGroupBallotType.setElectionGroupDescription(
 				electionGroupDescriptionTypeToElectionGroupDescriptionInformationType(e.getElectionGroupDescription()));
 		if (e.getElectionGroupPosition() != null) {
@@ -277,9 +282,51 @@ ECH015xv42Mapper {
 	@Mapping(target = "election.referencedElection", source = "electionInformation.election.referencedElection")
 	@Mapping(target = "candidate", source = "electionInformation.candidate")
 	@Mapping(target = "list", source = "electionInformation.list")
+	@Mapping(target = "emptyList", expression = "java( mapEmptyList(electionInformation.getList(), electionInformation.getElection().getElectionIdentification()) )")
 	@Mapping(target = "listUnion", source = "electionInformation.listUnion")
-	ElectionInformationType convert(String domainOfInfluenceIdentification,
-			ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup.ElectionInformation electionInformation);
+	ElectionInformationType convert(ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup.ElectionInformation electionInformation);
+
+	default EmptyListType mapEmptyList(final List<ch.ech.xmlns.ech_0155._5.ListType> lists, final String electionIdentification) {
+		// The eCH may not have an empty list in case of majority elections.
+		if (lists.isEmpty()) {
+			return null;
+		}
+
+		final ch.ech.xmlns.ech_0155._5.ListType emptyListSource = lists.stream()
+				.filter(ch.ech.xmlns.ech_0155._5.ListType::isIsEmptyList)
+				.collect(MoreCollectors.onlyElement());
+
+		final List<EmptyPositionType> emptyCandidatePositions = emptyListSource.getCandidatePosition().stream()
+				.map(this::convert)
+				.map(candidatePositionType -> {
+					final CandidateTextInformationType candidateTextOnPosition = candidatePositionType.getCandidateTextOnPosition();
+					final List<PositionTextInfoType.PositionText> positionTexts = candidateTextOnPosition.getCandidateTextInfo().stream()
+							.map(candidateTextInfo ->
+									new PositionTextInfoType.PositionText()
+											.withLanguage(candidateTextInfo.getLanguage())
+											.withPositionTextLong(candidateTextInfo.getCandidateText())
+											.withPositionTextShort(StringUtils.left(candidateTextInfo.getCandidateText(), 100)))
+							.toList();
+					final PositionTextInfoType positionTextType = new PositionTextInfoType()
+							.withPositionText(positionTexts);
+					return new EmptyPositionType()
+							.withEmptyPositionIdentification(candidatePositionType.getCandidateListIdentification())
+							.withPositionOnList(candidatePositionType.getPositionOnList())
+							.withEmptyPositionTextInfo(positionTextType);
+				})
+				.toList();
+
+		final EmptyListType emptyListType = new EmptyListType()
+				.withListIdentification(emptyListSource.getListIdentification())
+				.withListIndentureNumber(emptyListSource.getListIndentureNumber())
+				.withListDescription(convert(emptyListSource.getListDescription()))
+				.withEmptyPosition(emptyCandidatePositions);
+		if (emptyListSource.getListOrderOfPrecedence() != null) {
+			emptyListType.withListOrderOfPrecedence(emptyListSource.getListOrderOfPrecedence().intValueExact());
+		}
+
+		return emptyListType;
+	}
 
 	default BallotType convert(final ch.ech.xmlns.ech_0155._5.ElectronicBallotType bt) {
 		if (bt == null) {
@@ -309,6 +356,7 @@ ECH015xv42Mapper {
 		return ballotType;
 	}
 
+	@Mapping(target = "ballotDescriptionInfo", source = "value.electronicBallotDescriptionInfo")
 	BallotDescriptionInformationType convert(ch.ech.xmlns.ech_0155._5.ElectronicBallotDescriptionInformationType value,
 			@Context
 			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType);
@@ -408,6 +456,7 @@ ECH015xv42Mapper {
 	@Mapping(target = "answerType", source = "answerInformation.answerType")
 	@Mapping(target = "answer", source = "answerInformation.answerOptionIdentification")
 	@Mapping(target = "questionNumber", source = "electronicBallotQuestionNumber")
+	@Mapping(target = "ballotQuestion", source = "electronicBallotQuestion")
 	StandardBallotType convert(ch.ech.xmlns.ech_0155._5.ElectronicBallotType.StandardElectronicBallot sb,
 			@Context
 			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType);
