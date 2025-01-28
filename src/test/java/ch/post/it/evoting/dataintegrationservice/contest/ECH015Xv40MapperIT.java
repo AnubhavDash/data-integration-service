@@ -1,20 +1,19 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
-import static ch.ech.xmlns.ech_0155._4.PartyAffiliationformationType.*;
+import static ch.ech.xmlns.ech_0155._4.PartyAffiliationformationType.PartyAffiliationInfo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigInteger;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.junit.jupiter.api.Test;
@@ -46,7 +45,8 @@ import ch.ech.xmlns.ech_0155._4.TieBreakQuestionType;
 import ch.ech.xmlns.ech_0155._4.VoteDescriptionInformationType;
 import ch.ech.xmlns.ech_0155._4.VoteType;
 import ch.ech.xmlns.ech_0159._4.EventInitialDelivery;
-import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateTimeUtils;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateUtils;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyListType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType.ListDescriptionInfo;
@@ -59,24 +59,16 @@ class ECH015Xv40MapperIT {
 
 	private final ECH015xv40Mapper mapper = ECH015xv40Mapper.INSTANCE;
 
-	private ContestType createEchContestType() throws Exception {
-
-		final DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
-		final XMLGregorianCalendar gc = datatypeFactory.newXMLGregorianCalendar(new GregorianCalendar());
-		gc.clear();
-		gc.setDay(27);
-		gc.setMonth(3);
-		gc.setYear(1999);
-
-		final GregorianCalendar tmpTill = gc.toGregorianCalendar();
-		tmpTill.add(Calendar.DAY_OF_MONTH, 1);
+	private ContestType createEchContestType() {
+		final LocalDate localDate = LocalDate.of(1999, 3, 27);
+		final XMLGregorianCalendar contestDate = LocalDateUtils.toXMLGregorianCalendar(localDate);
 
 		final ContestType echContest = new ContestType();
 		echContest
 				.withContestIdentification("A1-B2-1111111111111-aaa")
-				.withContestDate(gc)
-				.withContestDescription(createContestDescriptionInformationType()) // Opt
-				.withEVotingPeriod(createEVotingPeriodType(datatypeFactory, gc));
+				.withContestDate(contestDate)
+				.withContestDescription(createContestDescriptionInformationType())
+				.withEVotingPeriod(createEVotingPeriodType(localDate));
 		return echContest;
 	}
 
@@ -96,14 +88,10 @@ class ECH015Xv40MapperIT {
 				);
 	}
 
-	private EVotingPeriodType createEVotingPeriodType(final DatatypeFactory dateFactory, final XMLGregorianCalendar refDate) {
-		final GregorianCalendar tmpTill = refDate.toGregorianCalendar();
-		tmpTill.add(Calendar.DAY_OF_MONTH, 1);
-		final XMLGregorianCalendar dateTill = dateFactory.newXMLGregorianCalendar(tmpTill);
-
-		return new EVotingPeriodType() // Opt
-				.withEVotingPeriodFrom(refDate)
-				.withEVotingPeriodTill(dateTill);
+	private EVotingPeriodType createEVotingPeriodType(final LocalDate refDate) {
+		return new EVotingPeriodType()
+				.withEVotingPeriodFrom(LocalDateUtils.toXMLGregorianCalendar(refDate))
+				.withEVotingPeriodTill(LocalDateUtils.toXMLGregorianCalendar(refDate.plusDays(1)));
 	}
 
 	private VoteType createEchVoteType() {
@@ -308,7 +296,7 @@ class ECH015Xv40MapperIT {
 										.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo()
 												.withLanguage("de")
 												.withCandidateText("Candidate 1 text")))
-								.withDateOfBirth(DateUtil.parseToXMLGregorianCalendar("1999-04-29 00:00:00"))
+								.withDateOfBirth(LocalDateTimeUtils.toXMLGregorianCalendar(LocalDateTime.parse("1999-04-29T00:00:00")))
 								.withSex("1")
 								.withIncumbentYesNo(false)
 								.withDwellingAddress(new AddressInformationType()
@@ -453,8 +441,7 @@ class ECH015Xv40MapperIT {
 	}
 
 	@Test
-	void testContestType() throws Exception {
-
+	void testContestType() {
 		final ContestType echContest = createEchContestType();
 		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType contest = mapper.convert(echContest);
 		assertEquals(echContest.getContestIdentification(), contest.getContestIdentification());
@@ -462,7 +449,7 @@ class ECH015Xv40MapperIT {
 	}
 
 	@Test
-	void testContestDescriptionInformationType() throws Exception {
+	void testContestDescriptionInformationType() {
 		final ContestType echContest = createEchContestType();
 		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType contest = mapper.convert(echContest);
 		final Set<String> echDescriptions = echContest.getContestDescription().getContestDescriptionInfo()

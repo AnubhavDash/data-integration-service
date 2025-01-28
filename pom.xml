@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ (c) Copyright 2024 Swiss Post Ltd.
+  ~ (c) Copyright 2025 Swiss Post Ltd.
   -->
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
@@ -33,7 +33,7 @@
 		<crypto-primitives.version>1.5.0.0-b21</crypto-primitives.version>
 		<cucumber-bom.version>7.20.1</cucumber-bom.version>
 		<download-maven-plugin.version>1.13.0</download-maven-plugin.version>
-		<e-voting-libraries.version>1.5.0.0-b77</e-voting-libraries.version>
+		<e-voting-libraries.version>1.5.0.0-b79</e-voting-libraries.version>
 		<gmavenplus-plugin.version>4.1.1</gmavenplus-plugin.version>
 		<groovy.version>4.0.18</groovy.version>
 		<groovy-all.version>4.0.24</groovy-all.version>
@@ -65,7 +65,7 @@
 		<spring-boot.version>3.4.1</spring-boot.version>
 		<stax2-api.version>4.2.2</stax2-api.version>
 		<super-machine.version>0.1.0</super-machine.version>
-		<testdata.version>1.5.0.0-b11</testdata.version>
+		<testdata.version>1.5.0.0-b14</testdata.version>
 		<woodstox-core.version>7.1.0</woodstox-core.version>
 		<xml-merge.version>0.2</xml-merge.version>
 		<xsdlib.version>2013.2</xsdlib.version>

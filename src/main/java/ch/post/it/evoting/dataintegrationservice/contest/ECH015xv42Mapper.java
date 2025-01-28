@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -515,7 +516,7 @@ public interface ECH015xv42Mapper {
 	default LanguageType convert(final String value) {
 		checkArgument(Arrays.stream(LanguageType.values()).anyMatch(lang -> lang.value().equals(value)),
 				"Invalid language type: %s. Must be one of %s", value, LANGUAGES);
-		return LanguageType.fromValue(value.toLowerCase());
+		return LanguageType.fromValue(value.toLowerCase(Locale.ENGLISH));
 	}
 
 	private ch.ech.xmlns.ech_0155._5.ElectronicBallotDescriptionInformationType createEmptyBallotDescriptionInformationType(

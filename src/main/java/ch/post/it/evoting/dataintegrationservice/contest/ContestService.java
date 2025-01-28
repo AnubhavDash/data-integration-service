@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
@@ -11,12 +11,10 @@ import static org.swisspush.supermachine.BeanScanner.from;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -55,6 +53,8 @@ import ch.post.it.evoting.dataintegrationservice.common.MarshallTool;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
 import ch.post.it.evoting.dataintegrationservice.parameter.ParameterMapper;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateTimeUtils;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateUtils;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType;
@@ -1022,7 +1022,6 @@ public class ContestService {
 				});
 	}
 
-
 	private void addEmptyListIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
 		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.filter(this::hasNoList).forEach(this::addEmptyList);
@@ -1328,7 +1327,8 @@ public class ContestService {
 				"%s must contain exactly the defined languages %s", name, LANGUAGES);
 	}
 
-	private <T> void checkLanguageCorrectness(final List<T> list, final Function<T, LanguageType> getLanguage, final String id, final String elementName,
+	private <T> void checkLanguageCorrectness(final List<T> list, final Function<T, LanguageType> getLanguage, final String id,
+			final String elementName,
 			final String fieldName) {
 		final List<LanguageType> languages = Arrays.stream(LanguageType.values()).sorted().toList();
 		checkState(list.stream().map(getLanguage).sorted().toList().equals(languages),
@@ -1482,30 +1482,29 @@ public class ContestService {
 	}
 
 	private void checkEVotingDates(final ContestType c) {
-		final GregorianCalendar evotingFromDate = c.getEvotingFromDate().toGregorianCalendar();
-		final GregorianCalendar evotingToDate = c.getEvotingToDate().toGregorianCalendar();
+		final LocalDateTime evotingFromDate = LocalDateTimeUtils.fromXMLGregorianCalendar(c.getEvotingFromDate());
+		final LocalDateTime evotingToDate = LocalDateTimeUtils.fromXMLGregorianCalendar(c.getEvotingToDate());
 
 		// These are mandatory checks that cannot be bypassed.
-		checkState(evotingToDate.getTime().after(new Date()), "evotingToDate must be in the future.");
-		checkState(evotingFromDate.getTime().before(evotingToDate.getTime()), "evotingFromDate must be before evotingToDate.");
+		checkState(evotingToDate.isAfter(LocalDateTimeUtils.now()), "evotingToDate must be in the future.");
+		checkState(evotingFromDate.isBefore(evotingToDate), "evotingFromDate must be before evotingToDate.");
 
 		if (bypassCheckConsistencyDates) {
 			LOGGER.warn("As defined by configuration, bypassing the evoting dates consistency checks...");
 			return;
 		}
 
-		checkState(evotingFromDate.getTime().after(new Date()), "evotingFromDate must be in the future.");
+		checkState(evotingFromDate.isAfter(LocalDateTimeUtils.now()), "evotingFromDate must be in the future.");
 
-		final LocalDate dtFromLocal = LocalDate.of(evotingFromDate.get(Calendar.YEAR), evotingFromDate.get(Calendar.MONTH) + 1,
-				evotingFromDate.get(Calendar.DAY_OF_MONTH));
-		final LocalDate dtToLocal = LocalDate.of(evotingToDate.get(Calendar.YEAR), evotingToDate.get(Calendar.MONTH) + 1,
-				evotingToDate.get(Calendar.DAY_OF_MONTH));
+		final LocalDate dtFromLocal = evotingFromDate.toLocalDate();
+		final LocalDate dtToLocal = evotingToDate.toLocalDate();
 		final long daysBetween = DAYS.between(dtFromLocal, dtToLocal);
 
 		checkState(daysBetween >= evotingFromToMinDeltaAllowed,
 				"the number of days between 'eVoting date from' and 'eVoting date to' must be at least %s", evotingFromToMinDeltaAllowed);
 
-		if (c.getEvotingToDate().toGregorianCalendar().getTime().after(c.getContestDate().toGregorianCalendar().getTime())) {
+		final LocalDate contestDate = LocalDateUtils.fromXMLGregorianCalendar(c.getContestDate());
+		if (evotingToDate.isAfter(contestDate.atStartOfDay())) {
 			LOGGER.warn("The date of the contest should follow the eVoting date from.");
 		}
 	}

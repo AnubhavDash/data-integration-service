@@ -1,30 +1,20 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.output;
 
-import java.util.GregorianCalendar;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-
 import org.springframework.stereotype.Service;
 
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateTimeUtils;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.HeaderType;
 
 @Service
 public class HeaderService {
 
 	public HeaderType build(final Long voterCount) {
-		try {
-			final HeaderType result = new HeaderType();
-
-			final GregorianCalendar gc = new GregorianCalendar();
-			result.setFileDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
-			result.setVoterTotal(voterCount.intValue());
-			return result;
-		} catch (final DatatypeConfigurationException e) {
-			throw new IllegalArgumentException("Unable to build the header", e);
-		}
+		final HeaderType result = new HeaderType();
+		result.setFileDate(LocalDateTimeUtils.toXMLGregorianCalendar(LocalDateTimeUtils.now()));
+		result.setVoterTotal(voterCount.intValue());
+		return result;
 	}
 }

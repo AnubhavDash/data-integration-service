@@ -1,13 +1,15 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.evoting.xmlns.parameter._5;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.ExtendedAuthenticationKeyPlugin;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateUtils;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ExtendedAuthenticationKeyType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ExtendedAuthenticationKeysType;
 
@@ -24,7 +26,8 @@ public class BirthDateAuthenticationKeyTypeImpl extends BirthDateAuthenticationK
 		if (keys.getExtendedAuthenticationKey().stream().noneMatch(k -> k.getName().equals(KEY_NAME))) {
 			final ExtendedAuthenticationKeyType key = new ExtendedAuthenticationKeyType();
 			key.setName(KEY_NAME);
-			key.setValue(String.format("%tF", voterType.getPerson().getDateOfBirth().toGregorianCalendar().getTime()));
+			final LocalDate dateOfBirth = LocalDateUtils.fromXMLGregorianCalendar(voterType.getPerson().getDateOfBirth());
+			key.setValue(dateOfBirth.format(LocalDateUtils.DATE_FORMATTER));
 			keys.getExtendedAuthenticationKey().add(key);
 		}
 		voterType.setExtendedAuthenticationKeys(keys);

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
@@ -45,7 +45,7 @@ import ch.ech.xmlns.ech_0155._5.TieBreakQuestionType;
 import ch.ech.xmlns.ech_0155._5.VoteDescriptionInformationType;
 import ch.ech.xmlns.ech_0155._5.VoteType;
 import ch.ech.xmlns.ech_0159._5.EventInitialDelivery;
-import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateUtils;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyListType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType.ListDescriptionInfo;
@@ -310,7 +310,7 @@ class ECH015Xv42MapperIT {
 										.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo()
 												.withLanguage("de")
 												.withCandidateText("Candidate 1 text")))
-								.withDateOfBirth(DateUtil.parseToXMLGregorianCalendar("1999-04-29 00:00:00"))
+								.withDateOfBirth(LocalDateUtils.toXMLGregorianCalendar(LocalDateUtils.parse("1999-04-29 00:00:00")))
 								.withSex("1")
 								.withIncumbentYesNo(false)
 								.withDwellingAddress(new AddressInformationType()
@@ -498,7 +498,8 @@ class ECH015Xv42MapperIT {
 				.stream()
 				.map(d -> {
 					final String language = d.getLanguage();
-					final Optional<ElectronicBallotQuestionType.ElectronicBallotQuestionInfo> ballotQuestion = echBallot.getStandardElectronicBallot().getElectronicBallotQuestion()
+					final Optional<ElectronicBallotQuestionType.ElectronicBallotQuestionInfo> ballotQuestion = echBallot.getStandardElectronicBallot()
+							.getElectronicBallotQuestion()
 							.getElectronicBallotQuestionInfo().stream()
 							.filter(bdi -> bdi.getLanguage().equals(language))
 							.findAny();
