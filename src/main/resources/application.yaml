@@ -12,6 +12,10 @@ directory:
   source: ""
   target: ""
 
+reactor:
+  bufferSize:
+    small: 512
+
 # Logging
 spring:
   main:

@@ -8,8 +8,13 @@ import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvid
 import static com.google.common.base.Preconditions.checkState;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -42,6 +47,12 @@ import reactor.util.function.Tuple2;
 public abstract class Tools extends Plumbing {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Tools.class);
+
+	static {
+		if (System.getProperty("reactor.bufferSize.small") == null) {
+			System.setProperty("reactor.bufferSize.small", getBufferSizeProperty());
+		}
+	}
 
 	public static Predicate<String> fileType(final String type) {
 		return (String s) -> DirectoryScanner.filterType(type).test(s);
@@ -113,5 +124,31 @@ public abstract class Tools extends Plumbing {
 
 	public static <T, U> Function<Tuple2<T, U>, T> unzip() {
 		return Tuple2::getT1;
+	}
+
+	private static String getBufferSizeProperty() {
+		LOGGER.debug("Reading application.yaml");
+		final URL url = Tools.class.getResource("/application.yaml");
+		if (url != null) {
+			final Path path;
+			try {
+				path = Path.of(url.toURI());
+			} catch (final URISyntaxException e) {
+				throw new RuntimeException("Failed to convert URL to URI for application.yaml", e);
+			}
+			try {
+				final List<String> properties = Files.readAllLines(path);
+				final int index = properties.indexOf("reactor:");
+				if ("bufferSize:".equals(properties.get(index + 1).trim()) && properties.get(index + 2).trim().startsWith("small:")) {
+					final String[] parts = properties.get(index + 2).split(" ");
+					final String value = parts[parts.length - 1];
+					LOGGER.debug("reactor.bufferSize.small={}", value);
+					return value;
+				}
+			} catch (final IOException e) {
+				throw new UncheckedIOException("Could not read provided path: %s".formatted(path), e);
+			}
+		}
+		return "512";
 	}
 }
