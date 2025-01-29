@@ -94,7 +94,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VariantBallot
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.WriteInCandidateType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.WriteInPositionType;
 
 @Service
 public class ContestService {
@@ -1148,8 +1148,8 @@ public class ContestService {
 					if (useWriteIns) {
 						final int numberOfMandates = e.getElection().getNumberOfMandates();
 						for (int i = 1; i <= numberOfMandates; i++) {
-							e.getWriteInCandidate().add(new WriteInCandidateType()
-									.withWriteInCandidateIdentification(
+							e.getWriteInPosition().add(new WriteInPositionType()
+									.withWriteInPositionIdentification(
 											StringUtil.generateUUIDFromString(e.getElection().getElectionIdentification() + i))
 									.withPosition(i)
 									.withReturnCodeWriteInDescriptionInfo(returnCodeWriteInDescription));
@@ -1872,16 +1872,16 @@ public class ContestService {
 				.flatMap(electionGroupBallot -> electionGroupBallot.getElectionInformation().stream())
 				.forEach(electionInformation -> {
 					if (electionInformation.getElection().isWriteInsAllowed()) {
-						checkState(electionInformation.getWriteInCandidate() != null
-										&& electionInformation.getWriteInCandidate().size() == electionInformation.getElection().getNumberOfMandates(),
-								"The election allows write-ins and must contain as many write-in candidates as there are mandates. [electionId: %s, numberOfMandates: %s]",
+						checkState(electionInformation.getWriteInPosition() != null
+										&& electionInformation.getWriteInPosition().size() == electionInformation.getElection().getNumberOfMandates(),
+								"The election allows write-ins and must contain as many write-in positions as there are mandates. [electionId: %s, numberOfMandates: %s]",
 								electionInformation.getElection().getElectionIdentification(),
 								electionInformation.getElection().getNumberOfMandates());
 					} else {
-						checkState(electionInformation.getWriteInCandidate() == null || electionInformation.getWriteInCandidate().isEmpty(),
-								"The election does not allow write-ins and must therefore not have any write-in candidates. [electionId: %s]",
+						checkState(electionInformation.getWriteInPosition() == null || electionInformation.getWriteInPosition().isEmpty(),
+								"The election does not allow write-ins and must therefore not have any write-in positions. [electionId: %s]",
 								electionInformation.getElection().getElectionIdentification());
-						checkState(electionInformation.getImplicitWriteInCandidate() == null || electionInformation.getWriteInCandidate().isEmpty(),
+						checkState(electionInformation.getImplicitWriteInCandidate() == null || electionInformation.getWriteInPosition().isEmpty(),
 								"The election does not allow write-ins and must therefore not have any implicit write-in candidates. [electionId: %s]",
 								electionInformation.getElection().getElectionIdentification());
 					}
