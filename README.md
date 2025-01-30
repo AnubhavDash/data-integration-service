@@ -57,7 +57,7 @@ the following:
 To run the service you can use the following command in the command line:
 
 ```bash
-embedded-jre/bin/java.exe -Dbypass.checkConsistency.dates=<true|false> -Ddirect.trust.keystore.location.canton=<canton_keystore.p12> -Ddirect.trust.keystore.password.location.canton=<canton_keystore_pw.txt> -Ddirectory.source=<src_directory> -Ddirectory.target=<target_directory> -jar data-integration-service-x.x.x.x.jar
+embedded-jre/bin/java.exe -Dbypass.checkConsistency.dates=<true|false> -Ddirect-trust.keystore.location=<canton_keystore.p12> -Ddirect-trust.password.location=<canton_keystore_pw.txt> -Ddirectory.source=<src_directory> -Ddirectory.target=<target_directory> -jar data-integration-service-x.x.x.x.jar
 ```
 
 In the source directory, the following files must be present:

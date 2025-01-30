@@ -1,9 +1,8 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
-import static ch.ech.xmlns.ech_0155._4.PartyAffiliationformationType.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -24,29 +23,29 @@ import org.springframework.test.context.ActiveProfiles;
 import com.google.common.collect.MoreCollectors;
 
 import ch.ech.xmlns.ech_0010._6.AddressInformationType;
-import ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType;
-import ch.ech.xmlns.ech_0155._4.BallotQuestionType;
-import ch.ech.xmlns.ech_0155._4.BallotType;
-import ch.ech.xmlns.ech_0155._4.CandidatePositionInformationType;
-import ch.ech.xmlns.ech_0155._4.CandidateTextInformationType;
-import ch.ech.xmlns.ech_0155._4.CandidateType;
-import ch.ech.xmlns.ech_0155._4.ContestDescriptionInformationType;
-import ch.ech.xmlns.ech_0155._4.ContestType;
-import ch.ech.xmlns.ech_0155._4.EVotingPeriodType;
-import ch.ech.xmlns.ech_0155._4.ElectionDescriptionInformationType;
-import ch.ech.xmlns.ech_0155._4.ElectionType;
-import ch.ech.xmlns.ech_0155._4.ListDescriptionInformationType;
-import ch.ech.xmlns.ech_0155._4.ListType;
-import ch.ech.xmlns.ech_0155._4.ListUnionType;
-import ch.ech.xmlns.ech_0155._4.OccupationalTitleInformationType;
-import ch.ech.xmlns.ech_0155._4.QuestionInformationType;
-import ch.ech.xmlns.ech_0155._4.ReferencedElectionInformationType;
-import ch.ech.xmlns.ech_0155._4.TieBreakInformationType;
-import ch.ech.xmlns.ech_0155._4.TieBreakQuestionType;
-import ch.ech.xmlns.ech_0155._4.VoteDescriptionInformationType;
-import ch.ech.xmlns.ech_0155._4.VoteType;
-import ch.ech.xmlns.ech_0159._4.EventInitialDelivery;
-import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
+import ch.ech.xmlns.ech_0155._5.CandidatePositionInformationType;
+import ch.ech.xmlns.ech_0155._5.CandidateTextInformationType;
+import ch.ech.xmlns.ech_0155._5.CandidateType;
+import ch.ech.xmlns.ech_0155._5.ContestDescriptionInformationType;
+import ch.ech.xmlns.ech_0155._5.ContestType;
+import ch.ech.xmlns.ech_0155._5.DomainOfInfluenceType;
+import ch.ech.xmlns.ech_0155._5.EVotingPeriodType;
+import ch.ech.xmlns.ech_0155._5.ElectionDescriptionInformationType;
+import ch.ech.xmlns.ech_0155._5.ElectionType;
+import ch.ech.xmlns.ech_0155._5.ElectronicBallotDescriptionInformationType;
+import ch.ech.xmlns.ech_0155._5.ElectronicBallotQuestionType;
+import ch.ech.xmlns.ech_0155._5.ElectronicBallotType;
+import ch.ech.xmlns.ech_0155._5.ListDescriptionInformationType;
+import ch.ech.xmlns.ech_0155._5.ListType;
+import ch.ech.xmlns.ech_0155._5.ListUnionType;
+import ch.ech.xmlns.ech_0155._5.OccupationalTitleInformationType;
+import ch.ech.xmlns.ech_0155._5.PartyAffiliationInformationType;
+import ch.ech.xmlns.ech_0155._5.ReferencedElectionInformationType;
+import ch.ech.xmlns.ech_0155._5.TieBreakQuestionType;
+import ch.ech.xmlns.ech_0155._5.VoteDescriptionInformationType;
+import ch.ech.xmlns.ech_0155._5.VoteType;
+import ch.ech.xmlns.ech_0159._5.EventInitialDelivery;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateUtils;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyListType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType.ListDescriptionInfo;
@@ -55,9 +54,9 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformati
 
 @SpringBootTest
 @ActiveProfiles("test")
-class ECH015Xv40MapperTest {
+class ECH015Xv42MapperIT {
 
-	private final ECH015xv40Mapper mapper = ECH015xv40Mapper.INSTANCE;
+	private final ECH015xv42Mapper mapper = ECH015xv42Mapper.INSTANCE;
 
 	private ContestType createEchContestType() throws Exception {
 
@@ -109,7 +108,10 @@ class ECH015Xv40MapperTest {
 	private VoteType createEchVoteType() {
 		return new VoteType()
 				.withVoteIdentification("1234-aaaa-nnnn-0000")
-				.withDomainOfInfluenceIdentification("DoiForVote")
+				.withDomainOfInfluence(new DomainOfInfluenceType()
+						.withDomainOfInfluenceIdentification("DoiForVote")
+						.withDomainOfInfluenceName("DoiName")
+						.withDomainOfInfluenceShortname("DoiShortname"))
 				.withVoteDescription(createEchVoteDescriptionInformationType());
 	}
 
@@ -129,75 +131,75 @@ class ECH015Xv40MapperTest {
 				);
 	}
 
-	private BallotDescriptionInformationType createEchBallotDescriptionInformationType() {
-		return new BallotDescriptionInformationType()
-				.withBallotDescriptionInfo(new BallotDescriptionInformationType.BallotDescriptionInfo()
+	private ElectronicBallotDescriptionInformationType createEchElectronicBallotDescriptionInformationType() {
+		return new ElectronicBallotDescriptionInformationType()
+				.withElectronicBallotDescriptionInfo(new ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo()
 						.withLanguage("de")
-						.withBallotDescriptionLong("Nouvelle loi sur l'énergie solaire (DE)")
-						.withBallotDescriptionShort("Nouvelle loi ES (DE)")
+						.withElectronicBallotDescriptionLong("Nouvelle loi sur l'énergie solaire (DE)")
+						.withElectronicBallotDescriptionShort("Nouvelle loi ES (DE)")
 				)
-				.withBallotDescriptionInfo(new BallotDescriptionInformationType.BallotDescriptionInfo()
+				.withElectronicBallotDescriptionInfo(new ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo()
 						.withLanguage("fr")
-						.withBallotDescriptionLong("Nouvelle loi sur l'énergie solaire (FR)")
+						.withElectronicBallotDescriptionLong("Nouvelle loi sur l'énergie solaire (FR)")
 				)
-				.withBallotDescriptionInfo(new BallotDescriptionInformationType.BallotDescriptionInfo()
+				.withElectronicBallotDescriptionInfo(new ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo()
 						.withLanguage("it")
-						.withBallotDescriptionShort("Nouvelle loi ES (IT)")
+						.withElectronicBallotDescriptionShort("Nouvelle loi ES (IT)")
 				);
 	}
 
-	private BallotDescriptionInformationType createEchBallotDescriptionInformationTypeWithMissingDescriptions() {
-		return new BallotDescriptionInformationType()
-				.withBallotDescriptionInfo(new BallotDescriptionInformationType.BallotDescriptionInfo()
+	private ElectronicBallotDescriptionInformationType createEchElectronicBallotDescriptionInformationTypeWithMissingDescriptions() {
+		return new ElectronicBallotDescriptionInformationType()
+				.withElectronicBallotDescriptionInfo(new ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo()
 						.withLanguage("de")
-						.withBallotDescriptionLong("Nouvelle loi sur l'énergie solaire (DE)")
-						.withBallotDescriptionShort("Nouvelle loi ES (DE)")
+						.withElectronicBallotDescriptionLong("Nouvelle loi sur l'énergie solaire (DE)")
+						.withElectronicBallotDescriptionShort("Nouvelle loi ES (DE)")
 				)
-				.withBallotDescriptionInfo(new BallotDescriptionInformationType.BallotDescriptionInfo()
+				.withElectronicBallotDescriptionInfo(new ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo()
 						.withLanguage("fr")
-						.withBallotDescriptionLong("Nouvelle loi sur l'énergie solaire (FR)")
+						.withElectronicBallotDescriptionLong("Nouvelle loi sur l'énergie solaire (FR)")
 				)
-				.withBallotDescriptionInfo(new BallotDescriptionInformationType.BallotDescriptionInfo()
+				.withElectronicBallotDescriptionInfo(new ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo()
 						.withLanguage("it")
-						.withBallotDescriptionShort("Nouvelle loi ES (IT)")
+						.withElectronicBallotDescriptionShort("Nouvelle loi ES (IT)")
 				)
-				.withBallotDescriptionInfo(new BallotDescriptionInformationType.BallotDescriptionInfo()
+				.withElectronicBallotDescriptionInfo(new ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo()
 						.withLanguage("rm")
 				);
 	}
 
-	private BallotQuestionType createEchBallotQuestionType() {
-		return new BallotQuestionType()
-				.withBallotQuestionInfo(new BallotQuestionType.BallotQuestionInfo()
+	private ElectronicBallotQuestionType createEchElectronicBallotQuestionType() {
+		return new ElectronicBallotQuestionType()
+				.withElectronicBallotQuestionInfo(new ElectronicBallotQuestionType.ElectronicBallotQuestionInfo()
 						.withLanguage("de")
-						.withBallotQuestionTitle("Votre avis sur la loi ES (DE)")
-						.withBallotQuestion("Acceptez-vous la loi ES ? (DE)")
+						.withElectronicBallotQuestionTitle("Votre avis sur la loi ES (DE)")
+						.withElectronicBallotQuestion("Acceptez-vous la loi ES ? (DE)")
 				)
-				.withBallotQuestionInfo(new BallotQuestionType.BallotQuestionInfo()
+				.withElectronicBallotQuestionInfo(new ElectronicBallotQuestionType.ElectronicBallotQuestionInfo()
 						.withLanguage("it")
-						.withBallotQuestionTitle("Votre avis sur la loi ES (IT)")
-						.withBallotQuestion("Acceptez-vous la loi ES ? (IT)")
+						.withElectronicBallotQuestionTitle("Votre avis sur la loi ES (IT)")
+						.withElectronicBallotQuestion("Acceptez-vous la loi ES ? (IT)")
 				)
-				.withBallotQuestionInfo(new BallotQuestionType.BallotQuestionInfo()
+				.withElectronicBallotQuestionInfo(new ElectronicBallotQuestionType.ElectronicBallotQuestionInfo()
 						.withLanguage("rm")
-						.withBallotQuestionTitle("Votre avis sur la loi ES (RM)")
-						.withBallotQuestion("Acceptez-vous la loi ES ? (RM)")
+						.withElectronicBallotQuestionTitle("Votre avis sur la loi ES (RM)")
+						.withElectronicBallotQuestion("Acceptez-vous la loi ES ? (RM)")
 				);
 	}
 
-	private BallotQuestionType createEchBallotQuestionTypeWithMissingQuestionInfo() {
-		return new BallotQuestionType();
+	private ElectronicBallotQuestionType createEchElectronicBallotQuestionTypeWithMissingQuestionInfo() {
+		return new ElectronicBallotQuestionType();
 	}
 
-	private QuestionInformationType createEchQuestionInformationType() {
-		return new QuestionInformationType()
+	private ElectronicBallotType.VariantElectronicBallot.QuestionInformation createEchQuestionInformation() {
+		return new ElectronicBallotType.VariantElectronicBallot.QuestionInformation()
 				.withQuestionIdentification("QUE-000-43511932")
 				.withQuestionPosition(BigInteger.ONE)
-				.withBallotQuestion(createEchBallotQuestionType());
+				.withElectronicBallotQuestion(createEchElectronicBallotQuestionType());
 	}
 
-	private TieBreakInformationType createEchTieBreakInformationType() {
-		return new TieBreakInformationType()
+	private ElectronicBallotType.VariantElectronicBallot.TieBreakInformation createEchTieBreakInformation() {
+		return new ElectronicBallotType.VariantElectronicBallot.TieBreakInformation()
 				.withQuestionIdentification("QUE-000-41500009")
 				.withQuestionPosition(BigInteger.valueOf(3))
 				.withTieBreakQuestion(new TieBreakQuestionType()
@@ -219,68 +221,67 @@ class ECH015Xv40MapperTest {
 				);
 	}
 
-	private BallotType createEchBallot() {
-		return new BallotType()
-				.withBallotIdentification("BAL-000-432556")
-				.withBallotPosition(BigInteger.ONE)
-				.withBallotDescription(createEchBallotDescriptionInformationType())
-				.withStandardBallot(createEchStandardBallot());
+	private ElectronicBallotType createEchElectronicBallot() {
+		return new ElectronicBallotType()
+				.withElectronicBallotIdentification("BAL-000-432556")
+				.withElectronicBallotPosition(BigInteger.ONE)
+				.withElectronicBallotDescription(createEchElectronicBallotDescriptionInformationType())
+				.withStandardElectronicBallot(createEchStandardElectronicBallot());
 	}
 
-	private BallotType createEchBallotWithMissingQuestionInfo() {
-		return new BallotType()
-				.withBallotIdentification("BAL-000-432556")
-				.withBallotPosition(BigInteger.ONE)
-				.withBallotDescription(createEchBallotDescriptionInformationTypeWithMissingDescriptions())
-				.withStandardBallot(createEchStandardBallotWithMissingQuestionInfo());
+	private ElectronicBallotType createEchElectronicBallotWithMissingQuestionInfo() {
+		return new ElectronicBallotType()
+				.withElectronicBallotIdentification("BAL-000-432556")
+				.withElectronicBallotPosition(BigInteger.ONE)
+				.withElectronicBallotDescription(createEchElectronicBallotDescriptionInformationTypeWithMissingDescriptions())
+				.withStandardElectronicBallot(createEchStandardElectronicBallotWithMissingQuestionInfo());
 	}
 
-	private BallotType.StandardBallot createEchStandardBallot() {
-		return new BallotType.StandardBallot()
+	private ElectronicBallotType.StandardElectronicBallot createEchStandardElectronicBallot() {
+		return new ElectronicBallotType.StandardElectronicBallot()
 				.withQuestionIdentification("QUE-000-43532532")
-				.withBallotQuestion(createEchBallotQuestionType());
+				.withElectronicBallotQuestion(createEchElectronicBallotQuestionType());
 	}
 
-	private BallotType.StandardBallot createEchStandardBallotWithMissingQuestionInfo() {
-		return new BallotType.StandardBallot()
+	private ElectronicBallotType.StandardElectronicBallot createEchStandardElectronicBallotWithMissingQuestionInfo() {
+		return new ElectronicBallotType.StandardElectronicBallot()
 				.withQuestionIdentification("QUE-000-43532532")
-				.withBallotQuestion(createEchBallotQuestionTypeWithMissingQuestionInfo());
+				.withElectronicBallotQuestion(createEchElectronicBallotQuestionTypeWithMissingQuestionInfo());
 	}
 
-	private BallotType.VariantBallot createEchVariantBallot() {
-		return new BallotType.VariantBallot()
-				.withQuestionInformation(createEchQuestionInformationType())
-				.withQuestionInformation(createEchQuestionInformationType())
-				.withTieBreakInformation(createEchTieBreakInformationType())
-				.withTieBreakInformation(createEchTieBreakInformationType());
+	private ElectronicBallotType.VariantElectronicBallot createEchVariantElectronicBallot() {
+		return new ElectronicBallotType.VariantElectronicBallot()
+				.withQuestionInformation(createEchQuestionInformation())
+				.withQuestionInformation(createEchQuestionInformation())
+				.withTieBreakInformation(createEchTieBreakInformation())
+				.withTieBreakInformation(createEchTieBreakInformation());
 	}
 
 	private EventInitialDelivery.VoteInformation createEchVoteInformation() {
 		final EventInitialDelivery.VoteInformation echVote = new EventInitialDelivery.VoteInformation();
 		echVote
 				.withVote(createEchVoteType())
-				.withBallot(new BallotType()
-						.withBallotIdentification("BAL-000-432556")
-						.withBallotPosition(BigInteger.ONE)
-						.withBallotDescription(createEchBallotDescriptionInformationType())
-						.withStandardBallot(createEchStandardBallot())
+				.withElectronicBallot(new ElectronicBallotType()
+						.withElectronicBallotIdentification("BAL-000-432556")
+						.withElectronicBallotPosition(BigInteger.ONE)
+						.withElectronicBallotDescription(createEchElectronicBallotDescriptionInformationType())
+						.withStandardElectronicBallot(createEchStandardElectronicBallot())
 
 				)
-				.withBallot(new BallotType()
-						.withBallotIdentification("BAL-000-A325156")
-						.withBallotPosition(BigInteger.TWO)
-						.withBallotDescription(createEchBallotDescriptionInformationType())
-						.withVariantBallot(createEchVariantBallot())
+				.withElectronicBallot(new ElectronicBallotType()
+						.withElectronicBallotIdentification("BAL-000-A325156")
+						.withElectronicBallotPosition(BigInteger.TWO)
+						.withElectronicBallotDescription(createEchElectronicBallotDescriptionInformationType())
+						.withVariantElectronicBallot(createEchVariantElectronicBallot())
 				);
 		return echVote;
 	}
 
-	private ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation createEchElectionInformation() {
-		final ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation echElection = new ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation();
+	private ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup.ElectionInformation createEchElectionInformation() {
+		final ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup.ElectionInformation echElection = new ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup.ElectionInformation();
 		echElection
 				.withElection(new ElectionType()
 						.withElectionIdentification("elec-1")
-						//.withDomainOfInfluence("doi-1")
 						.withTypeOfElection(BigInteger.ONE)
 						.withElectionDescription(new ElectionDescriptionInformationType()
 								.withElectionDescriptionInfo(new ElectionDescriptionInformationType.ElectionDescriptionInfo()
@@ -309,7 +310,7 @@ class ECH015Xv40MapperTest {
 										.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo()
 												.withLanguage("de")
 												.withCandidateText("Candidate 1 text")))
-								.withDateOfBirth(DateUtil.parseToXMLGregorianCalendar("1999-04-29 00:00:00"))
+								.withDateOfBirth(LocalDateUtils.toXMLGregorianCalendar(LocalDateUtils.parse("1999-04-29 00:00:00")))
 								.withSex("1")
 								.withIncumbentYesNo(false)
 								.withDwellingAddress(new AddressInformationType()
@@ -441,8 +442,8 @@ class ECH015Xv40MapperTest {
 		return listDescriptionInfo.withListDescriptionShort("list1 short");
 	}
 
-	private PartyAffiliationInfo createPartyAffiliationInfo(final boolean partyAffiliationShortProvided) {
-		final PartyAffiliationInfo partyAffiliationInfo = new PartyAffiliationInfo()
+	private PartyAffiliationInformationType.PartyAffiliationInfo createPartyAffiliationInfo(final boolean partyAffiliationShortProvided) {
+		final PartyAffiliationInformationType.PartyAffiliationInfo partyAffiliationInfo = new PartyAffiliationInformationType.PartyAffiliationInfo()
 				.withLanguage("de")
 				.withPartyAffiliationShort("partei1 short");
 
@@ -478,46 +479,47 @@ class ECH015Xv40MapperTest {
 	}
 
 	@Test
-	void testBallotDescriptionInformationType() {
-		final BallotDescriptionInformationType source = createEchBallotDescriptionInformationType();
+	void testElectronicBallotDescriptionInformationType() {
+		final ElectronicBallotDescriptionInformationType source = createEchElectronicBallotDescriptionInformationType();
 		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType destination = mapper.convert(source,
-				createEchBallot());
+				createEchElectronicBallot());
 
-		assertEquals(source.getBallotDescriptionInfo().size(), destination.getBallotDescriptionInfo().size());
+		assertEquals(source.getElectronicBallotDescriptionInfo().size(), destination.getBallotDescriptionInfo().size());
 	}
 
 	@Test
-	void testBallotDescriptionInfo() {
-		final BallotDescriptionInformationType source = createEchBallotDescriptionInformationType();
-		final BallotType echBallot = createEchBallot();
+	void testElectronicBallotDescriptionInfo() {
+		final ElectronicBallotDescriptionInformationType source = createEchElectronicBallotDescriptionInformationType();
+		final ElectronicBallotType echBallot = createEchElectronicBallot();
 		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType destination = mapper.convert(source,
 				echBallot);
 
-		final Set<String> echDescriptions = source.getBallotDescriptionInfo()
+		final Set<String> echDescriptions = source.getElectronicBallotDescriptionInfo()
 				.stream()
 				.map(d -> {
 					final String language = d.getLanguage();
-					final Optional<BallotQuestionType.BallotQuestionInfo> ballotQuestion = echBallot.getStandardBallot().getBallotQuestion()
-							.getBallotQuestionInfo().stream()
+					final Optional<ElectronicBallotQuestionType.ElectronicBallotQuestionInfo> ballotQuestion = echBallot.getStandardElectronicBallot()
+							.getElectronicBallotQuestion()
+							.getElectronicBallotQuestionInfo().stream()
 							.filter(bdi -> bdi.getLanguage().equals(language))
 							.findAny();
 
 					String ballotDescriptionShort = "";
-					if (d.getBallotDescriptionShort() != null) {
-						ballotDescriptionShort = d.getBallotDescriptionShort();
-					} else if (d.getBallotDescriptionLong() != null) {
-						ballotDescriptionShort = d.getBallotDescriptionLong();
+					if (d.getElectronicBallotDescriptionShort() != null) {
+						ballotDescriptionShort = d.getElectronicBallotDescriptionShort();
+					} else if (d.getElectronicBallotDescriptionLong() != null) {
+						ballotDescriptionShort = d.getElectronicBallotDescriptionLong();
 					} else if (ballotQuestion.isPresent()) {
-						ballotDescriptionShort = ballotQuestion.get().getBallotQuestionTitle();
+						ballotDescriptionShort = ballotQuestion.get().getElectronicBallotQuestionTitle();
 					}
 
 					String ballotDescriptionLong = "";
-					if (d.getBallotDescriptionLong() != null) {
-						ballotDescriptionLong = d.getBallotDescriptionLong();
-					} else if (d.getBallotDescriptionShort() != null) {
-						ballotDescriptionLong = d.getBallotDescriptionShort();
+					if (d.getElectronicBallotDescriptionLong() != null) {
+						ballotDescriptionLong = d.getElectronicBallotDescriptionLong();
+					} else if (d.getElectronicBallotDescriptionShort() != null) {
+						ballotDescriptionLong = d.getElectronicBallotDescriptionShort();
 					} else if (ballotQuestion.isPresent()) {
-						ballotDescriptionLong = ballotQuestion.get().getBallotQuestionTitle();
+						ballotDescriptionLong = ballotQuestion.get().getElectronicBallotQuestionTitle();
 					}
 
 					return String.format("%s - %s - %s", d.getLanguage(), ballotDescriptionShort, ballotDescriptionLong);
@@ -531,30 +533,30 @@ class ECH015Xv40MapperTest {
 	}
 
 	@Test
-	void testBallotDescriptionInfoWithMissingDescriptions() {
-		final BallotDescriptionInformationType source = createEchBallotDescriptionInformationTypeWithMissingDescriptions();
-		final BallotType echBallotWithMissingQuestionInfo = createEchBallotWithMissingQuestionInfo();
+	void testElectronicBallotDescriptionInfoWithMissingDescriptions() {
+		final ElectronicBallotDescriptionInformationType source = createEchElectronicBallotDescriptionInformationTypeWithMissingDescriptions();
+		final ElectronicBallotType echBallotWithMissingQuestionInfo = createEchElectronicBallotWithMissingQuestionInfo();
 		final IllegalStateException exception = assertThrows(IllegalStateException.class,
 				() -> mapper.convert(source, echBallotWithMissingQuestionInfo));
 		assertEquals("Ballot question info is not available in expected language. [language: rm]", exception.getMessage());
 	}
 
 	@Test
-	void testBallotQuestionType() {
-		final BallotQuestionType source = createEchBallotQuestionType();
+	void testElectronicBallotQuestionType() {
+		final ElectronicBallotQuestionType source = createEchElectronicBallotQuestionType();
 		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType destination = mapper.convert(source, null);
 
-		assertEquals(source.getBallotQuestionInfo().size(), destination.getBallotQuestionInfo().size());
+		assertEquals(source.getElectronicBallotQuestionInfo().size(), destination.getBallotQuestionInfo().size());
 	}
 
 	@Test
-	void testBallotQuestionType_BallotQuestionInfo() {
-		final BallotQuestionType source = createEchBallotQuestionType();
+	void testElectronicBallotQuestionType_BallotQuestionInfo() {
+		final ElectronicBallotQuestionType source = createEchElectronicBallotQuestionType();
 		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType destination = mapper.convert(source, null);
 
-		final Set<String> echDescriptions = source.getBallotQuestionInfo()
+		final Set<String> echDescriptions = source.getElectronicBallotQuestionInfo()
 				.stream()
-				.map(d -> String.format("%s - %s - %s", d.getLanguage(), d.getBallotQuestionTitle(), d.getBallotQuestion()))
+				.map(d -> String.format("%s - %s - %s", d.getLanguage(), d.getElectronicBallotQuestionTitle(), d.getElectronicBallotQuestion()))
 				.collect(Collectors.toSet());
 		final Set<String> descriptions = destination.getBallotQuestionInfo()
 				.stream()
@@ -569,7 +571,7 @@ class ECH015Xv40MapperTest {
 		final VoteInformationType destination = mapper.convert(source);
 
 		assertEquals(source.getVote() != null, destination.getVote() != null);
-		assertEquals(source.getBallot().size(), destination.getVote().getBallot().size());
+		assertEquals(source.getElectronicBallot().size(), destination.getVote().getBallot().size());
 	}
 
 	@Test
@@ -591,7 +593,7 @@ class ECH015Xv40MapperTest {
 	@Test
 	void testElectionInformation() {
 
-		final ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation source = createEchElectionInformation();
+		final ch.ech.xmlns.ech_0157._5.EventInitialDelivery.ElectionGroup.ElectionInformation source = createEchElectionInformation();
 		final ElectionInformationType destination = mapper.convert(source);
 
 		final ElectionType electionSource = source.getElection();
@@ -635,7 +637,7 @@ class ECH015Xv40MapperTest {
 
 	@Test
 	void testPartyAffiliationLongMissing() {
-		final PartyAffiliationInfo partyAffiliationInfo = createPartyAffiliationInfo(false);
+		final PartyAffiliationInformationType.PartyAffiliationInfo partyAffiliationInfo = createPartyAffiliationInfo(false);
 
 		final PartyAffiliationformationType.PartyAffiliationInfo destination = mapper.convert(partyAffiliationInfo);
 
@@ -646,7 +648,7 @@ class ECH015Xv40MapperTest {
 
 	@Test
 	void testPartyAffiliationLongProvided() {
-		final PartyAffiliationInfo partyAffiliationInfo = createPartyAffiliationInfo(true);
+		final PartyAffiliationInformationType.PartyAffiliationInfo partyAffiliationInfo = createPartyAffiliationInfo(true);
 
 		final PartyAffiliationformationType.PartyAffiliationInfo destination = mapper.convert(partyAffiliationInfo);
 

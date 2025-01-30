@@ -41,11 +41,11 @@ public class ContestEch015xv42Component {
 		return Tuple2::getT2;
 	}
 
-	public Function<Tuple2<Iterable<ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation>, ContestType>, Iterable<ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation>> votes() {
+	public Function<Tuple2<Iterable<ch.ech.xmlns.ech_0159._5.EventInitialDelivery.VoteInformation>, ContestType>, Iterable<ch.ech.xmlns.ech_0159._5.EventInitialDelivery.VoteInformation>> votes() {
 		return Tuple2::getT1;
 	}
 
-	public Function<Tuple2<Iterable<ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation>, ContestType>, ContestType> voteContest() {
+	public Function<Tuple2<Iterable<ch.ech.xmlns.ech_0159._5.EventInitialDelivery.VoteInformation>, ContestType>, ContestType> voteContest() {
 		return Tuple2::getT2;
 	}
 
@@ -53,7 +53,7 @@ public class ContestEch015xv42Component {
 		return ECH015xv42Mapper.INSTANCE::convert;
 	}
 
-	public Function<ch.ech.xmlns.ech_0159._4.EventInitialDelivery.VoteInformation, VoteInformationType> fromECHv42Vote() {
+	public Function<ch.ech.xmlns.ech_0159._5.EventInitialDelivery.VoteInformation, VoteInformationType> fromECHv42Vote() {
 		return ECH015xv42Mapper.INSTANCE::convert;
 	}
 

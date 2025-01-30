@@ -2,14 +2,11 @@
 
 formatOutput: false
 
-direct:
-  trust:
-    keystore:
-      location:
-        canton: target/test-classes/testdata/direct-trust/canton/local_direct_trust_keystore_canton.p12
-      password:
-        location:
-          canton: target/test-classes/testdata/direct-trust/canton/local_direct_trust_pw_canton.txt
+direct-trust:
+  keystore:
+    location: target/test-classes/testdata/direct-trust/canton/local_direct_trust_keystore_canton.p12
+  password:
+    location: target/test-classes/testdata/direct-trust/canton/local_direct_trust_pw_canton.txt
 
 # App settings
 application:

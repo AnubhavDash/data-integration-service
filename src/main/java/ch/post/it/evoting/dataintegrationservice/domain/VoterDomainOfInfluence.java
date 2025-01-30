@@ -24,6 +24,7 @@ public class VoterDomainOfInfluence {
 		OG,
 		KO,
 		SK,
+		GT,
 		AN
 	}
 }

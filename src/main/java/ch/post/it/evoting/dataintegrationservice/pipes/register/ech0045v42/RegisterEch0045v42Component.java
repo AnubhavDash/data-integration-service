@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
-import ch.ech.xmlns.ech_0045._4.VotingPersonType;
+import ch.ech.xmlns.ech_0045._6.VotingPersonType;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.dataintegrationservice.register.ECH0045v42Mapper;
 import ch.post.it.evoting.dataintegrationservice.register.ECHv42FileRegisterLoader;

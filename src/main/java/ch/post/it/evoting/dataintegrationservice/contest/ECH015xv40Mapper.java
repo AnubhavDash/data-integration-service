@@ -3,6 +3,8 @@
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.function.Predicate.not;
@@ -10,6 +12,7 @@ import static java.util.function.Predicate.not;
 import java.math.BigInteger;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.MoreCollectors;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType;
@@ -69,6 +73,8 @@ public interface ECH015xv40Mapper {
 	ECH015xv40Mapper INSTANCE = Mappers.getMapper(ECH015xv40Mapper.class);
 
 	Logger LOGGER = LoggerFactory.getLogger(ECH015xv40Mapper.class);
+
+	ImmutableList<String> LANGUAGES = Arrays.stream(LanguageType.values()).map(LanguageType::value).collect(toImmutableList());
 
 	/* Ignore above properties because they will be manually filled in ContestBuilder class */
 	@Mapping(target = "evotingFromDate", ignore = true)
@@ -149,12 +155,7 @@ public interface ECH015xv40Mapper {
 		final CandidateTextInformationType candidateTextInformationType = new ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateTextInformationType();
 
 		if (value == null) {
-			final List<CandidateTextInformationType.CandidateTextInfo> list = new ArrayList<>();
-			list.add(new CandidateTextInformationType.CandidateTextInfo().withLanguage(LanguageType.DE).withCandidateText("No candidate text"));
-			list.add(new CandidateTextInformationType.CandidateTextInfo().withLanguage(LanguageType.FR).withCandidateText("No candidate text"));
-			list.add(new CandidateTextInformationType.CandidateTextInfo().withLanguage(LanguageType.IT).withCandidateText("No candidate text"));
-			list.add(new CandidateTextInformationType.CandidateTextInfo().withLanguage(LanguageType.RM).withCandidateText("No candidate text"));
-			candidateTextInformationType.setCandidateTextInfo(list);
+			candidateTextInformationType.setCandidateTextInfo(new ArrayList<>());
 		} else {
 			candidateTextInformationType.setCandidateTextInfo(toCandidateTextInfoList(value.getCandidateTextInfo()));
 		}
@@ -239,7 +240,7 @@ public interface ECH015xv40Mapper {
 		final ElectionGroupBallotType electionGroupBallotType = new ElectionGroupBallotType();
 
 		electionGroupBallotType.setElectionGroupIdentification(e.getElectionGroupIdentification());
-		electionGroupBallotType.withDomainOfInfluence(e.getDomainOfInfluenceIdentification());
+		electionGroupBallotType.setDomainOfInfluence(e.getDomainOfInfluenceIdentification());
 		electionGroupBallotType.setElectionGroupDescription(
 				electionGroupDescriptionTypeToElectionGroupDescriptionInformationType(e.getElectionGroupDescription()));
 		if (e.getElectionGroupPosition() != null) {
@@ -284,12 +285,12 @@ public interface ECH015xv40Mapper {
 	@Mapping(target = "election.referencedElection", source = "electionInformation.election.referencedElection")
 	@Mapping(target = "candidate", source = "electionInformation.candidate")
 	@Mapping(target = "list", source = "electionInformation.list")
-	@Mapping(target = "emptyList", expression = "java( mapEmptyList(electionInformation.getList()) )")
+	@Mapping(target = "emptyList", expression = "java( mapEmptyList(electionInformation.getList(), electionInformation.getElection().getElectionIdentification()) )")
 	@Mapping(target = "listUnion", source = "electionInformation.listUnion")
 	ElectionInformationType convert(ch.ech.xmlns.ech_0157._4.EventInitialDelivery.ElectionGroupBallot.ElectionInformation electionInformation);
 
-	default EmptyListType mapEmptyList(final List<ch.ech.xmlns.ech_0155._4.ListType> lists) {
-		// The eCH does not have an empty list in case of majority elections.
+	default EmptyListType mapEmptyList(final List<ch.ech.xmlns.ech_0155._4.ListType> lists, final String electionIdentification) {
+		// The eCH may not have an empty list in case of majority elections.
 		if (lists.isEmpty()) {
 			return null;
 		}
@@ -513,7 +514,9 @@ public interface ECH015xv40Mapper {
 	AnswerInformationType convert(ch.ech.xmlns.ech_0155._4.AnswerOptionIdentificationType.AnswerTextInformation answer);
 
 	default LanguageType convert(final String value) {
-		return LanguageType.fromValue(value.toLowerCase());
+		checkArgument(Arrays.stream(LanguageType.values()).anyMatch(lang -> lang.value().equals(value)),
+				"Invalid language type: %s. Must be one of %s", value, LANGUAGES);
+		return LanguageType.fromValue(value);
 	}
 
 	private ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType createEmptyBallotDescriptionInformationType(

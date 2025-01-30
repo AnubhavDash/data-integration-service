@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
@@ -11,12 +11,10 @@ import static org.swisspush.supermachine.BeanScanner.from;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -27,7 +25,9 @@ import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -53,6 +53,8 @@ import ch.post.it.evoting.dataintegrationservice.common.MarshallTool;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
 import ch.post.it.evoting.dataintegrationservice.parameter.ParameterMapper;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateTimeUtils;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateUtils;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType;
@@ -72,6 +74,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EligibilityTy
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyListType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyPositionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ExtendedAuthenticationKeysDefinitionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentTextInfoType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType;
@@ -79,17 +82,19 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionDescriptionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.OccupationalTitleInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PartyAffiliationformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PositionTextInfoType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswerType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TiebreakAnswerType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VarListTextInfoType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VariantBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.WriteInCandidateType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.WriteInPositionType;
 
 @Service
 public class ContestService {
@@ -98,7 +103,7 @@ public class ContestService {
 
 	private static final String VALUE_NOT_UNIQUE_WITHIN_PARAMETERS_MESSAGE = "%s '%s' not unique within the parameters";
 
-	private static final int MINIMAL_REQUIRED_LANGUAGES = 4;
+	private static final List<String> LANGUAGES = Arrays.stream(LanguageType.values()).map(LanguageType::value).toList();
 	private static final int DEFAULT_VALUE = 0;
 
 	private static final BigInteger ELECTION_MAJORITY_TYPE = BigInteger.TWO;
@@ -302,6 +307,7 @@ public class ContestService {
 		addEmptyListIfNeeded(electionGroups);
 		addCandidatesInEmptyListsIfNeeded(electionGroups, contestParameters);
 		addCandidatesListIdentifications(electionGroups);
+		checkCandidateTextsAreSet(electionGroups);
 		warnIfCandidatesOutOfLists(electionGroups);
 		addCandidatePositionInCandidateOnlyElections(electionGroups);
 		addIncumbentTextIfNeeded(electionGroups, contestParameters.getIncumbentText());
@@ -976,6 +982,46 @@ public class ContestService {
 				StringUtil.generateUUIDFromString(list.getListIdentification() + "." + p.getCandidateIdentification()))));
 	}
 
+	private void checkCandidateTextsAreSet(final List<ElectionGroupBallotType> electionGroups) {
+		final Predicate<CandidateType> hasText = (c) -> c.getCandidateText() != null && !c.getCandidateText().getCandidateTextInfo().isEmpty();
+
+		electionGroups.stream()
+				.flatMap(eg -> eg.getElectionInformation().stream())
+				.forEach(e -> {
+					if (e.getCandidate().isEmpty()) {
+						return;
+					}
+
+					final boolean allCandidatesHaveText = e.getCandidate().stream().allMatch(hasText);
+					final boolean noCandidateHasText = e.getCandidate().stream().noneMatch(hasText);
+
+					if (!allCandidatesHaveText && !noCandidateHasText) {
+						throw new IllegalStateException(
+								"The field candidateText for one or more candidates was not provided: [electionIdentification: %s, candidateId: %s]".formatted(
+										e.getElection().getElectionIdentification(),
+										e.getCandidate().stream().filter(not(hasText)).findFirst().map(CandidateType::getCandidateIdentification)
+												.orElseThrow()));
+					}
+
+					if (noCandidateHasText) {
+						e.getCandidate().forEach(c -> {
+							final CandidateTextInformationType candidateTextInformationType = new CandidateTextInformationType();
+
+							final List<CandidateTextInformationType.CandidateTextInfo> list = Arrays.stream(LanguageType.values())
+									.map(languageType -> new CandidateTextInformationType.CandidateTextInfo().withLanguage(languageType)
+											.withCandidateText("No candidate text"))
+									.toList();
+
+							candidateTextInformationType.setCandidateTextInfo(list);
+							c.setCandidateText(candidateTextInformationType);
+						});
+						LOGGER.warn(
+								"The candidateText in the election were not provided and dummy texts were assigned automatically. [electionIdentification: {}]",
+								e.getElection().getElectionIdentification());
+					}
+				});
+	}
+
 	private void addEmptyListIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
 		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.filter(this::hasNoList).forEach(this::addEmptyList);
@@ -1102,8 +1148,8 @@ public class ContestService {
 					if (useWriteIns) {
 						final int numberOfMandates = e.getElection().getNumberOfMandates();
 						for (int i = 1; i <= numberOfMandates; i++) {
-							e.getWriteInCandidate().add(new WriteInCandidateType()
-									.withWriteInCandidateIdentification(
+							e.getWriteInPosition().add(new WriteInPositionType()
+									.withWriteInPositionIdentification(
 											StringUtil.generateUUIDFromString(e.getElection().getElectionIdentification() + i))
 									.withPosition(i)
 									.withReturnCodeWriteInDescriptionInfo(returnCodeWriteInDescription));
@@ -1275,60 +1321,107 @@ public class ContestService {
 		return c1;
 	}
 
-	private <T> void checkLanguageCount(final List<T> list, final Function<T, ?> getLanguage, final String name) {
-		checkState(list.stream().map(getLanguage).distinct().count() >= MINIMAL_REQUIRED_LANGUAGES,
-				"%s must contain at least 4 distinct languages",
-				name);
+	private <T> void checkLanguageCorrectness(final List<T> list, final Function<T, LanguageType> getLanguage, final String name) {
+		final List<LanguageType> languages = Arrays.stream(LanguageType.values()).sorted().toList();
+		checkState(list.stream().map(getLanguage).sorted().toList().equals(languages),
+				"%s must contain exactly the defined languages %s", name, LANGUAGES);
 	}
 
-	private <T> void checkLanguageCount(final List<T> list, final Function<T, ?> getLanguage, final String id, final String elementName,
+	private <T> void checkLanguageCorrectness(final List<T> list, final Function<T, LanguageType> getLanguage, final String id,
+			final String elementName,
 			final String fieldName) {
-		checkState(list.stream().map(getLanguage).distinct().count() >= MINIMAL_REQUIRED_LANGUAGES,
-				"%s '%s' : %s must contain at least 4 distinct languages", elementName, id, fieldName);
+		final List<LanguageType> languages = Arrays.stream(LanguageType.values()).sorted().toList();
+		checkState(list.stream().map(getLanguage).sorted().toList().equals(languages),
+				"%s '%s' : %s must contain exactly the defined languages %s", elementName, id, fieldName,
+				LANGUAGES);
 	}
 
 	private void checkLanguagesConsistency(final ContestType contest) {
 		// contest
 		checkState(contest.getContestDescription() != null, "ContestDescription must be defined in source file");
 
-		checkLanguageCount(contest.getContestDescription().getContestDescriptionInfo(),
+		checkLanguageCorrectness(contest.getContestDescription().getContestDescriptionInfo(),
 				ContestDescriptionInformationType.ContestDescriptionInfo::getLanguage, "contestDescription");
+
+		// election group
+		contest.getElectionGroupBallot().forEach(eg -> {
+			checkState(eg.getElectionGroupDescription() != null, "ElectionGroupDescription must be defined");
+
+			checkLanguageCorrectness(eg.getElectionGroupDescription().getElectionGroupDescriptionInfo(),
+					ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo::getLanguage,
+					eg.getElectionGroupIdentification(),
+					"electionGroupBallot",
+					"electionGroupDescription");
+		});
 
 		//election
 		contest.getElectionGroupBallot().stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.forEach(e -> {
 					checkState(e.getElection().getElectionDescription() != null, "ElectionDescription must be defined in source file");
 
-					checkLanguageCount(e.getElection().getElectionDescription().getElectionDescriptionInfo(),
+					checkLanguageCorrectness(e.getElection().getElectionDescription().getElectionDescriptionInfo(),
 							ElectionDescriptionInformationType.ElectionDescriptionInfo::getLanguage, e.getElection().getElectionIdentification(),
 							"election",
 							"electionDescription");
 
 					final String CANDIDATE_ELEMENT_NAME = "candidate";
+					final String LIST_ELEMENT_NAME = "list";
 
 					e.getCandidate().forEach(c -> {
 						checkState(c.getCandidateText() != null, "CandidateText must be defined in source file");
 
-						checkLanguageCount(c.getCandidateText().getCandidateTextInfo(),
+						checkLanguageCorrectness(c.getCandidateText().getCandidateTextInfo(),
 								CandidateTextInformationType.CandidateTextInfo::getLanguage,
 								c.getCandidateIdentification(), CANDIDATE_ELEMENT_NAME, "candidateText");
 						if (c.getOccupationalTitle() != null) {
-							checkLanguageCount(c.getOccupationalTitle().getOccupationalTitleInfo(),
+							checkLanguageCorrectness(c.getOccupationalTitle().getOccupationalTitleInfo(),
 									OccupationalTitleInformationType.OccupationalTitleInfo::getLanguage, c.getCandidateIdentification(),
 									CANDIDATE_ELEMENT_NAME,
 									"occupationalTitle");
 						}
+
+						if (c.getPartyAffiliation() != null) {
+							checkLanguageCorrectness(c.getPartyAffiliation().getPartyAffiliationInfo(),
+									PartyAffiliationformationType.PartyAffiliationInfo::getLanguage,
+									c.getCandidateIdentification(),
+									CANDIDATE_ELEMENT_NAME,
+									"partyAffiliation");
+						}
+
+						if (c.getIncumbent() != null && c.getIncumbent().getIncumbentText() != null) {
+							checkLanguageCorrectness(c.getIncumbent().getIncumbentText().getIncumbentTextInfo(),
+									IncumbentTextInfoType::getLanguage,
+									c.getCandidateIdentification(),
+									CANDIDATE_ELEMENT_NAME,
+									"incumbentText");
+						}
 					});
 					e.getList().forEach(l -> {
-						checkLanguageCount(l.getListDescription().getListDescriptionInfo(),
+						checkLanguageCorrectness(l.getListDescription().getListDescriptionInfo(),
 								ListDescriptionInformationType.ListDescriptionInfo::getLanguage,
-								l.getListIdentification(), "list", "listDescription");
-						l.getCandidatePosition().forEach(cp -> checkLanguageCount(cp.getCandidateTextOnPosition().getCandidateTextInfo(),
+								l.getListIdentification(), LIST_ELEMENT_NAME, "listDescription");
+						l.getCandidatePosition().forEach(cp -> checkLanguageCorrectness(cp.getCandidateTextOnPosition().getCandidateTextInfo(),
 								CandidateTextInformationType.CandidateTextInfo::getLanguage, cp.getCandidateIdentification(),
 								CANDIDATE_ELEMENT_NAME,
 								"candidateTextOnPosition"));
+
+						if (l.getVarListText1() != null) {
+							checkLanguageCorrectness(l.getVarListText1().getVarListTextInfo(),
+									VarListTextInfoType::getLanguage,
+									l.getListIdentification(),
+									LIST_ELEMENT_NAME,
+									"varListText1");
+						}
+
+						if (l.getVarListText2() != null) {
+							checkLanguageCorrectness(l.getVarListText2().getVarListTextInfo(),
+									VarListTextInfoType::getLanguage,
+									l.getListIdentification(),
+									LIST_ELEMENT_NAME,
+									"varListText2");
+						}
 					});
-					e.getListUnion().forEach(l -> checkLanguageCount(l.getListUnionDescription().getListUnionDescriptionInfo(),
+					e.getListUnion().forEach(l -> checkLanguageCorrectness(l.getListUnionDescription().getListUnionDescriptionInfo(),
 							ListUnionDescriptionType.ListUnionDescriptionInfo::getLanguage, l.getListUnionIdentification(), "list-union",
 							"listUnionDescription"));
 				});
@@ -1336,12 +1429,12 @@ public class ContestService {
 		contest.getVoteInformation().forEach(v -> {
 			checkState(v.getVote().getVoteDescription() != null, "VoteDescription must be defined in source file");
 
-			checkLanguageCount(v.getVote().getVoteDescription().getVoteDescriptionInfo(),
+			checkLanguageCorrectness(v.getVote().getVoteDescription().getVoteDescriptionInfo(),
 					VoteDescriptionInformationType.VoteDescriptionInfo::getLanguage, v.getVote().getVoteIdentification(), "vote",
 					"voteDescription");
 			v.getVote().getBallot().forEach(b -> {
 				if (b.getBallotDescription() != null) {
-					checkLanguageCount(b.getBallotDescription().getBallotDescriptionInfo(),
+					checkLanguageCorrectness(b.getBallotDescription().getBallotDescriptionInfo(),
 							BallotDescriptionInformationType.BallotDescriptionInfo::getLanguage, b.getBallotIdentification(), "ballot",
 							"ballotDescription");
 				}
@@ -1353,29 +1446,29 @@ public class ContestService {
 
 				if (b.getStandardBallot() != null) {
 					//standardBallot
-					checkLanguageCount(b.getStandardBallot().getBallotQuestion().getBallotQuestionInfo(),
+					checkLanguageCorrectness(b.getStandardBallot().getBallotQuestion().getBallotQuestionInfo(),
 							BallotQuestionType.BallotQuestionInfo::getLanguage, b.getStandardBallot().getQuestionIdentification(),
 							QUESTION_ELEMENT_NAME,
 							BALLOT_QUESTION_FIELD_NAME);
 					b.getStandardBallot().getAnswer().forEach(
-							a -> checkLanguageCount(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
+							a -> checkLanguageCorrectness(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
 									ANSWER_ELEMENT_NAME,
 									ANSWER_FIELD_NAME));
 				} else {
 					//variantBallot
 					b.getVariantBallot().getStandardQuestion().forEach(sq -> {
-						checkLanguageCount(sq.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionType.BallotQuestionInfo::getLanguage,
+						checkLanguageCorrectness(sq.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionType.BallotQuestionInfo::getLanguage,
 								sq.getQuestionIdentification(), QUESTION_ELEMENT_NAME, BALLOT_QUESTION_FIELD_NAME);
 						sq.getAnswer().forEach(
-								a -> checkLanguageCount(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
+								a -> checkLanguageCorrectness(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
 										ANSWER_ELEMENT_NAME,
 										ANSWER_FIELD_NAME));
 					});
 					b.getVariantBallot().getTieBreakQuestion().forEach(tbq -> {
-						checkLanguageCount(tbq.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionType.BallotQuestionInfo::getLanguage,
+						checkLanguageCorrectness(tbq.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionType.BallotQuestionInfo::getLanguage,
 								tbq.getQuestionIdentification(), QUESTION_ELEMENT_NAME, BALLOT_QUESTION_FIELD_NAME);
 						tbq.getAnswer().forEach(
-								a -> checkLanguageCount(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
+								a -> checkLanguageCorrectness(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
 										ANSWER_ELEMENT_NAME,
 										ANSWER_FIELD_NAME));
 					});
@@ -1389,30 +1482,29 @@ public class ContestService {
 	}
 
 	private void checkEVotingDates(final ContestType c) {
-		final GregorianCalendar evotingFromDate = c.getEvotingFromDate().toGregorianCalendar();
-		final GregorianCalendar evotingToDate = c.getEvotingToDate().toGregorianCalendar();
+		final LocalDateTime evotingFromDate = LocalDateTimeUtils.fromXMLGregorianCalendar(c.getEvotingFromDate());
+		final LocalDateTime evotingToDate = LocalDateTimeUtils.fromXMLGregorianCalendar(c.getEvotingToDate());
 
 		// These are mandatory checks that cannot be bypassed.
-		checkState(evotingToDate.getTime().after(new Date()), "evotingToDate must be in the future.");
-		checkState(evotingFromDate.getTime().before(evotingToDate.getTime()), "evotingFromDate must be before evotingToDate.");
+		checkState(evotingToDate.isAfter(LocalDateTimeUtils.now()), "evotingToDate must be in the future.");
+		checkState(evotingFromDate.isBefore(evotingToDate), "evotingFromDate must be before evotingToDate.");
 
 		if (bypassCheckConsistencyDates) {
 			LOGGER.warn("As defined by configuration, bypassing the evoting dates consistency checks...");
 			return;
 		}
 
-		checkState(evotingFromDate.getTime().after(new Date()), "evotingFromDate must be in the future.");
+		checkState(evotingFromDate.isAfter(LocalDateTimeUtils.now()), "evotingFromDate must be in the future.");
 
-		final LocalDate dtFromLocal = LocalDate.of(evotingFromDate.get(Calendar.YEAR), evotingFromDate.get(Calendar.MONTH) + 1,
-				evotingFromDate.get(Calendar.DAY_OF_MONTH));
-		final LocalDate dtToLocal = LocalDate.of(evotingToDate.get(Calendar.YEAR), evotingToDate.get(Calendar.MONTH) + 1,
-				evotingToDate.get(Calendar.DAY_OF_MONTH));
+		final LocalDate dtFromLocal = evotingFromDate.toLocalDate();
+		final LocalDate dtToLocal = evotingToDate.toLocalDate();
 		final long daysBetween = DAYS.between(dtFromLocal, dtToLocal);
 
 		checkState(daysBetween >= evotingFromToMinDeltaAllowed,
 				"the number of days between 'eVoting date from' and 'eVoting date to' must be at least %s", evotingFromToMinDeltaAllowed);
 
-		if (c.getEvotingToDate().toGregorianCalendar().getTime().after(c.getContestDate().toGregorianCalendar().getTime())) {
+		final LocalDate contestDate = LocalDateUtils.fromXMLGregorianCalendar(c.getContestDate());
+		if (evotingToDate.isAfter(contestDate.atStartOfDay())) {
 			LOGGER.warn("The date of the contest should follow the eVoting date from.");
 		}
 	}
@@ -1677,12 +1769,32 @@ public class ContestService {
 				eg.getElectionGroupIdentification());
 	}
 
-	private void checkReferenceOnPositionOnCandidateIsFilled(final ContestType c) {
-		c.getElectionGroupBallot().stream()
+	private void checkReferenceOnPositionOnCandidateIsFilled(final ContestType contest) {
+		contest.getElectionGroupBallot().stream()
 				.flatMap(eg -> eg.getElectionInformation().stream())
-				.flatMap(e -> e.getCandidate().stream())
-				.forEach(candidate -> checkState(!StringUtil.isNullOrEmpty(candidate.getReferenceOnPosition()),
-						"the referenceOnPosition for the candidate must be provided. [candidateId: %s]", candidate.getCandidateIdentification()));
+				.forEach(e -> {
+					final List<CandidateType> candidates = e.getCandidate();
+					if (candidates.isEmpty()) {
+						return;
+					}
+
+					final List<CandidateType> candidatesWithoutReferenceOnPosition = candidates.stream()
+							.filter(c -> StringUtil.isNullOrEmpty(c.getReferenceOnPosition()))
+							.toList();
+
+					if (candidates.size() == candidatesWithoutReferenceOnPosition.size()) {
+						IntStream.rangeClosed(1, candidates.size())
+								.forEach(i -> candidates.get(i - 1).setReferenceOnPosition(String.valueOf(i)));
+						LOGGER.warn(
+								"The candidateReference in the election were not provided and were assigned automatically. [electionIdentification: {}]",
+								e.getElection().getElectionIdentification());
+					} else if (!candidatesWithoutReferenceOnPosition.isEmpty()) {
+						throw new IllegalStateException(
+								"The field candidateReference for one or more candidates was not provided: [electionIdentification: %s, candidateId: %s]".formatted(
+										e.getElection().getElectionIdentification(),
+										candidatesWithoutReferenceOnPosition.getFirst().getCandidateIdentification()));
+					}
+				});
 	}
 
 	private void checkVoteIdentificationsDistinctness(final ContestType c) {
@@ -1760,16 +1872,16 @@ public class ContestService {
 				.flatMap(electionGroupBallot -> electionGroupBallot.getElectionInformation().stream())
 				.forEach(electionInformation -> {
 					if (electionInformation.getElection().isWriteInsAllowed()) {
-						checkState(electionInformation.getWriteInCandidate() != null
-										&& electionInformation.getWriteInCandidate().size() == electionInformation.getElection().getNumberOfMandates(),
-								"The election allows write-ins and must contain as many write-in candidates as there are mandates. [electionId: %s, numberOfMandates: %s]",
+						checkState(electionInformation.getWriteInPosition() != null
+										&& electionInformation.getWriteInPosition().size() == electionInformation.getElection().getNumberOfMandates(),
+								"The election allows write-ins and must contain as many write-in positions as there are mandates. [electionId: %s, numberOfMandates: %s]",
 								electionInformation.getElection().getElectionIdentification(),
 								electionInformation.getElection().getNumberOfMandates());
 					} else {
-						checkState(electionInformation.getWriteInCandidate() == null || electionInformation.getWriteInCandidate().isEmpty(),
-								"The election does not allow write-ins and must therefore not have any write-in candidates. [electionId: %s]",
+						checkState(electionInformation.getWriteInPosition() == null || electionInformation.getWriteInPosition().isEmpty(),
+								"The election does not allow write-ins and must therefore not have any write-in positions. [electionId: %s]",
 								electionInformation.getElection().getElectionIdentification());
-						checkState(electionInformation.getImplicitWriteInCandidate() == null || electionInformation.getWriteInCandidate().isEmpty(),
+						checkState(electionInformation.getImplicitWriteInCandidate() == null || electionInformation.getWriteInPosition().isEmpty(),
 								"The election does not allow write-ins and must therefore not have any implicit write-in candidates. [electionId: %s]",
 								electionInformation.getElection().getElectionIdentification());
 					}
