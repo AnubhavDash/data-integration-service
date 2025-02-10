@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.register;
 
@@ -14,7 +14,6 @@ import java.util.List;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -37,7 +36,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PersonType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PhysicalAddressType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.SexType;
 
-@Mapper
+@Mapper(uses = XsTokenMapper.class)
 public interface ECH0045v42Mapper {
 	Logger LOGGER = LoggerFactory.getLogger(ECH0045v42Mapper.class);
 	ECH0045v42Mapper INSTANCE = Mappers.getMapper(ECH0045v42Mapper.class);
@@ -129,7 +128,7 @@ public interface ECH0045v42Mapper {
 	@Mapping(target = "person.languageOfCorrespondance", source = "swissAbroadPerson.languageOfCorrespondance")
 	@Mapping(target = "person.residenceCountryId", ignore = true)
 	@Mapping(target = "person.municipality", source = "v.person.swissAbroad.municipality")
-	@Mapping(target = "voterIdentification", source = "swissAbroadPerson.personIdentification.localPersonId.personId")
+	@Mapping(target = "voterIdentification", source = "swissAbroadPerson.personIdentification.localPersonId.personId", qualifiedBy = XsTokenMapper.XsTokenMapping.class)
 	@Mapping(target = "sex", source = "swissAbroadPerson.personIdentification.sex")
 	@Mapping(target = "authorization", ignore = true)
 	@Mapping(target = "extendedAuthenticationKeys", ignore = true)
@@ -146,7 +145,7 @@ public interface ECH0045v42Mapper {
 	@Mapping(target = "person.languageOfCorrespondance", source = "swissDomesticPerson.languageOfCorrespondance")
 	@Mapping(target = "person.residenceCountryId", constant = "CH")
 	@Mapping(target = "person.municipality", source = "v.person.swiss.municipality")
-	@Mapping(target = "voterIdentification", source = "swissDomesticPerson.personIdentification.localPersonId.personId")
+	@Mapping(target = "voterIdentification", source = "swissDomesticPerson.personIdentification.localPersonId.personId", qualifiedBy = XsTokenMapper.XsTokenMapping.class)
 	@Mapping(target = "sex", source = "swissDomesticPerson.personIdentification.sex")
 	@Mapping(target = "authorization", ignore = true)
 	@Mapping(target = "extendedAuthenticationKeys", ignore = true)
@@ -163,7 +162,7 @@ public interface ECH0045v42Mapper {
 	@Mapping(target = "person.languageOfCorrespondance", source = "foreignerPerson.languageOfCorrespondance")
 	@Mapping(target = "person.residenceCountryId", constant = "CH")
 	@Mapping(target = "person.municipality", source = "v.person.foreigner.municipality")
-	@Mapping(target = "voterIdentification", source = "foreignerPerson.personIdentification.localPersonId.personId")
+	@Mapping(target = "voterIdentification", source = "foreignerPerson.personIdentification.localPersonId.personId", qualifiedBy = XsTokenMapper.XsTokenMapping.class)
 	@Mapping(target = "sex", source = "foreignerPerson.personIdentification.sex")
 	@Mapping(target = "authorization", ignore = true)
 	@Mapping(target = "extendedAuthenticationKeys", ignore = true)

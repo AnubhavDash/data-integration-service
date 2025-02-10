@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.common;
 
@@ -54,6 +54,8 @@ public class Stax2Wrapper {
 
 		name = "inputStream";
 		unmarshaller = JAXBContext.newInstance(jaxbFactoryClass).createUnmarshaller();
+		unmarshaller.setEventHandler(new CustomValidationEventHandler());
+
 		if (specificUnmarshallerFactoryInstance != null) {
 			unmarshaller.setProperty("org.glassfish.jaxb.core.ObjectFactory", specificUnmarshallerFactoryInstance);
 		}
@@ -76,6 +78,7 @@ public class Stax2Wrapper {
 
 		name = xmlFileLocation;
 		unmarshaller = JAXBContext.newInstance(jaxbFactoryClass).createUnmarshaller();
+		unmarshaller.setEventHandler(new CustomValidationEventHandler());
 
 		if (specificUnmarshallerFactoryInstance != null) {
 			unmarshaller.setProperty("com.sun.xml.bind.ObjectFactory", specificUnmarshallerFactoryInstance);
