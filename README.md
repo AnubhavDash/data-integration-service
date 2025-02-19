@@ -40,9 +40,6 @@ The properties file “application.properties” contains the following definiti
     * authorization.gracePeriod=900
 * counting circles
     * countingCircle.testControl.minValue=10000
-* default answer type
-    * votes.defaultAnswerType.standard = 2
-    * votes.defaultAnswerType.tiebreak = 4
 
 ![Workflow](DIS.jpg)
 

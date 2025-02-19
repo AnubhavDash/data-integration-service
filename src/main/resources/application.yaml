@@ -70,12 +70,6 @@ bypass:
   # Bypass check output XSD validation. Default false.
   checkOutputXSDValidation: false
 
-# Default answer types. Default is 2 for standard and 4 for tiebreak.
-votes:
-  defaultAnswerType:
-    standard: 2
-    tiebreak: 4
-
 # Enable diplomatic bag. Default false.
 diplomaticBag:
   enabled: false

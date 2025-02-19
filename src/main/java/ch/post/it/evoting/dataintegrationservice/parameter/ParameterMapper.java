@@ -36,11 +36,13 @@ public interface ParameterMapper {
 
 	@Mapping(target = "answerPosition", source = "a.answerPosition")
 	@Mapping(target = "answerIdentification", source = "answerIdentifier")
+	@Mapping(target = "hiddenAnswer", source = "a.hiddenAnswer")
 	@Mapping(target = "answerInfo", source = "a.answerInfo")
 	StandardAnswerType map(ch.evoting.xmlns.parameter._5.StandardAnswerType a, String answerIdentifier);
 
 	@Mapping(target = "answerPosition", source = "a.answerPosition")
 	@Mapping(target = "answerIdentification", source = "answerIdentifier")
+	@Mapping(target = "hiddenAnswer", source = "a.hiddenAnswer")
 	@Mapping(target = "answerInfo", source = "a.answerInfo")
 	TiebreakAnswerType map(ch.evoting.xmlns.parameter._5.TiebreakAnswerType a, String answerIdentifier);
 

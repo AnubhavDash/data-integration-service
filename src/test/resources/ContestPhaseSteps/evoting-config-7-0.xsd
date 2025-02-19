@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:config="http://www.evoting.ch/xmlns/config/7" targetNamespace="http://www.evoting.ch/xmlns/config/7" elementFormDefault="qualified" version="7.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:config="http://www.evoting.ch/xmlns/config/7" targetNamespace="http://www.evoting.ch/xmlns/config/7" elementFormDefault="qualified" version="7.0${xsd-postfix}">
 	<xs:simpleType name="languageType">
 		<xs:restriction base="xs:string">
 			<xs:length value="2"/>
@@ -369,7 +369,7 @@
 			<xs:element name="list" type="config:listType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="emptyList" type="config:emptyListType"/>
 			<xs:element name="listUnion" type="config:listUnionType" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="writeInCandidate" type="config:writeInCandidateType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="writeInPosition" type="config:writeInPositionType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="implicitWriteInCandidate" minOccurs="0" maxOccurs="unbounded">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
@@ -546,6 +546,7 @@
 			<xs:element name="displayListLine3" type="config:displayLineInformationType" minOccurs="0"/>
 			<xs:element name="displayListLine4" type="config:displayLineInformationType" minOccurs="0"/>
 			<xs:element name="displayListLine5" type="config:displayLineInformationType" minOccurs="0"/>
+			<xs:element name="listUnionBallotText" type="config:listUnionBallotTextType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="emptyListType">
@@ -569,6 +570,25 @@
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="emptyPosition" type="config:emptyPositionType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="listUnionBallotTextType">
+		<xs:sequence>
+			<xs:element name="listUnionBallotTextInfo" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="language" type="config:languageType"/>
+						<xs:element name="listUnionBallotText">
+							<xs:simpleType>
+								<xs:restriction base="xs:token">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="500"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="dwellingAddressType">
@@ -696,7 +716,7 @@
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="ballotQuestion" type="config:ballotQuestionType"/>
-			<xs:element name="answer" type="config:standardAnswerType" maxOccurs="unbounded"/>
+			<xs:element name="answer" type="config:standardAnswerType" minOccurs="3" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ballotQuestionType">
@@ -754,9 +774,9 @@
 			<xs:element name="answerType">
 				<xs:simpleType>
 					<xs:restriction base="xs:nonNegativeInteger">
-						<xs:enumeration value="1"/>
+<!--						<xs:enumeration value="1"/>--><!-- Value not supported in e-voting-->
 						<xs:enumeration value="2"/>
-						<xs:enumeration value="3"/>
+<!--						<xs:enumeration value="3"/>--><!-- Value not supported in e-voting-->
 						<xs:enumeration value="4"/>
 						<xs:enumeration value="5"/>
 						<xs:enumeration value="6"/>
@@ -765,7 +785,7 @@
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="ballotQuestion" type="config:ballotQuestionType"/>
-			<xs:element name="answer" type="config:standardAnswerType" maxOccurs="unbounded"/>
+			<xs:element name="answer" type="config:standardAnswerType" minOccurs="3" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="tieBreakQuestionType">
@@ -790,9 +810,9 @@
 			<xs:element name="answerType">
 				<xs:simpleType>
 					<xs:restriction base="xs:nonNegativeInteger">
-						<xs:enumeration value="1"/>
+<!--						<xs:enumeration value="1"/>--><!-- Value not supported in e-voting-->
 						<xs:enumeration value="2"/>
-						<xs:enumeration value="3"/>
+<!--						<xs:enumeration value="3"/>--><!-- Value not supported in e-voting-->
 						<xs:enumeration value="4"/>
 						<xs:enumeration value="5"/>
 						<xs:enumeration value="6"/>
@@ -801,7 +821,7 @@
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="ballotQuestion" type="config:ballotQuestionType"/>
-			<xs:element name="answer" type="config:tiebreakAnswerType" maxOccurs="unbounded"/>
+			<xs:element name="answer" type="config:tiebreakAnswerType" minOccurs="3" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="standardAnswerType">
@@ -824,7 +844,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="hiddenAnswer" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="hiddenAnswer" type="xs:boolean"/>
 			<xs:element name="answerInfo" type="config:answerInformationType" minOccurs="4" maxOccurs="4"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -847,7 +867,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="hiddenAnswer" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="hiddenAnswer" type="xs:boolean"/>
 			<xs:element name="answerInfo" type="config:answerInformationType" minOccurs="4" maxOccurs="4"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -1192,9 +1212,9 @@
 			<xs:element name="referencedList" type="config:identifierType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="writeInCandidateType">
+	<xs:complexType name="writeInPositionType">
 		<xs:sequence>
-			<xs:element name="writeInCandidateIdentification" type="config:identifierType"/>
+			<xs:element name="writeInPositionIdentification" type="config:identifierType"/>
 			<xs:element name="position">
 				<xs:simpleType>
 					<xs:restriction base="xs:integer">
@@ -1395,10 +1415,10 @@
 			<xs:selector xpath="config:contest/config:electionGroupBallot/config:electionInformation/config:listUnion"/>
 			<xs:field xpath="config:listUnionIdentification"/>
 		</xs:unique>
-		<!-- Prevent write in candidate identification duplicates -->
-		<xs:unique name="writeInCandidateIdentificationUniquenessConstraint">
-			<xs:selector xpath="config:contest/config:electionGroupBallot/config:electionInformation/config:writeInCandidate"/>
-			<xs:field xpath="config:writeInCandidateIdentification"/>
+		<!-- Prevent write in position identification duplicates -->
+		<xs:unique name="writeInPositionIdentificationUniquenessConstraint">
+			<xs:selector xpath="config:contest/config:electionGroupBallot/config:electionInformation/config:writeInPosition"/>
+			<xs:field xpath="config:writeInPositionIdentification"/>
 		</xs:unique>
 	</xs:element>
 </xs:schema>

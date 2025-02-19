@@ -33,7 +33,7 @@
 		<crypto-primitives.version>1.5.0.0-b25</crypto-primitives.version>
 		<cucumber-bom.version>7.21.0</cucumber-bom.version>
 		<download-maven-plugin.version>1.13.0</download-maven-plugin.version>
-		<e-voting-libraries.version>1.5.0.0-b87</e-voting-libraries.version>
+		<e-voting-libraries.version>1.5.0.0-b90</e-voting-libraries.version>
 		<gmavenplus-plugin.version>4.1.1</gmavenplus-plugin.version>
 		<groovy.version>4.0.18</groovy.version>
 		<groovy-all.version>4.0.25</groovy-all.version>
@@ -65,7 +65,7 @@
 		<spring-boot.version>3.4.2</spring-boot.version>
 		<stax2-api.version>4.2.2</stax2-api.version>
 		<super-machine.version>0.1.0</super-machine.version>
-		<testdata.version>1.5.0.0-b19</testdata.version>
+		<testdata.version>1.5.0.0-b21</testdata.version>
 		<woodstox-core.version>7.1.0</woodstox-core.version>
 		<xml-merge.version>0.2</xml-merge.version>
 		<xsdlib.version>2013.2</xsdlib.version>

@@ -15,6 +15,7 @@
 				<questionIdentification>tiebreak-qid1</questionIdentification>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>fr</language>
 						<answer>NON</answer>
@@ -34,6 +35,7 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>fr</language>
 						<answer>OUI</answer>
@@ -56,6 +58,7 @@
 				<questionIdentification>tiebreak-qid2</questionIdentification>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>fr</language>
 						<answer>NON</answer>
@@ -75,6 +78,7 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>fr</language>
 						<answer>OUI</answer>
@@ -94,6 +98,7 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>3</answerPosition>
+					<hiddenAnswer>true</hiddenAnswer>
 					<answerInfo>
 						<language>fr</language>
 						<answer>OUI</answer>

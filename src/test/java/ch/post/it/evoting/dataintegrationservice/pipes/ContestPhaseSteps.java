@@ -336,6 +336,11 @@ public class ContestPhaseSteps extends PhaseSteps {
 		pStandardAnswerMap.get(name + "." + at + "." + answer).setAnswerPosition(BigInteger.valueOf(pos));
 	}
 
+	@And("^standardAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" is hiddenAnswer (true|false)$")
+	public void andStandardAnswer(final String name, final String at, final String answer, final boolean isHidden) {
+		pStandardAnswerMap.get(name + "." + at + "." + answer).setHiddenAnswer(isHidden);
+	}
+
 	@And("^tiebreakAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer position (\\d+)$")
 	public void andTiebreakAnswer(final String name, final String at, final String answer, final Integer pos) {
 		pTiebreakAnswerMap.get(name + "." + at + "." + answer).setAnswerPosition(BigInteger.valueOf(pos));
@@ -354,6 +359,11 @@ public class ContestPhaseSteps extends PhaseSteps {
 	@And("^tiebreakAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" is as blank defined$")
 	public void andTiebreakAnswer(final String name, final String at, final String answer) {
 		pTiebreakAnswerMap.get(name + "." + at + "." + answer).setStandardQuestionReference(null);
+	}
+
+	@And("^tiebreakAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" is hiddenAnswer (true|false)$")
+	public void andTiebreakAnswer(final String name, final String at, final String answer, final boolean isHidden) {
+		pTiebreakAnswerMap.get(name + "." + at + "." + answer).setHiddenAnswer(isHidden);
 	}
 
 	@And("^standardAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer description \"([^\"]*)\" \"([^\"]*)\"$")
@@ -620,6 +630,11 @@ public class ContestPhaseSteps extends PhaseSteps {
 		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setQuestionPosition(0);
 	}
 
+	@And("^the standard question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer type cleared out$")
+	public void andStandardQuestionHasAnswerTypeClearedOut(final String votes, final String vote, final String ballot, final String question) {
+		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).setAnswerType(null);
+	}
+
 	@And("^the standard question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer type (\\d+)$")
 	public void andStandardQuestionHasAnswerType(final String votes, final String vote, final String ballot, final String question,
 			final Integer type) {
@@ -636,6 +651,34 @@ public class ContestPhaseSteps extends PhaseSteps {
 		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).getBallotQuestion().getBallotQuestionInfo().add(questionInfo);
 	}
 
+	@Given("^the standard question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer cleared out$")
+	public void andStandardQuestionHasAnswer(final String votes, final String vote, final String ballot, final String question) {
+		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).getAnswer().clear();
+	}
+
+	@And("^the standard question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
+	public void andStandardQuestionHasAnswer(final String votes, final String vote, final String ballot, final String question, final String id,
+			final String standardAnswer, final int position, final boolean isHidden) {
+		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).getAnswer()
+				.add(new ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswerType()
+						.withAnswerIdentification(id)
+						.withStandardAnswerType(standardAnswer)
+						.withAnswerPosition(position)
+						.withHiddenAnswer(isHidden));
+	}
+
+	@And("^the standard answer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has info \"([^\"]*)\" \"([^\"]*)\"$")
+	public void andStandardAnswerHasInfo(final String votes, final String vote, final String ballot, final String question,
+			final String answerId, final String language, final String answer) {
+		standardQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).getAnswer().stream()
+				.filter(standardAnswer -> standardAnswer.getAnswerIdentification().equals(answerId))
+				.findFirst()
+				.ifPresent(standardAnswer -> standardAnswer.getAnswerInfo()
+						.add(new ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType()
+								.withLanguage(LanguageType.valueOf(language))
+								.withAnswer(answer)));
+	}
+
 	@And("^the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has info \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
 	public void andTiebreakQuestionHasInfo(final String votes, final String vote, final String ballot, final String question, final String lang,
 			final String title, final String info) {
@@ -644,6 +687,28 @@ public class ContestPhaseSteps extends PhaseSteps {
 				.withBallotQuestionTitle(title)
 				.withBallotQuestion(info);
 		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).getBallotQuestion().getBallotQuestionInfo().add(questionInfo);
+	}
+
+	@And("^the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has answer \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
+	public void andTiebreakQuestionHasAnswer(final String votes, final String vote, final String ballot, final String question, final String id,
+			final int position, final boolean isHidden) {
+		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).getAnswer()
+				.add(new ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TiebreakAnswerType()
+						.withAnswerIdentification(id)
+						.withAnswerPosition(position)
+						.withHiddenAnswer(isHidden));
+	}
+
+	@And("^the tiebreak answer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has info \"([^\"]*)\" \"([^\"]*)\"$")
+	public void andTiebreakAnswerHasInfo(final String votes, final String vote, final String ballot, final String question,
+			final String answerId, final String language, final String answer) {
+		tiebreakQuestionMap.get(votes + "." + vote + "." + ballot + "." + question).getAnswer().stream()
+				.filter(tiebreakAnswer -> tiebreakAnswer.getAnswerIdentification().equals(answerId))
+				.findFirst()
+				.ifPresent(tiebreakAnswer -> tiebreakAnswer.getAnswerInfo()
+						.add(new ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType()
+								.withLanguage(LanguageType.valueOf(language))
+								.withAnswer(answer)));
 	}
 
 	@Given("^the descriptions of the tiebreak question \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" are cleared out$")
@@ -983,7 +1048,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 
 	@Then("^it outputs an exception with text \"([^\"]*)\"$")
 	public void thenItOutputsAnExceptionWithText(final String message) {
-		assertTrue(processException.getMessage().endsWith(message));
+		assertEquals(message, processException.getMessage());
 	}
 
 	@Then("^it outputs no exception$")

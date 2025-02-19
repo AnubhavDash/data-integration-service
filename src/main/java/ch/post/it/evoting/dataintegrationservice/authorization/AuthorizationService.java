@@ -93,7 +93,8 @@ public class AuthorizationService {
 		authorizationTypePriority.put("OG", 6);
 		authorizationTypePriority.put("KO", 7);
 		authorizationTypePriority.put("SK", 8);
-		authorizationTypePriority.put("AN", 9);
+		authorizationTypePriority.put("GT", 9);
+		authorizationTypePriority.put("AN", 10);
 	}
 
 	public AuthorizationType build(final VoterTypeWithRole voter, final List<String> usedDOIids,

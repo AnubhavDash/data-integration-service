@@ -7,6 +7,7 @@
 				<standardAnswer>
 					<answerPosition>1</answerPosition>
 					<standardAnswerType>YES</standardAnswerType>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Ja</answer>
@@ -27,6 +28,7 @@
 				<standardAnswer>
 					<answerPosition>2</answerPosition>
 					<standardAnswerType>NO</standardAnswerType>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Nein</answer>
@@ -50,6 +52,7 @@
 				<standardAnswer>
 					<answerPosition>1</answerPosition>
 					<standardAnswerType>YES</standardAnswerType>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Ja</answer>
@@ -70,6 +73,7 @@
 				<standardAnswer>
 					<answerPosition>2</answerPosition>
 					<standardAnswerType>NO</standardAnswerType>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Nein</answer>
@@ -113,6 +117,7 @@
 				<answerTypeIdentification>4</answerTypeIdentification>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Initiative</answer>
@@ -132,6 +137,7 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Gegenentwurf</answer>
@@ -174,6 +180,7 @@
 				<answerTypeIdentification>5</answerTypeIdentification>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Initiative</answer>
@@ -193,6 +200,7 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Gegenvorschlag</answer>
@@ -235,6 +243,7 @@
 				<answerTypeIdentification>6</answerTypeIdentification>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Vorlage</answer>
@@ -254,6 +263,7 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Volksvorschlag</answer>
@@ -296,6 +306,7 @@
 				<answerTypeIdentification>7</answerTypeIdentification>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Hauptvorlage</answer>
@@ -315,6 +326,7 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Eventualantrag</answer>
