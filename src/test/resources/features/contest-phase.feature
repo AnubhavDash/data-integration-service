@@ -1000,10 +1000,10 @@ Feature: Contest Phase
     Then it outputs an exception with text "vote 'vote-B-id' variant ballot standard question 1 has more than one blank answer"
 
   Scenario: Throw an exception when variant ballot tiebreak question has two blank responses
-    Given tiebreakAnswer "my params"."tiebreak question 3"."answer 1" is as blank defined
-    And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" is as blank defined
+    Given tiebreakAnswer "my params"."tiebreak question 3"."answer 1" is hiddenAnswer true
+    And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" is hiddenAnswer true
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "vote 'vote-B-id' variant ballot tiebreak question 5 has more than one blank answer"
+    Then it outputs an exception with text "vote 'vote-B-id' variant ballot tiebreak question 5 has not exactly one hidden answer"
 
   Scenario: Throw an exception when standard question has less than 3 answer options
     Given the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has answer cleared out

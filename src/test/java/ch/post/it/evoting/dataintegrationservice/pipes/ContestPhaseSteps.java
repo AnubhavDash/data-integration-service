@@ -356,11 +356,6 @@ public class ContestPhaseSteps extends PhaseSteps {
 		pStandardAnswerMap.get(name + "." + at + "." + answer).setStandardAnswerType(answerType);
 	}
 
-	@And("^tiebreakAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" is as blank defined$")
-	public void andTiebreakAnswer(final String name, final String at, final String answer) {
-		pTiebreakAnswerMap.get(name + "." + at + "." + answer).setStandardQuestionReference(null);
-	}
-
 	@And("^tiebreakAnswer \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" is hiddenAnswer (true|false)$")
 	public void andTiebreakAnswer(final String name, final String at, final String answer, final boolean isHidden) {
 		pTiebreakAnswerMap.get(name + "." + at + "." + answer).setHiddenAnswer(isHidden);

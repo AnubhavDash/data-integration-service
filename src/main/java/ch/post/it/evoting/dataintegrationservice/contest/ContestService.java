@@ -1007,11 +1007,6 @@ public class ContestService {
 					final TiebreakAnswerType tba = tbq.getAnswer().get(aCounter);
 					if (tba.getStandardQuestionReference() == null) {
 						tba.setStandardQuestionReference(getReferencedQuestion(tbq, aCounter));
-						if (tba.getStandardQuestionReference() == null) {
-							LOGGER.warn(
-									"ReferencedQuestion for tieBreakQuestion with identification {} and answer with identification {} is null",
-									tbq.getQuestionIdentification(), tba.getAnswerIdentification());
-						}
 					}
 				}
 			}
@@ -1692,8 +1687,8 @@ public class ContestService {
 								<= 1, "vote '%s' variant ballot standard question %s has more than one blank answer",
 						v.getVote().getVoteIdentification(), q.getQuestionPosition()));
 				b.getVariantBallot().getTieBreakQuestion().forEach(
-						q -> checkState(q.getAnswer().stream().filter(a -> a.getStandardQuestionReference() == null).count() <= 1,
-								"vote '%s' variant ballot tiebreak question %s has more than one blank answer",
+						q -> checkState(q.getAnswer().stream().filter(TiebreakAnswerType::isHiddenAnswer).count() == 1,
+								"vote '%s' variant ballot tiebreak question %s has not exactly one hidden answer",
 								v.getVote().getVoteIdentification(),
 								q.getQuestionPosition()));
 			}
