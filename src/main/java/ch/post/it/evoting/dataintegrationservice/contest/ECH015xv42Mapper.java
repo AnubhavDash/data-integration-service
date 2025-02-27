@@ -395,6 +395,7 @@ public interface ECH015xv42Mapper {
 	@Mapping(target = "answerType", source = "answerInformation.answerType")
 	@Mapping(target = "answer", source = "answerInformation.answerOptionIdentification")
 	@Mapping(target = "questionNumber", source = "electronicBallotQuestionNumber")
+	@Mapping(target = "ballotQuestion", source = "electronicBallotQuestion")
 	StandardQuestionType convert(ch.ech.xmlns.ech_0155._5.QuestionInformationType qit,
 			@Context
 			final ch.ech.xmlns.ech_0155._5.ElectronicBallotType ballotType);
