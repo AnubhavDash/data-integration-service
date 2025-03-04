@@ -532,8 +532,8 @@
 						</goals>
 					</execution>
 					<execution>
-						<id>unpack-xsd-resources</id>
-						<phase>prepare-package</phase>
+						<id>unpack-resources</id>
+						<phase>generate-test-resources</phase>
 						<goals>
 							<goal>unpack</goal>
 						</goals>
@@ -547,17 +547,6 @@
 									<outputDirectory>${project.build.directory}/e-voting-libraries-xml</outputDirectory>
 									<includes>**/*.xsd</includes>
 								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-					<execution>
-						<id>unpack-testdata</id>
-						<phase>generate-test-resources</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
 								<artifactItem>
 									<groupId>ch.post.it.evoting</groupId>
 									<artifactId>testdata</artifactId>
@@ -567,6 +556,30 @@
 									<outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
 								</artifactItem>
 							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.testOutputDirectory}/ContestPhaseSteps</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.build.directory}/e-voting-libraries-xml/xsd</directory>
+									<includes>
+										<include>evoting-config-7-0.xsd</include>
+									</includes>
+								</resource>
+							</resources>
 						</configuration>
 					</execution>
 				</executions>
@@ -598,10 +611,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.jvnet.jaxb</groupId>
