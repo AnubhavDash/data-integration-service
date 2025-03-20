@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/5" xmlns:merge="http://xmlmerge.el4j.elca.ch" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/5 evoting-parameter-5-0.xsd">
+<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/5" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/5 evoting-parameter-5-0.xsd">
 	<contest>
-		<defaultAnswerTranslations merge:action="xsdinsert">
+		<defaultAnswerTranslations>
 			<answerType>
 				<answerTypeIdentification>1</answerTypeIdentification>
 				<standardAnswer>
@@ -411,7 +411,7 @@
 				</tiebreakAnswer>
 			</answerType>
 		</defaultAnswerTranslations>
-		<emptyPositionTextInfo merge:action="xsdinsert">
+		<emptyPositionTextInfo>
 			<positionText>
 				<language>de</language>
 				<text>Kein Name ausgewählt</text>
@@ -429,7 +429,7 @@
 				<text>Nagin num selecziunà</text>
 			</positionText>
 		</emptyPositionTextInfo>
-		<incumbentText merge:action="xsdinsert">
+		<incumbentText>
 			<incumbentTextInfo>
 				<language>de</language>
 				<text>Bisher</text>
@@ -447,7 +447,7 @@
 				<text>uscant</text>
 			</incumbentTextInfo>
 		</incumbentText>
-		<returnCodeWriteInDescriptionInfo merge:action="xsdinsert">
+		<returnCodeWriteInDescriptionInfo>
 			<positionText>
 				<language>de</language>
 				<text>Nicht genannte Person</text>

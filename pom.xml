@@ -40,7 +40,6 @@
 		<guava.version>33.4.0-jre</guava.version>
 		<hamcrest-core.version>3.0</hamcrest-core.version>
 		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
-		<jaxb-osgi.version>4.0.5</jaxb-osgi.version>
 		<jaxb-runtime.version>4.0.5</jaxb-runtime.version>
 		<jaxb-maven-plugin.version>4.0.8</jaxb-maven-plugin.version>
 		<junit-bom.version>5.12.0</junit-bom.version>
@@ -57,7 +56,6 @@
 		<maven-release-plugin.version>3.1.1</maven-release-plugin.version>
 		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
 		<maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
-		<msv-rngconverter.version>2022.7</msv-rngconverter.version>
 		<reactive-plumber.version>0.26.0</reactive-plumber.version>
 		<reactor-core.version>3.7.3</reactor-core.version>
 		<reproducible-build-maven-plugin.version>0.17.0</reproducible-build-maven-plugin.version>
@@ -67,8 +65,6 @@
 		<super-machine.version>0.1.0</super-machine.version>
 		<testdata.version>1.5.0.0-b24</testdata.version>
 		<woodstox-core.version>7.1.0</woodstox-core.version>
-		<xml-merge.version>0.2</xml-merge.version>
-		<xsdlib.version>2013.2</xsdlib.version>
 
 		<!-- OpenJDK -->
 		<openjdk-jre.version>jdk-21.0.5+11-jre</openjdk-jre.version>
@@ -115,18 +111,6 @@
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
 				<version>${logback-classic.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>ch.galinet.xml</groupId>
-				<artifactId>xml-merge</artifactId>
-				<version>${xml-merge.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-simple</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 
 			<dependency>
@@ -194,24 +178,9 @@
 				<version>${stax2-api.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.java.dev.msv</groupId>
-				<artifactId>msv-rngconverter</artifactId>
-				<version>${msv-rngconverter.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.msv.datatype.xsd</groupId>
-				<artifactId>xsdlib</artifactId>
-				<version>${xsdlib.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>com.fasterxml.woodstox</groupId>
 				<artifactId>woodstox-core</artifactId>
 				<version>${woodstox-core.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.xml.bind</groupId>
-				<artifactId>jaxb-osgi</artifactId>
-				<version>${jaxb-osgi.version}</version>
 			</dependency>
 
 			<dependency>
@@ -266,11 +235,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>ch.galinet.xml</groupId>
-			<artifactId>xml-merge</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.apache.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
 			<version>${groovy-all.version}</version>
@@ -312,18 +276,6 @@
 		<dependency>
 			<groupId>org.codehaus.woodstox</groupId>
 			<artifactId>stax2-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>net.java.dev.msv</groupId>
-			<artifactId>msv-rngconverter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.msv.datatype.xsd</groupId>
-			<artifactId>xsdlib</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-osgi</artifactId>
 		</dependency>
 
 		<dependency>
