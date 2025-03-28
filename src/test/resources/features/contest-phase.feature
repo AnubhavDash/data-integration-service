@@ -24,28 +24,12 @@ Feature: Contest Phase
 
 
     # PARAMETERS - default answers
-    # PARAMETERS - default answers for type 1
-    And user parameters "my params" has default answer type named "answer type 1"
-    And default answer type "my params"."answer type 1" has type 1
-    And default answer type "my params"."answer type 1" has standardAnswer named "answer 2"
-    And standardAnswer "my params"."answer type 1"."answer 2" has answer position 2
-    And standardAnswer "my params"."answer type 1"."answer 2" has answer description "DE" "Nein"
-    And standardAnswer "my params"."answer type 1"."answer 2" has answer description "FR" "Non"
-    And standardAnswer "my params"."answer type 1"."answer 2" has answer description "IT" "No"
-    And standardAnswer "my params"."answer type 1"."answer 2" has answer description "RM" "Nein"
-    And standardAnswer "my params"."answer type 1"."answer 2" has answer standardAnswerType = "NO"
-    And default answer type "my params"."answer type 1" has standardAnswer named "answer 1"
-    And standardAnswer "my params"."answer type 1"."answer 1" has answer position 1
-    And standardAnswer "my params"."answer type 1"."answer 1" has answer description "DE" "Ja"
-    And standardAnswer "my params"."answer type 1"."answer 1" has answer description "FR" "Oui"
-    And standardAnswer "my params"."answer type 1"."answer 1" has answer description "IT" "Si"
-    And standardAnswer "my params"."answer type 1"."answer 1" has answer description "RM" "Ja"
-    And standardAnswer "my params"."answer type 1"."answer 1" has answer standardAnswerType = "YES"
     # PARAMETERS - default answers for type 2
     And user parameters "my params" has default answer type named "answer type 2"
     And default answer type "my params"."answer type 2" has type 2
     And default answer type "my params"."answer type 2" has standardAnswer named "answer 1"
     And standardAnswer "my params"."answer type 2"."answer 1" has answer position 3
+    And standardAnswer "my params"."answer type 2"."answer 1" is hiddenAnswer true
     And standardAnswer "my params"."answer type 2"."answer 1" has answer description "DE" "Leer"
     And standardAnswer "my params"."answer type 2"."answer 1" has answer description "FR" "Vide"
     And standardAnswer "my params"."answer type 2"."answer 1" has answer description "IT" "Nullo"
@@ -53,6 +37,7 @@ Feature: Contest Phase
     And standardAnswer "my params"."answer type 2"."answer 1" has answer standardAnswerType = "EMPTY"
     And default answer type "my params"."answer type 2" has standardAnswer named "answer 2"
     And standardAnswer "my params"."answer type 2"."answer 2" has answer position 1
+    And standardAnswer "my params"."answer type 2"."answer 2" is hiddenAnswer false
     And standardAnswer "my params"."answer type 2"."answer 2" has answer description "DE" "Ja"
     And standardAnswer "my params"."answer type 2"."answer 2" has answer description "FR" "Oui"
     And standardAnswer "my params"."answer type 2"."answer 2" has answer description "IT" "Si"
@@ -60,17 +45,46 @@ Feature: Contest Phase
     And standardAnswer "my params"."answer type 2"."answer 2" has answer standardAnswerType = "YES"
     And default answer type "my params"."answer type 2" has standardAnswer named "answer 3"
     And standardAnswer "my params"."answer type 2"."answer 3" has answer position 2
+    And standardAnswer "my params"."answer type 2"."answer 3" is hiddenAnswer false
     And standardAnswer "my params"."answer type 2"."answer 3" has answer description "DE" "Nein"
     And standardAnswer "my params"."answer type 2"."answer 3" has answer description "FR" "Non"
     And standardAnswer "my params"."answer type 2"."answer 3" has answer description "IT" "No"
     And standardAnswer "my params"."answer type 2"."answer 3" has answer description "RM" "Nein"
     And standardAnswer "my params"."answer type 2"."answer 3" has answer standardAnswerType = "NO"
+        # PARAMETERS - default answers for type 4
+    And user parameters "my params" has default answer type named "answer type 4"
+    And default answer type "my params"."answer type 4" has type 4
+    And default answer type "my params"."answer type 4" has standardAnswer named "answer 2"
+    And standardAnswer "my params"."answer type 4"."answer 2" has answer position 2
+    And standardAnswer "my params"."answer type 4"."answer 2" is hiddenAnswer false
+    And standardAnswer "my params"."answer type 4"."answer 2" has answer description "DE" "Gegenvorschlag"
+    And standardAnswer "my params"."answer type 4"."answer 2" has answer description "FR" "Contre-proposition"
+    And standardAnswer "my params"."answer type 4"."answer 2" has answer description "IT" "Contra-proposta"
+    And standardAnswer "my params"."answer type 4"."answer 2" has answer description "RM" "Cuntra-proposta"
+    And standardAnswer "my params"."answer type 4"."answer 2" has answer standardAnswerType = "NO"
+    And default answer type "my params"."answer type 4" has standardAnswer named "answer 1"
+    And standardAnswer "my params"."answer type 4"."answer 1" has answer position 1
+    And standardAnswer "my params"."answer type 4"."answer 1" is hiddenAnswer false
+    And standardAnswer "my params"."answer type 4"."answer 1" has answer description "DE" "Initiative"
+    And standardAnswer "my params"."answer type 4"."answer 1" has answer description "FR" "Initiative"
+    And standardAnswer "my params"."answer type 4"."answer 1" has answer description "IT" "Initiativa"
+    And standardAnswer "my params"."answer type 4"."answer 1" has answer description "RM" "Initiativa"
+    And standardAnswer "my params"."answer type 4"."answer 1" has answer standardAnswerType = "YES"
+    And default answer type "my params"."answer type 4" has standardAnswer named "answer 3"
+    And standardAnswer "my params"."answer type 4"."answer 3" has answer position 3
+    And standardAnswer "my params"."answer type 4"."answer 3" is hiddenAnswer true
+    And standardAnswer "my params"."answer type 4"."answer 3" has answer description "DE" "Leer"
+    And standardAnswer "my params"."answer type 4"."answer 3" has answer description "FR" "Blanc"
+    And standardAnswer "my params"."answer type 4"."answer 3" has answer description "IT" "Bianco"
+    And standardAnswer "my params"."answer type 4"."answer 3" has answer description "RM" "Vid"
+    And standardAnswer "my params"."answer type 4"."answer 3" has answer standardAnswerType = "EMPTY"
 
     # PARAMETERS - specific answers for one of the question
     And user parameters "my params" has question "question variant C"
     And parameter question "my params"."question variant C" has questionIdentification "V-B_B-1_Q-proposal_C"
     And parameter question "my params"."question variant C" has standardAnswer named "answer 1"
     And standardAnswer "my params"."question variant C"."answer 1" has answer position 1
+    And standardAnswer "my params"."question variant C"."answer 1" is hiddenAnswer false
     And standardAnswer "my params"."question variant C"."answer 1" has answer description "DE" "Ja Ja"
     And standardAnswer "my params"."question variant C"."answer 1" has answer description "FR" "Oui Oui"
     And standardAnswer "my params"."question variant C"."answer 1" has answer description "IT" "Si Si"
@@ -78,17 +92,27 @@ Feature: Contest Phase
     And standardAnswer "my params"."question variant C"."answer 1" has answer standardAnswerType = "YES"
     And parameter question "my params"."question variant C" has standardAnswer named "answer 2"
     And standardAnswer "my params"."question variant C"."answer 2" has answer position 2
+    And standardAnswer "my params"."question variant C"."answer 2" is hiddenAnswer false
     And standardAnswer "my params"."question variant C"."answer 2" has answer description "DE" "Nein Nein"
     And standardAnswer "my params"."question variant C"."answer 2" has answer description "FR" "Non Non"
     And standardAnswer "my params"."question variant C"."answer 2" has answer description "IT" "No No"
     And standardAnswer "my params"."question variant C"."answer 2" has answer description "RM" "Nein Nein"
     And standardAnswer "my params"."question variant C"."answer 2" has answer standardAnswerType = "NO"
+    And parameter question "my params"."question variant C" has standardAnswer named "answer 3"
+    And standardAnswer "my params"."question variant C"."answer 3" has answer position 3
+    And standardAnswer "my params"."question variant C"."answer 3" is hiddenAnswer true
+    And standardAnswer "my params"."question variant C"."answer 3" has answer description "DE" "Nicht unterstützt"
+    And standardAnswer "my params"."question variant C"."answer 3" has answer description "FR" "Non supporté"
+    And standardAnswer "my params"."question variant C"."answer 3" has answer description "IT" "Non supportato"
+    And standardAnswer "my params"."question variant C"."answer 3" has answer description "RM" "Non supportato"
+    And standardAnswer "my params"."question variant C"."answer 3" has answer standardAnswerType = "EMPTY"
     # PARAMETERS - specific answers for tiebreak questions
     And user parameters "my params" has question "tiebreak question 1"
     And parameter question "my params"."tiebreak question 1" has questionIdentification "V-B_B-1_TQ-1"
     And parameter question "my params"."tiebreak question 1" has tiebreakAnswer named "answer 1"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 1" has answer position 1
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 1" has answer questionReference "V-B_B-1_Q-proposal_A"
+    And tiebreakAnswer "my params"."tiebreak question 1"."answer 1" is hiddenAnswer false
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 1" has answer description "DE" "I prefer A (DE)"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 1" has answer description "FR" "I prefer A (FR)"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 1" has answer description "IT" "I prefer A (IT)"
@@ -96,15 +120,24 @@ Feature: Contest Phase
     And parameter question "my params"."tiebreak question 1" has tiebreakAnswer named "answer 2"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer position 2
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer questionReference "V-B_B-1_Q-proposal_B"
+    And tiebreakAnswer "my params"."tiebreak question 1"."answer 2" is hiddenAnswer false
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer description "DE" "I prefer B (DE)"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer description "FR" "I prefer B (FR)"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer description "IT" "I prefer B (IT)"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer description "RM" "I prefer B (RM)"
+    And parameter question "my params"."tiebreak question 1" has tiebreakAnswer named "answer 3"
+    And tiebreakAnswer "my params"."tiebreak question 1"."answer 3" has answer position 3
+    And tiebreakAnswer "my params"."tiebreak question 1"."answer 3" is hiddenAnswer true
+    And tiebreakAnswer "my params"."tiebreak question 1"."answer 3" has answer description "DE" "Leer"
+    And tiebreakAnswer "my params"."tiebreak question 1"."answer 3" has answer description "FR" "Blanc"
+    And tiebreakAnswer "my params"."tiebreak question 1"."answer 3" has answer description "IT" "Blanco"
+    And tiebreakAnswer "my params"."tiebreak question 1"."answer 3" has answer description "RM" "Blanca"
     And user parameters "my params" has question "tiebreak question 2"
     And parameter question "my params"."tiebreak question 2" has questionIdentification "V-B_B-1_TQ-2"
     And parameter question "my params"."tiebreak question 2" has tiebreakAnswer named "answer 1"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 1" has answer position 1
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 1" has answer questionReference "V-B_B-1_Q-proposal_A"
+    And tiebreakAnswer "my params"."tiebreak question 2"."answer 1" is hiddenAnswer false
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 1" has answer description "DE" "I prefer A (DE)"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 1" has answer description "FR" "I prefer A (FR)"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 1" has answer description "IT" "I prefer A (IT)"
@@ -112,15 +145,24 @@ Feature: Contest Phase
     And parameter question "my params"."tiebreak question 2" has tiebreakAnswer named "answer 2"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 2" has answer position 2
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 2" has answer questionReference "V-B_B-1_Q-proposal_C"
+    And tiebreakAnswer "my params"."tiebreak question 2"."answer 2" is hiddenAnswer false
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 2" has answer description "DE" "I prefer C (DE)"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 2" has answer description "FR" "I prefer C (FR)"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 2" has answer description "IT" "I prefer C (IT)"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 2" has answer description "RM" "I prefer C (RM)"
+    And parameter question "my params"."tiebreak question 2" has tiebreakAnswer named "answer 3"
+    And tiebreakAnswer "my params"."tiebreak question 2"."answer 3" has answer position 3
+    And tiebreakAnswer "my params"."tiebreak question 2"."answer 3" is hiddenAnswer true
+    And tiebreakAnswer "my params"."tiebreak question 2"."answer 3" has answer description "DE" "Leer"
+    And tiebreakAnswer "my params"."tiebreak question 2"."answer 3" has answer description "FR" "Blanc"
+    And tiebreakAnswer "my params"."tiebreak question 2"."answer 3" has answer description "IT" "Blanco"
+    And tiebreakAnswer "my params"."tiebreak question 2"."answer 3" has answer description "RM" "Blanca"
     And user parameters "my params" has question "tiebreak question 3"
     And parameter question "my params"."tiebreak question 3" has questionIdentification "V-B_B-1_TQ-3"
     And parameter question "my params"."tiebreak question 3" has tiebreakAnswer named "answer 1"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer position 1
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer questionReference "V-B_B-1_Q-proposal_B"
+    And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" is hiddenAnswer false
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer description "DE" "I prefer B (DE)"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer description "FR" "I prefer B (FR)"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 1" has answer description "IT" "I prefer B (IT)"
@@ -128,10 +170,18 @@ Feature: Contest Phase
     And parameter question "my params"."tiebreak question 3" has tiebreakAnswer named "answer 2"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" has answer position 2
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" has answer questionReference "V-B_B-1_Q-proposal_C"
+    And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" is hiddenAnswer false
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" has answer description "DE" "I prefer C (DE)"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" has answer description "FR" "I prefer C (FR)"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" has answer description "IT" "I prefer C (IT)"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" has answer description "RM" "I prefer C (RM)"
+    And parameter question "my params"."tiebreak question 3" has tiebreakAnswer named "answer 3"
+    And tiebreakAnswer "my params"."tiebreak question 3"."answer 3" has answer position 3
+    And tiebreakAnswer "my params"."tiebreak question 3"."answer 3" is hiddenAnswer true
+    And tiebreakAnswer "my params"."tiebreak question 3"."answer 3" has answer description "DE" "Leer"
+    And tiebreakAnswer "my params"."tiebreak question 3"."answer 3" has answer description "FR" "Blanc"
+    And tiebreakAnswer "my params"."tiebreak question 3"."answer 3" has answer description "IT" "Blanco"
+    And tiebreakAnswer "my params"."tiebreak question 3"."answer 3" has answer description "RM" "Blanca"
 
     # CONTEST
     Given a contest named "my contest"
@@ -163,7 +213,7 @@ Feature: Contest Phase
     And the ballot "my votes"."vote A"."vote A ballot 1" has description "RM" "vote A ballot 1 description (RM)"
     # VOTE A -standard ballot - simple question
     And the ballot "my votes"."vote A"."vote A ballot 1" has question id  "V-A_B-1_Q-0"
-    And the ballot "my votes"."vote A"."vote A ballot 1" has answer type 1
+    And the ballot "my votes"."vote A"."vote A ballot 1" has answer type 2
     And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "DE" "Proposal" "Do you accept this proposal (DE)"
     And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "FR" "Proposal" "Do you accept this proposal (FR)"
     And the ballot question of ballot "my votes"."vote A"."vote A ballot 1" has info "IT" "Proposal" "Do you accept this proposal (IT)"
@@ -193,20 +243,20 @@ Feature: Contest Phase
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "FR" "Proposal A" "Do you accept proposal A (FR)"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "IT" "Proposal A" "Do you accept proposal A (IT)"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has info "RM" "Proposal A" "Do you accept proposal A (RM)"
-    # VOTE B -variant ballot - question with answer type 1 (2 answers)
+    # VOTE B -variant ballot - question with answer type 2 (3 answers)
     And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot standard question "vote B ballot 1 question 2"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has id "V-B_B-1_Q-proposal_B"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has position 2
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has answer type 1
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has answer type 2
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has info "DE" "Proposal B" "Do you accept proposal B (DE)"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has info "FR" "Proposal B" "Do you accept proposal B (FR)"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has info "IT" "Proposal B" "Do you accept proposal B (IT)"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 2" has info "RM" "Proposal B" "Do you accept proposal B (RM)"
-    # VOTE B -variant ballot - question with answer type 1 (2 answers - and override in parameters)
+    # VOTE B -variant ballot - question with answer type 2 (3 answers - and override in parameters)
     And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot standard question "vote B ballot 1 question 3"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has id "V-B_B-1_Q-proposal_C"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has position 1
-    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has answer type 1
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has answer type 2
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has info "DE" "Proposal C" "Do you accept proposal C (DE)"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has info "FR" "Proposal C" "Do you accept proposal C (FR)"
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 3" has info "IT" "Proposal C" "Do you accept proposal C (IT)"
@@ -244,16 +294,6 @@ Feature: Contest Phase
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has info "FR" "Tie-break question BC" "Do you prefer B or C (FR)"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has info "IT" "Tie-break question BC" "Do you prefer B or C (IT)"
     And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 3" has info "RM" "Tie-break question BC" "Do you prefer B or C (RM)"
-
-    # VOTE B -variant ballot - tiebreak question 4 with an answer type 1
-    #And the ballot "my votes"."vote B"."vote B ballot 1" has variant ballot tiebreak question "vote B ballot 1 tb question 4"
-    #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has id "V-B_B-1_TQ-4"
-    #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has position 7
-    #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has answer type 1
-    #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has info "DE" "In this case, do you agree ? (DE)"
-    #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has info "FR" "In this case, do you agree ? (FR)"
-    #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has info "IT" "In this case, do you agree ? (IT)"
-    #And the tiebreak question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 tb question 4" has info "RM" "In this case, do you agree ? (RM)"
 
     # ELECTIONS
     Given a list of elections named "my elections"
@@ -501,9 +541,9 @@ Feature: Contest Phase
     Then it outputs an exception with text "election identifier '---?---' defined in the parameter file doesn't exist in the contest"
 
   Scenario: Throw an exception when parameters contains duplicate answer types
-    Given default answer type "my params"."answer type 2" has type 1
+    Given default answer type "my params"."answer type 2" has type 4
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answerType '1' not unique within the parameters"
+    Then it outputs an exception with text "answerType '4' not unique within the parameters"
 
   Scenario: Throw an exception when parameters contains duplicate question ids
     Given parameter question "my params"."tiebreak question 2" has questionIdentification "V-B_B-1_TQ-1"
@@ -511,9 +551,9 @@ Feature: Contest Phase
     Then it outputs an exception with text "questionId 'V-B_B-1_TQ-1' not unique within the parameters"
 
   Scenario: Throw an exception when no answer exists for a question with a given type
-    Given default answer type "my params"."answer type 1" has type 7
+    Given default answer type "my params"."answer type 2" has type 7
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "Process stopped. answerType 1 in question V-A_B-1_Q-0 is not supported"
+    Then it outputs an exception with text "Process stopped. answerType 2 in question V-A_B-1_Q-0 is not supported"
 
   Scenario: Throw an exception when no answer exists for a question without type
     Given parameter question "my params"."tiebreak question 2" has questionIdentification "xyz"
@@ -541,15 +581,15 @@ Feature: Contest Phase
     When executing the contest phase and catching exceptions
     Then it outputs an exception with text "question identifier 'V-B_B-1_TQ-1' is not unique within the contest"
 
-  Scenario: Throw an exception when duplicated answer identifiers exist, setting duplicate specific answer position
-    Given tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer position 1
+  Scenario: Throw an exception when answer positions not in sequence
+    Given tiebreakAnswer "my params"."tiebreak question 1"."answer 2" has answer position 5
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer identifier 'df57dfcb-7934-37a8-a3fc-0f40630e1432' is not unique within the contest"
+    Then it outputs an exception with text "Variant ballot tiebreak question 'V-B_B-1_TQ-1' : the answer sequence number must be a strictly increasing sequence from 1 to 3."
 
-  Scenario: Throw an exception when duplicated answer identifiers exist, setting duplicate default answer position
-    Given standardAnswer "my params"."answer type 2"."answer 2" has answer position 3
+  Scenario: Throw an exception when answer positions not in sequence
+    Given standardAnswer "my params"."answer type 2"."answer 2" has answer position 0
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer identifier '0a851e9f-1d04-3adc-9ea0-455015e78e95' is not unique within the contest"
+    Then it outputs an exception with text "Variant ballot standard question 'V-A_B-1_Q-0' : the answer sequence number must be a strictly increasing sequence from 1 to 3."
 
   Scenario: For variant ballot, all the standard questions positions are given (background scenario)
     When executing the contest phase
@@ -684,7 +724,7 @@ Feature: Contest Phase
     Given the descriptions of the answer "my params"."answer type 2"."answer 2" are cleared out
     And standardAnswer "my params"."answer type 2"."answer 2" has answer description "DE" "Ja"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer '463caf46-4f2b-3893-a956-c7b21feca3d1' : answer must contain exactly the defined languages [de, fr, it, rm]"
+    Then it outputs an exception with text "answer '9eaeedf6-1d2c-3f46-aa56-09dc28173742' : answer must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some default answers descriptions languages are duplicated
     Given the descriptions of the answer "my params"."answer type 2"."answer 2" are cleared out
@@ -693,7 +733,7 @@ Feature: Contest Phase
     And standardAnswer "my params"."answer type 2"."answer 2" has answer description "FR" "Oui"
     And standardAnswer "my params"."answer type 2"."answer 2" has answer description "IT" "Si"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "answer '463caf46-4f2b-3893-a956-c7b21feca3d1' : answer must contain exactly the defined languages [de, fr, it, rm]"
+    Then it outputs an exception with text "answer '9eaeedf6-1d2c-3f46-aa56-09dc28173742' : answer must contain exactly the defined languages [de, fr, it, rm]"
 
   Scenario: Throw an exception when some specific answers descriptions languages are missing
     Given the descriptions of the answer "my params"."question variant C"."answer 2" are cleared out
@@ -951,7 +991,7 @@ Feature: Contest Phase
   Scenario: Throw an exception when a standard ballot question has two blank responses
     Given standardAnswer "my params"."answer type 2"."answer 2" has answer standardAnswerType = "EMPTY"
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "vote 'vote-B-id' variant ballot standard question 3 has more than one blank answer"
+    Then it outputs an exception with text "vote 'vote-A-id' standard ballot question has more than one blank answer"
 
   Scenario: Throw an exception when variant ballot standard question has two blank responses
     Given standardAnswer "my params"."question variant C"."answer 1" has answer standardAnswerType = "EMPTY"
@@ -960,7 +1000,28 @@ Feature: Contest Phase
     Then it outputs an exception with text "vote 'vote-B-id' variant ballot standard question 1 has more than one blank answer"
 
   Scenario: Throw an exception when variant ballot tiebreak question has two blank responses
-    Given tiebreakAnswer "my params"."tiebreak question 3"."answer 1" is as blank defined
-    And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" is as blank defined
+    Given tiebreakAnswer "my params"."tiebreak question 3"."answer 1" is hiddenAnswer true
+    And tiebreakAnswer "my params"."tiebreak question 3"."answer 2" is hiddenAnswer true
     When executing the contest phase and catching exceptions
-    Then it outputs an exception with text "vote 'vote-B-id' variant ballot tiebreak question 5 has more than one blank answer"
+    Then it outputs an exception with text "vote 'vote-B-id' variant ballot tiebreak question 5 has not exactly one hidden answer"
+
+  Scenario: Throw an exception when standard question has less than 3 answer options
+    Given the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has answer cleared out
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has answer "answer 1" "YES" "1" "false"
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has answer "answer 2" "NO" "1" "false"
+    And the standard answer "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1"."answer 1" has info "DE" "Ja"
+    And the standard answer "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1"."answer 1" has info "FR" "Oui"
+    And the standard answer "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1"."answer 1" has info "IT" "Si"
+    And the standard answer "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1"."answer 1" has info "RM" "Gea"
+    And the standard answer "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1"."answer 2" has info "DE" "Nein"
+    And the standard answer "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1"."answer 2" has info "FR" "Non"
+    And the standard answer "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1"."answer 2" has info "IT" "No"
+    And the standard answer "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1"."answer 2" has info "RM" "Na"
+    When executing the contest phase and catching exceptions
+    Then it outputs an exception with text "The variant ballot standard question V-B_B-1_Q-proposal_A has only 2 answers. It must have at least 3."
+
+  Scenario: Throw an exception when standard question has no answer type and no answer options
+    Given the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has answer type cleared out
+    And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has answer cleared out
+    When executing the contest phase and catching exceptions
+    Then it outputs an exception with text "There is no answerType and no answerOptionIdentification for the standard question identified by 'V-B_B-1_Q-proposal_A'. At least one of them must be set."

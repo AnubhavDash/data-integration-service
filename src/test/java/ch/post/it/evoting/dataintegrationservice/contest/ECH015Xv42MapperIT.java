@@ -310,7 +310,7 @@ class ECH015Xv42MapperIT {
 										.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo()
 												.withLanguage("de")
 												.withCandidateText("Candidate 1 text")))
-								.withDateOfBirth(LocalDateUtils.toXMLGregorianCalendar(LocalDateUtils.parse("1999-04-29 00:00:00")))
+								.withDateOfBirth(LocalDateUtils.toXMLGregorianCalendar(LocalDateUtils.parse("1999-04-29")))
 								.withSex("1")
 								.withIncumbentYesNo(false)
 								.withDwellingAddress(new AddressInformationType()

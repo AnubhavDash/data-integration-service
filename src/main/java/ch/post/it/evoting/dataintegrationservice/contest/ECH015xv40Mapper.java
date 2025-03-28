@@ -352,7 +352,9 @@ public interface ECH015xv40Mapper {
 							bt.getBallotIdentification());
 					return convert(createEmptyBallotDescriptionInformationType(bt), bt);
 				}));
-
+		if (bt.getBallotGroup() != null) {
+			ballotType.setBallotGroup(convert(bt.getBallotGroup(), bt));
+		}
 		ballotType.setStandardBallot(convert(bt.getStandardBallot(), bt));
 		ballotType.setVariantBallot(convert(bt.getVariantBallot(), bt));
 
@@ -511,6 +513,7 @@ public interface ECH015xv40Mapper {
 	}
 
 	@Mapping(target = "answer", source = "answerText")
+	@Mapping(target = "answerShort", source = "answerTextShort")
 	AnswerInformationType convert(ch.ech.xmlns.ech_0155._4.AnswerOptionIdentificationType.AnswerTextInformation answer);
 
 	default LanguageType convert(final String value) {

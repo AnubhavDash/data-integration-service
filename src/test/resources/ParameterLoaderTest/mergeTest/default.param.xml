@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/5" xmlns:merge="http://xmlmerge.el4j.elca.ch" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/5 evoting-parameter-5-0.xsd">
+<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/5" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/5 evoting-parameter-5-0.xsd">
 	<contest>
-		<defaultAnswerTranslations merge:action="xsdinsert">
+		<defaultAnswerTranslations>
 			<answerType>
 				<answerTypeIdentification>1</answerTypeIdentification>
 				<standardAnswer>
 					<answerPosition>1</answerPosition>
 					<standardAnswerType>YES</standardAnswerType>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Ja</answer>
@@ -27,6 +28,7 @@
 				<standardAnswer>
 					<answerPosition>2</answerPosition>
 					<standardAnswerType>NO</standardAnswerType>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Nein</answer>
@@ -50,6 +52,7 @@
 				<standardAnswer>
 					<answerPosition>1</answerPosition>
 					<standardAnswerType>YES</standardAnswerType>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Ja</answer>
@@ -70,6 +73,7 @@
 				<standardAnswer>
 					<answerPosition>2</answerPosition>
 					<standardAnswerType>NO</standardAnswerType>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Nein</answer>
@@ -114,6 +118,7 @@
 				<standardAnswer>
 					<answerPosition>1</answerPosition>
 					<standardAnswerType>YES</standardAnswerType>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Angekreuzt</answer>
@@ -157,6 +162,7 @@
 				<answerTypeIdentification>4</answerTypeIdentification>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Initiative</answer>
@@ -176,6 +182,7 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Gegenentwurf</answer>
@@ -218,6 +225,7 @@
 				<answerTypeIdentification>5</answerTypeIdentification>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Initiative</answer>
@@ -237,6 +245,7 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Gegenvorschlag</answer>
@@ -279,6 +288,7 @@
 				<answerTypeIdentification>6</answerTypeIdentification>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Vorlage</answer>
@@ -298,6 +308,7 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Volksvorschlag</answer>
@@ -340,6 +351,7 @@
 				<answerTypeIdentification>7</answerTypeIdentification>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Hauptvorlage</answer>
@@ -359,6 +371,7 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
+					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Eventualantrag</answer>
@@ -398,7 +411,7 @@
 				</tiebreakAnswer>
 			</answerType>
 		</defaultAnswerTranslations>
-		<emptyPositionTextInfo merge:action="xsdinsert">
+		<emptyPositionTextInfo>
 			<positionText>
 				<language>de</language>
 				<text>Kein Name ausgewählt</text>
@@ -416,7 +429,7 @@
 				<text>Nagin num selecziunà</text>
 			</positionText>
 		</emptyPositionTextInfo>
-		<incumbentText merge:action="xsdinsert">
+		<incumbentText>
 			<incumbentTextInfo>
 				<language>de</language>
 				<text>Bisher</text>
@@ -434,7 +447,7 @@
 				<text>uscant</text>
 			</incumbentTextInfo>
 		</incumbentText>
-		<returnCodeWriteInDescriptionInfo merge:action="xsdinsert">
+		<returnCodeWriteInDescriptionInfo>
 			<positionText>
 				<language>de</language>
 				<text>Nicht genannte Person</text>

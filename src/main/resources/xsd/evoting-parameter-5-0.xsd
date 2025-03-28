@@ -297,6 +297,10 @@
 						</xs:choice>
 					</xs:sequence>
 				</xs:complexType>
+				<xs:unique name="answerPositionUnique">
+					<xs:selector xpath=".//answerPosition"/>
+					<xs:field xpath="."/>
+				</xs:unique>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
@@ -334,7 +338,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="hiddenAnswer" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="hiddenAnswer" type="xs:boolean"/>
 			<xs:element name="answerInfo" type="answerInformationType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -349,7 +353,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="hiddenAnswer" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="hiddenAnswer" type="xs:boolean"/>
 			<xs:element name="answerInfo" type="answerInformationType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>

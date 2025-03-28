@@ -3,22 +3,22 @@
  */
 package ch.post.it.evoting.dataintegrationservice.parameter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.StringWriter;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 
 import org.junit.jupiter.api.Test;
 
 import ch.evoting.xmlns.parameter._5.BirthYearAuthenticationKeyTypeImpl;
+import ch.evoting.xmlns.parameter._5.ObjectFactory;
 import ch.evoting.xmlns.parameter._5.Parameter;
-import ch.galinet.xml.xmlmerge.XmlMerge;
-import ch.galinet.xml.xmlmerge.config.AttributeMergeConfigurer;
-import ch.galinet.xml.xmlmerge.config.ConfigurableXmlMerge;
+import ch.evoting.xmlns.parameter._5.PluginObjectFactory;
+import ch.post.it.evoting.dataintegrationservice.common.Stax2Wrapper;
 
 class ParameterLoaderTest {
 
@@ -33,17 +33,24 @@ class ParameterLoaderTest {
 
 	@Test
 	void mergeTest() throws Exception {
-		final InputStream is1 = this.getClass().getResourceAsStream("/ParameterLoaderTest/mergeTest/file.param.xml");
-		final InputStream is2 = this.getClass().getResourceAsStream("/ParameterLoaderTest/mergeTest/default.param.xml");
-		final XmlMerge merger = new ConfigurableXmlMerge(new AttributeMergeConfigurer());
+		final Parameter actual = new ParameterLoader().loadParameter("src/test/resources/ParameterLoaderTest/mergeTest/file.param.xml",
+				"/ParameterLoaderTest/mergeTest/default.param.xml");
 
-		final InputStream out = merger.merge(new InputStream[] { is1, is2 });
+		final Parameter expected = new Stax2Wrapper("src/test/resources/ParameterLoaderTest/mergeTest/ParameterLoaderTest_merge.xml",
+				null,
+				ObjectFactory.class,
+				new PluginObjectFactory())
+				.processByIteration("/parameter", Parameter.class).iterator().next();
 
-		final String result = new String(out.readAllBytes(), StandardCharsets.UTF_8);
+		assertEquals(convertToXml(expected), convertToXml(actual));
+	}
 
-		final URL resource = this.getClass().getResource("/ParameterLoaderTest/mergeTest/ParameterLoaderTest_merge.xml");
-		final String expected = new String(Files.readAllBytes(Paths.get(resource.toURI())), StandardCharsets.UTF_8);
-
-		assertEquals(expected, result);
+	public static String convertToXml(final Object object) throws JAXBException {
+		final JAXBContext context = JAXBContext.newInstance(object.getClass());
+		final Marshaller marshaller = context.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		final StringWriter writer = new StringWriter();
+		marshaller.marshal(object, writer);
+		return writer.toString();
 	}
 }
