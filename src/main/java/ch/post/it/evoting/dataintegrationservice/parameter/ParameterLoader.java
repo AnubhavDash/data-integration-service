@@ -5,6 +5,8 @@ package ch.post.it.evoting.dataintegrationservice.parameter;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import jakarta.xml.bind.JAXBException;
@@ -24,7 +26,7 @@ import ch.post.it.evoting.dataintegrationservice.common.Stax2Wrapper;
 public class ParameterLoader {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterLoader.class);
 
-	private static final String DEFAULT_PARAMETER_PATH = "/xml/default.param.xml";
+	private static final String DEFAULT_PARAMETER_PATH = "xml/default.param.xml";
 	@SuppressWarnings("java:S1075")
 	private static final String PARAMETER_SCHEMA_PATH = "/xsd/evoting-parameter-5-0.xsd";
 
@@ -40,15 +42,12 @@ public class ParameterLoader {
 		final URL schemaPath = ParameterLoader.class.getResource(PARAMETER_SCHEMA_PATH);
 		checkNotNull(schemaPath);
 
-		// Default XML
-		final URL defaultXmlPath = ParameterLoader.class.getResource(defaultParameterLocation);
-		checkNotNull(defaultXmlPath);
-
 		LOGGER.info("Loading parameter : {}", fileLocation);
 
-		try {
+		// Default XML
+		try (final InputStream defaultFile = ParameterLoader.class.getClassLoader().getResourceAsStream(defaultParameterLocation)) {
 
-			final Parameter defaultParameterValue = new Stax2Wrapper(defaultXmlPath.getFile(), null, ObjectFactory.class, new PluginObjectFactory())
+			final Parameter defaultParameterValue = new Stax2Wrapper(defaultFile, null, ObjectFactory.class, new PluginObjectFactory())
 					.processByIteration("/parameter", Parameter.class)
 					.iterator().next();
 			final Parameter inputParameterValue = new Stax2Wrapper(fileLocation, schemaPath, ObjectFactory.class, new PluginObjectFactory())
@@ -82,7 +81,7 @@ public class ParameterLoader {
 			}
 
 			return inputParameterValue;
-		} catch (final XMLStreamException | JAXBException e) {
+		} catch (final XMLStreamException | JAXBException | IOException e) {
 			throw new IllegalArgumentException("Unable to load Parameter", e);
 		}
 	}

@@ -34,7 +34,7 @@ class ParameterLoaderTest {
 	@Test
 	void mergeTest() throws Exception {
 		final Parameter actual = new ParameterLoader().loadParameter("src/test/resources/ParameterLoaderTest/mergeTest/file.param.xml",
-				"/ParameterLoaderTest/mergeTest/default.param.xml");
+				"ParameterLoaderTest/mergeTest/default.param.xml");
 
 		final Parameter expected = new Stax2Wrapper("src/test/resources/ParameterLoaderTest/mergeTest/ParameterLoaderTest_merge.xml",
 				null,

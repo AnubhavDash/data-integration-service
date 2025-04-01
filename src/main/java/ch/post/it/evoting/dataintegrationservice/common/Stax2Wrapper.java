@@ -6,6 +6,7 @@ package ch.post.it.evoting.dataintegrationservice.common;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,6 +24,7 @@ import javax.xml.stream.XMLStreamException;
 
 import org.codehaus.stax2.XMLInputFactory2;
 import org.codehaus.stax2.XMLStreamReader2;
+import org.codehaus.stax2.ri.Stax2ReaderAdapter;
 import org.codehaus.stax2.validation.XMLValidationSchema;
 import org.codehaus.stax2.validation.XMLValidationSchemaFactory;
 import org.slf4j.Logger;
@@ -46,11 +48,24 @@ public class Stax2Wrapper {
 		this(xmlFileLocation, xsdLocation, jaxbFactoryClass, null);
 	}
 
-	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class<?> jaxbFactoryClass,
+	public Stax2Wrapper(final InputStream inputStream, final URL xsdLocation, final Class<?> jaxbFactoryClass)
+			throws XMLStreamException, JAXBException {
+		this(inputStream, xsdLocation, jaxbFactoryClass, null);
+	}
+
+	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class<?> jaxbFactoryClass, final Object specificUnmarshallerFactoryInstance)
+			throws XMLStreamException, JAXBException {
+		this((Object) xmlFileLocation, xsdLocation, jaxbFactoryClass, specificUnmarshallerFactoryInstance);
+	}
+
+	public Stax2Wrapper(final InputStream inputStream, final URL xsdLocation, final Class<?> jaxbFactoryClass, final Object specificUnmarshallerFactoryInstance)
+			throws XMLStreamException, JAXBException {
+		this((Object) inputStream, xsdLocation, jaxbFactoryClass, specificUnmarshallerFactoryInstance);
+	}
+
+	private Stax2Wrapper(final Object input, final URL xsdLocation, final Class<?> jaxbFactoryClass,
 			final Object specificUnmarshallerFactoryInstance)
 			throws XMLStreamException, JAXBException {
-
-		name = xmlFileLocation;
 		unmarshaller = JAXBContext.newInstance(jaxbFactoryClass).createUnmarshaller();
 		unmarshaller.setEventHandler(new CustomValidationEventHandler());
 
@@ -62,7 +77,17 @@ public class Stax2Wrapper {
 		factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 		factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
 
-		reader = factory.createXMLStreamReader(new File(xmlFileLocation));
+		switch (input) {
+		case final String xmlFileLocation -> {
+			name = xmlFileLocation;
+			reader = factory.createXMLStreamReader(new File(xmlFileLocation));
+		}
+		case final InputStream inputStream -> {
+			name = "inputStream";
+			reader = Stax2ReaderAdapter.wrapIfNecessary(factory.createXMLStreamReader(inputStream, "UTF-8"));
+		}
+		default -> throw new IllegalArgumentException("Not implemented.");
+		}
 
 		if (xsdLocation != null) {
 			final XMLValidationSchemaFactory sf = XMLValidationSchemaFactory.newInstance(XMLValidationSchema.SCHEMA_ID_W3C_SCHEMA);
