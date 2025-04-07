@@ -9,20 +9,26 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.cert.CertificateException;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import jakarta.xml.bind.Marshaller;
 
 import javax.xml.namespace.QName;
 
@@ -30,13 +36,14 @@ import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.post.it.evoting.cryptoprimitives.signing.SignatureKeystore;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.common.XmlTransformer;
 import ch.post.it.evoting.dataintegrationservice.domain.RegisterTypeWithVoterStream;
 import ch.post.it.evoting.dataintegrationservice.input.DirectoryScanner;
+import ch.post.it.evoting.dataintegrationservice.keystore.KeystoreRepository;
+import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.XMLSignatureService;
 import ch.post.it.evoting.evotinglibraries.xml.XsdConstants;
-import ch.post.it.evoting.evotinglibraries.xml.hashable.ConfigurationSignerListener;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 
 import li.chee.reactive.plumber.Plumbing;
@@ -73,13 +80,30 @@ public abstract class Tools extends Plumbing {
 
 	public static <V> Consumer<V> saveXML(final Class<V> jaxbFactoryClass, final QName rootElementName, final URL xsdSchema, final String filename) {
 		return o -> {
-			try (final OutputStream fos = new FileOutputStream(
-					Paths.get(getProperty("directory.target", String.class), filename).toFile())) {
-				Marshaller.Listener listener = null;
+			final Path path = Path.of(getProperty("directory.target", String.class), filename);
+			try (final PipedOutputStream pos = new PipedOutputStream();
+					final PipedInputStream pis = new PipedInputStream(pos);
+					final OutputStream fos = Files.newOutputStream(path)) {
+				final Thread t = new Thread(() -> {
+					getBean(XmlTransformer.class).toXml(pos, jaxbFactoryClass, xsdSchema, o, rootElementName);
+					try {
+						pos.close();
+					} catch (final IOException e) {
+						throw new UncheckedIOException(e);
+					}
+				});
+				t.start();
 				if (jaxbFactoryClass.equals(Configuration.class)) {
-					listener = new ConfigurationSignerListener((Configuration) o, getBean(SignatureKeystore.class));
+					final KeystoreRepository keystoreRepository = getBean(KeystoreRepository.class);
+					final InputStream keyStoreStream = keystoreRepository.getCantonKeyStore();
+					final char[] keystorePassword = keystoreRepository.getCantonKeystorePassword();
+					final Alias keystoreAlias = keystoreRepository.getKeystoreAlias();
+					final KeyStore keyStore = getKeyStore(keyStoreStream, keystorePassword);
+					final PrivateKey privateKey = (PrivateKey) keyStore.getKey(keystoreAlias.get(), keystorePassword);
+					getBean(XMLSignatureService.class).genXMLSignature(pis, fos, privateKey);
+				} else {
+					fos.write(pis.readAllBytes());
 				}
-				getBean(XmlTransformer.class).toXml(fos, jaxbFactoryClass, xsdSchema, o, rootElementName, listener);
 			} catch (final Exception e) {
 				throw new IllegalStateException(e);
 			}
@@ -124,6 +148,13 @@ public abstract class Tools extends Plumbing {
 
 	public static <T, U> Function<Tuple2<T, U>, T> unzip() {
 		return Tuple2::getT1;
+	}
+
+	private static KeyStore getKeyStore(final InputStream keyStoreStream, final char[] password)
+			throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
+		final KeyStore keyStore = KeyStore.getInstance("PKCS12");
+		keyStore.load(keyStoreStream, password);
+		return keyStore;
 	}
 
 	private static String getBufferSizeProperty() {

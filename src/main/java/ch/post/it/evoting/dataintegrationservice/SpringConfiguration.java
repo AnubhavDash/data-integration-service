@@ -14,6 +14,7 @@ import ch.post.it.evoting.cryptoprimitives.signing.SignatureKeystore;
 import ch.post.it.evoting.dataintegrationservice.keystore.KeystoreRepository;
 import ch.post.it.evoting.evotinglibraries.direct.trust.SignatureKeystoreFactory;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.XMLSignatureService;
 
 @Configuration
 @ComponentScan(basePackages = { "ch.post.it.evoting", "pipes" })
@@ -34,5 +35,10 @@ public class SpringConfiguration {
 			IOException {
 		return SignatureKeystoreFactory.createSignatureKeystore(repository.getCantonKeyStore(), repository.getCantonKeystorePassword(),
 				repository.getKeystoreAlias());
+	}
+
+	@Bean
+	public XMLSignatureService xmlSignatureService() {
+		return new XMLSignatureService();
 	}
 }

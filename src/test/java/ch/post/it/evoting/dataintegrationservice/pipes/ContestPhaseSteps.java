@@ -1057,7 +1057,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 			checkState(schemaPath != null, "contest.xsd not found");
 
 			final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			xmlTransformer.toXml(outputStream, ObjectFactory.class, schemaPath, contest, new QName("contest"), null);
+			xmlTransformer.toXml(outputStream, ObjectFactory.class, schemaPath, contest, new QName("contest"));
 			final String result = outputStream.toString(StandardCharsets.UTF_8);
 			LOGGER.warn(result);
 		} catch (final Exception e) {

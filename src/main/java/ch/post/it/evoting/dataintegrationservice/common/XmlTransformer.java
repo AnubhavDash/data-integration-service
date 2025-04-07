@@ -43,8 +43,7 @@ public class XmlTransformer {
 	}
 
 	public <T> void toXml(final OutputStream os, final Class<?> jaxbFactoryClass, final URL xsdSchema, final T jaxbElement,
-			final QName rootElementName,
-			final Marshaller.Listener listener) {
+			final QName rootElementName) {
 		try {
 			final XMLOutputFactory2 factory = (XMLOutputFactory2) XMLOutputFactory.newInstance();
 
@@ -59,7 +58,6 @@ public class XmlTransformer {
 			final XMLStreamWriter writer = formatOutput ? new IndentingXMLStreamWriter(wrTemp) : wrTemp;
 
 			final Marshaller marshaller = JAXBContext.newInstance(jaxbFactoryClass).createMarshaller();
-			marshaller.setListener(listener);
 			marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
