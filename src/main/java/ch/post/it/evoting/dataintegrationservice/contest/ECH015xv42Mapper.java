@@ -116,7 +116,7 @@ public interface ECH015xv42Mapper {
 	ReferencedElectionInformationType convert(ch.ech.xmlns.ech_0155._5.ReferencedElectionInformationType value);
 
 	@Mapping(target = "dwellingAddress", source = "dwellingAddress")
-	@Mapping(target = "position", ignore = true)
+	@Mapping(target = "position", source = "sortID")
 	@Mapping(target = "incumbent.incumbent", source = "incumbentYesNo")
 	@Mapping(target = "referenceOnPosition", source = "candidateReference")
 	@Mapping(target = "eligibility", constant = "EXPLICIT")

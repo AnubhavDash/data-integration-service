@@ -3,8 +3,6 @@
  */
 package ch.evoting.xmlns.parameter._5;
 
-import java.math.BigInteger;
-
 import com.google.common.collect.MoreCollectors;
 
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
@@ -16,7 +14,7 @@ public class VotePositionSetterTypeImpl extends VotePositionSetterType {
 	public ContestType apply(final ContestType contestType) {
 		this.getVote().forEach(tuple -> {
 			final String voteIdentification = tuple.getVoteIdentification();
-			final BigInteger position = tuple.getPosition();
+			final int position = tuple.getPosition() != null ? tuple.getPosition().intValueExact() : 0;
 
 			contestType.getVoteInformation().stream().parallel()
 					.map(VoteInformationType::getVote)

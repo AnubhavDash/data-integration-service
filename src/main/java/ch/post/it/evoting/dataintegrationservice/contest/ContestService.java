@@ -23,7 +23,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -111,6 +110,7 @@ public class ContestService {
 	private static final BigInteger ELECTION_PROPORTIONAL_TYPE = BigInteger.ONE;
 	private static final BigInteger ELECTION_RELATION_PRIMARY = BigInteger.ONE;
 	private static final BigInteger ELECTION_RELATION_SECONDARY = BigInteger.TWO;
+	public static final String EMPTY_ANSWER = "EMPTY";
 
 	private final boolean bypassCheckConsistencyDates;
 	private final int evotingFromToMinDeltaAllowed;
@@ -324,7 +324,7 @@ public class ContestService {
 			checkState(answers.size() >= MINIMUM_REQUIRED_ANSWERS,
 					"The variant ballot standard question %s has only %s answers. It must have at least %s.",
 					questionIdentification, answers.size(), MINIMUM_REQUIRED_ANSWERS);
-			answers.forEach(answer -> answer.setHiddenAnswer(answer.getStandardAnswerType().equals("EMPTY")));
+			answers.forEach(answer -> answer.setHiddenAnswer(answer.getStandardAnswerType().equals(EMPTY_ANSWER)));
 		}
 		final Set<Integer> answerPositions = answers.stream().map(StandardAnswerType::getAnswerPosition).collect(Collectors.toSet());
 		final Integer minPosition = answerPositions.stream().min(Integer::compareTo).orElse(Integer.MAX_VALUE);
@@ -354,7 +354,7 @@ public class ContestService {
 		addCandidatesListIdentifications(electionGroups);
 		checkCandidateTextsAreSet(electionGroups);
 		warnIfCandidatesOutOfLists(electionGroups);
-		addCandidatePositionInCandidateOnlyElections(electionGroups);
+		addCandidatePositionIfNeeded(electionGroups);
 		addIncumbentTextIfNeeded(electionGroups, contestParameters.getIncumbentText());
 
 		addAbstentionAllowed(contestParameters, votes, electionGroups);
@@ -601,7 +601,7 @@ public class ContestService {
 
 		electionGroups.sort(Comparator.comparingInt(ElectionGroupBallotType::getElectionGroupPosition));
 
-		votes.sort(Comparator.comparingInt(vote -> vote.getVote().getVotePosition().intValueExact()));
+		votes.sort(Comparator.comparingInt(vote -> vote.getVote().getVotePosition()));
 	}
 
 	private void fillPositionIfDefinedInParameters(final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups,
@@ -636,7 +636,7 @@ public class ContestService {
 
 			sortingVotes.forEach(positionParameter -> {
 				final String voteIdentification = positionParameter.getVoteIdentification();
-				final BigInteger position = positionParameter.getPositionNumber();
+				final int position = positionParameter.getPositionNumber().intValueExact();
 				votes.stream()
 						.filter(vote -> vote.getVote().getVoteIdentification().equals(voteIdentification))
 						.findFirst()
@@ -678,19 +678,17 @@ public class ContestService {
 	}
 
 	private void addVotesPositionIfNeeded(final List<VoteInformationType> votes) {
-		final List<Long> usedPositions = votes.stream()
+		final List<Integer> usedPositions = votes.stream()
 				.map(vote -> vote.getVote().getVotePosition())
-				.filter(Objects::nonNull)
-				.map(BigInteger::longValueExact)
 				.toList();
 
-		final AtomicLong counter = new AtomicLong(1);
+		final AtomicInteger counter = new AtomicInteger(1);
 		votes.forEach(vote -> {
-			if (vote.getVote().getVotePosition() == null) {
+			if (vote.getVote().getVotePosition() == DEFAULT_VALUE) {
 				while (usedPositions.contains(counter.get())) {
 					counter.getAndIncrement();
 				}
-				vote.getVote().setVotePosition(BigInteger.valueOf(counter.getAndIncrement()));
+				vote.getVote().setVotePosition(counter.getAndIncrement());
 			}
 		});
 	}
@@ -861,12 +859,23 @@ public class ContestService {
 		}
 	}
 
-	private void addCandidatePositionInCandidateOnlyElections(final List<ElectionGroupBallotType> electionGroups) {
+	private void addCandidatePositionIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
 		electionGroups.stream()
 				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
-				.filter(this::isCandidateOnlyElection).forEach(e -> {
-					final AtomicInteger pos = new AtomicInteger(1);
-					e.getCandidate().forEach(c -> c.setPosition(pos.getAndIncrement()));
+				.forEach(e -> {
+					final List<Integer> usedPositions = e.getCandidate().stream()
+							.map(CandidateType::getPosition)
+							.toList();
+
+					final AtomicInteger counter = new AtomicInteger(1);
+					e.getCandidate().forEach(c -> {
+						if (c.getPosition() == DEFAULT_VALUE) {
+							while (usedPositions.contains(counter.get())) {
+								counter.getAndIncrement();
+							}
+							c.setPosition(counter.getAndIncrement());
+						}
+					});
 				});
 	}
 
@@ -1023,7 +1032,7 @@ public class ContestService {
 	}
 
 	private void checkCandidateTextsAreSet(final List<ElectionGroupBallotType> electionGroups) {
-		final Predicate<CandidateType> hasText = (c) -> c.getCandidateText() != null && !c.getCandidateText().getCandidateTextInfo().isEmpty();
+		final Predicate<CandidateType> hasText = c -> c.getCandidateText() != null && !c.getCandidateText().getCandidateTextInfo().isEmpty();
 
 		electionGroups.stream()
 				.flatMap(eg -> eg.getElectionInformation().stream())
@@ -1678,12 +1687,12 @@ public class ContestService {
 		c.getVoteInformation().forEach(v -> v.getVote().getBallot().forEach(b -> {
 			if (b.getStandardBallot() != null) {
 				checkState(b.getStandardBallot().getAnswer().stream()
-								.filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals("EMPTY")).count() <= 1,
+								.filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals(EMPTY_ANSWER)).count() <= 1,
 						"vote '%s' standard ballot question has more than one blank answer", v.getVote().getVoteIdentification());
 			}
 			if (b.getVariantBallot() != null) {
 				b.getVariantBallot().getStandardQuestion().forEach(q -> checkState(
-						q.getAnswer().stream().filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals("EMPTY")).count()
+						q.getAnswer().stream().filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals(EMPTY_ANSWER)).count()
 								<= 1, "vote '%s' variant ballot standard question %s has more than one blank answer",
 						v.getVote().getVoteIdentification(), q.getQuestionPosition()));
 				b.getVariantBallot().getTieBreakQuestion().forEach(
