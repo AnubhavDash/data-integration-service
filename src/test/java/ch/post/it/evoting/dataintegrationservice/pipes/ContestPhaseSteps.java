@@ -480,6 +480,11 @@ public class ContestPhaseSteps extends PhaseSteps {
 		electionMap.get(elections + "." + election).setDomainOfInfluence(doi);
 	}
 
+	@And("^the election \"([^\"]*)\".\"([^\"]*)\" has position (\\d+)$")
+	public void andElectionHasPosition(final String elections, final String election, final Integer position) {
+		electionMap.get(elections + "." + election).setElectionGroupPosition(position);
+	}
+
 	@And("^the election \"([^\"]*)\".\"([^\"]*)\" has description \"([^\"]*)\" \"([^\"]*)\"$")
 	public void andElectionHasDescription(final String elections, final String election, final String lang, final String desc) {
 		ElectionDescriptionInformationType descInfo = electionMap.get(elections + "." + election).getElectionInformation().get(0).getElection()
@@ -549,6 +554,11 @@ public class ContestPhaseSteps extends PhaseSteps {
 	@And("^the ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has id \"([^\"]*)\"$")
 	public void andBallotHasId(final String votes, final String vote, final String ballot, final String id) {
 		ballotMap.get(votes + "." + vote + "." + ballot).setBallotIdentification(id);
+	}
+
+	@And("^the ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has position (\\d+)$")
+	public void andBallotHasPosition(final String votes, final String vote, final String ballot, final Integer position) {
+		ballotMap.get(votes + "." + vote + "." + ballot).setBallotPosition(position);
 	}
 
 	@And("^the ballot \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has description \"([^\"]*)\" \"([^\"]*)\"$")
