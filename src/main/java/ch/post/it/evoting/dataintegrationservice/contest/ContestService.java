@@ -281,8 +281,11 @@ public class ContestService {
 			} else {
 				checkState(answers.size() >= MINIMUM_REQUIRED_ANSWERS, "The tieBreakQuestion %s has only %s answers. It must have at least %s.",
 						question.getQuestionIdentification(), answers.size(), MINIMUM_REQUIRED_ANSWERS);
-				answers.forEach(answer -> answer.setHiddenAnswer(answer.getAnswerPosition() == (answers.size() - 1)));
+
+				answers.sort(Comparator.comparingInt(TiebreakAnswerType::getAnswerPosition));
+				answers.forEach(answer -> answer.setHiddenAnswer(answer == answers.getLast()));
 			}
+
 			final Set<Integer> answerPositions = answers.stream().map(TiebreakAnswerType::getAnswerPosition).collect(Collectors.toSet());
 			final Integer minPosition = answerPositions.stream().min(Integer::compareTo).orElse(Integer.MAX_VALUE);
 			final Integer maxPosition = answerPositions.stream().max(Integer::compareTo).orElse(Integer.MIN_VALUE);
@@ -329,8 +332,11 @@ public class ContestService {
 			checkState(answers.size() >= MINIMUM_REQUIRED_ANSWERS,
 					"The variant ballot standard question %s has only %s answers. It must have at least %s.",
 					questionIdentification, answers.size(), MINIMUM_REQUIRED_ANSWERS);
+
+			answers.sort(Comparator.comparingInt(StandardAnswerType::getAnswerPosition));
 			answers.forEach(answer -> answer.setHiddenAnswer(answer.getStandardAnswerType().equals(EMPTY_ANSWER)));
 		}
+
 		final Set<Integer> answerPositions = answers.stream().map(StandardAnswerType::getAnswerPosition).collect(Collectors.toSet());
 		final Integer minPosition = answerPositions.stream().min(Integer::compareTo).orElse(Integer.MAX_VALUE);
 		final Integer maxPosition = answerPositions.stream().max(Integer::compareTo).orElse(Integer.MIN_VALUE);
