@@ -127,11 +127,11 @@ public class ContestService {
 	/**
 	 * Gets the standard answers for a question according to its answer type.
 	 * @param questionIdentification the identifier of the question for which to get the answers
-	 * @param answerType the answer type of the question. Must be one of 2, 4, 5, 6, or 7.
+	 * @param answerType the answer type of the question. Should be one of 2, 4, 5, 6, 7, or 8 (undefined).
 	 * @param specificAnswers the map of question identifications to standard answer lists from the contest parameters.
 	 * @param typedAnswers the map of answer types to standard answer lists from the default parameters.
 	 * @return the list of standard answers matching the {@code answerType}.
-	 * @throws IllegalStateException if
+	 * @throws IllegalStateException if there is no answerType and no answerOptionIdentification for the standard question.
 	 */
 	private List<StandardAnswerType> getStandardAnswers(final String questionIdentification, final BigInteger answerType,
 			final Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> specificAnswers,
