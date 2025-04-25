@@ -83,6 +83,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionType
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.OccupationalTitleInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PartyAffiliationformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PositionTextInfoType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RoleInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswerType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardQuestionType;
@@ -1489,6 +1490,14 @@ public class ContestService {
 									OccupationalTitleInformationType.OccupationalTitleInfo::getLanguage, c.getCandidateIdentification(),
 									CANDIDATE_ELEMENT_NAME,
 									"occupationalTitle");
+						}
+
+						if (c.getRole() != null) {
+							checkLanguageCorrectness(c.getRole().getRoleInfo(),
+									RoleInformationType.RoleInfo::getLanguage,
+									c.getCandidateIdentification(),
+									CANDIDATE_ELEMENT_NAME,
+									"role");
 						}
 
 						if (c.getPartyAffiliation() != null) {

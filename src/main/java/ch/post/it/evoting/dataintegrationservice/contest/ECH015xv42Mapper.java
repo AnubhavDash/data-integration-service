@@ -61,6 +61,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.OccupationalT
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PartyAffiliationformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PositionTextInfoType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ReferencedElectionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RoleInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswerType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardQuestionType;
@@ -125,6 +126,12 @@ public interface ECH015xv42Mapper {
 	@Mapping(target = "title", expression = "java( ct.getTitle() != null && ct.getTitle().length() > 0 ? ct.getTitle() : null )")
 	@Mapping(target = "firstName", expression = "java( ct.getFirstName() != null && ct.getFirstName().length() > 0 ? ct.getFirstName() : ct.getCallName() )")
 	CandidateType convert(ch.ech.xmlns.ech_0155._5.CandidateType ct);
+
+	RoleInformationType convert(ch.ech.xmlns.ech_0155._5.RoleInformationType rit);
+
+	@Mapping(target = "language", source = "roleInfo.language")
+	@Mapping(target = "role", source = "roleInfo.role")
+	RoleInformationType.RoleInfo convert(ch.ech.xmlns.ech_0155._5.RoleInformationType.RoleInfo roleInfo);
 
 	PartyAffiliationformationType convert(ch.ech.xmlns.ech_0155._5.PartyAffiliationInformationType pat);
 

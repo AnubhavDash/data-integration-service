@@ -51,6 +51,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInfor
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyListType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType.ListDescriptionInfo;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PartyAffiliationformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RoleInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
 
 @SpringBootTest
@@ -428,6 +429,18 @@ class ECH015Xv40MapperIT {
 		return listDescriptionInfo.withListDescriptionShort("list1 short");
 	}
 
+	private ch.ech.xmlns.ech_0155._4.RoleInformationType.RoleInfo createRoleInfo(final boolean roleProvided) {
+		final ch.ech.xmlns.ech_0155._4.RoleInformationType.RoleInfo roleInfo = new ch.ech.xmlns.ech_0155._4.RoleInformationType.RoleInfo()
+				.withLanguage("de")
+				.withRole("role");
+
+		if (!roleProvided) {
+			return roleInfo;
+		}
+
+		return roleInfo.withRole("role");
+	}
+
 	private PartyAffiliationInfo createPartyAffiliationInfo(final boolean partyAffiliationShortProvided) {
 		final PartyAffiliationInfo partyAffiliationInfo = new PartyAffiliationInfo()
 				.withLanguage("de")
@@ -639,5 +652,25 @@ class ECH015Xv40MapperIT {
 		assertEquals(partyAffiliationInfo.getLanguage(), destination.getLanguage().value());
 		assertEquals(partyAffiliationInfo.getPartyAffiliationShort(), destination.getPartyAffiliationShort());
 		assertEquals(partyAffiliationInfo.getPartyAffiliationLong(), destination.getPartyAffiliationLong());
+	}
+
+	@Test
+	void testRoleMissing() {
+		final ch.ech.xmlns.ech_0155._4.RoleInformationType.RoleInfo roleInfo = createRoleInfo(false);
+
+		final RoleInformationType.RoleInfo destination = mapper.convert(roleInfo);
+
+		assertEquals(roleInfo.getLanguage(), destination.getLanguage().value());
+		assertEquals(roleInfo.getRole(), destination.getRole());
+	}
+
+	@Test
+	void testRoleProvided() {
+		final ch.ech.xmlns.ech_0155._4.RoleInformationType.RoleInfo roleInfo = createRoleInfo(true);
+
+		final RoleInformationType.RoleInfo destination = mapper.convert(roleInfo);
+
+		assertEquals(roleInfo.getLanguage(), destination.getLanguage().value());
+		assertEquals(roleInfo.getRole(), destination.getRole());
 	}
 }
