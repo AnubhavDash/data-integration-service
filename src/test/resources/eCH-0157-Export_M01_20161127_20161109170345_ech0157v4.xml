@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  ~ (c) Copyright 2025 Swiss Post Ltd.
+  -->
 <eCH-0157:delivery xmlns:eCH-0157="http://www.ech.ch/xmlns/eCH-0157/4" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6" xmlns:eCH-0155="http://www.ech.ch/xmlns/eCH-0155/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-Ext="https://www.webvote.ch/xmlns/eCH-Extension/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ech.ch/xmlns/eCH-0157/4 http://www.ech.ch/xmlns/eCH-0157/3/eCH-0157-4-0.xsd">
     <eCH-0157:deliveryHeader>
         <eCH-0058:senderId>9</eCH-0058:senderId>

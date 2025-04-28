@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.parameter;
 
@@ -34,7 +34,7 @@ class ParameterLoaderTest {
 	@Test
 	void mergeTest() throws Exception {
 		final Parameter actual = new ParameterLoader().loadParameter("src/test/resources/ParameterLoaderTest/mergeTest/file.param.xml",
-				"/ParameterLoaderTest/mergeTest/default.param.xml");
+				"ParameterLoaderTest/mergeTest/default.param.xml");
 
 		final Parameter expected = new Stax2Wrapper("src/test/resources/ParameterLoaderTest/mergeTest/ParameterLoaderTest_merge.xml",
 				null,

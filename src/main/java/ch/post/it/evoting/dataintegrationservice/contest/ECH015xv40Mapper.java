@@ -1,20 +1,21 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
 import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableList.toImmutableList;
+import static ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet.toImmutableSet;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.function.Predicate.not;
 
 import java.math.BigInteger;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,7 +30,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.MoreCollectors;
 
+import ch.ech.xmlns.ech_0155._4.AnswerOptionIdentificationType;
 import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableSet;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType;
@@ -58,6 +61,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.OccupationalT
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PartyAffiliationformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PositionTextInfoType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ReferencedElectionInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RoleInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswerType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardQuestionType;
@@ -123,6 +127,12 @@ public interface ECH015xv40Mapper {
 	@Mapping(target = "title", expression = "java( ct.getTitle() != null && ct.getTitle().length() > 0 ? ct.getTitle() : null )")
 	@Mapping(target = "firstName", expression = "java( ct.getFirstName() != null && ct.getFirstName().length() > 0 ? ct.getFirstName() : ct.getCallName() )")
 	CandidateType convert(ch.ech.xmlns.ech_0155._4.CandidateType ct);
+
+	RoleInformationType convert(ch.ech.xmlns.ech_0155._4.RoleInformationType rit);
+
+	@Mapping(target = "language", source = "roleInfo.language")
+	@Mapping(target = "role", source = "roleInfo.role")
+	RoleInformationType.RoleInfo convert(ch.ech.xmlns.ech_0155._4.RoleInformationType.RoleInfo roleInfo);
 
 	PartyAffiliationformationType convert(ch.ech.xmlns.ech_0155._4.PartyAffiliationformationType pat);
 
@@ -395,7 +405,7 @@ public interface ECH015xv40Mapper {
 		return result;
 	}
 
-	@Mapping(target = "answerType", source = "answerInformation.answerType")
+	@Mapping(target = "answerType", source = "answerInformation.answerType", defaultExpression = "java(new java.math.BigInteger(\"8\"))")
 	@Mapping(target = "answer", source = "answerInformation.answerOptionIdentification")
 	@Mapping(target = "questionNumber", source = "ballotQuestionNumber")
 	StandardQuestionType convert(ch.ech.xmlns.ech_0155._4.QuestionInformationType qit,
@@ -403,7 +413,7 @@ public interface ECH015xv40Mapper {
 			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
 	@Mapping(target = "ballotQuestion", source = "tieBreakQuestion")
-	@Mapping(target = "answerType", source = "tbit.answerInformation.answerType")
+	@Mapping(target = "answerType", source = "tbit.answerInformation.answerType", defaultExpression = "java(new java.math.BigInteger(\"8\"))")
 	@Mapping(target = "answer", source = "tbit.answerInformation.answerOptionIdentification")
 	@Mapping(target = "questionNumber", source = "tbit.tieBreakQuestionNumber")
 	void appendTieBreakQuestionType(
@@ -457,7 +467,7 @@ public interface ECH015xv40Mapper {
 			@Context
 			final ch.ech.xmlns.ech_0155._4.BallotType ballotType);
 
-	@Mapping(target = "answerType", source = "answerInformation.answerType")
+	@Mapping(target = "answerType", source = "answerInformation.answerType", defaultExpression = "java(new java.math.BigInteger(\"8\"))")
 	@Mapping(target = "answer", source = "answerInformation.answerOptionIdentification")
 	@Mapping(target = "questionNumber", source = "ballotQuestionNumber")
 	StandardBallotType convert(ch.ech.xmlns.ech_0155._4.BallotType.StandardBallot sb,
@@ -467,7 +477,7 @@ public interface ECH015xv40Mapper {
 	@Mapping(target = "answerIdentification", source = "answerIdentification")
 	@Mapping(target = "answerPosition", source = "answerSequenceNumber")
 	@Mapping(target = "answerInfo", source = "answerTextInformation")
-	@Mapping(target = "standardAnswerType", expression = "java( mapStandardAnswerType(answerOption.getAnswerSequenceNumber()) )")
+	@Mapping(target = "standardAnswerType", expression = "java( mapStandardAnswerType(answerOption.getAnswerTextInformation()) )")
 	StandardAnswerType convertStandardAnswer(ch.ech.xmlns.ech_0155._4.AnswerOptionIdentificationType answerOption);
 
 	@Mapping(target = "answerIdentification", source = "answerIdentification")
@@ -475,12 +485,21 @@ public interface ECH015xv40Mapper {
 	@Mapping(target = "answerInfo", source = "answerTextInformation")
 	TiebreakAnswerType convertTiebreakAnswer(ch.ech.xmlns.ech_0155._4.AnswerOptionIdentificationType answerOption);
 
-	default String mapStandardAnswerType(final BigInteger answerSequenceNumber) {
-		return switch (answerSequenceNumber.intValue()) {
-			case 1 -> "YES";
-			case 2 -> "NO";
-			case 3 -> "EMPTY";
-			default -> throw new InvalidParameterException("Unknown value for answerSequenceNumber:" + answerSequenceNumber);
+	default String mapStandardAnswerType(final List<AnswerOptionIdentificationType.AnswerTextInformation> answerTextInformations) {
+
+		final ImmutableSet<String> yes = ImmutableSet.of("Ja", "Oui", "Si", "Gea");
+		final ImmutableSet<String> no = ImmutableSet.of("Nein", "Non", "No", "Na");
+		final ImmutableSet<String> empty = ImmutableSet.of("Leer", "Blanc", "Bianco", "Vid");
+
+		final ImmutableSet<String> actual = answerTextInformations.stream()
+				.map(AnswerOptionIdentificationType.AnswerTextInformation::getAnswerText)
+				.collect(toImmutableSet());
+
+		return switch (actual) {
+			case final ImmutableSet<String> s when s.equals(yes) -> "YES";
+			case final ImmutableSet<String> s when s.equals(no) -> "NO";
+			case final ImmutableSet<String> s when s.equals(empty) -> "EMPTY";
+			default -> "UNDEFINED";
 		};
 	}
 
@@ -519,7 +538,7 @@ public interface ECH015xv40Mapper {
 	default LanguageType convert(final String value) {
 		checkArgument(Arrays.stream(LanguageType.values()).anyMatch(lang -> lang.value().equals(value)),
 				"Invalid language type: %s. Must be one of %s", value, LANGUAGES);
-		return LanguageType.fromValue(value);
+		return LanguageType.fromValue(value.toLowerCase(Locale.ENGLISH));
 	}
 
 	private ch.ech.xmlns.ech_0155._4.BallotDescriptionInformationType createEmptyBallotDescriptionInformationType(

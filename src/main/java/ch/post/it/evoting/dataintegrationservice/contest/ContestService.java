@@ -23,7 +23,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -84,6 +83,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionType
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.OccupationalTitleInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PartyAffiliationformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PositionTextInfoType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RoleInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswerType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardQuestionType;
@@ -111,6 +111,7 @@ public class ContestService {
 	private static final BigInteger ELECTION_PROPORTIONAL_TYPE = BigInteger.ONE;
 	private static final BigInteger ELECTION_RELATION_PRIMARY = BigInteger.ONE;
 	private static final BigInteger ELECTION_RELATION_SECONDARY = BigInteger.TWO;
+	public static final String EMPTY_ANSWER = "EMPTY";
 
 	private final boolean bypassCheckConsistencyDates;
 	private final int evotingFromToMinDeltaAllowed;
@@ -127,11 +128,11 @@ public class ContestService {
 	/**
 	 * Gets the standard answers for a question according to its answer type.
 	 * @param questionIdentification the identifier of the question for which to get the answers
-	 * @param answerType the answer type of the question. Must be one of 2, 4, 5, 6, or 7.
+	 * @param answerType the answer type of the question. Should be one of 2, 4, 5, 6, 7, or 8 (undefined).
 	 * @param specificAnswers the map of question identifications to standard answer lists from the contest parameters.
 	 * @param typedAnswers the map of answer types to standard answer lists from the default parameters.
 	 * @return the list of standard answers matching the {@code answerType}.
-	 * @throws IllegalStateException if
+	 * @throws IllegalStateException if there is no answerType and no answerOptionIdentification for the standard question.
 	 */
 	private List<StandardAnswerType> getStandardAnswers(final String questionIdentification, final BigInteger answerType,
 			final Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> specificAnswers,
@@ -281,14 +282,22 @@ public class ContestService {
 			} else {
 				checkState(answers.size() >= MINIMUM_REQUIRED_ANSWERS, "The tieBreakQuestion %s has only %s answers. It must have at least %s.",
 						question.getQuestionIdentification(), answers.size(), MINIMUM_REQUIRED_ANSWERS);
-				answers.forEach(answer -> answer.setHiddenAnswer(answer.getAnswerPosition() == (answers.size() - 1)));
+
+				answers.sort(Comparator.comparingInt(TiebreakAnswerType::getAnswerPosition));
+				answers.forEach(answer -> answer.setHiddenAnswer(answer == answers.getLast()));
 			}
+
 			final Set<Integer> answerPositions = answers.stream().map(TiebreakAnswerType::getAnswerPosition).collect(Collectors.toSet());
 			final Integer minPosition = answerPositions.stream().min(Integer::compareTo).orElse(Integer.MAX_VALUE);
 			final Integer maxPosition = answerPositions.stream().max(Integer::compareTo).orElse(Integer.MIN_VALUE);
-			checkState(answerPositions.size() == answers.size() && minPosition == 1 && maxPosition == answers.size(),
-					"Variant ballot tiebreak question '%s' : the answer sequence number must be a strictly increasing sequence from 1 to %s.",
-					question.getQuestionIdentification(), answers.size());
+			checkState(answerPositions.size() == answers.size() && (minPosition == 0 || minPosition == 1) && maxPosition - minPosition == answers.size() - 1,
+					"Variant ballot tiebreak question '%s' : the answer sequence number must be a strictly increasing sequence from 0 to %s or from 1 to %s.",
+					question.getQuestionIdentification(), answers.size() - 1, answers.size());
+
+			if (minPosition == 0) {
+				answers.forEach(answer -> answer.setAnswerPosition(answer.getAnswerPosition() + 1));
+				LOGGER.warn("The variant ballot tiebreak question '{}' answer positions start from 0. They have been changed to start from 1.", question.getQuestionIdentification());
+			}
 		});
 	}
 
@@ -324,14 +333,22 @@ public class ContestService {
 			checkState(answers.size() >= MINIMUM_REQUIRED_ANSWERS,
 					"The variant ballot standard question %s has only %s answers. It must have at least %s.",
 					questionIdentification, answers.size(), MINIMUM_REQUIRED_ANSWERS);
-			answers.forEach(answer -> answer.setHiddenAnswer(answer.getStandardAnswerType().equals("EMPTY")));
+
+			answers.sort(Comparator.comparingInt(StandardAnswerType::getAnswerPosition));
+			answers.forEach(answer -> answer.setHiddenAnswer(answer.getStandardAnswerType().equals(EMPTY_ANSWER)));
 		}
+
 		final Set<Integer> answerPositions = answers.stream().map(StandardAnswerType::getAnswerPosition).collect(Collectors.toSet());
 		final Integer minPosition = answerPositions.stream().min(Integer::compareTo).orElse(Integer.MAX_VALUE);
 		final Integer maxPosition = answerPositions.stream().max(Integer::compareTo).orElse(Integer.MIN_VALUE);
-		checkState(answerPositions.size() == answers.size() && minPosition == 1 && maxPosition == answers.size(),
-				"Variant ballot standard question '%s' : the answer sequence number must be a strictly increasing sequence from 1 to %s.",
-				questionIdentification, answers.size());
+		checkState(answerPositions.size() == answers.size() && (minPosition == 0 || minPosition == 1) && maxPosition - minPosition == answers.size() - 1,
+				"Variant ballot standard question '%s' : the answer sequence number must be a strictly increasing sequence from 0 to %s or from 1 to %s.",
+				questionIdentification, answers.size() - 1, answers.size());
+
+		if (minPosition == 0) {
+			answers.forEach(answer -> answer.setAnswerPosition(answer.getAnswerPosition() + 1));
+			LOGGER.warn("The variant ballot standard question '{}' answer positions start from 0. They have been changed to start from 1.", questionIdentification);
+		}
 	}
 
 	public ContestType build(final ContestType contest, final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups,
@@ -354,7 +371,7 @@ public class ContestService {
 		addCandidatesListIdentifications(electionGroups);
 		checkCandidateTextsAreSet(electionGroups);
 		warnIfCandidatesOutOfLists(electionGroups);
-		addCandidatePositionInCandidateOnlyElections(electionGroups);
+		addCandidatePositionIfNeeded(electionGroups);
 		addIncumbentTextIfNeeded(electionGroups, contestParameters.getIncumbentText());
 
 		addAbstentionAllowed(contestParameters, votes, electionGroups);
@@ -601,7 +618,7 @@ public class ContestService {
 
 		electionGroups.sort(Comparator.comparingInt(ElectionGroupBallotType::getElectionGroupPosition));
 
-		votes.sort(Comparator.comparingInt(vote -> vote.getVote().getVotePosition().intValueExact()));
+		votes.sort(Comparator.comparingInt(vote -> vote.getVote().getVotePosition()));
 	}
 
 	private void fillPositionIfDefinedInParameters(final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups,
@@ -618,9 +635,18 @@ public class ContestService {
 							sortingVotes.stream().map(vote -> vote.getPositionNumber().intValueExact()))
 					.collect(Collectors.toCollection(TreeSet::new));
 
-			checkState(sortedPositions.size() == totalNbrOfPositions && sortedPositions.getFirst() == 1
-							&& sortedPositions.getLast() == totalNbrOfPositions,
-					"The sorting positions must be a strictly increasing sequence from 1 to %s.", totalNbrOfPositions);
+			final Integer minPosition = sortedPositions.getFirst();
+			final Integer maxPosition = sortedPositions.getLast();
+
+			checkState(sortedPositions.size() == totalNbrOfPositions && (minPosition == 0 || minPosition == 1)
+							&& maxPosition - minPosition == totalNbrOfPositions - 1,
+					"The sorting positions must be a strictly increasing sequence from 0 to %s or from 1 to %s.", totalNbrOfPositions - 1, totalNbrOfPositions);
+
+			if (minPosition == 0) {
+				sortingElectionGroups.forEach(electionGroup -> electionGroup.setPositionNumber(electionGroup.getPositionNumber().add(BigInteger.ONE)));
+				sortingVotes.forEach(vote -> vote.setPositionNumber(vote.getPositionNumber().add(BigInteger.ONE)));
+				LOGGER.warn("The sorting positions start from 0. They have been changed to start from 1.");
+			}
 
 			sortingElectionGroups.forEach(positionParameter -> {
 				final String electionGroupIdentification = positionParameter.getElectionGroupIdentification();
@@ -636,7 +662,7 @@ public class ContestService {
 
 			sortingVotes.forEach(positionParameter -> {
 				final String voteIdentification = positionParameter.getVoteIdentification();
-				final BigInteger position = positionParameter.getPositionNumber();
+				final int position = positionParameter.getPositionNumber().intValueExact();
 				votes.stream()
 						.filter(vote -> vote.getVote().getVoteIdentification().equals(voteIdentification))
 						.findFirst()
@@ -678,19 +704,17 @@ public class ContestService {
 	}
 
 	private void addVotesPositionIfNeeded(final List<VoteInformationType> votes) {
-		final List<Long> usedPositions = votes.stream()
+		final List<Integer> usedPositions = votes.stream()
 				.map(vote -> vote.getVote().getVotePosition())
-				.filter(Objects::nonNull)
-				.map(BigInteger::longValueExact)
 				.toList();
 
-		final AtomicLong counter = new AtomicLong(1);
+		final AtomicInteger counter = new AtomicInteger(1);
 		votes.forEach(vote -> {
-			if (vote.getVote().getVotePosition() == null) {
+			if (vote.getVote().getVotePosition() == DEFAULT_VALUE) {
 				while (usedPositions.contains(counter.get())) {
 					counter.getAndIncrement();
 				}
-				vote.getVote().setVotePosition(BigInteger.valueOf(counter.getAndIncrement()));
+				vote.getVote().setVotePosition(counter.getAndIncrement());
 			}
 		});
 	}
@@ -723,17 +747,28 @@ public class ContestService {
 							.filter(electionInformation -> electionInformation.getElection().getElectionPosition() == DEFAULT_VALUE)
 							.count();
 
-					if (electionsWithoutPosition == 0) {
+					if (electionsWithoutPosition == 0 || electionsWithoutPosition == 1) {
 						LOGGER.debug("Election group '{}' : all elections have a position; checking monotonicity", electionGroupIdentification);
 
 						final TreeSet<Integer> sortedElectionsPositions = electionGroupBallot.getElectionInformation().stream()
 								.map(electionInformation -> electionInformation.getElection().getElectionPosition())
 								.collect(Collectors.toCollection(TreeSet::new));
 
-						checkState(sortedElectionsPositions.size() == totalNbrOfElections && sortedElectionsPositions.getFirst() == 1
-										&& sortedElectionsPositions.getLast() == totalNbrOfElections,
-								"Election group '%s' : elections positions must be a strictly increasing sequence from 1 to %s",
-								electionGroupIdentification, totalNbrOfElections);
+						final Integer minPosition = sortedElectionsPositions.getFirst();
+						final Integer maxPosition = sortedElectionsPositions.getLast();
+
+						checkState(sortedElectionsPositions.size() == totalNbrOfElections && (minPosition == 0 || minPosition == 1)
+										&& maxPosition - minPosition == totalNbrOfElections - 1,
+								"Election group '%s' : elections positions must be a strictly increasing sequence from 0 to %s or from 1 to %s",
+								electionGroupIdentification, totalNbrOfElections - 1, totalNbrOfElections);
+
+						if (minPosition == 0) {
+							electionGroupBallot.getElectionInformation().forEach(electionInformation -> {
+								final int electionPosition = electionInformation.getElection().getElectionPosition();
+								electionInformation.getElection().setElectionPosition(electionPosition + 1);
+							});
+							LOGGER.warn("The election group '{}' elections positions start from 0. They have been changed to start from 1.", electionGroupIdentification);
+						}
 
 						// Positions sequence is valid, sort for display.
 						electionGroupBallot.getElectionInformation()
@@ -861,12 +896,23 @@ public class ContestService {
 		}
 	}
 
-	private void addCandidatePositionInCandidateOnlyElections(final List<ElectionGroupBallotType> electionGroups) {
+	private void addCandidatePositionIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
 		electionGroups.stream()
 				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
-				.filter(this::isCandidateOnlyElection).forEach(e -> {
-					final AtomicInteger pos = new AtomicInteger(1);
-					e.getCandidate().forEach(c -> c.setPosition(pos.getAndIncrement()));
+				.forEach(e -> {
+					final List<Integer> usedPositions = e.getCandidate().stream()
+							.map(CandidateType::getPosition)
+							.toList();
+
+					final AtomicInteger counter = new AtomicInteger(1);
+					e.getCandidate().forEach(c -> {
+						if (c.getPosition() == DEFAULT_VALUE) {
+							while (usedPositions.contains(counter.get())) {
+								counter.getAndIncrement();
+							}
+							c.setPosition(counter.getAndIncrement());
+						}
+					});
 				});
 	}
 
@@ -1023,7 +1069,7 @@ public class ContestService {
 	}
 
 	private void checkCandidateTextsAreSet(final List<ElectionGroupBallotType> electionGroups) {
-		final Predicate<CandidateType> hasText = (c) -> c.getCandidateText() != null && !c.getCandidateText().getCandidateTextInfo().isEmpty();
+		final Predicate<CandidateType> hasText = c -> c.getCandidateText() != null && !c.getCandidateText().getCandidateTextInfo().isEmpty();
 
 		electionGroups.stream()
 				.flatMap(eg -> eg.getElectionInformation().stream())
@@ -1279,12 +1325,12 @@ public class ContestService {
 					final long standardQuestionsWithoutPosition = variantBallot.getStandardQuestion().stream()
 							.filter(standardQuestion -> standardQuestion.getQuestionPosition() == DEFAULT_VALUE)
 							.count();
-					final long tieBreakQuestionsWithoutPosition = variantBallot.getStandardQuestion().stream()
-							.filter(standardQuestion -> standardQuestion.getQuestionPosition() == DEFAULT_VALUE)
+					final long tieBreakQuestionsWithoutPosition = variantBallot.getTieBreakQuestion().stream()
+							.filter(tieBreakQuestion -> tieBreakQuestion.getQuestionPosition() == DEFAULT_VALUE)
 							.count();
 					final long questionsWithoutPosition = standardQuestionsWithoutPosition + tieBreakQuestionsWithoutPosition;
 
-					if (questionsWithoutPosition == 0) {
+					if (questionsWithoutPosition == 0 || questionsWithoutPosition == 1) {
 						LOGGER.debug("Variant ballot '{}' : all questions have a position; checking monotonicity", ballotIdentification);
 
 						final TreeSet<Integer> sortedQuestionPositions = Stream.concat(
@@ -1292,10 +1338,25 @@ public class ContestService {
 										variantBallot.getTieBreakQuestion().stream().map(TieBreakQuestionType::getQuestionPosition))
 								.collect(Collectors.toCollection(TreeSet::new));
 
-						checkState(sortedQuestionPositions.size() == totalNbrOfQuestions && sortedQuestionPositions.getFirst() == 1
-										&& sortedQuestionPositions.getLast() == totalNbrOfQuestions,
-								"Variant ballot '%s' : questions positions must be a strictly increasing sequence from 1 to %s",
-								ballotIdentification, totalNbrOfQuestions);
+						final Integer minPosition = sortedQuestionPositions.getFirst();
+						final Integer maxPosition = sortedQuestionPositions.getLast();
+
+						checkState(sortedQuestionPositions.size() == totalNbrOfQuestions && (minPosition == 0 || minPosition == 1)
+										&& maxPosition - minPosition == totalNbrOfQuestions - 1,
+								"Variant ballot '%s' : questions positions must be a strictly increasing sequence from 0 to %s or from 1 to %s",
+								ballotIdentification, totalNbrOfQuestions - 1, totalNbrOfQuestions);
+
+						if (minPosition == 0) {
+							variantBallot.getStandardQuestion().forEach(standardQuestion -> {
+								final int questionPosition = standardQuestion.getQuestionPosition();
+								standardQuestion.setQuestionPosition(questionPosition + 1);
+							});
+							variantBallot.getTieBreakQuestion().forEach(tieBreakQuestion -> {
+								final int questionPosition = tieBreakQuestion.getQuestionPosition();
+								tieBreakQuestion.setQuestionPosition(questionPosition + 1);
+							});
+							LOGGER.warn("The variant ballot '{}' questions positions start from 0. They have been changed to start from 1.", ballotIdentification);
+						}
 
 						// Positions sequence is valid, sort for display.
 						variantBallot.getStandardQuestion().sort(Comparator.comparingInt(StandardQuestionType::getQuestionPosition));
@@ -1327,17 +1388,28 @@ public class ContestService {
 							.filter(ballot -> ballot.getBallotPosition() == DEFAULT_VALUE)
 							.count();
 
-					if (ballotsWithoutPosition == 0) {
+					if (ballotsWithoutPosition == 0 || ballotsWithoutPosition == 1) {
 						LOGGER.debug("Vote '{}' : all ballots have a position; checking monotonicity", voteIdentification);
 
 						final TreeSet<Integer> sortedBallotPositions = ballots.stream()
 								.map(BallotType::getBallotPosition)
 								.collect(Collectors.toCollection(TreeSet::new));
 
-						checkState(sortedBallotPositions.size() == totalNbrOfBallots && sortedBallotPositions.getFirst() == 1
-										&& sortedBallotPositions.getLast() == totalNbrOfBallots,
-								"Vote '%s' : ballots positions must be a strictly increasing sequence from 1 to %s", voteIdentification,
-								totalNbrOfBallots);
+						final Integer minPosition = sortedBallotPositions.first();
+						final Integer maxPosition = sortedBallotPositions.last();
+
+						checkState(sortedBallotPositions.size() == totalNbrOfBallots && (minPosition == 0 || minPosition == 1)
+										&& maxPosition - minPosition == totalNbrOfBallots - 1,
+								"Vote '%s' : ballots positions must be a strictly increasing sequence from 0 to %s or from 1 to %s", voteIdentification,
+								totalNbrOfBallots - 1, totalNbrOfBallots);
+
+						if (minPosition == 0) {
+							ballots.forEach(ballot -> {
+								final int ballotPosition = ballot.getBallotPosition();
+								ballot.setBallotPosition(ballotPosition + 1);
+							});
+							LOGGER.warn("The vote '{}' ballots positions start from 0. They have been changed to start from 1.", voteIdentification);
+						}
 
 						// Positions sequence is valid, sort for display.
 						ballots.sort(Comparator.comparing(BallotType::getBallotPosition));
@@ -1418,6 +1490,14 @@ public class ContestService {
 									OccupationalTitleInformationType.OccupationalTitleInfo::getLanguage, c.getCandidateIdentification(),
 									CANDIDATE_ELEMENT_NAME,
 									"occupationalTitle");
+						}
+
+						if (c.getRole() != null) {
+							checkLanguageCorrectness(c.getRole().getRoleInfo(),
+									RoleInformationType.RoleInfo::getLanguage,
+									c.getCandidateIdentification(),
+									CANDIDATE_ELEMENT_NAME,
+									"role");
 						}
 
 						if (c.getPartyAffiliation() != null) {
@@ -1678,12 +1758,12 @@ public class ContestService {
 		c.getVoteInformation().forEach(v -> v.getVote().getBallot().forEach(b -> {
 			if (b.getStandardBallot() != null) {
 				checkState(b.getStandardBallot().getAnswer().stream()
-								.filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals("EMPTY")).count() <= 1,
+								.filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals(EMPTY_ANSWER)).count() <= 1,
 						"vote '%s' standard ballot question has more than one blank answer", v.getVote().getVoteIdentification());
 			}
 			if (b.getVariantBallot() != null) {
 				b.getVariantBallot().getStandardQuestion().forEach(q -> checkState(
-						q.getAnswer().stream().filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals("EMPTY")).count()
+						q.getAnswer().stream().filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals(EMPTY_ANSWER)).count()
 								<= 1, "vote '%s' variant ballot standard question %s has more than one blank answer",
 						v.getVote().getVoteIdentification(), q.getQuestionPosition()));
 				b.getVariantBallot().getTieBreakQuestion().forEach(

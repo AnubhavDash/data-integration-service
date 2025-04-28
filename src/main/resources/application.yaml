@@ -1,4 +1,4 @@
-# (c) Copyright 2024 Swiss Post Ltd.
+# (c) Copyright 2025 Swiss Post Ltd.
 
 # Direct trust keystore. Default is empty. Must be set.
 direct-trust:

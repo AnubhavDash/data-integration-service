@@ -1,9 +1,7 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.evoting.xmlns.parameter._5;
-
-import java.math.BigInteger;
 
 import com.google.common.collect.MoreCollectors;
 
@@ -16,7 +14,7 @@ public class VotePositionSetterTypeImpl extends VotePositionSetterType {
 	public ContestType apply(final ContestType contestType) {
 		this.getVote().forEach(tuple -> {
 			final String voteIdentification = tuple.getVoteIdentification();
-			final BigInteger position = tuple.getPosition();
+			final int position = tuple.getPosition() != null ? tuple.getPosition().intValueExact() : 0;
 
 			contestType.getVoteInformation().stream().parallel()
 					.map(VoteInformationType::getVote)
