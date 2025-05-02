@@ -30,6 +30,7 @@ import ch.post.it.evoting.dataintegrationservice.domain.VoterCountingCircle;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluence;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluenceInfo;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateUtils;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectronicAddressType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PersonType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PhysicalAddressType;
@@ -252,18 +253,23 @@ public interface ECH0045v40Mapper {
 
 	@SuppressWarnings("Duplicates")
 	default XMLGregorianCalendar getBirthDate(final ch.ech.xmlns.ech_0044._4.DatePartiallyKnownType partialBirthdate) {
+		final XMLGregorianCalendar birthDate;
 		if (partialBirthdate.getYearMonthDay() != null) {
-			return partialBirthdate.getYearMonthDay();
+			birthDate = partialBirthdate.getYearMonthDay();
 		} else if (partialBirthdate.getYearMonth() != null) {
 			final XMLGregorianCalendar calendar = partialBirthdate.getYearMonth();
 			calendar.setDay(1);
-			return calendar;
+			birthDate = calendar;
 		} else {
 			final XMLGregorianCalendar calendar = partialBirthdate.getYear();
 			calendar.setDay(1);
 			calendar.setMonth(1);
-			return calendar;
+			birthDate = calendar;
 		}
+		// Validate the date format.
+		LocalDateUtils.fromXMLGregorianCalendar(birthDate);
+
+		return birthDate;
 	}
 
 	default String getCountryIso2ByCountryId(final Integer countryId) {
