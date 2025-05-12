@@ -1,5 +1,12 @@
 # Changelog
 
+## Release 2.8.5
+
+Release 2.8.5 incorporates the following change:
+
+* Improved the Italian and Rumantsch translations for 'Empty candidate positions.'
+* Updated dependencies and third-party libraries.
+
 ## Release 2.8.4
 
 Release 2.8.4 incorporates the following change:
