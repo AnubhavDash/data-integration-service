@@ -379,11 +379,11 @@
 			</positionText>
 			<positionText>
 				<language>it</language>
-				<text>Nessun nominativo selezionato</text>
+				<text>Nessun nome selezionato</text>
 			</positionText>
 			<positionText>
 				<language>rm</language>
-				<text>Nagin num selecziunà</text>
+				<text>Selecziunà nagin num</text>
 			</positionText>
 		</emptyPositionTextInfo>
 		<returnCodeWriteInDescriptionInfo>

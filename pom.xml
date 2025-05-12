@@ -63,7 +63,7 @@
 		<spring-boot.version>3.4.4</spring-boot.version>
 		<stax2-api.version>4.2.2</stax2-api.version>
 		<super-machine.version>0.1.0</super-machine.version>
-		<testdata.version>1.5.0.0-b30</testdata.version>
+		<testdata.version>1.5.0.0-b31</testdata.version>
 		<woodstox-core.version>7.1.0</woodstox-core.version>
 
 		<!-- OpenJDK -->
