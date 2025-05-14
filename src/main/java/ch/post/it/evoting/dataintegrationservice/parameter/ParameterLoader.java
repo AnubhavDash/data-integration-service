@@ -1,12 +1,14 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.parameter;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.net.URL;
 
 import jakarta.xml.bind.JAXBException;
@@ -17,9 +19,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import ch.evoting.xmlns.parameter._5.ObjectFactory;
-import ch.evoting.xmlns.parameter._5.Parameter;
-import ch.evoting.xmlns.parameter._5.PluginObjectFactory;
+import ch.evoting.xmlns.parameter._4.ObjectFactory;
+import ch.evoting.xmlns.parameter._4.Parameter;
+import ch.evoting.xmlns.parameter._4.PluginObjectFactory;
+import ch.galinet.xml.xmlmerge.config.AttributeMergeConfigurer;
+import ch.galinet.xml.xmlmerge.config.ConfigurableXmlMerge;
 import ch.post.it.evoting.dataintegrationservice.common.Stax2Wrapper;
 
 @Component
@@ -28,60 +32,34 @@ public class ParameterLoader {
 
 	private static final String DEFAULT_PARAMETER_PATH = "xml/default.param.xml";
 	@SuppressWarnings("java:S1075")
-	private static final String PARAMETER_SCHEMA_PATH = "/xsd/evoting-parameter-5-0.xsd";
+	private static final String PARAMETER_SCHEMA_PATH = "/xsd/evoting-parameter-4-9.xsd";
 
 	public Parameter loadParameter(final String fileLocation) {
-		return this.loadParameter(fileLocation, DEFAULT_PARAMETER_PATH);
-	}
+		LOGGER.debug("Loading parameter : {}", fileLocation);
 
-	public Parameter loadParameter(final String fileLocation, final String defaultParameterLocation) {
-		checkNotNull(fileLocation);
-		checkNotNull(defaultParameterLocation);
+		try (final InputStream defaultFile = ParameterLoader.class.getClassLoader().getResourceAsStream(DEFAULT_PARAMETER_PATH);
+				final InputStream file = new FileInputStream(fileLocation)) {
 
-		// XSD
-		final URL schemaPath = ParameterLoader.class.getResource(PARAMETER_SCHEMA_PATH);
-		checkNotNull(schemaPath);
+			checkState(defaultFile != null, "Resource %s not found", DEFAULT_PARAMETER_PATH);
 
-		LOGGER.info("Loading parameter : {}", fileLocation);
+			final URL schemaPath = ParameterLoader.class.getResource(PARAMETER_SCHEMA_PATH);
+			checkState(schemaPath != null, "Resource %s not found", PARAMETER_SCHEMA_PATH);
 
-		// Default XML
-		try (final InputStream defaultFile = ParameterLoader.class.getClassLoader().getResourceAsStream(defaultParameterLocation)) {
+			final InputStream merged = new ConfigurableXmlMerge(new AttributeMergeConfigurer()).merge(new InputStream[] { file, defaultFile });
 
-			final Parameter defaultParameterValue = new Stax2Wrapper(defaultFile, null, ObjectFactory.class, new PluginObjectFactory())
-					.processByIteration("/parameter", Parameter.class)
-					.iterator().next();
-			final Parameter inputParameterValue = new Stax2Wrapper(fileLocation, schemaPath, ObjectFactory.class, new PluginObjectFactory())
-					.processByIteration("/parameter", Parameter.class)
-					.iterator().next();
+			final Parameter[] result = new Parameter[1];
 
-			if (inputParameterValue.getContest().getDefaultAnswerTranslations() == null) {
-				inputParameterValue.getContest().setDefaultAnswerTranslations(defaultParameterValue.getContest().getDefaultAnswerTranslations());
-			}
+			final Stax2Wrapper wrapper = new Stax2Wrapper(merged,
+					schemaPath,
+					ObjectFactory.class, new PluginObjectFactory());
+			wrapper.addElementListener("/parameter", Parameter.class, p -> result[0] = p);
 
-			if (inputParameterValue.getContest().getEmptyPositionTextInfo() == null) {
-				inputParameterValue.getContest().setEmptyPositionTextInfo(defaultParameterValue.getContest().getEmptyPositionTextInfo());
-			}
+			wrapper.process();
 
-			if (inputParameterValue.getContest().getReturnCodeWriteInDescriptionInfo() == null) {
-				inputParameterValue.getContest()
-						.setReturnCodeWriteInDescriptionInfo(defaultParameterValue.getContest().getReturnCodeWriteInDescriptionInfo());
-			}
-
-			if (inputParameterValue.getContest().getIncumbentText() == null) {
-				inputParameterValue.getContest().setIncumbentText(defaultParameterValue.getContest().getIncumbentText());
-			}
-
-			if (inputParameterValue.getContest().getDefaultDisplayCandidateLineStyle() == null) {
-				inputParameterValue.getContest()
-						.setDefaultDisplayCandidateLineStyle(defaultParameterValue.getContest().getDefaultDisplayCandidateLineStyle());
-			}
-
-			if (inputParameterValue.getContest().getDefaultDisplayListLineStyle() == null) {
-				inputParameterValue.getContest().setDefaultDisplayListLineStyle(defaultParameterValue.getContest().getDefaultDisplayListLineStyle());
-			}
-
-			return inputParameterValue;
-		} catch (final XMLStreamException | JAXBException | IOException e) {
+			return result[0];
+		} catch (final IOException e) {
+			throw new UncheckedIOException(e);
+		} catch (final XMLStreamException | JAXBException e) {
 			throw new IllegalArgumentException("Unable to load Parameter", e);
 		}
 	}

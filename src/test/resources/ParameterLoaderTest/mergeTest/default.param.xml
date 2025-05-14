@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/5" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/5 evoting-parameter-5-0.xsd">
+<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/4" xmlns:merge="http://xmlmerge.el4j.elca.ch" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/4 evoting-parameter-4-9.xsd">
 	<contest>
-		<defaultAnswerTranslations>
+		<defaultAnswerTranslations merge:action="xsdinsert">
 			<answerType>
 				<answerTypeIdentification>1</answerTypeIdentification>
 				<standardAnswer>
 					<answerPosition>1</answerPosition>
 					<standardAnswerType>YES</standardAnswerType>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Ja</answer>
@@ -28,7 +27,6 @@
 				<standardAnswer>
 					<answerPosition>2</answerPosition>
 					<standardAnswerType>NO</standardAnswerType>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Nein</answer>
@@ -52,7 +50,6 @@
 				<standardAnswer>
 					<answerPosition>1</answerPosition>
 					<standardAnswerType>YES</standardAnswerType>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Ja</answer>
@@ -73,7 +70,6 @@
 				<standardAnswer>
 					<answerPosition>2</answerPosition>
 					<standardAnswerType>NO</standardAnswerType>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Nein</answer>
@@ -118,7 +114,6 @@
 				<standardAnswer>
 					<answerPosition>1</answerPosition>
 					<standardAnswerType>YES</standardAnswerType>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Angekreuzt</answer>
@@ -162,7 +157,6 @@
 				<answerTypeIdentification>4</answerTypeIdentification>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Initiative</answer>
@@ -182,7 +176,6 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Gegenentwurf</answer>
@@ -225,7 +218,6 @@
 				<answerTypeIdentification>5</answerTypeIdentification>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Initiative</answer>
@@ -245,7 +237,6 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Gegenvorschlag</answer>
@@ -288,7 +279,6 @@
 				<answerTypeIdentification>6</answerTypeIdentification>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Vorlage</answer>
@@ -308,7 +298,6 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Volksvorschlag</answer>
@@ -351,7 +340,6 @@
 				<answerTypeIdentification>7</answerTypeIdentification>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Hauptvorlage</answer>
@@ -371,7 +359,6 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>de</language>
 						<answer>Eventualantrag</answer>
@@ -411,25 +398,25 @@
 				</tiebreakAnswer>
 			</answerType>
 		</defaultAnswerTranslations>
-		<emptyPositionTextInfo>
-			<positionText>
+		<emptyCandidateText merge:action="xsdinsert">
+			<emptyCandidateTextInfo>
 				<language>de</language>
 				<text>Kein Name ausgewählt</text>
-			</positionText>
-			<positionText>
+			</emptyCandidateTextInfo>
+			<emptyCandidateTextInfo>
 				<language>fr</language>
 				<text>Aucun nom sélectionné</text>
-			</positionText>
-			<positionText>
+			</emptyCandidateTextInfo>
+			<emptyCandidateTextInfo>
 				<language>it</language>
 				<text>Nessun nominativo selezionato</text>
-			</positionText>
-			<positionText>
+			</emptyCandidateTextInfo>
+			<emptyCandidateTextInfo>
 				<language>rm</language>
 				<text>Nagin num selecziunà</text>
-			</positionText>
-		</emptyPositionTextInfo>
-		<incumbentText>
+			</emptyCandidateTextInfo>
+		</emptyCandidateText>
+		<incumbentText merge:action="xsdinsert">
 			<incumbentTextInfo>
 				<language>de</language>
 				<text>Bisher</text>
@@ -447,23 +434,5 @@
 				<text>uscant</text>
 			</incumbentTextInfo>
 		</incumbentText>
-		<returnCodeWriteInDescriptionInfo>
-			<positionText>
-				<language>de</language>
-				<text>Nicht genannte Person</text>
-			</positionText>
-			<positionText>
-				<language>fr</language>
-				<text>Vote manuscrit</text>
-			</positionText>
-			<positionText>
-				<language>it</language>
-				<text>Posizione write-in</text>
-			</positionText>
-			<positionText>
-				<language>rm</language>
-				<text>Posiziun per agiuntar candidats</text>
-			</positionText>
-		</returnCodeWriteInDescriptionInfo>
 	</contest>
 </parameter>

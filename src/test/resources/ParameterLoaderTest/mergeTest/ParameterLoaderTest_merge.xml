@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<parameter xmlns="http://www.evoting.ch/xmlns/parameter/5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/5 evoting-parameter-5-0.xsd">
+<parameter xmlns="http://www.evoting.ch/xmlns/parameter/4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/4 evoting-parameter-4-9.xsd">
   <contest>
     <defaultLanguage>fr</defaultLanguage>
     <evotingFromDate>2037-04-13T09:04:00+02:00</evotingFromDate>
     <evotingToDate>2037-05-01T00:00:00+02:00</evotingToDate>
-    <electoralBoard>
-      <electoralBoardIdentification>EB</electoralBoardIdentification>
-      <electoralBoardName>EB</electoralBoardName>
-      <electoralBoardDescription>EB</electoralBoardDescription>
-      <electoralBoardMembers>
-        <electoralBoardMemberName>EB1</electoralBoardMemberName>
-        <electoralBoardMemberName>EB2</electoralBoardMemberName>
-      </electoralBoardMembers>
-    </electoralBoard>
     <elections>
       <election>
         <electionIdentification>1FA9E2EF-A59B-11E6-ACC2-00155D28151E</electionIdentification>
@@ -25,7 +16,6 @@
         <standardAnswer>
           <answerPosition>1</answerPosition>
           <standardAnswerType>YES</standardAnswerType>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>de</language>
             <answer>Ja</answer>
@@ -46,7 +36,6 @@
         <standardAnswer>
           <answerPosition>2</answerPosition>
           <standardAnswerType>NO</standardAnswerType>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>de</language>
             <answer>Nein</answer>
@@ -70,7 +59,6 @@
         <standardAnswer>
           <answerPosition>1</answerPosition>
           <standardAnswerType>YES</standardAnswerType>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>de</language>
             <answer>Ja</answer>
@@ -91,7 +79,6 @@
         <standardAnswer>
           <answerPosition>2</answerPosition>
           <standardAnswerType>NO</standardAnswerType>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>de</language>
             <answer>Nein</answer>
@@ -136,7 +123,6 @@
         <standardAnswer>
           <answerPosition>1</answerPosition>
           <standardAnswerType>YES</standardAnswerType>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>de</language>
             <answer>Angekreuzt</answer>
@@ -180,7 +166,6 @@
         <answerTypeIdentification>4</answerTypeIdentification>
         <tiebreakAnswer>
           <answerPosition>1</answerPosition>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>de</language>
             <answer>Initiative</answer>
@@ -200,7 +185,6 @@
         </tiebreakAnswer>
         <tiebreakAnswer>
           <answerPosition>2</answerPosition>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>de</language>
             <answer>Gegenentwurf</answer>
@@ -243,7 +227,6 @@
         <answerTypeIdentification>5</answerTypeIdentification>
         <tiebreakAnswer>
           <answerPosition>1</answerPosition>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>de</language>
             <answer>Initiative</answer>
@@ -263,7 +246,6 @@
         </tiebreakAnswer>
         <tiebreakAnswer>
           <answerPosition>2</answerPosition>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>de</language>
             <answer>Gegenvorschlag</answer>
@@ -306,7 +288,6 @@
         <answerTypeIdentification>6</answerTypeIdentification>
         <tiebreakAnswer>
           <answerPosition>1</answerPosition>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>de</language>
             <answer>Vorlage</answer>
@@ -326,7 +307,6 @@
         </tiebreakAnswer>
         <tiebreakAnswer>
           <answerPosition>2</answerPosition>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>de</language>
             <answer>Volksvorschlag</answer>
@@ -369,7 +349,6 @@
         <answerTypeIdentification>7</answerTypeIdentification>
         <tiebreakAnswer>
           <answerPosition>1</answerPosition>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>de</language>
             <answer>Hauptvorlage</answer>
@@ -389,7 +368,6 @@
         </tiebreakAnswer>
         <tiebreakAnswer>
           <answerPosition>2</answerPosition>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>de</language>
             <answer>Eventualantrag</answer>
@@ -434,7 +412,6 @@
         <questionIdentification>tiebreak-qid1</questionIdentification>
         <tiebreakAnswer>
           <answerPosition>2</answerPosition>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>fr</language>
             <answer>NON</answer>
@@ -454,7 +431,6 @@
         </tiebreakAnswer>
         <tiebreakAnswer>
           <answerPosition>1</answerPosition>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>fr</language>
             <answer>OUI</answer>
@@ -477,7 +453,6 @@
         <questionIdentification>tiebreak-qid2</questionIdentification>
         <tiebreakAnswer>
           <answerPosition>2</answerPosition>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>fr</language>
             <answer>NON</answer>
@@ -497,7 +472,6 @@
         </tiebreakAnswer>
         <tiebreakAnswer>
           <answerPosition>1</answerPosition>
-          <hiddenAnswer>false</hiddenAnswer>
           <answerInfo>
             <language>fr</language>
             <answer>OUI</answer>
@@ -517,7 +491,6 @@
         </tiebreakAnswer>
         <tiebreakAnswer>
           <answerPosition>3</answerPosition>
-          <hiddenAnswer>true</hiddenAnswer>
           <answerInfo>
             <language>fr</language>
             <answer>OUI</answer>
@@ -537,42 +510,24 @@
         </tiebreakAnswer>
       </question>
     </answerTranslations>
-    <emptyPositionTextInfo>
-      <positionText>
+    <emptyCandidateText>
+      <emptyCandidateTextInfo>
         <language>de</language>
         <text>Kein Name ausgewählt</text>
-      </positionText>
-      <positionText>
+      </emptyCandidateTextInfo>
+      <emptyCandidateTextInfo>
         <language>fr</language>
         <text>Aucun nom sélectionné</text>
-      </positionText>
-      <positionText>
+      </emptyCandidateTextInfo>
+      <emptyCandidateTextInfo>
         <language>it</language>
         <text>Nessun nominativo selezionato</text>
-      </positionText>
-      <positionText>
+      </emptyCandidateTextInfo>
+      <emptyCandidateTextInfo>
         <language>rm</language>
         <text>Nagin num selecziunà</text>
-      </positionText>
-    </emptyPositionTextInfo>
-    <returnCodeWriteInDescriptionInfo>
-      <positionText>
-        <language>de</language>
-        <text>Nicht genannte Person</text>
-      </positionText>
-      <positionText>
-        <language>fr</language>
-        <text>Vote manuscrit</text>
-      </positionText>
-      <positionText>
-        <language>it</language>
-        <text>Posizione write-in</text>
-      </positionText>
-      <positionText>
-        <language>rm</language>
-        <text>Posiziun per agiuntar candidats</text>
-      </positionText>
-    </returnCodeWriteInDescriptionInfo>
+      </emptyCandidateTextInfo>
+    </emptyCandidateText>
     <incumbentText>
       <incumbentTextInfo>
         <language>de</language>

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.authorization;
 
@@ -22,7 +22,7 @@ class AuthorizationServiceTest {
 		AuthorizationsType authorizations = new AuthorizationsType();
 		final AuthorizationType auth = new AuthorizationType()
 				.withAuthorizationIdentification("id")
-				.withAuthorizationName("Toto").withAuthorizationObject(
+				.withAuthorizationAlias("1234").withAuthorizationName("Toto").withAuthorizationObject(
 						new AuthorizationObjectType()
 								.withDomainOfInfluence(new DomainOfInfluenceType().withDomainOfInfluenceIdentification("doi"))
 								.withCountingCircle(new CountingCircleType().withCountingCircleIdentification("cc"))

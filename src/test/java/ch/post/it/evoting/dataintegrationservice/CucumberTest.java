@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice;
 
@@ -18,7 +18,7 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @CucumberContextConfiguration
 @SpringBootTest(
 		properties = {
-				"directory.source=target/test-classes/testdata/election-events/Post_E2E_DEV/D0",
+				"directory.source=testdata/Post_E2E_DEV/input",
 				"directory.target=target"}
 )
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)

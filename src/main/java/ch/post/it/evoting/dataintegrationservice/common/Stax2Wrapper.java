@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.common;
 
@@ -48,46 +48,44 @@ public class Stax2Wrapper {
 		this(xmlFileLocation, xsdLocation, jaxbFactoryClass, null);
 	}
 
-	public Stax2Wrapper(final InputStream inputStream, final URL xsdLocation, final Class<?> jaxbFactoryClass)
-			throws XMLStreamException, JAXBException {
-		this(inputStream, xsdLocation, jaxbFactoryClass, null);
-	}
-
-	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class<?> jaxbFactoryClass, final Object specificUnmarshallerFactoryInstance)
-			throws XMLStreamException, JAXBException {
-		this((Object) xmlFileLocation, xsdLocation, jaxbFactoryClass, specificUnmarshallerFactoryInstance);
-	}
-
-	public Stax2Wrapper(final InputStream inputStream, final URL xsdLocation, final Class<?> jaxbFactoryClass, final Object specificUnmarshallerFactoryInstance)
-			throws XMLStreamException, JAXBException {
-		this((Object) inputStream, xsdLocation, jaxbFactoryClass, specificUnmarshallerFactoryInstance);
-	}
-
-	private Stax2Wrapper(final Object input, final URL xsdLocation, final Class<?> jaxbFactoryClass,
+	public Stax2Wrapper(final InputStream input, final URL xsdLocation, final Class<?> jaxbFactoryClass,
 			final Object specificUnmarshallerFactoryInstance)
 			throws XMLStreamException, JAXBException {
-		unmarshaller = JAXBContext.newInstance(jaxbFactoryClass).createUnmarshaller();
-		unmarshaller.setEventHandler(new CustomValidationEventHandler());
 
+		name = "inputStream";
+		unmarshaller = JAXBContext.newInstance(jaxbFactoryClass).createUnmarshaller();
 		if (specificUnmarshallerFactoryInstance != null) {
 			unmarshaller.setProperty("org.glassfish.jaxb.core.ObjectFactory", specificUnmarshallerFactoryInstance);
+		}
+
+		final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+		xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+		xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+
+		reader = Stax2ReaderAdapter.wrapIfNecessary(xmlInputFactory.createXMLStreamReader(input, "UTF-8"));
+		if (xsdLocation != null) {
+			final XMLValidationSchemaFactory sf = XMLValidationSchemaFactory.newInstance(XMLValidationSchema.SCHEMA_ID_W3C_SCHEMA);
+			final XMLValidationSchema sv = sf.createSchema(xsdLocation);
+			reader.validateAgainst(sv);
+		}
+	}
+
+	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class<?> jaxbFactoryClass,
+			final Object specificUnmarshallerFactoryInstance)
+			throws XMLStreamException, JAXBException {
+
+		name = xmlFileLocation;
+		unmarshaller = JAXBContext.newInstance(jaxbFactoryClass).createUnmarshaller();
+
+		if (specificUnmarshallerFactoryInstance != null) {
+			unmarshaller.setProperty("com.sun.xml.bind.ObjectFactory", specificUnmarshallerFactoryInstance);
 		}
 
 		final XMLInputFactory2 factory = (XMLInputFactory2) XMLInputFactory.newInstance();
 		factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 		factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
 
-		switch (input) {
-		case final String xmlFileLocation -> {
-			name = xmlFileLocation;
-			reader = factory.createXMLStreamReader(new File(xmlFileLocation));
-		}
-		case final InputStream inputStream -> {
-			name = "inputStream";
-			reader = Stax2ReaderAdapter.wrapIfNecessary(factory.createXMLStreamReader(inputStream, "UTF-8"));
-		}
-		default -> throw new IllegalArgumentException("Not implemented.");
-		}
+		reader = factory.createXMLStreamReader(new File(xmlFileLocation));
 
 		if (xsdLocation != null) {
 			final XMLValidationSchemaFactory sf = XMLValidationSchemaFactory.newInstance(XMLValidationSchema.SCHEMA_ID_W3C_SCHEMA);

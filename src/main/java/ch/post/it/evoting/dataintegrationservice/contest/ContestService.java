@@ -1,32 +1,31 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
 import static ch.post.it.evoting.evotinglibraries.domain.validations.Validations.hasNoDuplicates;
 import static com.google.common.base.Preconditions.checkState;
 import static java.time.temporal.ChronoUnit.DAYS;
-import static java.util.function.Predicate.not;
 import static org.swisspush.supermachine.BeanScanner.from;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -39,21 +38,17 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.MoreCollectors;
 import com.google.common.collect.Streams;
 
-import ch.evoting.xmlns.parameter._5.AnswerTranslationType;
-import ch.evoting.xmlns.parameter._5.ContestType.IncumbentText;
-import ch.evoting.xmlns.parameter._5.DefaultAnswerTranslationType;
-import ch.evoting.xmlns.parameter._5.DisplayCandidateLineStyle;
-import ch.evoting.xmlns.parameter._5.DisplayListLineStyle;
-import ch.evoting.xmlns.parameter._5.ElectionType;
-import ch.evoting.xmlns.parameter._5.PositionText;
-import ch.evoting.xmlns.parameter._5.SortingType;
-import ch.post.it.evoting.cryptoprimitives.collection.ImmutableList;
+import ch.evoting.xmlns.parameter._4.AnswerTranslationType;
+import ch.evoting.xmlns.parameter._4.ContestType.IncumbentText;
+import ch.evoting.xmlns.parameter._4.DefaultAnswerTranslationType;
+import ch.evoting.xmlns.parameter._4.DisplayCandidateLineStyle;
+import ch.evoting.xmlns.parameter._4.DisplayListLineStyle;
+import ch.evoting.xmlns.parameter._4.ElectionType;
+import ch.evoting.xmlns.parameter._4.EmptyCandidateTextInfo;
 import ch.post.it.evoting.dataintegrationservice.common.MarshallTool;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.TieBreakQuestionTypeWithReferences;
 import ch.post.it.evoting.dataintegrationservice.parameter.ParameterMapper;
-import ch.post.it.evoting.evotinglibraries.domain.LocalDateTimeUtils;
-import ch.post.it.evoting.evotinglibraries.domain.LocalDateUtils;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType;
@@ -70,10 +65,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroup
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionRulesExplanationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EligibilityType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyListType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.EmptyPositionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ExtendedAuthenticationKeysDefinitionType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentTextInfoType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.IncumbentType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.LanguageType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListDescriptionInformationType;
@@ -81,20 +73,15 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionDescriptionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.OccupationalTitleInformationType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PartyAffiliationformationType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PositionTextInfoType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.RoleInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardAnswerType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TiebreakAnswerType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VarListTextInfoType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VariantBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteInformationType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.WriteInPositionType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.WriteInCandidateType;
 
 @Service
 public class ContestService {
@@ -103,45 +90,45 @@ public class ContestService {
 
 	private static final String VALUE_NOT_UNIQUE_WITHIN_PARAMETERS_MESSAGE = "%s '%s' not unique within the parameters";
 
-	private static final List<String> LANGUAGES = Arrays.stream(LanguageType.values()).map(LanguageType::value).toList();
+	private static final int MINIMAL_REQUIRED_LANGUAGES = 4;
 	private static final int DEFAULT_VALUE = 0;
-	private static final int MINIMUM_REQUIRED_ANSWERS = 3;
 
 	private static final BigInteger ELECTION_MAJORITY_TYPE = BigInteger.TWO;
 	private static final BigInteger ELECTION_PROPORTIONAL_TYPE = BigInteger.ONE;
 	private static final BigInteger ELECTION_RELATION_PRIMARY = BigInteger.ONE;
 	private static final BigInteger ELECTION_RELATION_SECONDARY = BigInteger.TWO;
-	public static final String EMPTY_ANSWER = "EMPTY";
 
-	private final boolean bypassCheckConsistencyDates;
+	private final boolean byPassCheckConsistencyDates;
+	private final int votesDefaultAnswerTypeStandard;
+	private final int votesDefaultAnswerTypeTiebreak;
 	private final int evotingFromToMinDeltaAllowed;
 
 	public ContestService(
 			@Value("${bypass.checkConsistency.dates}")
-			final boolean bypassCheckConsistencyDates,
+			final boolean byPassCheckConsistencyDates,
+			@Value("${votes.defaultAnswerType.standard}")
+			final int votesDefaultAnswerTypeStandard,
+			@Value("${votes.defaultAnswerType.tiebreak}")
+			final int votesDefaultAnswerTypeTiebreak,
 			@Value("${eVotingFromTo.min.delta.allowed}")
 			final int evotingFromToMinDeltaAllowed) {
-		this.bypassCheckConsistencyDates = bypassCheckConsistencyDates;
+		this.byPassCheckConsistencyDates = byPassCheckConsistencyDates;
+		this.votesDefaultAnswerTypeStandard = votesDefaultAnswerTypeStandard;
+		this.votesDefaultAnswerTypeTiebreak = votesDefaultAnswerTypeTiebreak;
 		this.evotingFromToMinDeltaAllowed = evotingFromToMinDeltaAllowed;
 	}
 
-	/**
-	 * Gets the standard answers for a question according to its answer type.
-	 * @param questionIdentification the identifier of the question for which to get the answers
-	 * @param answerType the answer type of the question. Should be one of 2, 4, 5, 6, 7, or 8 (undefined).
-	 * @param specificAnswers the map of question identifications to standard answer lists from the contest parameters.
-	 * @param typedAnswers the map of answer types to standard answer lists from the default parameters.
-	 * @return the list of standard answers matching the {@code answerType}.
-	 * @throws IllegalStateException if there is no answerType and no answerOptionIdentification for the standard question.
-	 */
-	private List<StandardAnswerType> getStandardAnswers(final String questionIdentification, final BigInteger answerType,
-			final Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> specificAnswers,
-			final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> typedAnswers) {
-		List<ch.evoting.xmlns.parameter._5.StandardAnswerType> paramAnswers = specificAnswers.get(questionIdentification);
+	private List<StandardAnswerType> getStandardAnswers(final String questionIdentification, BigInteger answerType,
+			final Map<String, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> specificAnswers,
+			final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> typedAnswers) {
+		List<ch.evoting.xmlns.parameter._4.StandardAnswerType> paramAnswers = specificAnswers.get(questionIdentification);
 		if ((paramAnswers == null || paramAnswers.isEmpty())) {
-			checkState(answerType != null,
-					"There is no answerType and no answerOptionIdentification for the standard question identified by '%s'. At least one of them must be set.",
-					questionIdentification);
+			if (answerType == null) {
+				LOGGER.warn(
+						"There is no answerType and answerOptionIdentifcation for the question identified by '{}'. Taking answerType 2 as default.",
+						questionIdentification);
+				answerType = BigInteger.valueOf(votesDefaultAnswerTypeStandard);
+			}
 			paramAnswers = typedAnswers.get(answerType);
 			checkState(paramAnswers != null && !paramAnswers.isEmpty(), "Process stopped. answerType %s in question %s is not supported", answerType,
 					questionIdentification);
@@ -149,14 +136,17 @@ public class ContestService {
 		return ParameterMapper.INSTANCE.mapStandard(paramAnswers, questionIdentification);
 	}
 
-	private List<TiebreakAnswerType> getTiebreakAnswers(final String questionIdentification, final BigInteger answerType,
-			final Map<String, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> specificAnswers,
-			final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> typedAnswers) {
-		List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType> paramAnswers = specificAnswers.get(questionIdentification);
+	private List<TiebreakAnswerType> getTiebreakAnswers(final String questionIdentification, BigInteger answerType,
+			final Map<String, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> specificAnswers,
+			final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> typedAnswers) {
+		List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType> paramAnswers = specificAnswers.get(questionIdentification);
 		if ((paramAnswers == null || paramAnswers.isEmpty())) {
-			checkState(answerType != null,
-					"There is no answerType and no answerOptionIdentification for the tiebreak question identified by '%s'. At least one of them must be set.",
-					questionIdentification);
+			if (answerType == null) {
+				LOGGER.warn(
+						"There is no answerType and answerOptionIdentifcation for the question identified by '{}'. Taking answerType 4 as default.",
+						questionIdentification);
+				answerType = BigInteger.valueOf(votesDefaultAnswerTypeTiebreak);
+			}
 			paramAnswers = typedAnswers.get(answerType);
 			checkState(paramAnswers != null && !paramAnswers.isEmpty(), "Process stopped. answerType %s in question %s is not supported", answerType,
 					questionIdentification);
@@ -164,9 +154,9 @@ public class ContestService {
 		return ParameterMapper.INSTANCE.mapTiebreak(paramAnswers, questionIdentification);
 	}
 
-	private Map<BigInteger, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> getDefaultStandardAnswers(
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
-		final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> defaultAnswers;
+	private Map<BigInteger, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> getDefaultStandardAnswers(
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+		final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> defaultAnswers;
 		if (contestParameters.getDefaultAnswerTranslations() == null) {
 			defaultAnswers = new HashMap<>();
 		} else {
@@ -183,9 +173,9 @@ public class ContestService {
 		return defaultAnswers;
 	}
 
-	private Map<BigInteger, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> getDefaultTiebreakAnswers(
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
-		final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> defaultAnswers;
+	private Map<BigInteger, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> getDefaultTiebreakAnswers(
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+		final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> defaultAnswers;
 		if (contestParameters.getDefaultAnswerTranslations() == null) {
 			defaultAnswers = new HashMap<>();
 		} else {
@@ -202,9 +192,9 @@ public class ContestService {
 		return defaultAnswers;
 	}
 
-	private Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> getSpecificStandardAnswers(
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
-		final Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> specificAnswers;
+	private Map<String, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> getSpecificStandardAnswers(
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+		final Map<String, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> specificAnswers;
 		if (contestParameters.getAnswerTranslations() == null) {
 			specificAnswers = new HashMap<>();
 		} else {
@@ -219,9 +209,9 @@ public class ContestService {
 		return specificAnswers;
 	}
 
-	private Map<String, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> getSpecificTiebreakAnswers(
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
-		final Map<String, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> specificAnswers;
+	private Map<String, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> getSpecifiTiebreakAnswers(
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+		final Map<String, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> specificAnswers;
 		if (contestParameters.getAnswerTranslations() == null) {
 			specificAnswers = new HashMap<>();
 		} else {
@@ -236,23 +226,14 @@ public class ContestService {
 		return specificAnswers;
 	}
 
-	/**
-	 * Adds the answers to the votes' questions if needed.
-	 * <p>
-	 * There are three sources for the answers. Answers should be provided directly in the eCH, but if they are not, the election event specific params are checked for answer options.
-	 * If it also does not contain answer options specific to a question, the default parameters are checked for answer options matching the question's answer type.
-	 * </p>
-	 * @param votes the list of votes for which to potentially add answers
-	 * @param contestParameters the contest's parameters to be used for mapping the answers to the questions if needed.
-	 */
-	private void addVotesAnswers(final List<VoteInformationType> votes, final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
-		final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> defaultStandardAnswers = getDefaultStandardAnswers(
+	private void addVotesAnswers(final List<VoteInformationType> votes, final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+		final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> defaultStandardAnswers = getDefaultStandardAnswers(
 				contestParameters);
-		final Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> specificStandardAnswers = getSpecificStandardAnswers(
+		final Map<String, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> specificStandardAnswers = getSpecificStandardAnswers(
 				contestParameters);
-		final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> defaultTiebreakAnswers = getDefaultTiebreakAnswers(
+		final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> defaultTiebreakAnswers = getDefaultTiebreakAnswers(
 				contestParameters);
-		final Map<String, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> specificTiebreakAnswers = getSpecificTiebreakAnswers(
+		final Map<String, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> specificTiebreakAnswers = getSpecifiTiebreakAnswers(
 				contestParameters);
 
 		votes.forEach(vote -> vote.getVote().getBallot().forEach(ballot -> {
@@ -265,102 +246,45 @@ public class ContestService {
 		}));
 	}
 
-	private void addVotesAnswersVariantBallot(final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> defaultStandardAnswers,
-			final Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> specificStandardAnswers,
-			final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> defaultTiebreakAnswers,
-			final Map<String, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> specificTiebreakAnswers, final BallotType ballot) {
+	private void addVotesAnswersVariantBallot(final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> defaultStandardAnswers,
+			final Map<String, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> specificStandardAnswers,
+			final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> defaultTiebreakAnswers,
+			final Map<String, List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType>> specificTiebreakAnswers, final BallotType ballot) {
 		ballot.getVariantBallot().getStandardQuestion().forEach(question -> {
-			final List<StandardAnswerType> answers = question.getAnswer();
-			validateStandardAnswers(answers, question.getAnswerType(), question.getQuestionIdentification(), defaultStandardAnswers, specificStandardAnswers);
+			if (question.getAnswer().isEmpty()) {
+				question.getAnswer()
+						.addAll(getStandardAnswers(question.getQuestionIdentification(), question.getAnswerType(), specificStandardAnswers,
+								defaultStandardAnswers));
+			}
 		});
 		ballot.getVariantBallot().getTieBreakQuestion().forEach(question -> {
-			final List<TiebreakAnswerType> answers = question.getAnswer();
-			if (answers.isEmpty()) {
-				answers.addAll(getTiebreakAnswers(question.getQuestionIdentification(), question.getAnswerType(),
-						specificTiebreakAnswers, defaultTiebreakAnswers));
-				LOGGER.warn("No tiebreak answers were provided with the question. Added answers from parameters. [questionIdentification: {}]", question.getQuestionIdentification());
-			} else {
-				checkState(answers.size() >= MINIMUM_REQUIRED_ANSWERS, "The tieBreakQuestion %s has only %s answers. It must have at least %s.",
-						question.getQuestionIdentification(), answers.size(), MINIMUM_REQUIRED_ANSWERS);
-
-				answers.sort(Comparator.comparingInt(TiebreakAnswerType::getAnswerPosition));
-				answers.forEach(answer -> answer.setHiddenAnswer(answer == answers.getLast()));
-			}
-
-			final Set<Integer> answerPositions = answers.stream().map(TiebreakAnswerType::getAnswerPosition).collect(Collectors.toSet());
-			final Integer minPosition = answerPositions.stream().min(Integer::compareTo).orElse(Integer.MAX_VALUE);
-			final Integer maxPosition = answerPositions.stream().max(Integer::compareTo).orElse(Integer.MIN_VALUE);
-			checkState(answerPositions.size() == answers.size() && (minPosition == 0 || minPosition == 1) && maxPosition - minPosition == answers.size() - 1,
-					"Variant ballot tiebreak question '%s' : the answer sequence number must be a strictly increasing sequence from 0 to %s or from 1 to %s.",
-					question.getQuestionIdentification(), answers.size() - 1, answers.size());
-
-			if (minPosition == 0) {
-				answers.forEach(answer -> answer.setAnswerPosition(answer.getAnswerPosition() + 1));
-				LOGGER.warn("The variant ballot tiebreak question '{}' answer positions start from 0. They have been changed to start from 1.", question.getQuestionIdentification());
+			if (question.getAnswer().isEmpty()) {
+				question.getAnswer()
+						.addAll(getTiebreakAnswers(question.getQuestionIdentification(), question.getAnswerType(), specificTiebreakAnswers,
+								defaultTiebreakAnswers));
 			}
 		});
 	}
 
-	private void addVotesAnswersStandardBallot(final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> defaultStandardAnswers,
-			final Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> specificStandardAnswers, final BallotType ballot) {
+	private void addVotesAnswersStandardBallot(final Map<BigInteger, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> defaultStandardAnswers,
+			final Map<String, List<ch.evoting.xmlns.parameter._4.StandardAnswerType>> specificStandardAnswers, final BallotType ballot) {
 		final StandardBallotType question = ballot.getStandardBallot();
-		final List<StandardAnswerType> answers = question.getAnswer();
-		validateStandardAnswers(answers, question.getAnswerType(), question.getQuestionIdentification(), defaultStandardAnswers, specificStandardAnswers);
-	}
-
-	/**
-	 * Validates the standard answers and sets the {@code hiddenAnswer} attribute of each answer.
-	 * <p>
-	 * The answer with {@code standardAnswerType} "EMPTY" is hidden, all others are not.
-	 * If the standard answers are not set, they are retrieved from the parameters file according to the answer type (see {@link ContestService#getStandardAnswers(String, BigInteger, Map, Map)}).
-	 * The list of standard answers must contain at least {@link ContestService#MINIMUM_REQUIRED_ANSWERS} answers
-	 * and the answer positions must range from 1 to <i>n</i>, where <i>n</i> is the number of answers.
-	 * </p>
-	 *
-	 * @param answers the standard answers belonging to the question.
-	 * @param answerType the answer type associated with the question.
-	 * @param questionIdentification the identifier of the question.
-	 * @throws IllegalStateException if the number of answers is smaller than {@link ContestService#MINIMUM_REQUIRED_ANSWERS} or if the answerPositions are not numbered correctly.
-	 */
-	private void validateStandardAnswers(final List<StandardAnswerType> answers, final BigInteger answerType, final String questionIdentification,
-			final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> defaultStandardAnswers,
-			final Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> specificStandardAnswers) {
-		if (answers.isEmpty()) {
-			answers.addAll(getStandardAnswers(questionIdentification, answerType,
-					specificStandardAnswers, defaultStandardAnswers));
-			LOGGER.warn("No standard answers were provided with the question. Added answers from parameters. [questionIdentification: {}]", questionIdentification);
-		} else {
-			checkState(answers.size() >= MINIMUM_REQUIRED_ANSWERS,
-					"The variant ballot standard question %s has only %s answers. It must have at least %s.",
-					questionIdentification, answers.size(), MINIMUM_REQUIRED_ANSWERS);
-
-			answers.sort(Comparator.comparingInt(StandardAnswerType::getAnswerPosition));
-			answers.forEach(answer -> answer.setHiddenAnswer(answer.getStandardAnswerType().equals(EMPTY_ANSWER)));
-		}
-
-		final Set<Integer> answerPositions = answers.stream().map(StandardAnswerType::getAnswerPosition).collect(Collectors.toSet());
-		final Integer minPosition = answerPositions.stream().min(Integer::compareTo).orElse(Integer.MAX_VALUE);
-		final Integer maxPosition = answerPositions.stream().max(Integer::compareTo).orElse(Integer.MIN_VALUE);
-		checkState(answerPositions.size() == answers.size() && (minPosition == 0 || minPosition == 1) && maxPosition - minPosition == answers.size() - 1,
-				"Variant ballot standard question '%s' : the answer sequence number must be a strictly increasing sequence from 0 to %s or from 1 to %s.",
-				questionIdentification, answers.size() - 1, answers.size());
-
-		if (minPosition == 0) {
-			answers.forEach(answer -> answer.setAnswerPosition(answer.getAnswerPosition() + 1));
-			LOGGER.warn("The variant ballot standard question '{}' answer positions start from 0. They have been changed to start from 1.", questionIdentification);
+		if (question.getAnswer().isEmpty()) {
+			question.getAnswer()
+					.addAll(getStandardAnswers(question.getQuestionIdentification(), question.getAnswerType(), specificStandardAnswers,
+							defaultStandardAnswers));
 		}
 	}
 
 	public ContestType build(final ContestType contest, final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 
 		addElectionGroupIdAndDescriptionIfNeeded(electionGroups);
 
 		fillPositionIfDefinedInParameters(votes, electionGroups, contestParameters);
 
 		addVotesAnswers(votes, contestParameters);
-		checkVotesQuestionsPositionsConsistency(votes);
-		checkVotesBallotsPositionsConsistency(votes);
+		addVotesQuestionPositionIfNeeded(votes);
 		addVotesStandardQuestionReferenceIfNeeded(votes);
 		addVotesPositionIfNeeded(votes);
 		addVotesQuestionNumberIfNeeded(votes);
@@ -369,21 +293,17 @@ public class ContestService {
 		addEmptyListIfNeeded(electionGroups);
 		addCandidatesInEmptyListsIfNeeded(electionGroups, contestParameters);
 		addCandidatesListIdentifications(electionGroups);
-		checkCandidateTextsAreSet(electionGroups);
 		warnIfCandidatesOutOfLists(electionGroups);
-		addCandidatePositionIfNeeded(electionGroups);
+		addCandidatePositionInCandidateOnlyElections(electionGroups);
 		addIncumbentTextIfNeeded(electionGroups, contestParameters.getIncumbentText());
 
-		addAbstentionAllowed(contestParameters, votes, electionGroups);
-
 		addElectionsWriteIns(electionGroups, contestParameters);
-		addElectionsImplicitWriteInCandidatesIfNeeded(electionGroups, contestParameters);
 		addElectionsAccumulation(electionGroups, contestParameters);
 		addElectionsMinimalCandidateSelectionInList(electionGroups, contestParameters);
 		addElectionRulesExplanation(electionGroups, contestParameters);
 
 		addElectionGroupPositionIfNeeded(electionGroups);
-		checkElectionsPositionsConsistency(electionGroups);
+		addElectionPositionIfNeeded(electionGroups);
 
 		sortElectionsAndVotes(electionGroups, votes);
 
@@ -406,6 +326,8 @@ public class ContestService {
 
 		contest.setContestDefaultLanguage(LanguageType.fromValue(contestParameters.getDefaultLanguage().value()));
 
+		contest.setAdminBoard(ParameterMapper.INSTANCE.map(contestParameters.getAdminBoard()));
+
 		contest.setElectoralBoard(ParameterMapper.INSTANCE.map(contestParameters.getElectoralBoard()));
 
 		// check to avoid list identification duplicates
@@ -423,17 +345,8 @@ public class ContestService {
 		return contest;
 	}
 
-	private void addAbstentionAllowed(final ch.evoting.xmlns.parameter._5.ContestType contestParameters, final List<VoteInformationType> votes,
-			final List<ElectionGroupBallotType> electionGroups) {
-
-		final boolean abstentionAllowed = Boolean.TRUE.equals(contestParameters.isAbstentionAllowed());
-
-		votes.forEach(vote -> vote.getVote().setAbstentionAllowed(abstentionAllowed));
-		electionGroups.forEach(electionGroupBallotType -> electionGroupBallotType.setAbstentionAllowed(abstentionAllowed));
-	}
-
 	private void addCandidateEligibilityFromParameters(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 		if (contestParameters.getElections() != null) {
 			contestParameters.getElections().getElection().stream()
 					.filter(e -> e.getCandidatesEligibility() != null)
@@ -454,7 +367,7 @@ public class ContestService {
 	}
 
 	private void addDisplayCandidateLines(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 
 		final List<ElectionDisplayCandidateLineStyleTuple> electionDisplayCandidateLineStyleTuples =
 				contestParameters.getElections() != null ?
@@ -474,31 +387,40 @@ public class ContestService {
 					final boolean noSpecificDisplayCandidateLineStyle = specificDisplayCandidateLineStyle == null;
 
 					electionInformationType.getCandidate()
-							.forEach(candidateType ->
-									addDisplayCandidateLineStyle(candidateType, noSpecificDisplayCandidateLineStyle, defaultDisplayCandidateLineStyle,
-											specificDisplayCandidateLineStyle, electionIdentification)
-							);
+							.forEach(candidateType -> {
+								if ((DisplayCandidateLineStyle.DEFAULT.equals(defaultDisplayCandidateLineStyle)
+										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.DEFAULT.equals(
+										specificDisplayCandidateLineStyle)) {
+									// if the defaultDisplayCandidateLineStyle is DEFAULT and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is DEFAULT, then the default displayCandidateLineStyle is used.
+									addDefaultDisplayCandidateLinesStyle(candidateType);
+								} else if ((DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION.equals(defaultDisplayCandidateLineStyle)
+										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION.equals(
+										specificDisplayCandidateLineStyle)) {
+									// if the defaultDisplayCandidateLineStyle is WITH_PARTY_AFFILIATION and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is WITH_PARTY_AFFILIATION, then the displayCandidateLineStyle with party affiliation is used.
+									addWithPartyAffiliationDisplayCandidateLinesStyle(candidateType);
+
+								} else if ((DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE.equals(defaultDisplayCandidateLineStyle)
+										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE.equals(
+										specificDisplayCandidateLineStyle)) {
+									// if the defaultDisplayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE, then the displayCandidateLineStyle with party affiliation extra line is used.
+									addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(candidateType);
+								} else if ((DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED.equals(defaultDisplayCandidateLineStyle)
+										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED.equals(
+										specificDisplayCandidateLineStyle)) {
+									// if the defaultDisplayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED, then the displayCandidateLineStyle with party affiliation extra line comma separated is used.
+									addWithPartyAffiliationExtraLineCommaSeparatedDisplayCandidateLinesStyle(candidateType);
+								} else if ((DisplayCandidateLineStyle.DEFAULT_COMMA_SEPARATED.equals(defaultDisplayCandidateLineStyle)
+										&& noSpecificDisplayCandidateLineStyle) || DisplayCandidateLineStyle.DEFAULT_COMMA_SEPARATED.equals(
+										specificDisplayCandidateLineStyle)) {
+									// if the defaultDisplayCandidateLineStyle is DEFAULT_COMMA_SEPARATED and no specific displayCandidateLineStyle is defined, or the specific displayCandidateLineStyle is DEFAULT_COMMA_SEPARATED, then the default comma separated displayCandidateLineStyle is used.
+									addDefaultCommaSeparatedDisplayCandidateLinesStyle(candidateType);
+								} else {
+									throw new IllegalStateException(String.format(
+											"Unknown displayCandidateLineStyle. [displayCandidateLineStyle: %s, electionId: %s, candidateId: %s]",
+											defaultDisplayCandidateLineStyle, electionIdentification, candidateType.getCandidateIdentification()));
+								}
+							});
 				});
-	}
-
-	private void addDisplayCandidateLineStyle(final CandidateType candidateType, final boolean noSpecificDisplayCandidateLineStyle,
-			final DisplayCandidateLineStyle defaultDisplayCandidateLineStyle, final DisplayCandidateLineStyle specificDisplayCandidateLineStyle,
-			final String electionIdentification) {
-
-		final DisplayCandidateLineStyle effectiveDisplayCandidateLineStyle =
-				noSpecificDisplayCandidateLineStyle ? defaultDisplayCandidateLineStyle : specificDisplayCandidateLineStyle;
-
-		switch (effectiveDisplayCandidateLineStyle) {
-		case DEFAULT -> addDefaultDisplayCandidateLinesStyle(candidateType);
-		case DEFAULT_COMMA_SEPARATED -> addDefaultCommaSeparatedDisplayCandidateLinesStyle(candidateType);
-		case WITH_PARTY_AFFILIATION -> addWithPartyAffiliationDisplayCandidateLinesStyle(candidateType);
-		case WITH_PARTY_AFFILIATION_EXTRA_LINE -> addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(candidateType);
-		case WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED ->
-				addWithPartyAffiliationExtraLineCommaSeparatedDisplayCandidateLinesStyle(candidateType);
-		default -> throw new IllegalStateException(String.format(
-				"Unknown displayCandidateLineStyle. [displayCandidateLineStyle: %s, electionId: %s, candidateId: %s]",
-				effectiveDisplayCandidateLineStyle, electionIdentification, candidateType.getCandidateIdentification()));
-		}
 	}
 
 	private DisplayCandidateLineStyle getSpecificDisplayCandidateLineStyle(
@@ -618,37 +540,13 @@ public class ContestService {
 
 		electionGroups.sort(Comparator.comparingInt(ElectionGroupBallotType::getElectionGroupPosition));
 
-		votes.sort(Comparator.comparingInt(vote -> vote.getVote().getVotePosition()));
+		votes.sort(Comparator.comparingInt(vote -> vote.getVote().getVotePosition().intValueExact()));
 	}
 
 	private void fillPositionIfDefinedInParameters(final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
-
-		final SortingType sorting = contestParameters.getSorting();
-		if (sorting != null) {
-			final List<SortingType.ElectionGroup> sortingElectionGroups = sorting.getElectionGroup();
-			final List<SortingType.Vote> sortingVotes = sorting.getVote();
-			final int totalNbrOfPositions = sortingElectionGroups.size() + sortingVotes.size();
-
-			final TreeSet<Integer> sortedPositions = Stream.concat(
-							sortingElectionGroups.stream().map(electionGroup -> electionGroup.getPositionNumber().intValueExact()),
-							sortingVotes.stream().map(vote -> vote.getPositionNumber().intValueExact()))
-					.collect(Collectors.toCollection(TreeSet::new));
-
-			final Integer minPosition = sortedPositions.getFirst();
-			final Integer maxPosition = sortedPositions.getLast();
-
-			checkState(sortedPositions.size() == totalNbrOfPositions && (minPosition == 0 || minPosition == 1)
-							&& maxPosition - minPosition == totalNbrOfPositions - 1,
-					"The sorting positions must be a strictly increasing sequence from 0 to %s or from 1 to %s.", totalNbrOfPositions - 1, totalNbrOfPositions);
-
-			if (minPosition == 0) {
-				sortingElectionGroups.forEach(electionGroup -> electionGroup.setPositionNumber(electionGroup.getPositionNumber().add(BigInteger.ONE)));
-				sortingVotes.forEach(vote -> vote.setPositionNumber(vote.getPositionNumber().add(BigInteger.ONE)));
-				LOGGER.warn("The sorting positions start from 0. They have been changed to start from 1.");
-			}
-
-			sortingElectionGroups.forEach(positionParameter -> {
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+		if (contestParameters.getSorting() != null) {
+			contestParameters.getSorting().getElectionGroup().forEach(positionParameter -> {
 				final String electionGroupIdentification = positionParameter.getElectionGroupIdentification();
 				final int position = positionParameter.getPositionNumber().intValueExact();
 				electionGroups.stream()
@@ -660,9 +558,21 @@ public class ContestService {
 						.setElectionGroupPosition(position);
 			});
 
-			sortingVotes.forEach(positionParameter -> {
-				final String voteIdentification = positionParameter.getVoteIdentification();
+			contestParameters.getSorting().getElection().forEach(positionParameter -> {
+				final String electionIdentification = positionParameter.getElectionIdentification();
 				final int position = positionParameter.getPositionNumber().intValueExact();
+				electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+						.filter(e -> e.getElection().getElectionIdentification().equals(electionIdentification))
+						.findFirst()
+						.orElseThrow(() -> new IllegalStateException(String.format(
+								"Unknown electionIdentification defined in sorting definition of parameters file. [electionIdentification: %s",
+								electionIdentification)))
+						.getElection().setElectionPosition(position);
+			});
+
+			contestParameters.getSorting().getVote().forEach(positionParameter -> {
+				final String voteIdentification = positionParameter.getVoteIdentification();
+				final BigInteger position = positionParameter.getPositionNumber();
 				votes.stream()
 						.filter(vote -> vote.getVote().getVoteIdentification().equals(voteIdentification))
 						.findFirst()
@@ -704,17 +614,19 @@ public class ContestService {
 	}
 
 	private void addVotesPositionIfNeeded(final List<VoteInformationType> votes) {
-		final List<Integer> usedPositions = votes.stream()
+		final List<Long> usedPositions = votes.stream()
 				.map(vote -> vote.getVote().getVotePosition())
+				.filter(Objects::nonNull)
+				.map(BigInteger::longValueExact)
 				.toList();
 
-		final AtomicInteger counter = new AtomicInteger(1);
+		final AtomicLong counter = new AtomicLong(1);
 		votes.forEach(vote -> {
-			if (vote.getVote().getVotePosition() == DEFAULT_VALUE) {
+			if (vote.getVote().getVotePosition() == null) {
 				while (usedPositions.contains(counter.get())) {
 					counter.getAndIncrement();
 				}
-				vote.getVote().setVotePosition(counter.getAndIncrement());
+				vote.getVote().setVotePosition(BigInteger.valueOf(counter.getAndIncrement()));
 			}
 		});
 	}
@@ -737,120 +649,63 @@ public class ContestService {
 		});
 	}
 
-	private void checkElectionsPositionsConsistency(final List<ElectionGroupBallotType> electionGroups) {
-		electionGroups
-				.forEach(electionGroupBallot -> {
-					final int totalNbrOfElections = electionGroupBallot.getElectionInformation().size();
-					final String electionGroupIdentification = electionGroupBallot.getElectionGroupIdentification();
+	private void addElectionPositionIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
 
-					final long electionsWithoutPosition = electionGroupBallot.getElectionInformation().stream()
-							.filter(electionInformation -> electionInformation.getElection().getElectionPosition() == DEFAULT_VALUE)
-							.count();
+		electionGroups.forEach(eg -> {
+			final List<Integer> usedPositions = eg.getElectionInformation().stream()
+					.map(ei -> ei.getElection().getElectionPosition())
+					.filter(val -> val > 0)
+					.toList();
 
-					if (electionsWithoutPosition == 0 || electionsWithoutPosition == 1) {
-						LOGGER.debug("Election group '{}' : all elections have a position; checking monotonicity", electionGroupIdentification);
-
-						final TreeSet<Integer> sortedElectionsPositions = electionGroupBallot.getElectionInformation().stream()
-								.map(electionInformation -> electionInformation.getElection().getElectionPosition())
-								.collect(Collectors.toCollection(TreeSet::new));
-
-						final Integer minPosition = sortedElectionsPositions.getFirst();
-						final Integer maxPosition = sortedElectionsPositions.getLast();
-
-						checkState(sortedElectionsPositions.size() == totalNbrOfElections && (minPosition == 0 || minPosition == 1)
-										&& maxPosition - minPosition == totalNbrOfElections - 1,
-								"Election group '%s' : elections positions must be a strictly increasing sequence from 0 to %s or from 1 to %s",
-								electionGroupIdentification, totalNbrOfElections - 1, totalNbrOfElections);
-
-						if (minPosition == 0) {
-							electionGroupBallot.getElectionInformation().forEach(electionInformation -> {
-								final int electionPosition = electionInformation.getElection().getElectionPosition();
-								electionInformation.getElection().setElectionPosition(electionPosition + 1);
-							});
-							LOGGER.warn("The election group '{}' elections positions start from 0. They have been changed to start from 1.", electionGroupIdentification);
-						}
-
-						// Positions sequence is valid, sort for display.
-						electionGroupBallot.getElectionInformation()
-								.sort(Comparator.comparingInt(electionInformation -> electionInformation.getElection().getElectionPosition()));
-					} else if (electionsWithoutPosition == totalNbrOfElections) {
-						LOGGER.warn("Election group '{}' : missing all elections positions; setting all values", electionGroupIdentification);
-						final AtomicInteger counter = new AtomicInteger();
-						electionGroupBallot.getElectionInformation().stream()
-								.map(ElectionInformationType::getElection)
-								.forEach(election -> election.setElectionPosition(counter.incrementAndGet()));
-					} else {
-						throw new IllegalStateException(String.format(
-								"Election group '%s' : all elections must have a position or none of them", electionGroupIdentification));
+			final AtomicInteger counter = new AtomicInteger(1);
+			eg.getElectionInformation().forEach(ei -> {
+				if (ei.getElection().getElectionPosition() == DEFAULT_VALUE) {
+					while (usedPositions.contains(counter.get())) {
+						counter.getAndIncrement();
 					}
-				});
+					ei.getElection().setElectionPosition(counter.getAndIncrement());
+				}
+			});
+		});
 	}
 
 	private void addElectionGroupIdAndDescriptionIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
 		electionGroups.forEach(electionGroup -> {
-			final List<ElectionInformationType> electionsInformation = electionGroup.getElectionInformation();
+			if (StringUtils.isEmpty(electionGroup.getElectionGroupIdentification())) {
+				electionGroup.setElectionGroupIdentification(determineElectionGroupIdentification(electionGroup.getElectionInformation()));
+			}
 
-			electionsInformation.forEach(electionInformation ->
-					checkState(electionInformation.getElection().getElectionDescription() != null,
-							"Missing election description. [electionIdentification: %s]",
-							electionInformation.getElection().getElectionIdentification())
-			);
-
-			final ElectionGroupDescriptionInformationType electionGroupDescription = electionGroup.getElectionGroupDescription();
-
-			if (electionsInformation.size() == 1) {
-				final ElectionInformationType electionInformation = electionsInformation.getFirst();
-
-				if (StringUtils.isEmpty(electionGroup.getElectionGroupIdentification())) {
-					final String electionIdentification = electionInformation.getElection().getElectionIdentification();
-
-					electionGroup.setElectionGroupIdentification(electionIdentification);
-
-					LOGGER.warn(
-							"Election group with single election is missing election group identification. Used election identification as election group identification. [electionIdentification: {}]",
-							electionIdentification);
-				}
-
-				if (electionGroupDescription == null) {
-					final ElectionDescriptionInformationType electionDescription = electionInformation.getElection().getElectionDescription();
-					// Election group identification may have been updated by previous if statement.
-					final String electionGroupIdentification = electionGroup.getElectionGroupIdentification();
-
-					electionGroup.setElectionGroupDescription(convertElectionDescriptionToElectionGroupDescription(electionDescription));
-
-					LOGGER.warn(
-							"Election group with single election is missing election group description. Used election description as election group description. [electionGroupIdentification: {}]",
-							electionGroupIdentification);
-				}
-			} else {
-				// If there are multiple elections, the election group identification and description must be provided.
-				final String electionGroupIdentification = electionGroup.getElectionGroupIdentification();
-
-				checkState(!StringUtils.isEmpty(electionGroupIdentification),
-						"Missing election group identification. [contained electionIdentification: %s]",
-						electionsInformation.getFirst().getElection().getElectionIdentification());
-				checkState(electionGroupDescription != null, "Missing election group description. [electionGroupIdentification: %s]",
-						electionGroupIdentification);
+			if (electionGroup.getElectionGroupDescription() == null) {
+				electionGroup.setElectionGroupDescription(convertElectionDescriptionToElectionGroupDescription(
+						electionGroup.getElectionInformation().getFirst().getElection().getElectionDescription()));
 			}
 		});
 	}
 
 	private ElectionGroupDescriptionInformationType convertElectionDescriptionToElectionGroupDescription(
 			final ElectionDescriptionInformationType electionDescription) {
-
 		return new ElectionGroupDescriptionInformationType().withElectionGroupDescriptionInfo(
-				electionDescription.getElectionDescriptionInfo().stream()
-						.map(electionDescriptionInfo ->
-								new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo()
-										.withLanguage(electionDescriptionInfo.getLanguage())
-										.withElectionGroupDescription(electionDescriptionInfo.getElectionDescription())
-										.withElectionGroupDescriptionShort(electionDescriptionInfo.getElectionDescriptionShort()))
-						.toList()
-		);
+				electionDescription.getElectionDescriptionInfo().stream().map(electionDescriptionInfo -> {
+					final ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo res = new ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo();
+					res.setLanguage(electionDescriptionInfo.getLanguage());
+					res.setElectionGroupDescription(electionDescriptionInfo.getElectionDescription());
+					res.setElectionGroupDescriptionShort(electionDescriptionInfo.getElectionDescriptionShort());
+					return res;
+				}).toList());
+	}
+
+	private String determineElectionGroupIdentification(final List<ElectionInformationType> electionInformation) {
+		if (electionInformation.size() == 1) {
+			return electionInformation.getFirst().getElection().getElectionIdentification();
+		} else {
+			return StringUtil.generateUUIDFromString(
+					electionInformation.stream().map(ei -> ei.getElection().getElectionIdentification()).reduce("", (s1, s2) -> s1 + s2)
+			);
+		}
 	}
 
 	private Map<String, BigInteger> getParametersMinimalCandidateSelectionInList(
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 		if (contestParameters.getElections() == null) {
 			return new HashMap<>();
 		} else {
@@ -860,7 +715,7 @@ public class ContestService {
 	}
 
 	private void addElectionsMinimalCandidateSelectionInList(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 		final Map<String, BigInteger> parametersMinimalCandidateSelectionInList = getParametersMinimalCandidateSelectionInList(contestParameters);
 		electionGroups.stream()
 				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
@@ -869,7 +724,7 @@ public class ContestService {
 	}
 
 	private void addElectionRulesExplanation(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 		if (contestParameters.getElections() != null) {
 			contestParameters.getElections()
 					.getElection().stream()
@@ -896,34 +751,22 @@ public class ContestService {
 		}
 	}
 
-	private void addCandidatePositionIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
+	private void addCandidatePositionInCandidateOnlyElections(final List<ElectionGroupBallotType> electionGroups) {
 		electionGroups.stream()
 				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
-				.forEach(e -> {
-					final List<Integer> usedPositions = e.getCandidate().stream()
-							.map(CandidateType::getPosition)
-							.toList();
-
-					final AtomicInteger counter = new AtomicInteger(1);
-					e.getCandidate().forEach(c -> {
-						if (c.getPosition() == DEFAULT_VALUE) {
-							while (usedPositions.contains(counter.get())) {
-								counter.getAndIncrement();
-							}
-							c.setPosition(counter.getAndIncrement());
-						}
-					});
+				.filter(this::isCandidateOnlyElection).forEach(e -> {
+					final AtomicInteger pos = new AtomicInteger(1);
+					e.getCandidate().forEach(c -> c.setPosition(pos.getAndIncrement()));
 				});
 	}
 
 	private boolean isCandidateOnlyElection(final ElectionInformationType election) {
-		return election.getList() != null && election.getList().isEmpty();
+		return election.getList() != null && election.getList().size() == 1 && election.getList().stream().allMatch(ListType::isListEmpty);
 	}
 
 	private void warnIfCandidatesOutOfLists(final List<ElectionGroupBallotType> electionGroups) {
-		electionGroups.stream()
-				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
-				.filter(not(this::isCandidateOnlyElection))
+		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+				.filter(e -> e.getList().stream().anyMatch(l -> !l.isListEmpty()))
 				.forEach(e -> e.getCandidate().stream().filter(c -> e.getList().stream().flatMap(l -> l.getCandidatePosition().stream())
 								.noneMatch(cp -> c.getCandidateIdentification().equalsIgnoreCase(cp.getCandidateIdentification())))
 						.forEach(c -> LOGGER.warn("Candidate {} is not present in any list", c.getCandidateIdentification())));
@@ -938,8 +781,7 @@ public class ContestService {
 	record ElectionDisplayListLineStyleTuple(String electionIdentification, DisplayListLineStyle displayListLineStyle) {
 	}
 
-	private void addDisplayListLines(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+	private void addDisplayListLines(final List<ElectionGroupBallotType> electionGroups, final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 
 		final List<ElectionDisplayListLineStyleTuple> electionDisplayListLineStyleTuples =
 				contestParameters.getElections() != null ?
@@ -950,6 +792,7 @@ public class ContestService {
 
 		final DisplayListLineStyle defaultDisplayListLineStyle = contestParameters.getDefaultDisplayListLineStyle();
 
+
 		electionGroups.stream()
 				.flatMap(eg -> eg.getElectionInformation().stream())
 				.forEach(electionInformationType -> {
@@ -958,6 +801,7 @@ public class ContestService {
 					final DisplayListLineStyle specificDisplayListLineStyle = getSpecificDisplayListLineStyle(
 							electionDisplayListLineStyleTuples, electionIdentification);
 					final boolean noSpecificDisplayListLineStyle = specificDisplayListLineStyle == null;
+
 
 					final List<ListUnionType> listUnions = electionInformationType.getListUnion();
 					electionInformationType.getList().forEach(listType -> {
@@ -973,7 +817,7 @@ public class ContestService {
 								specificDisplayListLineStyle)) {
 							addDisplayListLine1(listType);
 							addDisplayListLine2(listType, listUnions);
-						} else {
+						}  else {
 							throw new IllegalStateException(String.format(
 									"Unknown displayListLineStyle. [displayListLineStyle: %s, electionId: %s, listId: %s]",
 									defaultDisplayListLineStyle, electionIdentification, listType.getListIdentification()));
@@ -1053,6 +897,11 @@ public class ContestService {
 					final TiebreakAnswerType tba = tbq.getAnswer().get(aCounter);
 					if (tba.getStandardQuestionReference() == null) {
 						tba.setStandardQuestionReference(getReferencedQuestion(tbq, aCounter));
+						if (tba.getStandardQuestionReference() == null) {
+							LOGGER.warn(
+									"ReferencedQuestion for tieBreakQuestion with identification {} and answer with identification {} is null",
+									tbq.getQuestionIdentification(), tba.getAnswerIdentification());
+						}
 					}
 				}
 			}
@@ -1064,48 +913,14 @@ public class ContestService {
 	}
 
 	private void addCandidatesListIdentifications(final List<ElectionGroupBallotType> elections) {
-		from(elections).find(ListType.class).stream().forEach(list -> list.getCandidatePosition().forEach(p -> p.setCandidateListIdentification(
-				StringUtil.generateUUIDFromString(list.getListIdentification() + "." + p.getCandidateIdentification()))));
-	}
-
-	private void checkCandidateTextsAreSet(final List<ElectionGroupBallotType> electionGroups) {
-		final Predicate<CandidateType> hasText = c -> c.getCandidateText() != null && !c.getCandidateText().getCandidateTextInfo().isEmpty();
-
-		electionGroups.stream()
-				.flatMap(eg -> eg.getElectionInformation().stream())
-				.forEach(e -> {
-					if (e.getCandidate().isEmpty()) {
-						return;
-					}
-
-					final boolean allCandidatesHaveText = e.getCandidate().stream().allMatch(hasText);
-					final boolean noCandidateHasText = e.getCandidate().stream().noneMatch(hasText);
-
-					if (!allCandidatesHaveText && !noCandidateHasText) {
-						throw new IllegalStateException(
-								"The field candidateText for one or more candidates was not provided: [electionIdentification: %s, candidateId: %s]".formatted(
-										e.getElection().getElectionIdentification(),
-										e.getCandidate().stream().filter(not(hasText)).findFirst().map(CandidateType::getCandidateIdentification)
-												.orElseThrow()));
-					}
-
-					if (noCandidateHasText) {
-						e.getCandidate().forEach(c -> {
-							final CandidateTextInformationType candidateTextInformationType = new CandidateTextInformationType();
-
-							final List<CandidateTextInformationType.CandidateTextInfo> list = Arrays.stream(LanguageType.values())
-									.map(languageType -> new CandidateTextInformationType.CandidateTextInfo().withLanguage(languageType)
-											.withCandidateText("No candidate text"))
-									.toList();
-
-							candidateTextInformationType.setCandidateTextInfo(list);
-							c.setCandidateText(candidateTextInformationType);
-						});
-						LOGGER.warn(
-								"The candidateText in the election were not provided and dummy texts were assigned automatically. [electionIdentification: {}]",
-								e.getElection().getElectionIdentification());
-					}
-				});
+		from(elections).find(ListType.class).stream().forEach(list -> list.getCandidatePosition().forEach(p -> {
+			if (p.getCandidateIdentification() == null) {
+				p.setCandidateListIdentification(StringUtil.generateUUIDFromString(list.getListIdentification() + "." + p.getPositionOnList()));
+			} else {
+				p.setCandidateListIdentification(
+						StringUtil.generateUUIDFromString(list.getListIdentification() + "." + p.getCandidateIdentification()));
+			}
+		}));
 	}
 
 	private void addEmptyListIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
@@ -1126,57 +941,51 @@ public class ContestService {
 							.withListDescription("Leere Liste"));
 		}
 
-		electionType.withEmptyList(new EmptyListType()
+		electionType.withList(new ListType().withListEmpty(true)
 				.withListIdentification(StringUtil.generateUUIDFromString(electionType.getElection().getElectionIdentification()))
-				.withListIndentureNumber("99")
-				.withListOrderOfPrecedence(99)
-				.withListDescription(description));
+				.withListIndentureNumber("99").withListDescription(description).withListOrderOfPrecedence(99));
+
 	}
 
 	private void addCandidatesInEmptyListsIfNeeded(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
-		electionGroups.stream()
-				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
-				.forEach(e -> {
-					final EmptyListType emptyList = e.getEmptyList();
-					if (emptyList.getEmptyPosition() == null || emptyList.getEmptyPosition().isEmpty()) {
-						addEmptyPositions(emptyList, e.getElection().getNumberOfMandates(), contestParameters);
-					}
-				});
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
+		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+				.forEach(e -> e.getList().stream()
+						.filter(l -> l.isListEmpty() && (l.getCandidatePosition() == null || l.getCandidatePosition().isEmpty()))
+						.forEach(l -> appendCandidates(l, e.getElection().getNumberOfMandates(), contestParameters)));
 	}
 
-	private void addEmptyPositions(final EmptyListType emptyList, final int numberOfMandates,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+	private void appendCandidates(final ListType l, final int numberOfMandates,
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 		for (int i = 1; i <= numberOfMandates; i++) {
 			final String candidatePosition = String.format("%02d", i);
 
-			final PositionTextInfoType text = new PositionTextInfoType();
+			final boolean customNumberingOnEmptyPositions =
+					contestParameters.isCustomNumberingForEmptyPositions() != null && contestParameters.isCustomNumberingForEmptyPositions();
+			final String refOnPosition = customNumberingOnEmptyPositions ?
+					candidatePosition :
+					StringUtil.concat(l.getListIndentureNumber(), candidatePosition, ".");
+
+			final CandidateTextInformationType text = new CandidateTextInformationType();
 			for (final LanguageType lang : LanguageType.values()) {
-				final String emptyPositionText = getEmptyPositionText(lang, contestParameters);
-				final String value = emptyPositionText != null ? emptyPositionText : candidatePosition;
-				text.withPositionText(new PositionTextInfoType.PositionText()
-						.withLanguage(lang)
-						.withPositionTextLong(value)
-						.withPositionTextShort(StringUtils.left(value, 100)));
+				final String emptyCandidateText = getEmptyCandidateText(lang, contestParameters);
+				final String value = emptyCandidateText != null ? emptyCandidateText : candidatePosition;
+				text.withCandidateTextInfo(new CandidateTextInformationType.CandidateTextInfo().withLanguage(lang).withCandidateText(value));
 			}
 
-			final EmptyPositionType emptyPosition = new EmptyPositionType()
-					.withEmptyPositionIdentification(StringUtil.generateUUIDFromString(emptyList.getListIdentification() + "." + i))
-					.withPositionOnList(i)
-					.withEmptyPositionTextInfo(text);
+			final CandidatePositionType candidate = new CandidatePositionType().withCandidateReferenceOnPosition(refOnPosition)
+					.withPositionOnList(i).withCandidateTextOnPosition(text);
 
-			emptyList.getEmptyPosition().add(emptyPosition);
+			l.getCandidatePosition().add(candidate);
 		}
 	}
 
-	private String getEmptyPositionText(final LanguageType language, final ch.evoting.xmlns.parameter._5.ContestType contest) {
-		if (contest.getEmptyPositionTextInfo() != null) {
-			final PositionText emptyPositionText = contest.getEmptyPositionTextInfo().getPositionText().stream()
-					.filter(positionText -> positionText.getLanguage().value().equals(language.value()))
-					.findFirst()
-					.orElse(null);
-			if (emptyPositionText != null) {
-				return emptyPositionText.getText();
+	private String getEmptyCandidateText(final LanguageType language, final ch.evoting.xmlns.parameter._4.ContestType contest) {
+		if (contest.getEmptyCandidateText() != null) {
+			final EmptyCandidateTextInfo emptyCandidateTextInfo = contest.getEmptyCandidateText().getEmptyCandidateTextInfo().stream()
+					.filter(ti -> ti.getLanguage().value().equals(language.value())).findFirst().orElse(null);
+			if (emptyCandidateTextInfo != null) {
+				return emptyCandidateTextInfo.getText();
 			}
 		}
 		return null;
@@ -1201,7 +1010,7 @@ public class ContestService {
 		}
 	}
 
-	private Map<String, Boolean> getParametersWriteIns(final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+	private Map<String, Boolean> getParametersWriteIns(final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 		if (contestParameters.getElections() == null) {
 			return new HashMap<>();
 		} else {
@@ -1211,21 +1020,7 @@ public class ContestService {
 	}
 
 	private void addElectionsWriteIns(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
-
-		final List<PositionTextInfoType.PositionText> positionTexts = Arrays.stream(LanguageType.values())
-				.map(lang -> {
-					final String text = getReturnCodeWriteInDescriptionText(lang, contestParameters);
-					return new PositionTextInfoType.PositionText()
-							.withLanguage(lang)
-							.withPositionTextLong(text)
-							.withPositionTextShort(StringUtils.left(text, 100));
-				})
-				.toList();
-
-		final PositionTextInfoType returnCodeWriteInDescription = new PositionTextInfoType()
-				.withPositionText(positionTexts);
-
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 		final Map<String, Boolean> writeInsMap = getParametersWriteIns(contestParameters);
 		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.forEach(e -> {
@@ -1234,46 +1029,17 @@ public class ContestService {
 					if (useWriteIns) {
 						final int numberOfMandates = e.getElection().getNumberOfMandates();
 						for (int i = 1; i <= numberOfMandates; i++) {
-							e.getWriteInPosition().add(new WriteInPositionType()
-									.withWriteInPositionIdentification(
+							e.getWriteInCandidate().add(new WriteInCandidateType()
+									.withWriteInCandidateIdentification(
 											StringUtil.generateUUIDFromString(e.getElection().getElectionIdentification() + i))
-									.withPosition(i)
-									.withReturnCodeWriteInDescriptionInfo(returnCodeWriteInDescription));
+									.withPosition(i));
 						}
 					}
 				});
 	}
 
-	private void addElectionsImplicitWriteInCandidatesIfNeeded(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
-		if (contestParameters.getElections() != null) {
-			electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
-					.forEach(electionInformationType ->
-							contestParameters.getElections().getElection().stream()
-									.filter(electionType -> electionType.getElectionIdentification()
-											.equals(electionInformationType.getElection().getElectionIdentification()))
-									.findFirst()
-									.ifPresent(election ->
-											electionInformationType.setImplicitWriteInCandidate(election.getImplicitWriteInCandidate()))
-					);
-		}
-	}
-
-	private String getReturnCodeWriteInDescriptionText(final LanguageType language, final ch.evoting.xmlns.parameter._5.ContestType contest) {
-		if (contest.getReturnCodeWriteInDescriptionInfo() != null) {
-			final PositionText returnCodeWriteInDescriptionText = contest.getReturnCodeWriteInDescriptionInfo().getPositionText().stream()
-					.filter(positionText -> positionText.getLanguage().value().equals(language.value()))
-					.findFirst()
-					.orElse(null);
-			if (returnCodeWriteInDescriptionText != null) {
-				return returnCodeWriteInDescriptionText.getText();
-			}
-		}
-		return null;
-	}
-
 	private void checkParametersOfElections(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 		if (contestParameters.getElections() != null) {
 			final Set<String> electionsIds = electionGroups.stream()
 					.flatMap(e -> e.getElectionInformation().stream())
@@ -1288,7 +1054,7 @@ public class ContestService {
 		}
 	}
 
-	private Map<String, BigInteger> getParametersAccumulation(final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+	private Map<String, BigInteger> getParametersAccumulation(final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 		if (contestParameters.getElections() == null) {
 			return new HashMap<>();
 		} else {
@@ -1298,7 +1064,7 @@ public class ContestService {
 	}
 
 	private void addElectionsAccumulation(final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 		final Map<String, BigInteger> accumulationMap = getParametersAccumulation(contestParameters);
 		electionGroups.stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.forEach(e -> {
@@ -1310,119 +1076,26 @@ public class ContestService {
 				});
 	}
 
-	private void checkVotesQuestionsPositionsConsistency(final List<VoteInformationType> votesInformation) {
-		votesInformation.stream()
-				.flatMap(voteInformation -> voteInformation.getVote().getBallot().stream())
-				.filter(ballot -> ballot.getVariantBallot() != null)
-				.forEach(ballot -> {
-					final VariantBallotType variantBallot = ballot.getVariantBallot();
-					final String ballotIdentification = ballot.getBallotIdentification();
-
-					final int nbrOfStandardQuestions = variantBallot.getStandardQuestion().size();
-					final int nbrOfTieBreakQuestions = variantBallot.getTieBreakQuestion().size();
-					final int totalNbrOfQuestions = nbrOfStandardQuestions + nbrOfTieBreakQuestions;
-
-					final long standardQuestionsWithoutPosition = variantBallot.getStandardQuestion().stream()
-							.filter(standardQuestion -> standardQuestion.getQuestionPosition() == DEFAULT_VALUE)
-							.count();
-					final long tieBreakQuestionsWithoutPosition = variantBallot.getTieBreakQuestion().stream()
-							.filter(tieBreakQuestion -> tieBreakQuestion.getQuestionPosition() == DEFAULT_VALUE)
-							.count();
-					final long questionsWithoutPosition = standardQuestionsWithoutPosition + tieBreakQuestionsWithoutPosition;
-
-					if (questionsWithoutPosition == 0 || questionsWithoutPosition == 1) {
-						LOGGER.debug("Variant ballot '{}' : all questions have a position; checking monotonicity", ballotIdentification);
-
-						final TreeSet<Integer> sortedQuestionPositions = Stream.concat(
-										variantBallot.getStandardQuestion().stream().map(StandardQuestionType::getQuestionPosition),
-										variantBallot.getTieBreakQuestion().stream().map(TieBreakQuestionType::getQuestionPosition))
-								.collect(Collectors.toCollection(TreeSet::new));
-
-						final Integer minPosition = sortedQuestionPositions.getFirst();
-						final Integer maxPosition = sortedQuestionPositions.getLast();
-
-						checkState(sortedQuestionPositions.size() == totalNbrOfQuestions && (minPosition == 0 || minPosition == 1)
-										&& maxPosition - minPosition == totalNbrOfQuestions - 1,
-								"Variant ballot '%s' : questions positions must be a strictly increasing sequence from 0 to %s or from 1 to %s",
-								ballotIdentification, totalNbrOfQuestions - 1, totalNbrOfQuestions);
-
-						if (minPosition == 0) {
-							variantBallot.getStandardQuestion().forEach(standardQuestion -> {
-								final int questionPosition = standardQuestion.getQuestionPosition();
-								standardQuestion.setQuestionPosition(questionPosition + 1);
-							});
-							variantBallot.getTieBreakQuestion().forEach(tieBreakQuestion -> {
-								final int questionPosition = tieBreakQuestion.getQuestionPosition();
-								tieBreakQuestion.setQuestionPosition(questionPosition + 1);
-							});
-							LOGGER.warn("The variant ballot '{}' questions positions start from 0. They have been changed to start from 1.", ballotIdentification);
-						}
-
-						// Positions sequence is valid, sort for display.
-						variantBallot.getStandardQuestion().sort(Comparator.comparingInt(StandardQuestionType::getQuestionPosition));
-						variantBallot.getTieBreakQuestion().sort(Comparator.comparingInt(TieBreakQuestionType::getQuestionPosition));
-					} else if (questionsWithoutPosition == totalNbrOfQuestions) {
-						LOGGER.warn("Variant ballot '{}' : missing all questions positions; setting all values", ballotIdentification);
-						final AtomicInteger counter = new AtomicInteger();
-						variantBallot.getStandardQuestion()
-								.forEach(standardQuestion -> standardQuestion.setQuestionPosition(counter.incrementAndGet()));
-						variantBallot.getTieBreakQuestion()
-								.forEach(tieBreakQuestion -> tieBreakQuestion.setQuestionPosition(counter.incrementAndGet()));
-					} else {
-						throw new IllegalStateException(String.format(
-								"Variant ballot '%s' : missing position for some questions; either all questions must have a position or none",
-								ballotIdentification));
-					}
-				});
-	}
-
-	private void checkVotesBallotsPositionsConsistency(final List<VoteInformationType> votesInformation) {
-		votesInformation
-				.forEach(voteInformation -> {
-					final VoteType vote = voteInformation.getVote();
-					final List<BallotType> ballots = vote.getBallot();
-					final String voteIdentification = vote.getVoteIdentification();
-					final int totalNbrOfBallots = ballots.size();
-
-					final long ballotsWithoutPosition = ballots.stream()
-							.filter(ballot -> ballot.getBallotPosition() == DEFAULT_VALUE)
-							.count();
-
-					if (ballotsWithoutPosition == 0 || ballotsWithoutPosition == 1) {
-						LOGGER.debug("Vote '{}' : all ballots have a position; checking monotonicity", voteIdentification);
-
-						final TreeSet<Integer> sortedBallotPositions = ballots.stream()
-								.map(BallotType::getBallotPosition)
-								.collect(Collectors.toCollection(TreeSet::new));
-
-						final Integer minPosition = sortedBallotPositions.first();
-						final Integer maxPosition = sortedBallotPositions.last();
-
-						checkState(sortedBallotPositions.size() == totalNbrOfBallots && (minPosition == 0 || minPosition == 1)
-										&& maxPosition - minPosition == totalNbrOfBallots - 1,
-								"Vote '%s' : ballots positions must be a strictly increasing sequence from 0 to %s or from 1 to %s", voteIdentification,
-								totalNbrOfBallots - 1, totalNbrOfBallots);
-
-						if (minPosition == 0) {
-							ballots.forEach(ballot -> {
-								final int ballotPosition = ballot.getBallotPosition();
-								ballot.setBallotPosition(ballotPosition + 1);
-							});
-							LOGGER.warn("The vote '{}' ballots positions start from 0. They have been changed to start from 1.", voteIdentification);
-						}
-
-						// Positions sequence is valid, sort for display.
-						ballots.sort(Comparator.comparing(BallotType::getBallotPosition));
-					} else if (ballotsWithoutPosition == totalNbrOfBallots) {
-						LOGGER.warn("Vote '{}' : missing all ballots positions; setting all values", voteIdentification);
-						final AtomicInteger counter = new AtomicInteger();
-						ballots.forEach(ballot -> ballot.setBallotPosition(counter.incrementAndGet()));
-					} else {
-						throw new IllegalStateException(String.format(
-								"Vote '%s' : missing position for some ballots; either all ballots must have a position or none",
-								voteIdentification));
-					}
-				});
+	private void addVotesQuestionPositionIfNeeded(final List<VoteInformationType> votes) {
+		votes.stream().flatMap(v -> v.getVote().getBallot().stream()).filter(b -> b.getVariantBallot() != null).map(b -> {
+			final Map<String, VariantBallotType> hm = new HashMap<>();
+			hm.put(b.getBallotIdentification(), b.getVariantBallot());
+			return hm;
+		}).forEach(h -> {
+			final VariantBallotType vb = h.values().stream().findFirst().get();
+			if (vb.getStandardQuestion().stream().anyMatch(b -> b.getQuestionPosition() == DEFAULT_VALUE)) {
+				final AtomicInteger counter = new AtomicInteger();
+				LOGGER.info("Variant ballot '{}' : missing standard question positions; resetting all values",
+						h.keySet().stream().findFirst().get());
+				vb.getStandardQuestion().forEach(q -> q.setQuestionPosition(counter.incrementAndGet()));
+			}
+			if (vb.getTieBreakQuestion().stream().anyMatch(b -> b.getQuestionPosition() == DEFAULT_VALUE)) {
+				final AtomicInteger counter = new AtomicInteger();
+				LOGGER.info("Variant ballot '{}' : missing tie-break question positions; resetting all values",
+						h.keySet().stream().findFirst().get());
+				vb.getTieBreakQuestion().forEach(q -> q.setQuestionPosition(counter.incrementAndGet()));
+			}
+		});
 	}
 
 	public ContestType checkSame(final ContestType c1, final ContestType c2) {
@@ -1433,115 +1106,60 @@ public class ContestService {
 		return c1;
 	}
 
-	private <T> void checkLanguageCorrectness(final List<T> list, final Function<T, LanguageType> getLanguage, final String name) {
-		final List<LanguageType> languages = Arrays.stream(LanguageType.values()).sorted().toList();
-		checkState(list.stream().map(getLanguage).sorted().toList().equals(languages),
-				"%s must contain exactly the defined languages %s", name, LANGUAGES);
+	private <T> void checkLanguageCount(final List<T> list, final Function<T, ?> getLanguage, final String name) {
+		checkState(list.stream().map(getLanguage).distinct().count() >= MINIMAL_REQUIRED_LANGUAGES,
+				"%s must contain at least 4 distinct languages",
+				name);
 	}
 
-	private <T> void checkLanguageCorrectness(final List<T> list, final Function<T, LanguageType> getLanguage, final String id,
-			final String elementName,
+	private <T> void checkLanguageCount(final List<T> list, final Function<T, ?> getLanguage, final String id, final String elementName,
 			final String fieldName) {
-		final List<LanguageType> languages = Arrays.stream(LanguageType.values()).sorted().toList();
-		checkState(list.stream().map(getLanguage).sorted().toList().equals(languages),
-				"%s '%s' : %s must contain exactly the defined languages %s", elementName, id, fieldName,
-				LANGUAGES);
+		checkState(list.stream().map(getLanguage).distinct().count() >= MINIMAL_REQUIRED_LANGUAGES,
+				"%s '%s' : %s must contain at least 4 distinct languages", elementName, id, fieldName);
 	}
 
 	private void checkLanguagesConsistency(final ContestType contest) {
 		// contest
 		checkState(contest.getContestDescription() != null, "ContestDescription must be defined in source file");
 
-		checkLanguageCorrectness(contest.getContestDescription().getContestDescriptionInfo(),
+		checkLanguageCount(contest.getContestDescription().getContestDescriptionInfo(),
 				ContestDescriptionInformationType.ContestDescriptionInfo::getLanguage, "contestDescription");
-
-		// election group
-		contest.getElectionGroupBallot().forEach(eg -> {
-			checkState(eg.getElectionGroupDescription() != null, "ElectionGroupDescription must be defined");
-
-			checkLanguageCorrectness(eg.getElectionGroupDescription().getElectionGroupDescriptionInfo(),
-					ElectionGroupDescriptionInformationType.ElectionGroupDescriptionInfo::getLanguage,
-					eg.getElectionGroupIdentification(),
-					"electionGroupBallot",
-					"electionGroupDescription");
-		});
 
 		//election
 		contest.getElectionGroupBallot().stream().flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.forEach(e -> {
 					checkState(e.getElection().getElectionDescription() != null, "ElectionDescription must be defined in source file");
 
-					checkLanguageCorrectness(e.getElection().getElectionDescription().getElectionDescriptionInfo(),
+					checkLanguageCount(e.getElection().getElectionDescription().getElectionDescriptionInfo(),
 							ElectionDescriptionInformationType.ElectionDescriptionInfo::getLanguage, e.getElection().getElectionIdentification(),
 							"election",
 							"electionDescription");
 
 					final String CANDIDATE_ELEMENT_NAME = "candidate";
-					final String LIST_ELEMENT_NAME = "list";
 
 					e.getCandidate().forEach(c -> {
 						checkState(c.getCandidateText() != null, "CandidateText must be defined in source file");
 
-						checkLanguageCorrectness(c.getCandidateText().getCandidateTextInfo(),
+						checkLanguageCount(c.getCandidateText().getCandidateTextInfo(),
 								CandidateTextInformationType.CandidateTextInfo::getLanguage,
 								c.getCandidateIdentification(), CANDIDATE_ELEMENT_NAME, "candidateText");
 						if (c.getOccupationalTitle() != null) {
-							checkLanguageCorrectness(c.getOccupationalTitle().getOccupationalTitleInfo(),
+							checkLanguageCount(c.getOccupationalTitle().getOccupationalTitleInfo(),
 									OccupationalTitleInformationType.OccupationalTitleInfo::getLanguage, c.getCandidateIdentification(),
 									CANDIDATE_ELEMENT_NAME,
 									"occupationalTitle");
 						}
-
-						if (c.getRole() != null) {
-							checkLanguageCorrectness(c.getRole().getRoleInfo(),
-									RoleInformationType.RoleInfo::getLanguage,
-									c.getCandidateIdentification(),
-									CANDIDATE_ELEMENT_NAME,
-									"role");
-						}
-
-						if (c.getPartyAffiliation() != null) {
-							checkLanguageCorrectness(c.getPartyAffiliation().getPartyAffiliationInfo(),
-									PartyAffiliationformationType.PartyAffiliationInfo::getLanguage,
-									c.getCandidateIdentification(),
-									CANDIDATE_ELEMENT_NAME,
-									"partyAffiliation");
-						}
-
-						if (c.getIncumbent() != null && c.getIncumbent().getIncumbentText() != null) {
-							checkLanguageCorrectness(c.getIncumbent().getIncumbentText().getIncumbentTextInfo(),
-									IncumbentTextInfoType::getLanguage,
-									c.getCandidateIdentification(),
-									CANDIDATE_ELEMENT_NAME,
-									"incumbentText");
-						}
 					});
 					e.getList().forEach(l -> {
-						checkLanguageCorrectness(l.getListDescription().getListDescriptionInfo(),
+						checkLanguageCount(l.getListDescription().getListDescriptionInfo(),
 								ListDescriptionInformationType.ListDescriptionInfo::getLanguage,
-								l.getListIdentification(), LIST_ELEMENT_NAME, "listDescription");
-						l.getCandidatePosition().forEach(cp -> checkLanguageCorrectness(cp.getCandidateTextOnPosition().getCandidateTextInfo(),
+								l.getListIdentification(), "list", "listDescription");
+						l.getCandidatePosition().forEach(cp -> checkLanguageCount(cp.getCandidateTextOnPosition().getCandidateTextInfo(),
 								CandidateTextInformationType.CandidateTextInfo::getLanguage, cp.getCandidateIdentification(),
 								CANDIDATE_ELEMENT_NAME,
 								"candidateTextOnPosition"));
-
-						if (l.getVarListText1() != null) {
-							checkLanguageCorrectness(l.getVarListText1().getVarListTextInfo(),
-									VarListTextInfoType::getLanguage,
-									l.getListIdentification(),
-									LIST_ELEMENT_NAME,
-									"varListText1");
-						}
-
-						if (l.getVarListText2() != null) {
-							checkLanguageCorrectness(l.getVarListText2().getVarListTextInfo(),
-									VarListTextInfoType::getLanguage,
-									l.getListIdentification(),
-									LIST_ELEMENT_NAME,
-									"varListText2");
-						}
 					});
-					e.getListUnion().forEach(l -> checkLanguageCorrectness(l.getListUnionDescription().getListUnionDescriptionInfo(),
+					e.getListUnion().forEach(l -> checkLanguageCount(l.getListUnionDescription().getListUnionDescriptionInfo(),
 							ListUnionDescriptionType.ListUnionDescriptionInfo::getLanguage, l.getListUnionIdentification(), "list-union",
 							"listUnionDescription"));
 				});
@@ -1549,12 +1167,12 @@ public class ContestService {
 		contest.getVoteInformation().forEach(v -> {
 			checkState(v.getVote().getVoteDescription() != null, "VoteDescription must be defined in source file");
 
-			checkLanguageCorrectness(v.getVote().getVoteDescription().getVoteDescriptionInfo(),
+			checkLanguageCount(v.getVote().getVoteDescription().getVoteDescriptionInfo(),
 					VoteDescriptionInformationType.VoteDescriptionInfo::getLanguage, v.getVote().getVoteIdentification(), "vote",
 					"voteDescription");
 			v.getVote().getBallot().forEach(b -> {
 				if (b.getBallotDescription() != null) {
-					checkLanguageCorrectness(b.getBallotDescription().getBallotDescriptionInfo(),
+					checkLanguageCount(b.getBallotDescription().getBallotDescriptionInfo(),
 							BallotDescriptionInformationType.BallotDescriptionInfo::getLanguage, b.getBallotIdentification(), "ballot",
 							"ballotDescription");
 				}
@@ -1566,29 +1184,29 @@ public class ContestService {
 
 				if (b.getStandardBallot() != null) {
 					//standardBallot
-					checkLanguageCorrectness(b.getStandardBallot().getBallotQuestion().getBallotQuestionInfo(),
+					checkLanguageCount(b.getStandardBallot().getBallotQuestion().getBallotQuestionInfo(),
 							BallotQuestionType.BallotQuestionInfo::getLanguage, b.getStandardBallot().getQuestionIdentification(),
 							QUESTION_ELEMENT_NAME,
 							BALLOT_QUESTION_FIELD_NAME);
 					b.getStandardBallot().getAnswer().forEach(
-							a -> checkLanguageCorrectness(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
+							a -> checkLanguageCount(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
 									ANSWER_ELEMENT_NAME,
 									ANSWER_FIELD_NAME));
 				} else {
 					//variantBallot
 					b.getVariantBallot().getStandardQuestion().forEach(sq -> {
-						checkLanguageCorrectness(sq.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionType.BallotQuestionInfo::getLanguage,
+						checkLanguageCount(sq.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionType.BallotQuestionInfo::getLanguage,
 								sq.getQuestionIdentification(), QUESTION_ELEMENT_NAME, BALLOT_QUESTION_FIELD_NAME);
 						sq.getAnswer().forEach(
-								a -> checkLanguageCorrectness(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
+								a -> checkLanguageCount(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
 										ANSWER_ELEMENT_NAME,
 										ANSWER_FIELD_NAME));
 					});
 					b.getVariantBallot().getTieBreakQuestion().forEach(tbq -> {
-						checkLanguageCorrectness(tbq.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionType.BallotQuestionInfo::getLanguage,
+						checkLanguageCount(tbq.getBallotQuestion().getBallotQuestionInfo(), BallotQuestionType.BallotQuestionInfo::getLanguage,
 								tbq.getQuestionIdentification(), QUESTION_ELEMENT_NAME, BALLOT_QUESTION_FIELD_NAME);
 						tbq.getAnswer().forEach(
-								a -> checkLanguageCorrectness(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
+								a -> checkLanguageCount(a.getAnswerInfo(), AnswerInformationType::getLanguage, a.getAnswerIdentification(),
 										ANSWER_ELEMENT_NAME,
 										ANSWER_FIELD_NAME));
 					});
@@ -1602,29 +1220,30 @@ public class ContestService {
 	}
 
 	private void checkEVotingDates(final ContestType c) {
-		final LocalDateTime evotingFromDate = LocalDateTimeUtils.fromXMLGregorianCalendar(c.getEvotingFromDate());
-		final LocalDateTime evotingToDate = LocalDateTimeUtils.fromXMLGregorianCalendar(c.getEvotingToDate());
+		final GregorianCalendar evotingFromDate = c.getEvotingFromDate().toGregorianCalendar();
+		final GregorianCalendar evotingToDate = c.getEvotingToDate().toGregorianCalendar();
 
 		// These are mandatory checks that cannot be bypassed.
-		checkState(evotingToDate.isAfter(LocalDateTimeUtils.now()), "evotingToDate must be in the future.");
-		checkState(evotingFromDate.isBefore(evotingToDate), "evotingFromDate must be before evotingToDate.");
+		checkState(evotingToDate.getTime().after(new Date()), "evotingToDate must be in the future.");
+		checkState(evotingFromDate.getTime().before(evotingToDate.getTime()), "evotingFromDate must be before evotingToDate.");
 
-		if (bypassCheckConsistencyDates) {
+		if (byPassCheckConsistencyDates) {
 			LOGGER.warn("As defined by configuration, bypassing the evoting dates consistency checks...");
 			return;
 		}
 
-		checkState(evotingFromDate.isAfter(LocalDateTimeUtils.now()), "evotingFromDate must be in the future.");
+		checkState(evotingFromDate.getTime().after(new Date()), "evotingFromDate must be in the future.");
 
-		final LocalDate dtFromLocal = evotingFromDate.toLocalDate();
-		final LocalDate dtToLocal = evotingToDate.toLocalDate();
+		final LocalDate dtFromLocal = LocalDate.of(evotingFromDate.get(Calendar.YEAR), evotingFromDate.get(Calendar.MONTH) + 1,
+				evotingFromDate.get(Calendar.DAY_OF_MONTH));
+		final LocalDate dtToLocal = LocalDate.of(evotingToDate.get(Calendar.YEAR), evotingToDate.get(Calendar.MONTH) + 1,
+				evotingToDate.get(Calendar.DAY_OF_MONTH));
 		final long daysBetween = DAYS.between(dtFromLocal, dtToLocal);
 
 		checkState(daysBetween >= evotingFromToMinDeltaAllowed,
 				"the number of days between 'eVoting date from' and 'eVoting date to' must be at least %s", evotingFromToMinDeltaAllowed);
 
-		final LocalDate contestDate = LocalDateUtils.fromXMLGregorianCalendar(c.getContestDate());
-		if (evotingToDate.isAfter(contestDate.atStartOfDay())) {
+		if (c.getEvotingToDate().toGregorianCalendar().getTime().after(c.getContestDate().toGregorianCalendar().getTime())) {
 			LOGGER.warn("The date of the contest should follow the eVoting date from.");
 		}
 	}
@@ -1758,24 +1377,24 @@ public class ContestService {
 		c.getVoteInformation().forEach(v -> v.getVote().getBallot().forEach(b -> {
 			if (b.getStandardBallot() != null) {
 				checkState(b.getStandardBallot().getAnswer().stream()
-								.filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals(EMPTY_ANSWER)).count() <= 1,
+								.filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals("EMPTY")).count() <= 1,
 						"vote '%s' standard ballot question has more than one blank answer", v.getVote().getVoteIdentification());
 			}
 			if (b.getVariantBallot() != null) {
 				b.getVariantBallot().getStandardQuestion().forEach(q -> checkState(
-						q.getAnswer().stream().filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals(EMPTY_ANSWER)).count()
+						q.getAnswer().stream().filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals("EMPTY")).count()
 								<= 1, "vote '%s' variant ballot standard question %s has more than one blank answer",
 						v.getVote().getVoteIdentification(), q.getQuestionPosition()));
 				b.getVariantBallot().getTieBreakQuestion().forEach(
-						q -> checkState(q.getAnswer().stream().filter(TiebreakAnswerType::isHiddenAnswer).count() == 1,
-								"vote '%s' variant ballot tiebreak question %s has not exactly one hidden answer",
+						q -> checkState(q.getAnswer().stream().filter(a -> a.getStandardQuestionReference() == null).count() <= 1,
+								"vote '%s' variant ballot tiebreak question %s has more than one blank answer",
 								v.getVote().getVoteIdentification(),
 								q.getQuestionPosition()));
 			}
 		}));
 	}
 
-	public void checkConsistency(final ContestType c, final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+	public void checkConsistency(final ContestType c, final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 		checkContestExists(c);
 		checkEVotingDates(c);
 		checkLanguagesConsistency(c);
@@ -1783,6 +1402,7 @@ public class ContestService {
 		checkLimitOfSameOccurrencesOfCandidateInList(c);
 		checkSameNamesOfCandidates(c);
 		checkReferenceOnPositionOnCandidateIsFilled(c);
+		checkEmptyListExists(c);
 		checkAnswerConsistency(c);
 		checkParametersOfElections(c.getElectionGroupBallot(), contestParameters);
 		checkPrimarySecondaryElectionConsistency(c);
@@ -1790,7 +1410,6 @@ public class ContestService {
 		checkElectionIdentifiersDistinctness(c);
 		checkProportionalElectionConsistency(c);
 		checkMajoralElectionConsistency(c);
-		checkWriteInsConsistency(c);
 	}
 
 	private PrimarySecondaryTuple mapToPrimarySecondaryContainer(final ElectionGroupBallotType eg) {
@@ -1861,16 +1480,26 @@ public class ContestService {
 				CandidateType::getCandidateIdentification).toList();
 
 		final List<CandidateType> secondaryCandidates = primarySecondaryTuple.secondary().getCandidate();
-		checkState(secondaryCandidates.stream()
-						.filter(c -> c.getEligibility() == EligibilityType.EXPLICIT)
-						.allMatch(c -> primaryCandidateIds.contains(c.getCandidateIdentification())),
+		checkState(secondaryCandidates.stream().allMatch(
+						c -> (primaryCandidateIds.contains(c.getCandidateIdentification()) && c.getEligibility() == EligibilityType.EXPLICIT)
+								|| c.getEligibility() == EligibilityType.IMPLICIT
+								|| c.getEligibility() == EligibilityType.IMPLICIT_DISCREET),
 				"At least one non already elected candidate in the secondary election is not candidate in the primary election. [electionGroupId: %s]",
 				eg.getElectionGroupIdentification());
 
 		checkState(secondaryCandidates.stream()
-						.filter(c -> c.getEligibility() == EligibilityType.IMPLICIT)
+						.filter(c -> c.getEligibility() == EligibilityType.IMPLICIT || c.getEligibility() == EligibilityType.IMPLICIT_DISCREET)
 						.noneMatch(c -> primaryCandidateIds.contains(c.getCandidateIdentification())),
-				"At least one implicit candidate in the secondary election is also a candidate in the primary election. [electionGroupId: %s]",
+				"At least one implicit or implicit discreet candidate in the secondary election is also a candidate in the primary election. [electionGroupId: %s]",
+				eg.getElectionGroupIdentification());
+
+		final List<CandidateType> implicitCandidates = secondaryCandidates.stream()
+				.filter(c -> c.getEligibility() == EligibilityType.IMPLICIT)
+				.toList();
+		checkState(secondaryCandidates.stream()
+						.filter(c -> c.getEligibility() == EligibilityType.IMPLICIT_DISCREET)
+						.noneMatch(implicitCandidates::contains),
+				"At least one candidate in the secondary election is both implicitly eligible and discreet. [electionGroupId: %s]",
 				eg.getElectionGroupIdentification());
 	}
 
@@ -1889,32 +1518,19 @@ public class ContestService {
 				eg.getElectionGroupIdentification());
 	}
 
-	private void checkReferenceOnPositionOnCandidateIsFilled(final ContestType contest) {
-		contest.getElectionGroupBallot().stream()
+	private void checkReferenceOnPositionOnCandidateIsFilled(final ContestType c) {
+		c.getElectionGroupBallot().stream()
 				.flatMap(eg -> eg.getElectionInformation().stream())
-				.forEach(e -> {
-					final List<CandidateType> candidates = e.getCandidate();
-					if (candidates.isEmpty()) {
-						return;
-					}
+				.flatMap(e -> e.getCandidate().stream())
+				.forEach(candidate -> checkState(!StringUtil.isNullOrEmpty(candidate.getReferenceOnPosition()),
+						"the referenceOnPosition for the candidate must be provided. [candidateId: %s]", candidate.getCandidateIdentification()));
+	}
 
-					final List<CandidateType> candidatesWithoutReferenceOnPosition = candidates.stream()
-							.filter(c -> StringUtil.isNullOrEmpty(c.getReferenceOnPosition()))
-							.toList();
-
-					if (candidates.size() == candidatesWithoutReferenceOnPosition.size()) {
-						IntStream.rangeClosed(1, candidates.size())
-								.forEach(i -> candidates.get(i - 1).setReferenceOnPosition(String.valueOf(i)));
-						LOGGER.warn(
-								"The candidateReference in the election were not provided and were assigned automatically. [electionIdentification: {}]",
-								e.getElection().getElectionIdentification());
-					} else if (!candidatesWithoutReferenceOnPosition.isEmpty()) {
-						throw new IllegalStateException(
-								"The field candidateReference for one or more candidates was not provided: [electionIdentification: %s, candidateId: %s]".formatted(
-										e.getElection().getElectionIdentification(),
-										candidatesWithoutReferenceOnPosition.getFirst().getCandidateIdentification()));
-					}
-				});
+	private void checkEmptyListExists(final ContestType c) {
+		c.getElectionGroupBallot().stream().flatMap(eg -> eg.getElectionInformation().stream())
+				.forEach(e -> checkState(e.getList().stream().anyMatch(ListType::isListEmpty),
+						"The election does not contains an empty list [electionIdentification: %s]",
+						e.getElection().getElectionIdentification()));
 	}
 
 	private void checkVoteIdentificationsDistinctness(final ContestType c) {
@@ -1935,7 +1551,7 @@ public class ContestService {
 					variantBallotQuestionIdentifications);
 		}).toList();
 
-		checkState(hasNoDuplicates(ImmutableList.from(identifications)), "The votes contain duplicate identifications");
+		checkState(hasNoDuplicates(identifications), "The votes contain duplicate identifications");
 	}
 
 	private void checkElectionIdentifiersDistinctness(final ContestType c) {
@@ -1945,7 +1561,7 @@ public class ContestService {
 				.flatMap(eg -> checkElectionIdentifiersDistinctnessPerElection(eg).stream())
 				.toList();
 
-		checkState(hasNoDuplicates(ImmutableList.from(identifications)), "The elections contain duplicate identifications");
+		checkState(hasNoDuplicates(identifications), "The elections contain duplicate identifications");
 	}
 
 	private List<String> checkElectionIdentifiersDistinctnessPerElection(final ElectionGroupBallotType electionGroupBallot) {
@@ -1956,8 +1572,7 @@ public class ContestService {
 
 					final List<String> identifications = Streams.concat(Stream.of(electionIdentification), listIdentifications)
 							.toList();
-					checkState(hasNoDuplicates(ImmutableList.from(identifications)),
-							"The election contains duplicate identifications. [election id: %s]",
+					checkState(hasNoDuplicates(identifications), "The election contains duplicate identifications. [election id: %s]",
 							electionIdentification);
 					return identifications;
 				}).toList().getFirst();
@@ -1985,27 +1600,6 @@ public class ContestService {
 				.collect(Collectors.joining(", "));
 
 		checkState(electionIds.isEmpty(), "Candidate accumulation must be 1 for majoral elections. [electionIds: %s]", electionIds);
-	}
-
-	private void checkWriteInsConsistency(final ContestType contestType) {
-		contestType.getElectionGroupBallot().stream()
-				.flatMap(electionGroupBallot -> electionGroupBallot.getElectionInformation().stream())
-				.forEach(electionInformation -> {
-					if (electionInformation.getElection().isWriteInsAllowed()) {
-						checkState(electionInformation.getWriteInPosition() != null
-										&& electionInformation.getWriteInPosition().size() == electionInformation.getElection().getNumberOfMandates(),
-								"The election allows write-ins and must contain as many write-in positions as there are mandates. [electionId: %s, numberOfMandates: %s]",
-								electionInformation.getElection().getElectionIdentification(),
-								electionInformation.getElection().getNumberOfMandates());
-					} else {
-						checkState(electionInformation.getWriteInPosition() == null || electionInformation.getWriteInPosition().isEmpty(),
-								"The election does not allow write-ins and must therefore not have any write-in positions. [electionId: %s]",
-								electionInformation.getElection().getElectionIdentification());
-						checkState(electionInformation.getImplicitWriteInCandidate() == null || electionInformation.getWriteInPosition().isEmpty(),
-								"The election does not allow write-ins and must therefore not have any implicit write-in candidates. [electionId: %s]",
-								electionInformation.getElection().getElectionIdentification());
-					}
-				});
 	}
 
 	public ContestType cleanHtmlTags(final ContestType contest) {

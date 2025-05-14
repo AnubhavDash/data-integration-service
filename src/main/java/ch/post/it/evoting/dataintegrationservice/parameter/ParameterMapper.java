@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.parameter;
 
@@ -11,6 +11,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AdminBoardMembersType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AdminBoardType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AnswerInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectoralBoardMembersType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectoralBoardType;
@@ -24,39 +26,41 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TiebreakAnswe
 public interface ParameterMapper {
 	ParameterMapper INSTANCE = Mappers.getMapper(ParameterMapper.class);
 
-	default List<StandardAnswerType> mapStandard(final List<ch.evoting.xmlns.parameter._5.StandardAnswerType> list, final String questionIdentifier) {
+	default List<StandardAnswerType> mapStandard(final List<ch.evoting.xmlns.parameter._4.StandardAnswerType> list, final String questionIdentifier) {
 		return list.stream().map(answer -> map(answer, StringUtil.generateUUIDFromString(questionIdentifier + "-" + answer.getAnswerPosition())))
 				.toList();
 	}
 
-	default List<TiebreakAnswerType> mapTiebreak(final List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType> list, final String questionIdentifier) {
+	default List<TiebreakAnswerType> mapTiebreak(final List<ch.evoting.xmlns.parameter._4.TiebreakAnswerType> list, final String questionIdentifier) {
 		return list.stream().map(answer -> map(answer, StringUtil.generateUUIDFromString(questionIdentifier + "-" + answer.getAnswerPosition())))
 				.toList();
 	}
 
 	@Mapping(target = "answerPosition", source = "a.answerPosition")
 	@Mapping(target = "answerIdentification", source = "answerIdentifier")
-	@Mapping(target = "hiddenAnswer", source = "a.hiddenAnswer")
 	@Mapping(target = "answerInfo", source = "a.answerInfo")
-	StandardAnswerType map(ch.evoting.xmlns.parameter._5.StandardAnswerType a, String answerIdentifier);
+	StandardAnswerType map(ch.evoting.xmlns.parameter._4.StandardAnswerType a, String answerIdentifier);
 
 	@Mapping(target = "answerPosition", source = "a.answerPosition")
 	@Mapping(target = "answerIdentification", source = "answerIdentifier")
-	@Mapping(target = "hiddenAnswer", source = "a.hiddenAnswer")
 	@Mapping(target = "answerInfo", source = "a.answerInfo")
-	TiebreakAnswerType map(ch.evoting.xmlns.parameter._5.TiebreakAnswerType a, String answerIdentifier);
+	TiebreakAnswerType map(ch.evoting.xmlns.parameter._4.TiebreakAnswerType a, String answerIdentifier);
 
-	AnswerInformationType map(ch.evoting.xmlns.parameter._5.AnswerInformationType value);
+	AnswerInformationType map(ch.evoting.xmlns.parameter._4.AnswerInformationType value);
 
-	LanguageType map(ch.evoting.xmlns.parameter._5.LanguageType value);
+	LanguageType map(ch.evoting.xmlns.parameter._4.LanguageType value);
 
-	ElectoralBoardType map(ch.evoting.xmlns.parameter._5.ElectoralBoardType oea);
+	AdminBoardType map(ch.evoting.xmlns.parameter._4.AdminBoardType oea);
 
-	ElectoralBoardMembersType map(ch.evoting.xmlns.parameter._5.ElectoralBoardMembersType emt);
+	AdminBoardMembersType map(ch.evoting.xmlns.parameter._4.AdminBoardMembersType emt);
 
-	IncumbentTextType map(ch.evoting.xmlns.parameter._5.ContestType.IncumbentText value);
+	ElectoralBoardType map(ch.evoting.xmlns.parameter._4.ElectoralBoardType oea);
+
+	ElectoralBoardMembersType map(ch.evoting.xmlns.parameter._4.ElectoralBoardMembersType emt);
+
+	IncumbentTextType map(ch.evoting.xmlns.parameter._4.ContestType.IncumbentText value);
 
 	@Mapping(target = "language", source = "language")
 	@Mapping(target = "incumbentText", source = "text")
-	IncumbentTextInfoType map(ch.evoting.xmlns.parameter._5.IncumbentTextInfo value);
+	IncumbentTextInfoType map(ch.evoting.xmlns.parameter._4.IncumbentTextInfo value);
 }

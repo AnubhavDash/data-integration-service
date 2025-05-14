@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.pipes;
 
@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import ch.evoting.xmlns.parameter._5.ContestType;
-import ch.evoting.xmlns.parameter._5.Parameter;
+import ch.evoting.xmlns.parameter._4.ContestType;
+import ch.evoting.xmlns.parameter._4.Parameter;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterWithRoleMapper;
 
 import io.cucumber.java.en.And;

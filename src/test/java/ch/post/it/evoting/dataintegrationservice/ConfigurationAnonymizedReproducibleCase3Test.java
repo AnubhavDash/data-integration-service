@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice;
 
@@ -11,7 +11,7 @@ import org.springframework.test.context.DynamicPropertySource;
 @DisplayName("Generating a configuration anonymized file")
 class ConfigurationAnonymizedReproducibleCase3Test extends ConfigurationAnonymizedReproducibleTestBase {
 
-	private static final String datasetName = "Post_E2E_DEV_1000";
+	private static final String datasetName = "Post_Primary_Secondary";
 
 	@DynamicPropertySource
 	static void registerPgProperties(final DynamicPropertyRegistry registry) {

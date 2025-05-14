@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice;
 
@@ -51,12 +51,10 @@ public class DataIntegrationService {
 
 					DataIntegrationServiceApplication.class.getResource("/pipes/parameterPhase.groovy").toURI(),
 
-					DataIntegrationServiceApplication.class.getResource("/pipes/contest/ech015xv40/contestEch015xv40.groovy").toURI(),
-					DataIntegrationServiceApplication.class.getResource("/pipes/contest/ech015xv42/contestEch015xv42.groovy").toURI(),
+					DataIntegrationServiceApplication.class.getResource("/pipes/contest/ech015xv4/contestEch015xv4.groovy").toURI(),
 					DataIntegrationServiceApplication.class.getResource("/pipes/contestPhase.groovy").toURI(),
 
-					DataIntegrationServiceApplication.class.getResource("/pipes/register/ech0045v40/registerEch0045v40.groovy").toURI(),
-					DataIntegrationServiceApplication.class.getResource("/pipes/register/ech0045v42/registerEch0045v42.groovy").toURI(),
+					DataIntegrationServiceApplication.class.getResource("/pipes/register/ech0045v4/registerEch0045v4.groovy").toURI(),
 					DataIntegrationServiceApplication.class.getResource("/pipes/registerPhase.groovy").toURI(),
 
 					DataIntegrationServiceApplication.class.getResource("/pipes/authorizationPhase.groovy").toURI(),
