@@ -7,7 +7,6 @@ import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvid
 import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvider.getProperty;
 import static com.google.common.base.Preconditions.checkState;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,7 +17,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -42,7 +40,7 @@ import ch.post.it.evoting.dataintegrationservice.domain.RegisterTypeWithVoterStr
 import ch.post.it.evoting.dataintegrationservice.input.DirectoryScanner;
 import ch.post.it.evoting.dataintegrationservice.keystore.KeystoreRepository;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.XMLSignatureService;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.XMLSignatureService;
 import ch.post.it.evoting.evotinglibraries.xml.XsdConstants;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 

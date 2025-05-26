@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import ch.post.it.evoting.dataintegrationservice.keystore.KeystoreRepository;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.preliminaries.channelsecurity.XMLSignatureService;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.XMLSignatureService;
 
 @Configuration
 @ComponentScan(basePackages = { "ch.post.it.evoting", "pipes" })
