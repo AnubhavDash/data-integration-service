@@ -50,6 +50,18 @@
 					<eCH-0155:language>de</eCH-0155:language>
 					<eCH-0155:electionDescription>Election_Group</eCH-0155:electionDescription>
 				</eCH-0155:electionDescriptionInfo>
+				<eCH-0155:electionDescriptionInfo>
+					<eCH-0155:language>fr</eCH-0155:language>
+					<eCH-0155:electionDescription>Election_Group</eCH-0155:electionDescription>
+				</eCH-0155:electionDescriptionInfo>
+				<eCH-0155:electionDescriptionInfo>
+					<eCH-0155:language>it</eCH-0155:language>
+					<eCH-0155:electionDescription>Election_Group</eCH-0155:electionDescription>
+				</eCH-0155:electionDescriptionInfo>
+				<eCH-0155:electionDescriptionInfo>
+					<eCH-0155:language>rm</eCH-0155:language>
+					<eCH-0155:electionDescription>Election_Group</eCH-0155:electionDescription>
+				</eCH-0155:electionDescriptionInfo>
 			</electionGroupDescription>
 			<domainOfInfluenceIdentification>4543465476</domainOfInfluenceIdentification>
 			<electionInformation>
@@ -456,7 +468,7 @@
 							<eCH-0155:listDescription>Vid</eCH-0155:listDescription>
 						</eCH-0155:listDescriptionInfo>
 					</eCH-0155:listDescription>
-					<eCH-0155:isEmptyList>false</eCH-0155:isEmptyList>
+					<eCH-0155:isEmptyList>true</eCH-0155:isEmptyList>
 					<eCH-0155:totalPositionsOnList>2</eCH-0155:totalPositionsOnList>
 					<eCH-0155:emptyListPositions>2</eCH-0155:emptyListPositions>
 				</list>

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package pipes
 
@@ -16,17 +16,17 @@ import static reactor.core.publisher.Flux.zip
 def contestPhaseComponent = getBean(ContestPhaseComponent.class)
 
 def elections = pipe {
-    from( ContestPhase.contestEch015xv4.elections ) \
+    from( merge(ContestPhase.contestEch015xv40.elections, ContestPhase.contestEch015xv42.elections) ) \
     collectList()
 }
 
 def votes = pipe {
-    from( ContestPhase.contestEch015xv4.votes ) \
+    from( merge(ContestPhase.contestEch015xv40.votes, ContestPhase.contestEch015xv42.votes) ) \
     collectList()
 }
 
 def validatedContest = pipe {
-    from( ContestPhase.contestEch015xv4.contests ) \
+    from( merge(ContestPhase.contestEch015xv40.contests, ContestPhase.contestEch015xv42.contests) ) \
     transformDeferred errorIfEmpty("No ech15x contests found ! Check if ech15x file is present.") \
     scan contestPhaseComponent.checkContestSame() \
     last() \

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.pipes;
 
@@ -32,7 +32,7 @@ public class AuthorizationPhaseComponent {
 		return authorizationService::mapDomainOfInfluenceIds;
 	}
 
-	public Function<Tuple4<VoterTypeWithRole, List<String>, ContestType, ch.evoting.xmlns.parameter._4.ContestType>, AuthorizationType> buildAuthorization() {
+	public Function<Tuple4<VoterTypeWithRole, List<String>, ContestType, ch.evoting.xmlns.parameter._5.ContestType>, AuthorizationType> buildAuthorization() {
 		return tuple -> authorizationService.build(tuple.getT1(), tuple.getT2(), tuple.getT3(), tuple.getT4());
 	}
 

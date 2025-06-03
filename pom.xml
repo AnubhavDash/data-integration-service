@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ (c) Copyright 2024 Swiss Post Ltd.
+  ~ (c) Copyright 2025 Swiss Post Ltd.
   -->
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
@@ -8,7 +8,7 @@
 
 	<groupId>ch.post.it.evoting.dataintegrationservice</groupId>
 	<artifactId>data-integration-service</artifactId>
-	<version>2.8.5.1</version>
+	<version>2.9.0.0-RC9</version>
 	<packaging>jar</packaging>
 
 	<name>Data Integration Service</name>
@@ -24,48 +24,47 @@
 		<maven-enforcer-plugin.requiredMavenVersion>[3.9.9]</maven-enforcer-plugin.requiredMavenVersion>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.build.outputTimestamp>2025-05-27T14:11:49+02:00</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2025-06-03T16:36:37+02:00</project.build.outputTimestamp>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+		<archunit.version>1.4.0</archunit.version>
 		<cloning.version>1.12.1</cloning.version>
 		<commons-lang3.version>3.17.0</commons-lang3.version>
-		<crypto-primitives.version>1.4.5.1</crypto-primitives.version>
-		<cucumber-bom.version>7.22.1</cucumber-bom.version>
+		<crypto-primitives.version>1.5.0.0-b30</crypto-primitives.version>
+		<cucumber-bom.version>7.22.0</cucumber-bom.version>
 		<download-maven-plugin.version>1.13.0</download-maven-plugin.version>
-		<e-voting-libraries.version>1.4.5.1</e-voting-libraries.version>
-		<gmavenplus-plugin.version>3.0.2</gmavenplus-plugin.version>
+		<e-voting-libraries.version>1.5.0.0-b121</e-voting-libraries.version>
+		<gmavenplus-plugin.version>4.1.1</gmavenplus-plugin.version>
 		<groovy.version>4.0.18</groovy.version>
 		<groovy-all.version>4.0.26</groovy-all.version>
-		<guava.version>33.4.8-jre</guava.version>
+		<guava.version>33.4.6-jre</guava.version>
 		<hamcrest-core.version>3.0</hamcrest-core.version>
 		<jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
-		<jaxb-osgi.version>4.0.5</jaxb-osgi.version>
 		<jaxb-runtime.version>4.0.5</jaxb-runtime.version>
-		<jaxb-maven-plugin.version>4.0.9</jaxb-maven-plugin.version>
-		<junit-bom.version>5.12.2</junit-bom.version>
+		<jaxb-maven-plugin.version>4.0.8</jaxb-maven-plugin.version>
+		<junit-bom.version>5.12.1</junit-bom.version>
 		<logback-classic.version>1.5.18</logback-classic.version>
 		<lombok.version>1.18.38</lombok.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
 		<maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
-		<maven-dependency-check.version>12.1.0</maven-dependency-check.version>
+		<maven-dependency-check.version>12.1.1</maven-dependency-check.version>
 		<maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
 		<maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
+		<maven-failsafe-plugin.version>3.5.2</maven-failsafe-plugin.version>
 		<maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
 		<maven-release-plugin.version>3.1.1</maven-release-plugin.version>
 		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
 		<maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
-		<msv-rngconverter.version>2022.7</msv-rngconverter.version>
 		<reactive-plumber.version>0.26.0</reactive-plumber.version>
-		<reactor-core.version>3.7.5</reactor-core.version>
+		<reactor-core.version>3.7.4</reactor-core.version>
 		<reproducible-build-maven-plugin.version>0.17.0</reproducible-build-maven-plugin.version>
-		<sonar-maven-plugin.version>3.11.0.3922</sonar-maven-plugin.version>
-		<spring-boot.version>3.4.5</spring-boot.version>
+		<sonar-maven-plugin.version>5.1.0.4751</sonar-maven-plugin.version>
+		<spring-boot.version>3.4.4</spring-boot.version>
 		<stax2-api.version>4.2.2</stax2-api.version>
 		<super-machine.version>0.1.0</super-machine.version>
-		<woodstox-core.version>6.7.0</woodstox-core.version>
-		<xml-merge.version>0.2</xml-merge.version>
-		<xsdlib.version>2013.2</xsdlib.version>
+		<testdata.version>1.5.0.0-b32</testdata.version>
+		<woodstox-core.version>7.1.0</woodstox-core.version>
 
 		<!-- OpenJDK -->
 		<openjdk-jre.version>jdk-21.0.7+6-jre</openjdk-jre.version>
@@ -77,16 +76,20 @@
 		<!-- Sonar -->
 		<sonar.scm.disabled>true</sonar.scm.disabled>
 		<sonar.skipDesign>true</sonar.skipDesign>
+		<sonar.scanner.skipJreProvisioning>true</sonar.scanner.skipJreProvisioning>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<sonar.junit.reportPaths>${project.basedir}/target/surefire-reports/,${project.basedir}/target/failsafe-reports/</sonar.junit.reportPaths>
-		<sonar.javascript.lcov.reportPaths>${project.basedir}/coverage/lcov.info</sonar.javascript.lcov.reportPaths>
-		<sonar.coverage.exclusions>**/test/**/*,**/tests/**/*</sonar.coverage.exclusions>
 		<sonar.java.source>${maven.compiler.release}</sonar.java.source>
 		<sonar.java.target>${maven.compiler.release}</sonar.java.target>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>ch.post.it.evoting.evotinglibraries</groupId>
+				<artifactId>e-voting-libraries-protocol-algorithms</artifactId>
+				<version>${e-voting-libraries.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>ch.post.it.evoting.evotinglibraries</groupId>
 				<artifactId>e-voting-libraries-xml</artifactId>
@@ -112,18 +115,6 @@
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
 				<version>${logback-classic.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>ch.galinet.xml</groupId>
-				<artifactId>xml-merge</artifactId>
-				<version>${xml-merge.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-simple</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 
 			<dependency>
@@ -179,6 +170,11 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>com.tngtech.archunit</groupId>
+				<artifactId>archunit-junit5</artifactId>
+				<version>${archunit.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.codehaus.woodstox</groupId>
@@ -186,24 +182,9 @@
 				<version>${stax2-api.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.java.dev.msv</groupId>
-				<artifactId>msv-rngconverter</artifactId>
-				<version>${msv-rngconverter.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.msv.datatype.xsd</groupId>
-				<artifactId>xsdlib</artifactId>
-				<version>${xsdlib.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>com.fasterxml.woodstox</groupId>
 				<artifactId>woodstox-core</artifactId>
 				<version>${woodstox-core.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.xml.bind</groupId>
-				<artifactId>jaxb-osgi</artifactId>
-				<version>${jaxb-osgi.version}</version>
 			</dependency>
 
 			<dependency>
@@ -237,6 +218,10 @@
 	<dependencies>
 		<dependency>
 			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
+			<artifactId>e-voting-libraries-protocol-algorithms</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.post.it.evoting.evotinglibraries</groupId>
 			<artifactId>e-voting-libraries-xml</artifactId>
 		</dependency>
 		<dependency>
@@ -255,11 +240,6 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>ch.galinet.xml</groupId>
-			<artifactId>xml-merge</artifactId>
 		</dependency>
 
 		<dependency>
@@ -304,18 +284,6 @@
 		<dependency>
 			<groupId>org.codehaus.woodstox</groupId>
 			<artifactId>stax2-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>net.java.dev.msv</groupId>
-			<artifactId>msv-rngconverter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.msv.datatype.xsd</groupId>
-			<artifactId>xsdlib</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-osgi</artifactId>
 		</dependency>
 
 		<dependency>
@@ -363,6 +331,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit-junit5</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -403,6 +376,9 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${maven-surefire-plugin.version}</version>
+					<configuration>
+						<argLine>@{argLine} -javaagent:${org.mockito:mockito-core:jar}</argLine>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -445,14 +421,6 @@
 						</execution>
 						<execution>
 							<id>strip-jar</id>
-							<phase>package</phase>
-							<goals>
-								<goal>strip-jar</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>strip-archive</id>
-							<phase>pre-integration-test</phase>
 							<goals>
 								<goal>strip-jar</goal>
 							</goals>
@@ -517,9 +485,15 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>${maven-dependency-plugin.version}</version>
 				<executions>
+					<!-- Generate properties pointing to artifacts. Used for Mockito in javaagent for example. -->
 					<execution>
-						<id>unpack-xsd-resources</id>
-						<phase>prepare-package</phase>
+						<goals>
+							<goal>properties</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>unpack-resources</id>
+						<phase>generate-test-resources</phase>
 						<goals>
 							<goal>unpack</goal>
 						</goals>
@@ -533,6 +507,14 @@
 									<outputDirectory>${project.build.directory}/e-voting-libraries-xml</outputDirectory>
 									<includes>**/*.xsd</includes>
 								</artifactItem>
+								<artifactItem>
+									<groupId>ch.post.it.evoting</groupId>
+									<artifactId>testdata</artifactId>
+									<version>${testdata.version}</version>
+									<classifier>resources</classifier>
+									<type>zip</type>
+									<outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
+								</artifactItem>
 							</artifactItems>
 						</configuration>
 					</execution>
@@ -540,7 +522,54 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.testOutputDirectory}/ContestPhaseSteps</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.build.directory}/e-voting-libraries-xml/xsd</directory>
+									<includes>
+										<include>evoting-config-7-0.xsd</include>
+										<include>xmldsig-core-schema.xsd</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven-failsafe-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<systemPropertyVariables>
+						<testBuildDirectory>${project.build.testOutputDirectory}</testBuildDirectory>
+						<testResourcesDirectory>${project.basedir}/src/test/resources</testResourcesDirectory>
+					</systemPropertyVariables>
+					<!-- Spring-boot tests need to use the compiled classes rather instead of the repackaged jar -->
+					<classesDirectory>${project.build.outputDirectory}</classesDirectory>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -553,10 +582,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.jvnet.jaxb</groupId>

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package pipes
 
@@ -15,7 +15,7 @@ import static li.chee.reactive.plumber.Plumbing.*
 def registerPhaseComponent = getBean(RegisterPhaseComponent.class)
 
 def voters = tube {
-    from(RegisterPhase.registerEch0045v4.voters) \
+    from merge(RegisterPhase.registerEch0045v4.voters, RegisterPhase.registerEch0045v42.voters) \
     transformDeferred logAsInfo("Building the register...")
 }
 

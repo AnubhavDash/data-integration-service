@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.keystore;
 
@@ -8,10 +8,10 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.bouncycastle.util.Arrays;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import ch.post.it.evoting.cryptoprimitives.collection.ImmutableByteArray;
 import ch.post.it.evoting.evotinglibraries.domain.ConversionUtils;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 
@@ -23,9 +23,9 @@ public class KeystoreRepository {
 	private final Alias alias;
 
 	public KeystoreRepository(
-			@Value("${direct.trust.keystore.location.canton}")
+			@Value("${direct-trust.keystore.location}")
 			final String keystoreLocation,
-			@Value("${direct.trust.keystore.password.location.canton}")
+			@Value("${direct-trust.password.location}")
 			final String keystorePasswordLocation) {
 		this.keystoreLocation = keystoreLocation;
 		this.keystorePasswordLocation = keystorePasswordLocation;
@@ -45,11 +45,8 @@ public class KeystoreRepository {
 	 * @throws IOException if an I/O error occurs reading the keystore password.
 	 */
 	public char[] getCantonKeystorePassword() throws IOException {
-		final byte[] bytes = Files.readAllBytes(Paths.get(keystorePasswordLocation));
-		final char[] password = ConversionUtils.byteArrayToCharArray(bytes);
-		Arrays.fill(bytes, (byte) 0);
-
-		return password;
+		final ImmutableByteArray bytes = new ImmutableByteArray(Files.readAllBytes(Paths.get(keystorePasswordLocation)));
+		return ConversionUtils.byteArrayToCharArray(bytes);
 	}
 
 	/**
