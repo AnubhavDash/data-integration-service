@@ -1125,9 +1125,8 @@ public class ContestPhaseSteps extends PhaseSteps {
 
 	@Then("^the list identified by \"([^\"]*)\" should contain (\\d+) occurrences of the candidateListIdentification \"([^\"]*)\"$")
 	public void thenListShouldContainsOccurencesOfCandidateListIdentification(final String listId, final Integer accum, final String id) {
-		assertEquals(accum.longValue(), Long.valueOf(
-				from(contest).find(ListType.class).filter(list -> list.getListIdentification().equals(listId)).stream().findFirst().get()
-						.getCandidatePosition().stream().filter(c -> c.getCandidateListIdentification().equals(id)).count()).longValue());
+		assertEquals(accum.longValue(), from(contest).find(ListType.class).filter(list -> list.getListIdentification().equals(listId)).stream().findFirst().get()
+						.getCandidatePosition().stream().filter(c -> c.getCandidateListIdentification().equals(id)).count());
 	}
 
 	@Given("^a list-union named \"([^\"]*)\" within \"([^\"]*)\".\"([^\"]*)\"$")
