@@ -30,7 +30,7 @@ public class StringUtil {
 	}
 
 	public static boolean isNullOrEmpty(final String value) {
-		return value == null || value.length() == 0;
+		return value == null || value.isEmpty();
 	}
 
 	public static String generateUUIDFromString(final String value) {
