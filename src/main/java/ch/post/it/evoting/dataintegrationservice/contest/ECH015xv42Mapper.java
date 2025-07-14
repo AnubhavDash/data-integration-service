@@ -489,7 +489,7 @@ public interface ECH015xv42Mapper {
 
 	default String mapStandardAnswerType(final List<AnswerOptionIdentificationType.AnswerTextInformation> answerTextInformations) {
 
-		final ImmutableSet<String> yes = ImmutableSet.of("Ja", "Oui", "Si", "Gea");
+		final ImmutableSet<String> yes = ImmutableSet.of("Ja", "Oui", "Sì", "Gea");
 		final ImmutableSet<String> no = ImmutableSet.of("Nein", "Non", "No", "Na");
 		final ImmutableSet<String> empty = ImmutableSet.of("Leer", "Blanc", "Bianco", "Vid");
 

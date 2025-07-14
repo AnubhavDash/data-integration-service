@@ -127,10 +127,11 @@ public class ContestService {
 
 	/**
 	 * Gets the standard answers for a question according to its answer type.
+	 *
 	 * @param questionIdentification the identifier of the question for which to get the answers
-	 * @param answerType the answer type of the question. Should be one of 2, 4, 5, 6, 7, or 8 (undefined).
-	 * @param specificAnswers the map of question identifications to standard answer lists from the contest parameters.
-	 * @param typedAnswers the map of answer types to standard answer lists from the default parameters.
+	 * @param answerType             the answer type of the question. Should be one of 2, 4, 5, 6, 7, or 8 (undefined).
+	 * @param specificAnswers        the map of question identifications to standard answer lists from the contest parameters.
+	 * @param typedAnswers           the map of answer types to standard answer lists from the default parameters.
 	 * @return the list of standard answers matching the {@code answerType}.
 	 * @throws IllegalStateException if there is no answerType and no answerOptionIdentification for the standard question.
 	 */
@@ -239,10 +240,12 @@ public class ContestService {
 	/**
 	 * Adds the answers to the votes' questions if needed.
 	 * <p>
-	 * There are three sources for the answers. Answers should be provided directly in the eCH, but if they are not, the election event specific params are checked for answer options.
-	 * If it also does not contain answer options specific to a question, the default parameters are checked for answer options matching the question's answer type.
+	 * There are three sources for the answers. Answers should be provided directly in the eCH, but if they are not, the election event specific
+	 * params are checked for answer options. If it also does not contain answer options specific to a question, the default parameters are checked
+	 * for answer options matching the question's answer type.
 	 * </p>
-	 * @param votes the list of votes for which to potentially add answers
+	 *
+	 * @param votes             the list of votes for which to potentially add answers
 	 * @param contestParameters the contest's parameters to be used for mapping the answers to the questions if needed.
 	 */
 	private void addVotesAnswers(final List<VoteInformationType> votes, final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
@@ -271,14 +274,16 @@ public class ContestService {
 			final Map<String, List<ch.evoting.xmlns.parameter._5.TiebreakAnswerType>> specificTiebreakAnswers, final BallotType ballot) {
 		ballot.getVariantBallot().getStandardQuestion().forEach(question -> {
 			final List<StandardAnswerType> answers = question.getAnswer();
-			validateStandardAnswers(answers, question.getAnswerType(), question.getQuestionIdentification(), defaultStandardAnswers, specificStandardAnswers);
+			validateStandardAnswers(answers, question.getAnswerType(), question.getQuestionIdentification(), defaultStandardAnswers,
+					specificStandardAnswers);
 		});
 		ballot.getVariantBallot().getTieBreakQuestion().forEach(question -> {
 			final List<TiebreakAnswerType> answers = question.getAnswer();
 			if (answers.isEmpty()) {
 				answers.addAll(getTiebreakAnswers(question.getQuestionIdentification(), question.getAnswerType(),
 						specificTiebreakAnswers, defaultTiebreakAnswers));
-				LOGGER.warn("No tiebreak answers were provided with the question. Added answers from parameters. [questionIdentification: {}]", question.getQuestionIdentification());
+				LOGGER.warn("No tiebreak answers were provided with the question. Added answers from parameters. [questionIdentification: {}]",
+						question.getQuestionIdentification());
 			} else {
 				checkState(answers.size() >= MINIMUM_REQUIRED_ANSWERS, "The tieBreakQuestion %s has only %s answers. It must have at least %s.",
 						question.getQuestionIdentification(), answers.size(), MINIMUM_REQUIRED_ANSWERS);
@@ -290,13 +295,15 @@ public class ContestService {
 			final Set<Integer> answerPositions = answers.stream().map(TiebreakAnswerType::getAnswerPosition).collect(Collectors.toSet());
 			final Integer minPosition = answerPositions.stream().min(Integer::compareTo).orElse(Integer.MAX_VALUE);
 			final Integer maxPosition = answerPositions.stream().max(Integer::compareTo).orElse(Integer.MIN_VALUE);
-			checkState(answerPositions.size() == answers.size() && (minPosition == 0 || minPosition == 1) && maxPosition - minPosition == answers.size() - 1,
+			checkState(answerPositions.size() == answers.size() && (minPosition == 0 || minPosition == 1)
+							&& maxPosition - minPosition == answers.size() - 1,
 					"Variant ballot tiebreak question '%s' : the answer sequence number must be a strictly increasing sequence from 0 to %s or from 1 to %s.",
 					question.getQuestionIdentification(), answers.size() - 1, answers.size());
 
 			if (minPosition == 0) {
 				answers.forEach(answer -> answer.setAnswerPosition(answer.getAnswerPosition() + 1));
-				LOGGER.warn("The variant ballot tiebreak question '{}' answer positions start from 0. They have been changed to start from 1.", question.getQuestionIdentification());
+				LOGGER.warn("The variant ballot tiebreak question '{}' answer positions start from 0. They have been changed to start from 1.",
+						question.getQuestionIdentification());
 			}
 		});
 	}
@@ -305,22 +312,24 @@ public class ContestService {
 			final Map<String, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> specificStandardAnswers, final BallotType ballot) {
 		final StandardBallotType question = ballot.getStandardBallot();
 		final List<StandardAnswerType> answers = question.getAnswer();
-		validateStandardAnswers(answers, question.getAnswerType(), question.getQuestionIdentification(), defaultStandardAnswers, specificStandardAnswers);
+		validateStandardAnswers(answers, question.getAnswerType(), question.getQuestionIdentification(), defaultStandardAnswers,
+				specificStandardAnswers);
 	}
 
 	/**
 	 * Validates the standard answers and sets the {@code hiddenAnswer} attribute of each answer.
 	 * <p>
-	 * The answer with {@code standardAnswerType} "EMPTY" is hidden, all others are not.
-	 * If the standard answers are not set, they are retrieved from the parameters file according to the answer type (see {@link ContestService#getStandardAnswers(String, BigInteger, Map, Map)}).
-	 * The list of standard answers must contain at least {@link ContestService#MINIMUM_REQUIRED_ANSWERS} answers
-	 * and the answer positions must range from 1 to <i>n</i>, where <i>n</i> is the number of answers.
+	 * The answer with {@code standardAnswerType} "EMPTY" is hidden, all others are not. If the standard answers are not set, they are retrieved from
+	 * the parameters file according to the answer type (see {@link ContestService#getStandardAnswers(String, BigInteger, Map, Map)}). The list of
+	 * standard answers must contain at least {@link ContestService#MINIMUM_REQUIRED_ANSWERS} answers and the answer positions must range from 1 to
+	 * <i>n</i>, where <i>n</i> is the number of answers.
 	 * </p>
 	 *
-	 * @param answers the standard answers belonging to the question.
-	 * @param answerType the answer type associated with the question.
+	 * @param answers                the standard answers belonging to the question.
+	 * @param answerType             the answer type associated with the question.
 	 * @param questionIdentification the identifier of the question.
-	 * @throws IllegalStateException if the number of answers is smaller than {@link ContestService#MINIMUM_REQUIRED_ANSWERS} or if the answerPositions are not numbered correctly.
+	 * @throws IllegalStateException if the number of answers is smaller than {@link ContestService#MINIMUM_REQUIRED_ANSWERS} or if the
+	 *                               answerPositions are not numbered correctly.
 	 */
 	private void validateStandardAnswers(final List<StandardAnswerType> answers, final BigInteger answerType, final String questionIdentification,
 			final Map<BigInteger, List<ch.evoting.xmlns.parameter._5.StandardAnswerType>> defaultStandardAnswers,
@@ -328,7 +337,8 @@ public class ContestService {
 		if (answers.isEmpty()) {
 			answers.addAll(getStandardAnswers(questionIdentification, answerType,
 					specificStandardAnswers, defaultStandardAnswers));
-			LOGGER.warn("No standard answers were provided with the question. Added answers from parameters. [questionIdentification: {}]", questionIdentification);
+			LOGGER.warn("No standard answers were provided with the question. Added answers from parameters. [questionIdentification: {}]",
+					questionIdentification);
 		} else {
 			checkState(answers.size() >= MINIMUM_REQUIRED_ANSWERS,
 					"The variant ballot standard question %s has only %s answers. It must have at least %s.",
@@ -339,15 +349,32 @@ public class ContestService {
 		}
 
 		final Set<Integer> answerPositions = answers.stream().map(StandardAnswerType::getAnswerPosition).collect(Collectors.toSet());
+		answers.stream()
+				.filter(answer -> answer.getStandardAnswerType().equals(EMPTY_ANSWER))
+				.collect(MoreCollectors.toOptional())
+				.ifPresentOrElse(emptyAnswer -> checkState(emptyAnswer.getAnswerInfo().stream().allMatch(answerInfo -> {
+					final LanguageType language = answerInfo.getLanguage();
+					return switch (language) {
+						case LanguageType.DE -> answerInfo.getAnswer().equals("Leer");
+						case LanguageType.FR -> answerInfo.getAnswer().equals("Blanc");
+						case LanguageType.IT -> answerInfo.getAnswer().equals("Bianco");
+						case LanguageType.RM -> answerInfo.getAnswer().equals("Vid");
+					};
+				})), () -> {
+					throw new IllegalStateException(String.format("The question '%s' must have an empty answer.", questionIdentification));
+				});
+
 		final Integer minPosition = answerPositions.stream().min(Integer::compareTo).orElse(Integer.MAX_VALUE);
 		final Integer maxPosition = answerPositions.stream().max(Integer::compareTo).orElse(Integer.MIN_VALUE);
-		checkState(answerPositions.size() == answers.size() && (minPosition == 0 || minPosition == 1) && maxPosition - minPosition == answers.size() - 1,
+		checkState(
+				answerPositions.size() == answers.size() && (minPosition == 0 || minPosition == 1) && maxPosition - minPosition == answers.size() - 1,
 				"Variant ballot standard question '%s' : the answer sequence number must be a strictly increasing sequence from 0 to %s or from 1 to %s.",
 				questionIdentification, answers.size() - 1, answers.size());
 
 		if (minPosition == 0) {
 			answers.forEach(answer -> answer.setAnswerPosition(answer.getAnswerPosition() + 1));
-			LOGGER.warn("The variant ballot standard question '{}' answer positions start from 0. They have been changed to start from 1.", questionIdentification);
+			LOGGER.warn("The variant ballot standard question '{}' answer positions start from 0. They have been changed to start from 1.",
+					questionIdentification);
 		}
 	}
 
@@ -640,10 +667,12 @@ public class ContestService {
 
 			checkState(sortedPositions.size() == totalNbrOfPositions && (minPosition == 0 || minPosition == 1)
 							&& maxPosition - minPosition == totalNbrOfPositions - 1,
-					"The sorting positions must be a strictly increasing sequence from 0 to %s or from 1 to %s.", totalNbrOfPositions - 1, totalNbrOfPositions);
+					"The sorting positions must be a strictly increasing sequence from 0 to %s or from 1 to %s.", totalNbrOfPositions - 1,
+					totalNbrOfPositions);
 
 			if (minPosition == 0) {
-				sortingElectionGroups.forEach(electionGroup -> electionGroup.setPositionNumber(electionGroup.getPositionNumber().add(BigInteger.ONE)));
+				sortingElectionGroups.forEach(
+						electionGroup -> electionGroup.setPositionNumber(electionGroup.getPositionNumber().add(BigInteger.ONE)));
 				sortingVotes.forEach(vote -> vote.setPositionNumber(vote.getPositionNumber().add(BigInteger.ONE)));
 				LOGGER.warn("The sorting positions start from 0. They have been changed to start from 1.");
 			}
@@ -767,7 +796,8 @@ public class ContestService {
 								final int electionPosition = electionInformation.getElection().getElectionPosition();
 								electionInformation.getElection().setElectionPosition(electionPosition + 1);
 							});
-							LOGGER.warn("The election group '{}' elections positions start from 0. They have been changed to start from 1.", electionGroupIdentification);
+							LOGGER.warn("The election group '{}' elections positions start from 0. They have been changed to start from 1.",
+									electionGroupIdentification);
 						}
 
 						// Positions sequence is valid, sort for display.
@@ -1355,7 +1385,8 @@ public class ContestService {
 								final int questionPosition = tieBreakQuestion.getQuestionPosition();
 								tieBreakQuestion.setQuestionPosition(questionPosition + 1);
 							});
-							LOGGER.warn("The variant ballot '{}' questions positions start from 0. They have been changed to start from 1.", ballotIdentification);
+							LOGGER.warn("The variant ballot '{}' questions positions start from 0. They have been changed to start from 1.",
+									ballotIdentification);
 						}
 
 						// Positions sequence is valid, sort for display.
@@ -1400,7 +1431,8 @@ public class ContestService {
 
 						checkState(sortedBallotPositions.size() == totalNbrOfBallots && (minPosition == 0 || minPosition == 1)
 										&& maxPosition - minPosition == totalNbrOfBallots - 1,
-								"Vote '%s' : ballots positions must be a strictly increasing sequence from 0 to %s or from 1 to %s", voteIdentification,
+								"Vote '%s' : ballots positions must be a strictly increasing sequence from 0 to %s or from 1 to %s",
+								voteIdentification,
 								totalNbrOfBallots - 1, totalNbrOfBallots);
 
 						if (minPosition == 0) {
@@ -1763,7 +1795,8 @@ public class ContestService {
 			}
 			if (b.getVariantBallot() != null) {
 				b.getVariantBallot().getStandardQuestion().forEach(q -> checkState(
-						q.getAnswer().stream().filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals(EMPTY_ANSWER)).count()
+						q.getAnswer().stream().filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals(EMPTY_ANSWER))
+								.count()
 								<= 1, "vote '%s' variant ballot standard question %s has more than one blank answer",
 						v.getVote().getVoteIdentification(), q.getQuestionPosition()));
 				b.getVariantBallot().getTieBreakQuestion().forEach(
