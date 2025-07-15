@@ -178,6 +178,6 @@ public abstract class Tools extends Plumbing {
 				throw new UncheckedIOException("Could not read provided path: %s".formatted(path), e);
 			}
 		}
-		return "512";
+		return "1024";
 	}
 }

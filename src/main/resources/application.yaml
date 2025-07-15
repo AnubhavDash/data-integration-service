@@ -14,7 +14,7 @@ directory:
 
 reactor:
   bufferSize:
-    small: 512
+    small: 1024
 
 # Logging
 spring:
