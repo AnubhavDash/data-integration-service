@@ -525,8 +525,8 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>copy-resources</id>
-						<phase>generate-test-resources</phase>
+						<id>copy-xsd-resources</id>
+						<phase>process-resources</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
@@ -539,6 +539,25 @@
 										<include>evoting-config-7-0.xsd</include>
 										<include>xmldsig-core-schema.xsd</include>
 									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-script-resource</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/reproducible-build</outputDirectory>
+							<resources>
+								<resource>
+									<directory>reproducible-build</directory>
+									<includes>
+										<include>generateChecksum.sh</include>
+									</includes>
+									<filtering>true</filtering>
 								</resource>
 							</resources>
 						</configuration>
@@ -729,8 +748,7 @@
 						<configuration>
 							<executable>bash</executable>
 							<arguments>
-								<argument>${project.basedir}/reproducible-build/generateChecksum.sh</argument>
-								<argument>${version}</argument>
+								<argument>${project.build.directory}/reproducible-build/generateChecksum.sh</argument>
 							</arguments>
 						</configuration>
 					</execution>
