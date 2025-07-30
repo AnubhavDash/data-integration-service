@@ -49,8 +49,8 @@ public class OutputPrePhaseComponent {
 		return configService::anonymize;
 	}
 
-	public Function<ContestType, ContestType> cleanHtmlTags() {
-		return contestService::cleanHtmlTags;
+	public Function<ContestType, ContestType> sanitize() {
+		return contestService::sanitize;
 	}
 
 	public Consumer<VoterTypeWithRole> checkRegisterConsistency() {

@@ -2041,10 +2041,18 @@ public class ContestService {
 				});
 	}
 
-	public ContestType cleanHtmlTags(final ContestType contest) {
+	public ContestType sanitize(final ContestType contest) {
 		String asString = MarshallTool.marshall(contest, "contest");
 
-		asString = asString.replaceAll("(?s)&lt;.*?&gt;", "");
+		asString = asString
+				// html tags
+				.replaceAll("(?s)&lt;.*?&gt;", "")
+
+				// MD images
+				.replaceAll("(?s)!\\[.*?]\\(.*?\\)", "")
+
+				//MD links
+				.replaceAll("(?s)\\[.*?]\\(.*?\\)", "");
 
 		return MarshallTool.unmarshall(asString, ContestType.class);
 	}
