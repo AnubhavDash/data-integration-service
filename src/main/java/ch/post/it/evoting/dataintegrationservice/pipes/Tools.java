@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.pipes;
 
@@ -7,26 +7,17 @@ import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvid
 import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvider.getProperty;
 import static com.google.common.base.Preconditions.checkState;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.UncheckedIOException;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.cert.CertificateException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+import jakarta.xml.bind.Marshaller;
 
 import javax.xml.namespace.QName;
 
@@ -34,14 +25,13 @@ import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ch.post.it.evoting.cryptoprimitives.signing.SignatureKeystore;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.common.XmlTransformer;
 import ch.post.it.evoting.dataintegrationservice.domain.RegisterTypeWithVoterStream;
 import ch.post.it.evoting.dataintegrationservice.input.DirectoryScanner;
-import ch.post.it.evoting.dataintegrationservice.keystore.KeystoreRepository;
-import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
-import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.XMLSignatureService;
 import ch.post.it.evoting.evotinglibraries.xml.XsdConstants;
+import ch.post.it.evoting.evotinglibraries.xml.hashable.ConfigurationSignerListener;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 
 import li.chee.reactive.plumber.Plumbing;
@@ -52,12 +42,6 @@ import reactor.util.function.Tuple2;
 public abstract class Tools extends Plumbing {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Tools.class);
-
-	static {
-		if (System.getProperty("reactor.bufferSize.small") == null) {
-			System.setProperty("reactor.bufferSize.small", getBufferSizeProperty());
-		}
-	}
 
 	public static Predicate<String> fileType(final String type) {
 		return (String s) -> DirectoryScanner.filterType(type).test(s);
@@ -78,30 +62,13 @@ public abstract class Tools extends Plumbing {
 
 	public static <V> Consumer<V> saveXML(final Class<V> jaxbFactoryClass, final QName rootElementName, final URL xsdSchema, final String filename) {
 		return o -> {
-			final Path path = Path.of(getProperty("directory.target", String.class), filename);
-			try (final PipedOutputStream pos = new PipedOutputStream();
-					final PipedInputStream pis = new PipedInputStream(pos);
-					final OutputStream fos = Files.newOutputStream(path)) {
-				final Thread t = new Thread(() -> {
-					getBean(XmlTransformer.class).toXml(pos, jaxbFactoryClass, xsdSchema, o, rootElementName);
-					try {
-						pos.close();
-					} catch (final IOException e) {
-						throw new UncheckedIOException(e);
-					}
-				});
-				t.start();
+			try (final OutputStream fos = new FileOutputStream(
+					Paths.get(getProperty("directory.target", String.class), filename).toFile())) {
+				Marshaller.Listener listener = null;
 				if (jaxbFactoryClass.equals(Configuration.class)) {
-					final KeystoreRepository keystoreRepository = getBean(KeystoreRepository.class);
-					final InputStream keyStoreStream = keystoreRepository.getCantonKeyStore();
-					final char[] keystorePassword = keystoreRepository.getCantonKeystorePassword();
-					final Alias keystoreAlias = keystoreRepository.getKeystoreAlias();
-					final KeyStore keyStore = getKeyStore(keyStoreStream, keystorePassword);
-					final PrivateKey privateKey = (PrivateKey) keyStore.getKey(keystoreAlias.get(), keystorePassword);
-					getBean(XMLSignatureService.class).genXMLSignature(pis, fos, privateKey);
-				} else {
-					fos.write(pis.readAllBytes());
+					listener = new ConfigurationSignerListener((Configuration) o, getBean(SignatureKeystore.class));
 				}
+				getBean(XmlTransformer.class).toXml(fos, jaxbFactoryClass, xsdSchema, o, rootElementName, listener);
 			} catch (final Exception e) {
 				throw new IllegalStateException(e);
 			}
@@ -146,38 +113,5 @@ public abstract class Tools extends Plumbing {
 
 	public static <T, U> Function<Tuple2<T, U>, T> unzip() {
 		return Tuple2::getT1;
-	}
-
-	private static KeyStore getKeyStore(final InputStream keyStoreStream, final char[] password)
-			throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
-		final KeyStore keyStore = KeyStore.getInstance("PKCS12");
-		keyStore.load(keyStoreStream, password);
-		return keyStore;
-	}
-
-	private static String getBufferSizeProperty() {
-		LOGGER.debug("Reading application.yaml");
-		final URL url = Tools.class.getResource("/application.yaml");
-		if (url != null) {
-			final Path path;
-			try {
-				path = Path.of(url.toURI());
-			} catch (final URISyntaxException e) {
-				throw new RuntimeException("Failed to convert URL to URI for application.yaml", e);
-			}
-			try {
-				final List<String> properties = Files.readAllLines(path);
-				final int index = properties.indexOf("reactor:");
-				if ("bufferSize:".equals(properties.get(index + 1).trim()) && properties.get(index + 2).trim().startsWith("small:")) {
-					final String[] parts = properties.get(index + 2).split(" ");
-					final String value = parts[parts.length - 1];
-					LOGGER.debug("reactor.bufferSize.small={}", value);
-					return value;
-				}
-			} catch (final IOException e) {
-				throw new UncheckedIOException("Could not read provided path: %s".formatted(path), e);
-			}
-		}
-		return "512";
 	}
 }

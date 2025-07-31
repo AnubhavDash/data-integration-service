@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
@@ -21,26 +21,31 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteType;
 
 class ContestBuilderTest {
 
-	private final ContestService contestService = new ContestService(false, 10);
+	private final ContestService contestService = new ContestService(false, 2, 4, 10);
 
 	@Test
-	void cleanHtmlTags() {
+	void sanitize() {
 		ContestType contest = new ContestType().withVoteInformation(
 				new VoteInformationType().withVote(
 						new VoteType().withBallot(
 								new BallotType().withStandardBallot(
 										new StandardBallotType().withBallotQuestion(
 												new BallotQuestionType().withBallotQuestionInfo(
-														new BallotQuestionType.BallotQuestionInfo().withBallotQuestion("test <B>NOT_REMOVED</B>")
+														new BallotQuestionType.BallotQuestionInfo().withBallotQuestion("test <B>NOT_REMOVED</B> ![image](https://images.link) [link](https://www.post.ch) (PARENTHESIS)")
 																.withLanguage(
 																		LanguageType.FR
 																)
 												))))));
 
-		contest = contestService.cleanHtmlTags(contest);
+		contest = contestService.sanitize(contest);
 		final String result = MarshallTool.marshall(contest, "contest");
 		assertTrue(result.contains("NOT_REMOVED"));
 		assertFalse(result.contains("&lt;"));
+		assertFalse(result.contains("![image]"));
+		assertFalse(result.contains("[link]"));
+		assertTrue(result.contains("(PARENTHESIS)"));
+		assertFalse(result.contains("https://www.post.ch"));
+		assertFalse(result.contains("https://images.link"));
 	}
 
 	@Test

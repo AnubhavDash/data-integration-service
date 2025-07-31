@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.output;
 
@@ -11,8 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,14 +24,15 @@ import jakarta.xml.bind.Unmarshaller;
 
 import javax.xml.transform.stream.StreamSource;
 
+import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.dataintegrationservice.pipes.AssigningAuthorizationPhase;
 import ch.post.it.evoting.dataintegrationservice.pipes.AuthorizationPhase;
 import ch.post.it.evoting.dataintegrationservice.pipes.HeaderPhase;
 import ch.post.it.evoting.dataintegrationservice.pipes.ParameterPhase;
 import ch.post.it.evoting.dataintegrationservice.pipes.PhaseSteps;
-import ch.post.it.evoting.evotinglibraries.domain.LocalDateTimeUtils;
-import ch.post.it.evoting.evotinglibraries.domain.LocalDateUtils;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AdminBoardMembersType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AdminBoardType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationObjectType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
@@ -61,14 +60,13 @@ import reactor.core.publisher.Flux;
 
 public class OutputPhaseSteps extends PhaseSteps {
 
-	private final HeaderType header = new HeaderType()
-			.withFileDate(LocalDateTimeUtils.toXMLGregorianCalendar(LocalDateTime.parse("2077-08-25T12:34:00")))
+	private final HeaderType header = new HeaderType().withFileDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 12:34:00"))
 			.withVoterTotal(3);
 
 	private final ContestType contest = new ContestType().withContestDefaultLanguage(LanguageType.DE).withContestIdentification("111-222-abc")
-			.withContestDate(LocalDateUtils.toXMLGregorianCalendar(LocalDate.parse("2077-08-25")))
-			.withEvotingFromDate(LocalDateTimeUtils.toXMLGregorianCalendar(LocalDateTime.parse("2077-08-25T00:00:00")))
-			.withEvotingToDate(LocalDateTimeUtils.toXMLGregorianCalendar(LocalDateTime.parse("2077-08-25T00:00:00")))
+			.withContestDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
+			.withEvotingFromDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
+			.withEvotingToDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
 			.withContestDescription(
 					new ContestDescriptionInformationType().withContestDescriptionInfo(
 							new ContestDescriptionInformationType.ContestDescriptionInfo().withLanguage(LanguageType.DE)
@@ -79,6 +77,12 @@ public class OutputPhaseSteps extends PhaseSteps {
 									.withContestDescription("Desc IT")).withContestDescriptionInfo(
 							new ContestDescriptionInformationType.ContestDescriptionInfo().withLanguage(LanguageType.RM)
 									.withContestDescription("Desc RM")))
+			.withAdminBoard(new AdminBoardType()
+					.withAdminBoardIdentification("AB")
+					.withAdminBoardThresholdValue(2)
+					.withAdminBoardName("AB")
+					.withAdminBoardDescription("AB")
+					.withAdminBoardMembers(new AdminBoardMembersType().withAdminBoardMemberName("AB1", "AB2")))
 			.withElectoralBoard(new ElectoralBoardType()
 					.withElectoralBoardIdentification("EB")
 					.withElectoralBoardName("EB")
@@ -86,11 +90,9 @@ public class OutputPhaseSteps extends PhaseSteps {
 					.withElectoralBoardMembers(new ElectoralBoardMembersType().withElectoralBoardMemberName("EB1", "EB2")));
 
 	private final AuthorizationsType authorization = new AuthorizationsType().withAuthorization(
-			new AuthorizationType().withAuthorizationIdentification("auth-000-abc")
-					.withAuthorizationName("auth-000-abc-name")
-					.withAuthorizationFromDate(LocalDateTimeUtils.toXMLGregorianCalendar(LocalDateTime.parse("2077-08-25T00:00:00")))
-					.withAuthorizationToDate(LocalDateTimeUtils.toXMLGregorianCalendar(LocalDateTime.parse("2077-08-25T00:00:00")))
-					.withAuthorizationTest(false)
+			new AuthorizationType().withAuthorizationIdentification("auth-000-abc").withAuthorizationAlias("auth-000-abc-alias")
+					.withAuthorizationName("auth-000-abc-name").withAuthorizationFromDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
+					.withAuthorizationToDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00")).withAuthorizationTest(false)
 					.withAuthorizationGracePeriod(900).withAuthorizationObject(
 							new AuthorizationObjectType().withCountingCircle(
 											new CountingCircleType().withCountingCircleIdentification("cc-000-abc").withCountingCircleName("cc-000-abc"))
@@ -163,7 +165,7 @@ public class OutputPhaseSteps extends PhaseSteps {
 	public void andVoterNamedHasDetails(final String voter, final String fname, final String lname, final String dt) {
 		voterMap.get(voter).withPerson(new PersonType().withResidenceCountryId("CH").withSex("1").withLanguageOfCorrespondance(LanguageType.DE)
 				.withMunicipality(new PersonType.Municipality().withMunicipalityId(1).withMunicipalityName("Bern")).withFirstName(fname)
-				.withOfficialName(lname).withDateOfBirth(LocalDateUtils.toXMLGregorianCalendar(LocalDate.parse(dt))));
+				.withOfficialName(lname).withDateOfBirth(DateUtil.parseToXMLGregorianCalendar(dt + " 00:00:00")));
 	}
 
 	@When("^executing the output phase$")

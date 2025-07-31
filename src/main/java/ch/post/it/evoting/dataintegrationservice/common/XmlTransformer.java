@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.common;
 
@@ -43,7 +43,8 @@ public class XmlTransformer {
 	}
 
 	public <T> void toXml(final OutputStream os, final Class<?> jaxbFactoryClass, final URL xsdSchema, final T jaxbElement,
-			final QName rootElementName) {
+			final QName rootElementName,
+			final Marshaller.Listener listener) {
 		try {
 			final XMLOutputFactory2 factory = (XMLOutputFactory2) XMLOutputFactory.newInstance();
 
@@ -58,6 +59,7 @@ public class XmlTransformer {
 			final XMLStreamWriter writer = formatOutput ? new IndentingXMLStreamWriter(wrTemp) : wrTemp;
 
 			final Marshaller marshaller = JAXBContext.newInstance(jaxbFactoryClass).createMarshaller();
+			marshaller.setListener(listener);
 			marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 

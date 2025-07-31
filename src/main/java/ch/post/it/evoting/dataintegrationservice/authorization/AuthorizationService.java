@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.authorization;
 
@@ -10,6 +10,7 @@ import static com.google.common.base.Preconditions.checkState;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -93,17 +94,16 @@ public class AuthorizationService {
 		authorizationTypePriority.put("OG", 6);
 		authorizationTypePriority.put("KO", 7);
 		authorizationTypePriority.put("SK", 8);
-		authorizationTypePriority.put("GT", 9);
-		authorizationTypePriority.put("AN", 10);
+		authorizationTypePriority.put("AN", 9);
 	}
 
 	public AuthorizationType build(final VoterTypeWithRole voter, final List<String> usedDOIids,
-			final ContestType contest, final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+			final ContestType contest, final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 
 		final AuthorizationType result = new AuthorizationType();
 
 		//DOI and CC are given from the voter information (from ech-0045 v4)
-		result.getAuthorizationObject().addAll(voter.getDomainOfInfluenceInfos().stream()
+		result.getAuthorizationObject().addAll(new LinkedList<>(voter.getDomainOfInfluenceInfos().stream()
 				.filter(doiInfo -> usedDOIids.contains(doiInfo.getDomainOfInfluence().getLocalId())).map(doiInfo -> map(voter, doiInfo))
 				.collect(Collectors.toMap(
 						ao -> ao.getDomainOfInfluence().getDomainOfInfluenceIdentification() + "|" + ao.getCountingCircle()
@@ -114,7 +114,7 @@ public class AuthorizationService {
 									voter.getVoterIdentification());
 							return ao1;
 						}
-				)).values());
+				)).values()));
 
 		result.setAuthorizationName(
 				voter.getDomainOfInfluenceInfos().stream().filter(doiInfo -> usedDOIids.contains(doiInfo.getDomainOfInfluence().getLocalId()))
@@ -127,6 +127,10 @@ public class AuthorizationService {
 						.map(doiInfo -> Tuples.of(doiInfo.getDomainOfInfluence().getLocalId(), doiInfo.getCountingCircle().getId()))
 						.map(tuple -> StringUtil.concat(tuple.getT1(), tuple.getT2(), "|"))
 						.reduce("", (s1, s2) -> StringUtil.concat(s1, s2, "+"))));
+
+		result.setAuthorizationAlias(result.getAuthorizationIdentification());
+
+		checkAuthorizationAliasLength(result);
 
 		if (contestParameters.getEvotingTestBallotBoxesFromDate() != null
 				&& contestParameters.getEvotingTestBallotBoxesFromDate().compare(contest.getEvotingFromDate()) > 0) {
@@ -145,6 +149,13 @@ public class AuthorizationService {
 		result.setAuthorizationGracePeriod(authorizationGracePeriod);
 
 		return result;
+	}
+
+	private void checkAuthorizationAliasLength(final AuthorizationType result) {
+		if (result.getAuthorizationAlias().length() > 100) {
+			LOGGER.warn("Authorization alias ({}) is too long. Cutting it to get only 100 characters", result.getAuthorizationAlias());
+			result.setAuthorizationAlias(result.getAuthorizationAlias().substring(0, 97) + "...");
+		}
 	}
 
 	private AuthorizationObjectType map(final VoterTypeWithRole voter, final VoterDomainOfInfluenceInfo voterDomainOfInfluenceInfo) {
@@ -224,7 +235,7 @@ public class AuthorizationService {
 
 	public VoterTypeWithRole assignAuthorization(final VoterTypeWithRole voter, final AuthorizationsType authorizations,
 			final List<String> contestUsedDOIs, final ContestType contest,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+			final ch.evoting.xmlns.parameter._4.ContestType contestParameters) {
 
 		final AuthorizationType auth = build(voter, contestUsedDOIs, contest, contestParameters);
 

@@ -1,8 +1,9 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.common;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -43,5 +44,14 @@ class Stax2WrapperTest {
 		wrapper.process();
 
 		assertNotNull(reportingAuthority[0]);
+	}
+
+	@Test
+	void testXXEIsDisabled() {
+		assertDoesNotThrow(() -> {
+			final Stax2Wrapper wrapper = new Stax2Wrapper("./src/test/resources/Stax2WrapperTest/xxe.param.xml", null,
+					ch.evoting.xmlns.parameter._4.ObjectFactory.class);
+			wrapper.process();
+		});
 	}
 }

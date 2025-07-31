@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package pipes
 
@@ -9,8 +9,6 @@ import ch.post.it.evoting.dataintegrationservice.pipes.OutputPrePhaseComponent
 
 import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvider.getBean
 import static ch.post.it.evoting.dataintegrationservice.pipes.Tools.*
-import static li.chee.reactive.plumber.Plumbing.*
-import static reactor.core.publisher.Flux.*
 
 def outputPrePhaseComponent = getBean(OutputPrePhaseComponent.class)
 
@@ -38,13 +36,13 @@ def createConfig = pipe {
     from merge(createSplitConfig)
 }
 
-def contestWithoutHtml = pipe {
+def contestSanitized = pipe {
     from OutputPrePhase.assigningAuthorizationPhase.filteredContest \
-    map outputPrePhaseComponent.cleanHtmlTags()
+    map outputPrePhaseComponent.sanitize()
 }
 
 def anonymizedConfigInfo = value pipe {
-    from zip(contestWithoutHtml, OutputPrePhase.authorizationPhase.authorizations, OutputPrePhase.headerPhase.header)
+    from zip(contestSanitized, OutputPrePhase.authorizationPhase.authorizations, OutputPrePhase.headerPhase.header)
 }
 
 def anonymizedCreateConfig = pipe {

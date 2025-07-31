@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.output;
 
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import com.rits.cloning.Cloner;
 
 import ch.post.it.evoting.dataintegrationservice.domain.RegisterTypeWithVoterStream;
-import ch.post.it.evoting.evotinglibraries.domain.LocalDateTimeUtils;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
@@ -45,7 +44,7 @@ public class ConfigService {
 	private void checkAndAdaptIfNeededEVotingFromDate(final ContestType contest, final AuthorizationsType authorizations) {
 		final XMLGregorianCalendar firstEvotingFromDate = authorizations.getAuthorization().stream()
 				.map(AuthorizationType::getAuthorizationFromDate)
-				.min(Comparator.comparing(LocalDateTimeUtils::fromXMLGregorianCalendar))
+				.min(Comparator.comparing(XMLGregorianCalendar::toGregorianCalendar))
 				.orElse(null);
 		if (firstEvotingFromDate != null && contest.getEvotingFromDate().compare(firstEvotingFromDate) > 0) {
 			LOGGER.info("EvotingFromDate of contest is adapted ({}) to match with test/control ballotboxes", firstEvotingFromDate);

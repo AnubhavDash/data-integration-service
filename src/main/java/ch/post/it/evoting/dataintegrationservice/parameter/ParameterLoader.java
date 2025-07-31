@@ -17,9 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import ch.evoting.xmlns.parameter._5.ObjectFactory;
-import ch.evoting.xmlns.parameter._5.Parameter;
-import ch.evoting.xmlns.parameter._5.PluginObjectFactory;
+import ch.evoting.xmlns.parameter._4.ObjectFactory;
+import ch.evoting.xmlns.parameter._4.Parameter;
+import ch.evoting.xmlns.parameter._4.PluginObjectFactory;
 import ch.post.it.evoting.dataintegrationservice.common.Stax2Wrapper;
 
 @Component
@@ -28,7 +28,7 @@ public class ParameterLoader {
 
 	private static final String DEFAULT_PARAMETER_PATH = "xml/default.param.xml";
 	@SuppressWarnings("java:S1075")
-	private static final String PARAMETER_SCHEMA_PATH = "/xsd/evoting-parameter-5-0.xsd";
+	private static final String PARAMETER_SCHEMA_PATH = "/xsd/evoting-parameter-4-9.xsd";
 
 	public Parameter loadParameter(final String fileLocation) {
 		return this.loadParameter(fileLocation, DEFAULT_PARAMETER_PATH);
@@ -58,13 +58,8 @@ public class ParameterLoader {
 				inputParameterValue.getContest().setDefaultAnswerTranslations(defaultParameterValue.getContest().getDefaultAnswerTranslations());
 			}
 
-			if (inputParameterValue.getContest().getEmptyPositionTextInfo() == null) {
-				inputParameterValue.getContest().setEmptyPositionTextInfo(defaultParameterValue.getContest().getEmptyPositionTextInfo());
-			}
-
-			if (inputParameterValue.getContest().getReturnCodeWriteInDescriptionInfo() == null) {
-				inputParameterValue.getContest()
-						.setReturnCodeWriteInDescriptionInfo(defaultParameterValue.getContest().getReturnCodeWriteInDescriptionInfo());
+			if (inputParameterValue.getContest().getEmptyCandidateText() == null) {
+				inputParameterValue.getContest().setEmptyCandidateText(defaultParameterValue.getContest().getEmptyCandidateText());
 			}
 
 			if (inputParameterValue.getContest().getIncumbentText() == null) {

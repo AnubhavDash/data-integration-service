@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.pipes;
 
@@ -49,8 +49,8 @@ public class OutputPrePhaseComponent {
 		return configService::anonymize;
 	}
 
-	public Function<ContestType, ContestType> cleanHtmlTags() {
-		return contestService::cleanHtmlTags;
+	public Function<ContestType, ContestType> sanitize() {
+		return contestService::sanitize;
 	}
 
 	public Consumer<VoterTypeWithRole> checkRegisterConsistency() {

@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/5" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/5 evoting-parameter-5-0.xsd">
+<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/4" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/4 evoting-parameter-4-9.xsd">
 	<contest>
 		<defaultLanguage>fr</defaultLanguage>
 		<evotingFromDate>2037-04-13T09:04:00+02:00</evotingFromDate>
 		<evotingToDate>2037-05-01T00:00:00+02:00</evotingToDate>
+		<adminBoard>
+			<adminBoardIdentification>AB</adminBoardIdentification>
+			<adminBoardName>AB</adminBoardName>
+			<adminBoardDescription>AB</adminBoardDescription>
+			<adminBoardThresholdValue>2</adminBoardThresholdValue>
+			<adminBoardMembers>
+				<adminBoardMemberName>AB1</adminBoardMemberName>
+				<adminBoardMemberName>AB2</adminBoardMemberName>
+			</adminBoardMembers>
+		</adminBoard>
 		<electoralBoard>
 			<electoralBoardIdentification>EB</electoralBoardIdentification>
 			<electoralBoardName>EB</electoralBoardName>
@@ -25,7 +35,6 @@
 				<questionIdentification>tiebreak-qid1</questionIdentification>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>fr</language>
 						<answer>NON</answer>
@@ -45,7 +54,6 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>fr</language>
 						<answer>OUI</answer>
@@ -68,7 +76,6 @@
 				<questionIdentification>tiebreak-qid2</questionIdentification>
 				<tiebreakAnswer>
 					<answerPosition>2</answerPosition>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>fr</language>
 						<answer>NON</answer>
@@ -88,7 +95,6 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>1</answerPosition>
-					<hiddenAnswer>false</hiddenAnswer>
 					<answerInfo>
 						<language>fr</language>
 						<answer>OUI</answer>
@@ -108,7 +114,6 @@
 				</tiebreakAnswer>
 				<tiebreakAnswer>
 					<answerPosition>3</answerPosition>
-					<hiddenAnswer>true</hiddenAnswer>
 					<answerInfo>
 						<language>fr</language>
 						<answer>OUI</answer>

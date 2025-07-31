@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2024 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.register;
 
@@ -8,7 +8,6 @@ import static com.google.common.base.Preconditions.checkState;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -66,13 +65,13 @@ public class RegisterService {
 
 	private boolean isContaining(final PhysicalAddressType physicalAddress, final String... label) {
 		final String belowStreets = String.join(" ", physicalAddress.getBelowStreetLine());
-		final String val = StringUtil.concat(physicalAddress.getStreet(), belowStreets, " ").toUpperCase(Locale.ENGLISH);
+		final String val = StringUtil.concat(physicalAddress.getStreet(), belowStreets, " ").toUpperCase();
 		return Arrays.stream(label).map(l -> String.format(" %s", l)).anyMatch(val::contains);
 	}
 
 	private FrankingAreaType getFrankingAreaByCountryIso2(final String countryIso2) {
 		return frankingAreaCache.computeIfAbsent(countryIso2, key -> {
-			final String countryOFS = environment.getProperty(String.format("iso2code.%s", countryIso2.toUpperCase(Locale.ENGLISH)));
+			final String countryOFS = environment.getProperty(String.format("iso2code.%s", countryIso2.toUpperCase()));
 			checkState(!StringUtil.isNullOrEmpty(countryOFS), "Cannot convert country ISO code to OFS code (%s)", countryIso2);
 			return FrankingAreaType.fromValue(environment.getProperty(String.format("groupOFS.%s", countryOFS),
 					environment.getProperty("groupOFS.default", String.class)));
