@@ -1,5 +1,17 @@
 # Changelog
 
+## Release 2.9.1
+
+Release 2.9.1 incorporates the following changes:
+
+* Improved a protection against XML external entity attacks.
+* Added sanitization of markdown links
+* Fixed a limitation when handling large number of municipalities.
+* Fixed a problem when treating custom blank answers.
+* Enforced a consistency check in the counting circle identifier to counting circle name mapping.
+* Minor code improvements
+* Updated dependencies and third-party libraries.
+
 ## Release 2.9.0
 
 The Data Integration Service 2.9.0 contains the following changes:

@@ -43,6 +43,14 @@ The properties file “application.properties” contains the following definiti
 
 ![Workflow](DIS.jpg)
 
+## Security Considerations
+
+The Data Integration Service operates within the cantonal infrastructure under [strict operational and procedural security](https://gitlab.com/swisspost-evoting/e-voting/e-voting-documentation/-/blob/master/Operations/Recommendation_Safety_Measures_Cantonal_Infrastructure.md?ref_type=heads). For example, it runs on a hardened, offline machine under a strict four-eyes principle.
+
+## Test Data
+
+Test data is available in the [testdata repository](https://gitlab.com/swisspost-evoting/e-voting/testdata).
+
 ## Usage
 
 The data integration service is a command-line Spring Boot tool that is packaged inside a zip file produced upon compilation. The zip file contains
