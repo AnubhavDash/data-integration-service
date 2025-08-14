@@ -12,7 +12,7 @@ mkdir -p "$hash_path"
 echo '| Artefact | Version | Checksum |' > "$hash_path/$hash_filename"
 echo '|----------|---------|----------|' >> "$hash_path/$hash_filename"
 
-for file in "$3/data-integration-service-*.zip"; do
+for file in $3/data-integration-service-*.zip; do
   if [[ -f "$file" ]]; then
     filename=$(basename "$file")
     checksum=$(sha256sum "$file" | awk '{print $1}')
