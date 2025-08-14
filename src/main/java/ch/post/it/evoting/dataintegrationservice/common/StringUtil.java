@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.common;
 
@@ -30,7 +30,7 @@ public class StringUtil {
 	}
 
 	public static boolean isNullOrEmpty(final String value) {
-		return value == null || value.length() == 0;
+		return value == null || value.isEmpty();
 	}
 
 	public static String generateUUIDFromString(final String value) {

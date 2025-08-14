@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.common;
 
@@ -50,7 +50,7 @@ class Stax2WrapperTest {
 	void testXXEIsDisabled() {
 		assertDoesNotThrow(() -> {
 			final Stax2Wrapper wrapper = new Stax2Wrapper("./src/test/resources/Stax2WrapperTest/xxe.param.xml", null,
-					ch.evoting.xmlns.parameter._4.ObjectFactory.class);
+					ch.evoting.xmlns.parameter._5.ObjectFactory.class);
 			wrapper.process();
 		});
 	}

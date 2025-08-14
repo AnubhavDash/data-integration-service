@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.parameter.plugin;
 
@@ -10,7 +10,7 @@ import static org.hamcrest.core.IsNull.notNullValue;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
-import ch.evoting.xmlns.parameter._4.BirthYearAuthenticationKeyTypeImpl;
+import ch.evoting.xmlns.parameter._5.BirthYearAuthenticationKeyTypeImpl;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PersonType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType;

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.contest;
 
@@ -21,7 +21,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoteType;
 
 class ContestBuilderTest {
 
-	private final ContestService contestService = new ContestService(false, 2, 4, 10);
+	private final ContestService contestService = new ContestService(false, 10);
 
 	@Test
 	void sanitize() {

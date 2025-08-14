@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.authorization;
 
@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.post.it.evoting.dataintegrationservice.common.DateUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluence;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluenceInfo;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
@@ -19,6 +18,8 @@ import ch.post.it.evoting.dataintegrationservice.pipes.ContestPhase;
 import ch.post.it.evoting.dataintegrationservice.pipes.ParameterPhase;
 import ch.post.it.evoting.dataintegrationservice.pipes.PhaseSteps;
 import ch.post.it.evoting.dataintegrationservice.pipes.RegisterPhase;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateTimeUtils;
+import ch.post.it.evoting.evotinglibraries.domain.LocalDateUtils;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.AuthorizationsType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
@@ -39,9 +40,9 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 	private final ContestType contest = new ContestType()
 			.withContestIdentification("111-222-abc")
 			.withVoteInformation(new VoteInformationType().withVote(new VoteType().withDomainOfInfluence("4400-987333-65654")))
-			.withContestDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
-			.withEvotingFromDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
-			.withEvotingToDate(DateUtil.parseToXMLGregorianCalendar("25-08-2077 00:00:00"))
+			.withContestDate(LocalDateUtils.toXMLGregorianCalendar(LocalDateUtils.parse("2077-08-25")))
+			.withEvotingFromDate(LocalDateTimeUtils.toXMLGregorianCalendar(LocalDateTimeUtils.parse("2077-08-25T00:00:00")))
+			.withEvotingToDate(LocalDateTimeUtils.toXMLGregorianCalendar(LocalDateTimeUtils.parse("2077-08-25T00:00:00")))
 			.withContestDescription(new ContestDescriptionInformationType()
 					.withContestDescriptionInfo(new ContestDescriptionInformationType.ContestDescriptionInfo()
 							.withLanguage(LanguageType.DE)
@@ -60,7 +61,7 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 							.withContestDescription("Desc RM")
 					)
 			);
-	private final ch.evoting.xmlns.parameter._4.ContestType contestParameters = new ch.evoting.xmlns.parameter._4.ContestType();
+	private final ch.evoting.xmlns.parameter._5.ContestType contestParameters = new ch.evoting.xmlns.parameter._5.ContestType();
 	private Exception processException = null;
 	private List<VoterTypeWithRole> voters;
 

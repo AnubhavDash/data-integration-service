@@ -1,11 +1,37 @@
 # Changelog
 
-## Release 2.8.5.2
+## Release 2.9.1
 
-Release 2.8.5.2 incorporates the following change:
+Release 2.9.1 incorporates the following changes:
 
-* Ensure XXE protection for XML files works as expected.
-* Sanitize contest data to remove mark-down links and images.
+* Improved a protection against XML external entity attacks.
+* Added sanitization of markdown links
+* Fixed a limitation when handling large number of municipalities.
+* Fixed a problem when treating custom blank answers.
+* Enforced a consistency check in the counting circle identifier to counting circle name mapping.
+* Minor code improvements
+* Updated dependencies and third-party libraries.
+
+## Release 2.9.0
+
+The Data Integration Service 2.9.0 contains the following changes:
+
+* Added eCH-version 4.2 support.
+* Improved input validation
+    * Added business rules to handle missing fields in the eCH input files such as `electionDescription`, `electionGroupIdentification` and `electionGroupDescription`.
+    * Imposed that the position fields are a monotonous sequence.
+    * Improved identification of the hidden blank answer.
+    * Prevent invalid configurations such as write-ins for proportional elections.
+    * Imposed restrictions on the cardinality of certain fields such as that descriptions must be available in de, fr, it, and rm.
+    * Imposed strict format of date-times.
+    * Restricted identifier types.
+* Updated the data integration service to evoting-config version 7.
+    * Improved representation of empty lists, empty candidate positions and write-in positions.
+    * Removed possibility to configure an administration board
+    * Added possibility to set comma-separated candidate names in the displayCandidateLine
+* Included the new XML signature for the evoting-config.
+* General code quality improvements and minor bug fixes.
+* Updated dependencies and third-party libraries.
 
 ## Release 2.8.5
 

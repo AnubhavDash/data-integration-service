@@ -1,11 +1,11 @@
 /*
- * (c) Copyright 2024 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.pipes;
 
 import java.util.List;
 
-import ch.evoting.xmlns.parameter._4.ContestType;
+import ch.evoting.xmlns.parameter._5.ContestType;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.ContestMapper;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterCategorizer;
 import ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterWithRoleMapper;
