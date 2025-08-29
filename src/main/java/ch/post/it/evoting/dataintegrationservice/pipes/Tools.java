@@ -10,8 +10,6 @@ import static com.google.common.base.Preconditions.checkState;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -41,6 +39,7 @@ import ch.post.it.evoting.dataintegrationservice.input.DirectoryScanner;
 import ch.post.it.evoting.dataintegrationservice.keystore.KeystoreRepository;
 import ch.post.it.evoting.evotinglibraries.domain.signature.Alias;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.XMLSignatureService;
+import ch.post.it.evoting.evotinglibraries.toolbox.OutputToInputStreamConverter;
 import ch.post.it.evoting.evotinglibraries.xml.XsdConstants;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 
@@ -79,18 +78,11 @@ public abstract class Tools extends Plumbing {
 	public static <V> Consumer<V> saveXML(final Class<V> jaxbFactoryClass, final QName rootElementName, final URL xsdSchema, final String filename) {
 		return o -> {
 			final Path path = Path.of(getProperty("directory.target", String.class), filename);
-			try (final PipedOutputStream pos = new PipedOutputStream();
-					final PipedInputStream pis = new PipedInputStream(pos);
+			try (final OutputToInputStreamConverter converter = new OutputToInputStreamConverter();
+					final InputStream is = converter.convert(
+							os -> getBean(XmlTransformer.class).toXml(os, jaxbFactoryClass, xsdSchema, o, rootElementName));
 					final OutputStream fos = Files.newOutputStream(path)) {
-				final Thread t = new Thread(() -> {
-					getBean(XmlTransformer.class).toXml(pos, jaxbFactoryClass, xsdSchema, o, rootElementName);
-					try {
-						pos.close();
-					} catch (final IOException e) {
-						throw new UncheckedIOException(e);
-					}
-				});
-				t.start();
+
 				if (jaxbFactoryClass.equals(Configuration.class)) {
 					final KeystoreRepository keystoreRepository = getBean(KeystoreRepository.class);
 					final InputStream keyStoreStream = keystoreRepository.getCantonKeyStore();
@@ -98,9 +90,9 @@ public abstract class Tools extends Plumbing {
 					final Alias keystoreAlias = keystoreRepository.getKeystoreAlias();
 					final KeyStore keyStore = getKeyStore(keyStoreStream, keystorePassword);
 					final PrivateKey privateKey = (PrivateKey) keyStore.getKey(keystoreAlias.get(), keystorePassword);
-					getBean(XMLSignatureService.class).genXMLSignature(pis, fos, privateKey);
+					getBean(XMLSignatureService.class).genXMLSignature(is, fos, privateKey);
 				} else {
-					fos.write(pis.readAllBytes());
+					is.transferTo(fos);
 				}
 			} catch (final Exception e) {
 				throw new IllegalStateException(e);
