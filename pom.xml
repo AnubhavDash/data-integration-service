@@ -37,7 +37,7 @@
 		<e-voting-libraries.version>1.5.1.1-b2</e-voting-libraries.version>
 		<gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
 		<groovy.version>4.0.18</groovy.version>
-		<groovy-all.version>4.0.28</groovy-all.version>
+		<groovy-all.version>5.0.0</groovy-all.version>
 		<guava.version>33.4.8-jre</guava.version>
 		<hamcrest-core.version>3.0</hamcrest-core.version>
 		<jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
