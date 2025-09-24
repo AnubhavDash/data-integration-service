@@ -111,7 +111,9 @@ public class ContestService {
 	private static final BigInteger ELECTION_PROPORTIONAL_TYPE = BigInteger.ONE;
 	private static final BigInteger ELECTION_RELATION_PRIMARY = BigInteger.ONE;
 	private static final BigInteger ELECTION_RELATION_SECONDARY = BigInteger.TWO;
-	public static final String EMPTY_ANSWER = "EMPTY";
+	private static final String EMPTY_ANSWER = "EMPTY";
+	private static final int EMPTY_LIST_ORDER_OF_PRECEDENCE = 99;
+	private static final String EMPTY_LIST_IDENTURE_NUMBER = "99";
 
 	private final boolean bypassCheckConsistencyDates;
 	private final int evotingFromToMinDeltaAllowed;
@@ -392,8 +394,11 @@ public class ContestService {
 		addVotesPositionIfNeeded(votes);
 		addVotesQuestionNumberIfNeeded(votes);
 
-		addElectionsOrderOfPrecedenceIfNeeded(electionGroups);
+		addListsOrderOfPrecedenceIfNeeded(electionGroups);
+
 		addEmptyListIfNeeded(electionGroups);
+		addEmptyListOrderOfPrecedenceIfNeeded(electionGroups);
+
 		addCandidatesInEmptyListsIfNeeded(electionGroups, contestParameters);
 		addCandidatesListIdentifications(electionGroups);
 		checkCandidateTextsAreSet(electionGroups);
@@ -1158,8 +1163,8 @@ public class ContestService {
 
 		electionType.withEmptyList(new EmptyListType()
 				.withListIdentification(StringUtil.generateUUIDFromString(electionType.getElection().getElectionIdentification()))
-				.withListIndentureNumber("99")
-				.withListOrderOfPrecedence(99)
+				.withListIndentureNumber(EMPTY_LIST_IDENTURE_NUMBER)
+				.withListOrderOfPrecedence(EMPTY_LIST_ORDER_OF_PRECEDENCE)
 				.withListDescription(description));
 	}
 
@@ -1212,7 +1217,7 @@ public class ContestService {
 		return null;
 	}
 
-	private void addElectionsOrderOfPrecedenceIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
+	private void addListsOrderOfPrecedenceIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
 		if (electionGroups.stream()
 				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.flatMap(e -> e.getList().stream()).anyMatch(l -> l.getListOrderOfPrecedence() == DEFAULT_VALUE)) {
@@ -1223,12 +1228,30 @@ public class ContestService {
 				final boolean allAreNumeric = e.getList().stream().allMatch(l -> StringUtils.isNumeric(l.getListIndentureNumber()));
 				if (allAreNumeric) {
 					e.getList().stream().sorted(Comparator.comparing(list -> Integer.valueOf(list.getListIndentureNumber())))
-							.forEach(l -> l.setListOrderOfPrecedence(counter.incrementAndGet()));
+							.forEach(l -> {
+								final int listOrderOfPrecedence = counter.incrementAndGet();
+								l.setListOrderOfPrecedence(listOrderOfPrecedence);
+								LOGGER.debug("Set listOrderOfPrecedence of list. [value: {}, list identification: {}]", listOrderOfPrecedence,
+										l.getListIdentification());
+							});
 				} else {
 					e.getList().forEach(l -> l.setListOrderOfPrecedence(counter.incrementAndGet()));
 				}
 			});
 		}
+	}
+
+	private static void addEmptyListOrderOfPrecedenceIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
+		electionGroups.stream()
+				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+				.map(ElectionInformationType::getEmptyList)
+				.filter(Objects::nonNull)
+				.filter(l -> l.getListOrderOfPrecedence() == DEFAULT_VALUE)
+				.forEach(l -> {
+					l.setListOrderOfPrecedence(EMPTY_LIST_ORDER_OF_PRECEDENCE);
+					LOGGER.debug("Set listOrderOfPrecedence of empty list. [value: {}, list identification: {}]", EMPTY_LIST_ORDER_OF_PRECEDENCE,
+							l.getListIdentification());
+				});
 	}
 
 	private Map<String, Boolean> getParametersWriteIns(final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
