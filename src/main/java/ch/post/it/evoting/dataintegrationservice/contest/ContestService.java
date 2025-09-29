@@ -2065,19 +2065,30 @@ public class ContestService {
 	}
 
 	public ContestType sanitize(final ContestType contest) {
-		String asString = MarshallTool.marshall(contest, "contest");
+		final String asString = MarshallTool.marshall(contest, "contest");
 
-		asString = asString
+		final String htmlSanitized = asString
 				// html tags
-				.replaceAll("(?s)&lt;.*?&gt;", "")
+				.replaceAll("(?s)&lt;.*?&gt;", "");
+		if (!asString.equals(htmlSanitized)) {
+			LOGGER.warn("Contest contained HTML tags which have been removed. [contestIdentification: {}]", contest.getContestIdentification());
+		}
 
+		final String mdImagesSanitized = htmlSanitized
 				// MD images
-				.replaceAll("(?s)!\\[.*?]\\(.*?\\)", "")
+				.replaceAll("(?s)!\\[.*?]\\(.*?\\)", "");
+		if (!htmlSanitized.equals(mdImagesSanitized)) {
+			LOGGER.warn("Contest contained MD image links which have been removed. [contestIdentification: {}]", contest.getContestIdentification());
+		}
 
+		final String mdLinksSanitized = mdImagesSanitized
 				//MD links
 				.replaceAll("(?s)\\[.*?]\\(.*?\\)", "");
+		if (!mdImagesSanitized.equals(mdLinksSanitized)) {
+			LOGGER.warn("Contest contained MD links which have been removed. [contestIdentification: {}]", contest.getContestIdentification());
+		}
 
-		return MarshallTool.unmarshall(asString, ContestType.class);
+		return MarshallTool.unmarshall(mdLinksSanitized, ContestType.class);
 	}
 
 	public ContestType setExtendedAuthenticationKeyNames(final ContestType contestType, final List<String> keyNames) {
