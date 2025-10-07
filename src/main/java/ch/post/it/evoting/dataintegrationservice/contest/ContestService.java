@@ -377,7 +377,6 @@ public class ContestService {
 		checkVotesQuestionsPositionsConsistency(votes);
 		checkVotesBallotsPositionsConsistency(votes);
 		addVotesStandardQuestionReferenceIfNeeded(votes);
-		addVotesPositionIfNeeded(votes);
 		addVotesQuestionNumberIfNeeded(votes);
 
 		addListsOrderOfPrecedenceIfNeeded(electionGroups);
@@ -400,7 +399,7 @@ public class ContestService {
 		addElectionsMinimalCandidateSelectionInList(electionGroups, contestParameters);
 		addElectionRulesExplanation(electionGroups, contestParameters);
 
-		addElectionGroupPositionIfNeeded(electionGroups);
+		addVotesAndElectionGroupPositionIfNeeded(votes, electionGroups);
 		checkElectionsPositionsConsistency(electionGroups);
 
 		sortElectionsAndVotes(electionGroups, votes);
@@ -648,6 +647,9 @@ public class ContestService {
 			final List<SortingType.Vote> sortingVotes = sorting.getVote();
 			final int totalNbrOfPositions = sortingElectionGroups.size() + sortingVotes.size();
 
+			checkState(votes.size() == sortingVotes.size() && electionGroups.size() == sortingElectionGroups.size(),
+					"Partial sorting is not supported. The positions must be defined either for all votes and all election groups or for none.");
+
 			final TreeSet<Integer> sortedPositions = Stream.concat(
 							sortingElectionGroups.stream().map(electionGroup -> electionGroup.getPositionNumber().intValueExact()),
 							sortingVotes.stream().map(vote -> vote.getPositionNumber().intValueExact()))
@@ -723,35 +725,15 @@ public class ContestService {
 		return (char) ('a' + value);
 	}
 
-	private void addVotesPositionIfNeeded(final List<VoteInformationType> votes) {
-		final List<Integer> usedPositions = votes.stream()
-				.map(vote -> vote.getVote().getVotePosition())
-				.toList();
-
+	private void addVotesAndElectionGroupPositionIfNeeded(final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups) {
 		final AtomicInteger counter = new AtomicInteger(1);
 		votes.forEach(vote -> {
 			if (vote.getVote().getVotePosition() == DEFAULT_VALUE) {
-				while (usedPositions.contains(counter.get())) {
-					counter.getAndIncrement();
-				}
 				vote.getVote().setVotePosition(counter.getAndIncrement());
 			}
 		});
-	}
-
-	private void addElectionGroupPositionIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
-
-		final List<Integer> usedPositions = electionGroups.stream()
-				.map(ElectionGroupBallotType::getElectionGroupPosition)
-				.filter(val -> val > 0)
-				.toList();
-
-		final AtomicInteger counter = new AtomicInteger(1);
 		electionGroups.forEach(electionGroup -> {
 			if (electionGroup.getElectionGroupPosition() == DEFAULT_VALUE) {
-				while (usedPositions.contains(counter.get())) {
-					counter.getAndIncrement();
-				}
 				electionGroup.setElectionGroupPosition(counter.getAndIncrement());
 			}
 		});
