@@ -2069,21 +2069,21 @@ public class ContestService {
 
 		final String htmlSanitized = asString
 				// html tags
-				.replaceAll("(?s)&lt;.*?&gt;", "");
+				.replaceAll("(?s)&lt;[^&]*?&gt;", "");
 		if (!asString.equals(htmlSanitized)) {
 			LOGGER.warn("Contest contained HTML tags which have been removed. [contestIdentification: {}]", contest.getContestIdentification());
 		}
 
 		final String mdImagesSanitized = htmlSanitized
 				// MD images
-				.replaceAll("(?s)!\\[.*?]\\(.*?\\)", "");
+				.replaceAll("!\\[[^\\]]*]\\([^)]*\\)", "");
 		if (!htmlSanitized.equals(mdImagesSanitized)) {
 			LOGGER.warn("Contest contained MD image links which have been removed. [contestIdentification: {}]", contest.getContestIdentification());
 		}
 
 		final String mdLinksSanitized = mdImagesSanitized
 				//MD links
-				.replaceAll("(?s)\\[.*?]\\(.*?\\)", "");
+				.replaceAll("\\[[^\\]]*]\\([^)]*\\)", "");
 		if (!mdImagesSanitized.equals(mdLinksSanitized)) {
 			LOGGER.warn("Contest contained MD links which have been removed. [contestIdentification: {}]", contest.getContestIdentification());
 		}

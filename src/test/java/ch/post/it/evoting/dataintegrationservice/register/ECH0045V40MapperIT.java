@@ -42,7 +42,7 @@ class ECH0045V40MapperIT {
 		final XMLGregorianCalendar gc = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());
 		gc.clear();
 		gc.setYear(1999);
-		final VotingPersonType voter = new VotingPersonType()
+		return new VotingPersonType()
 				.withPerson(new VotingPersonType.Person()
 						.withSwiss(new SwissDomesticType()
 								.withMunicipality(new SwissMunicipalityType()
@@ -77,14 +77,13 @@ class ECH0045V40MapperIT {
 								.withCountry(new ch.ech.xmlns.ech_0010._6.CountryType().withCountryIdISO2("ch"))
 						)
 				);
-		return voter;
 	}
 
 	private VotingPersonType createAbroadVoter() throws Exception {
 		final XMLGregorianCalendar gc = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());
 		gc.clear();
 		gc.setYear(1999);
-		final VotingPersonType voter = new VotingPersonType()
+		return new VotingPersonType()
 				.withPerson(new VotingPersonType.Person()
 						.withSwissAbroad(new SwissAbroadType()
 								.withResidenceCountry(new CountryType().withCountryIdISO2("FR"))
@@ -121,7 +120,6 @@ class ECH0045V40MapperIT {
 				.withEmail(new EmailType()
 						.withEmailAddress("fabienne.durand@provider.ch")
 				);
-		return voter;
 	}
 
 	private void setBirthDate(final VotingPersonType voter, final int year, final Integer month, final Integer day) throws Exception {
@@ -235,8 +233,8 @@ class ECH0045V40MapperIT {
 		assertEquals("4123ZX", voter.getPerson().getPhysicalAddress().getZipCode());
 		assertEquals("Whalala", voter.getPerson().getPhysicalAddress().getTown());
 		assertEquals("IN", voter.getPerson().getPhysicalAddress().getCountry());
-		assertEquals(1, voter.getPerson().getElectronicAddress().get(0).getElectronicAddressType());
-		assertEquals("fabienne.durand@provider.ch", voter.getPerson().getElectronicAddress().get(0).getElectronicAddressValue());
+		assertEquals(1, voter.getPerson().getElectronicAddress().getFirst().getElectronicAddressType());
+		assertEquals("fabienne.durand@provider.ch", voter.getPerson().getElectronicAddress().getFirst().getElectronicAddressValue());
 		assertNull(voter.getPerson().getPhysicalAddress().getFrankingArea());
 	}
 
