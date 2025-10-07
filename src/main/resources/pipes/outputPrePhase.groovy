@@ -12,8 +12,14 @@ import static ch.post.it.evoting.dataintegrationservice.pipes.Tools.*
 
 def outputPrePhaseComponent = getBean(OutputPrePhaseComponent.class)
 
+
+def contestSanitized = pipe {
+	from OutputPrePhase.assigningAuthorizationPhase.filteredContest \
+    map outputPrePhaseComponent.sanitize()
+}
+
 def configInfo = value pipe {
-    from zip(OutputPrePhase.assigningAuthorizationPhase.filteredContest, OutputPrePhase.authorizationPhase.authorizations, OutputPrePhase.headerPhase.header)
+    from zip(contestSanitized, OutputPrePhase.authorizationPhase.authorizations, OutputPrePhase.headerPhase.header)
 }
 
 def splitVoters = pipe {
@@ -34,11 +40,6 @@ def createSplitConfig = pipe each(splitVoters) {
 
 def createConfig = pipe {
     from merge(createSplitConfig)
-}
-
-def contestSanitized = pipe {
-    from OutputPrePhase.assigningAuthorizationPhase.filteredContest \
-    map outputPrePhaseComponent.sanitize()
 }
 
 def anonymizedConfigInfo = value pipe {

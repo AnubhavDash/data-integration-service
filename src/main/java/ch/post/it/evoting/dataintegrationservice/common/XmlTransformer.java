@@ -22,6 +22,8 @@ import org.codehaus.stax2.XMLOutputFactory2;
 import org.codehaus.stax2.XMLStreamWriter2;
 import org.codehaus.stax2.validation.XMLValidationSchema;
 import org.codehaus.stax2.validation.XMLValidationSchemaFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +31,8 @@ import com.sun.xml.txw2.output.IndentingXMLStreamWriter;
 
 @Component
 public class XmlTransformer {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(XmlTransformer.class);
 
 	private final boolean formatOutput;
 	private final boolean bypassCheckOutputXSDValidation;
@@ -53,6 +57,12 @@ public class XmlTransformer {
 				final XMLValidationSchemaFactory sf = XMLValidationSchemaFactory.newInstance(XMLValidationSchema.SCHEMA_ID_W3C_SCHEMA);
 				final XMLValidationSchema sv = sf.createSchema(xsdSchema);
 				wrTemp.validateAgainst(sv);
+			} else {
+				if (xsdSchema == null) {
+					LOGGER.info("No XSD schema provided for output, skipping XSD schema validation.");
+				} else {
+					LOGGER.warn("Bypassing XSD schema validation for output as per configuration.");
+				}
 			}
 
 			final XMLStreamWriter writer = formatOutput ? new IndentingXMLStreamWriter(wrTemp) : wrTemp;

@@ -111,7 +111,9 @@ public class ContestService {
 	private static final BigInteger ELECTION_PROPORTIONAL_TYPE = BigInteger.ONE;
 	private static final BigInteger ELECTION_RELATION_PRIMARY = BigInteger.ONE;
 	private static final BigInteger ELECTION_RELATION_SECONDARY = BigInteger.TWO;
-	public static final String EMPTY_ANSWER = "EMPTY";
+	private static final String EMPTY_ANSWER = "EMPTY";
+	private static final int EMPTY_LIST_ORDER_OF_PRECEDENCE = 99;
+	private static final String EMPTY_LIST_IDENTURE_NUMBER = "99";
 
 	private final boolean bypassCheckConsistencyDates;
 	private final int evotingFromToMinDeltaAllowed;
@@ -349,20 +351,6 @@ public class ContestService {
 		}
 
 		final Set<Integer> answerPositions = answers.stream().map(StandardAnswerType::getAnswerPosition).collect(Collectors.toSet());
-		answers.stream()
-				.filter(answer -> answer.getStandardAnswerType().equals(EMPTY_ANSWER))
-				.collect(MoreCollectors.toOptional())
-				.ifPresentOrElse(emptyAnswer -> checkState(emptyAnswer.getAnswerInfo().stream().allMatch(answerInfo -> {
-					final LanguageType language = answerInfo.getLanguage();
-					return switch (language) {
-						case LanguageType.DE -> answerInfo.getAnswer().equals("Leer");
-						case LanguageType.FR -> answerInfo.getAnswer().equals("Blanc");
-						case LanguageType.IT -> answerInfo.getAnswer().equals("Bianco");
-						case LanguageType.RM -> answerInfo.getAnswer().equals("Vid");
-					};
-				})), () -> {
-					throw new IllegalStateException(String.format("The question '%s' must have an empty answer.", questionIdentification));
-				});
 
 		final Integer minPosition = answerPositions.stream().min(Integer::compareTo).orElse(Integer.MAX_VALUE);
 		final Integer maxPosition = answerPositions.stream().max(Integer::compareTo).orElse(Integer.MIN_VALUE);
@@ -389,11 +377,13 @@ public class ContestService {
 		checkVotesQuestionsPositionsConsistency(votes);
 		checkVotesBallotsPositionsConsistency(votes);
 		addVotesStandardQuestionReferenceIfNeeded(votes);
-		addVotesPositionIfNeeded(votes);
 		addVotesQuestionNumberIfNeeded(votes);
 
-		addElectionsOrderOfPrecedenceIfNeeded(electionGroups);
+		addListsOrderOfPrecedenceIfNeeded(electionGroups);
+
 		addEmptyListIfNeeded(electionGroups);
+		addEmptyListOrderOfPrecedenceIfNeeded(electionGroups);
+
 		addCandidatesInEmptyListsIfNeeded(electionGroups, contestParameters);
 		addCandidatesListIdentifications(electionGroups);
 		checkCandidateTextsAreSet(electionGroups);
@@ -409,7 +399,7 @@ public class ContestService {
 		addElectionsMinimalCandidateSelectionInList(electionGroups, contestParameters);
 		addElectionRulesExplanation(electionGroups, contestParameters);
 
-		addElectionGroupPositionIfNeeded(electionGroups);
+		addVotesAndElectionGroupPositionIfNeeded(votes, electionGroups);
 		checkElectionsPositionsConsistency(electionGroups);
 
 		sortElectionsAndVotes(electionGroups, votes);
@@ -657,6 +647,9 @@ public class ContestService {
 			final List<SortingType.Vote> sortingVotes = sorting.getVote();
 			final int totalNbrOfPositions = sortingElectionGroups.size() + sortingVotes.size();
 
+			checkState(votes.size() == sortingVotes.size() && electionGroups.size() == sortingElectionGroups.size(),
+					"Partial sorting is not supported. The positions must be defined either for all votes and all election groups or for none.");
+
 			final TreeSet<Integer> sortedPositions = Stream.concat(
 							sortingElectionGroups.stream().map(electionGroup -> electionGroup.getPositionNumber().intValueExact()),
 							sortingVotes.stream().map(vote -> vote.getPositionNumber().intValueExact()))
@@ -732,35 +725,15 @@ public class ContestService {
 		return (char) ('a' + value);
 	}
 
-	private void addVotesPositionIfNeeded(final List<VoteInformationType> votes) {
-		final List<Integer> usedPositions = votes.stream()
-				.map(vote -> vote.getVote().getVotePosition())
-				.toList();
-
+	private void addVotesAndElectionGroupPositionIfNeeded(final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups) {
 		final AtomicInteger counter = new AtomicInteger(1);
 		votes.forEach(vote -> {
 			if (vote.getVote().getVotePosition() == DEFAULT_VALUE) {
-				while (usedPositions.contains(counter.get())) {
-					counter.getAndIncrement();
-				}
 				vote.getVote().setVotePosition(counter.getAndIncrement());
 			}
 		});
-	}
-
-	private void addElectionGroupPositionIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
-
-		final List<Integer> usedPositions = electionGroups.stream()
-				.map(ElectionGroupBallotType::getElectionGroupPosition)
-				.filter(val -> val > 0)
-				.toList();
-
-		final AtomicInteger counter = new AtomicInteger(1);
 		electionGroups.forEach(electionGroup -> {
 			if (electionGroup.getElectionGroupPosition() == DEFAULT_VALUE) {
-				while (usedPositions.contains(counter.get())) {
-					counter.getAndIncrement();
-				}
 				electionGroup.setElectionGroupPosition(counter.getAndIncrement());
 			}
 		});
@@ -1158,8 +1131,8 @@ public class ContestService {
 
 		electionType.withEmptyList(new EmptyListType()
 				.withListIdentification(StringUtil.generateUUIDFromString(electionType.getElection().getElectionIdentification()))
-				.withListIndentureNumber("99")
-				.withListOrderOfPrecedence(99)
+				.withListIndentureNumber(EMPTY_LIST_IDENTURE_NUMBER)
+				.withListOrderOfPrecedence(EMPTY_LIST_ORDER_OF_PRECEDENCE)
 				.withListDescription(description));
 	}
 
@@ -1212,7 +1185,7 @@ public class ContestService {
 		return null;
 	}
 
-	private void addElectionsOrderOfPrecedenceIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
+	private void addListsOrderOfPrecedenceIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
 		if (electionGroups.stream()
 				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.flatMap(e -> e.getList().stream()).anyMatch(l -> l.getListOrderOfPrecedence() == DEFAULT_VALUE)) {
@@ -1223,12 +1196,30 @@ public class ContestService {
 				final boolean allAreNumeric = e.getList().stream().allMatch(l -> StringUtils.isNumeric(l.getListIndentureNumber()));
 				if (allAreNumeric) {
 					e.getList().stream().sorted(Comparator.comparing(list -> Integer.valueOf(list.getListIndentureNumber())))
-							.forEach(l -> l.setListOrderOfPrecedence(counter.incrementAndGet()));
+							.forEach(l -> {
+								final int listOrderOfPrecedence = counter.incrementAndGet();
+								l.setListOrderOfPrecedence(listOrderOfPrecedence);
+								LOGGER.debug("Set listOrderOfPrecedence of list. [value: {}, list identification: {}]", listOrderOfPrecedence,
+										l.getListIdentification());
+							});
 				} else {
 					e.getList().forEach(l -> l.setListOrderOfPrecedence(counter.incrementAndGet()));
 				}
 			});
 		}
+	}
+
+	private static void addEmptyListOrderOfPrecedenceIfNeeded(final List<ElectionGroupBallotType> electionGroups) {
+		electionGroups.stream()
+				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
+				.map(ElectionInformationType::getEmptyList)
+				.filter(Objects::nonNull)
+				.filter(l -> l.getListOrderOfPrecedence() == DEFAULT_VALUE)
+				.forEach(l -> {
+					l.setListOrderOfPrecedence(EMPTY_LIST_ORDER_OF_PRECEDENCE);
+					LOGGER.debug("Set listOrderOfPrecedence of empty list. [value: {}, list identification: {}]", EMPTY_LIST_ORDER_OF_PRECEDENCE,
+							l.getListIdentification());
+				});
 	}
 
 	private Map<String, Boolean> getParametersWriteIns(final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
@@ -1789,16 +1780,23 @@ public class ContestService {
 	private void checkAnswerConsistency(final ContestType c) {
 		c.getVoteInformation().forEach(v -> v.getVote().getBallot().forEach(b -> {
 			if (b.getStandardBallot() != null) {
-				checkState(b.getStandardBallot().getAnswer().stream()
+				final List<StandardAnswerType> answers = b.getStandardBallot().getAnswer();
+				checkState(answers.stream()
 								.filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals(EMPTY_ANSWER)).count() <= 1,
 						"vote '%s' standard ballot question has more than one blank answer", v.getVote().getVoteIdentification());
+				checkEmptyAnswerTexts(answers, b.getStandardBallot().getQuestionIdentification());
 			}
 			if (b.getVariantBallot() != null) {
-				b.getVariantBallot().getStandardQuestion().forEach(q -> checkState(
-						q.getAnswer().stream().filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals(EMPTY_ANSWER))
-								.count()
-								<= 1, "vote '%s' variant ballot standard question %s has more than one blank answer",
-						v.getVote().getVoteIdentification(), q.getQuestionPosition()));
+				b.getVariantBallot().getStandardQuestion().forEach(q -> {
+					final List<StandardAnswerType> answers = q.getAnswer();
+					checkState(
+							answers.stream().filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals(EMPTY_ANSWER))
+									.count()
+									<= 1, "vote '%s' variant ballot standard question %s has more than one blank answer",
+							v.getVote().getVoteIdentification(), q.getQuestionPosition());
+					checkEmptyAnswerTexts(answers, q.getQuestionIdentification());
+				});
+
 				b.getVariantBallot().getTieBreakQuestion().forEach(
 						q -> checkState(q.getAnswer().stream().filter(TiebreakAnswerType::isHiddenAnswer).count() == 1,
 								"vote '%s' variant ballot tiebreak question %s has not exactly one hidden answer",
@@ -1806,6 +1804,24 @@ public class ContestService {
 								q.getQuestionPosition()));
 			}
 		}));
+	}
+
+	private static void checkEmptyAnswerTexts(final List<StandardAnswerType> answers, final String questionId) {
+		answers.stream()
+				.filter(answer -> EMPTY_ANSWER.equals(answer.getStandardAnswerType()))
+				.collect(MoreCollectors.toOptional())
+				.ifPresentOrElse(emptyAnswer -> checkState(emptyAnswer.getAnswerInfo().stream().allMatch(answerInfo -> {
+					final LanguageType language = answerInfo.getLanguage();
+					return switch (language) {
+						case LanguageType.DE -> answerInfo.getAnswer().equals("Leer");
+						case LanguageType.FR -> answerInfo.getAnswer().equals("Blanc");
+						case LanguageType.IT -> answerInfo.getAnswer().equals("Bianco");
+						case LanguageType.RM -> answerInfo.getAnswer().equals("Vid");
+					};
+				})), () -> {
+					throw new IllegalStateException(
+							String.format("The question '%s' must have an empty answer.", questionId));
+				});
 	}
 
 	public void checkConsistency(final ContestType c, final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
@@ -2042,19 +2058,30 @@ public class ContestService {
 	}
 
 	public ContestType sanitize(final ContestType contest) {
-		String asString = MarshallTool.marshall(contest, "contest");
+		final String asString = MarshallTool.marshall(contest, "contest");
 
-		asString = asString
+		final String htmlSanitized = asString
 				// html tags
-				.replaceAll("(?s)&lt;.*?&gt;", "")
+				.replaceAll("(?s)&lt;[^&]*?&gt;", "");
+		if (!asString.equals(htmlSanitized)) {
+			LOGGER.warn("Contest contained HTML tags which have been removed. [contestIdentification: {}]", contest.getContestIdentification());
+		}
 
+		final String mdImagesSanitized = htmlSanitized
 				// MD images
-				.replaceAll("(?s)!\\[.*?]\\(.*?\\)", "")
+				.replaceAll("!\\[[^\\]]*]\\([^)]*\\)", "");
+		if (!htmlSanitized.equals(mdImagesSanitized)) {
+			LOGGER.warn("Contest contained MD image links which have been removed. [contestIdentification: {}]", contest.getContestIdentification());
+		}
 
+		final String mdLinksSanitized = mdImagesSanitized
 				//MD links
-				.replaceAll("(?s)\\[.*?]\\(.*?\\)", "");
+				.replaceAll("\\[[^\\]]*]\\([^)]*\\)", "");
+		if (!mdImagesSanitized.equals(mdLinksSanitized)) {
+			LOGGER.warn("Contest contained MD links which have been removed. [contestIdentification: {}]", contest.getContestIdentification());
+		}
 
-		return MarshallTool.unmarshall(asString, ContestType.class);
+		return MarshallTool.unmarshall(mdLinksSanitized, ContestType.class);
 	}
 
 	public ContestType setExtendedAuthenticationKeyNames(final ContestType contestType, final List<String> keyNames) {

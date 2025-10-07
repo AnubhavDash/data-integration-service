@@ -11,17 +11,17 @@ import org.springframework.test.context.DynamicPropertySource;
 @DisplayName("Generating a configuration anonymized file")
 class ConfigurationAnonymizedReproducibleCase4Test extends ConfigurationAnonymizedReproducibleTestBase {
 
-	private static final String datasetName = "Post_E2E_DEV_10000";
+	private static final String DATASET_NAME = "Post_E2E_DEV_10000";
 
 	@DynamicPropertySource
 	static void registerPgProperties(final DynamicPropertyRegistry registry) {
-		registerPgProperties(registry, datasetName);
+		registerPgProperties(registry, DATASET_NAME);
 	}
 
 	@Test
-	@DisplayName("with dataset " + datasetName + " does not throw and is reproducible.")
+	@DisplayName("with dataset " + DATASET_NAME + " does not throw and is reproducible.")
 	void happyPath() {
-		sameConfigurationAnonymizedTest( datasetName);
+		sameConfigurationAnonymizedTest(DATASET_NAME);
 	}
 
 }

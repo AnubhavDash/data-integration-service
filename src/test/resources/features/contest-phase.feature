@@ -31,9 +31,9 @@ Feature: Contest Phase
     And standardAnswer "my params"."answer type 2"."answer 1" has answer position 3
     And standardAnswer "my params"."answer type 2"."answer 1" is hiddenAnswer true
     And standardAnswer "my params"."answer type 2"."answer 1" has answer description "DE" "Leer"
-    And standardAnswer "my params"."answer type 2"."answer 1" has answer description "FR" "Vide"
-    And standardAnswer "my params"."answer type 2"."answer 1" has answer description "IT" "Nullo"
-    And standardAnswer "my params"."answer type 2"."answer 1" has answer description "RM" "Leer"
+    And standardAnswer "my params"."answer type 2"."answer 1" has answer description "FR" "Blanc"
+    And standardAnswer "my params"."answer type 2"."answer 1" has answer description "IT" "Bianco"
+    And standardAnswer "my params"."answer type 2"."answer 1" has answer description "RM" "Vid"
     And standardAnswer "my params"."answer type 2"."answer 1" has answer standardAnswerType = "EMPTY"
     And default answer type "my params"."answer type 2" has standardAnswer named "answer 2"
     And standardAnswer "my params"."answer type 2"."answer 2" has answer position 1
@@ -101,10 +101,10 @@ Feature: Contest Phase
     And parameter question "my params"."question variant C" has standardAnswer named "answer 3"
     And standardAnswer "my params"."question variant C"."answer 3" has answer position 3
     And standardAnswer "my params"."question variant C"."answer 3" is hiddenAnswer true
-    And standardAnswer "my params"."question variant C"."answer 3" has answer description "DE" "Nicht unterstützt"
-    And standardAnswer "my params"."question variant C"."answer 3" has answer description "FR" "Non supporté"
-    And standardAnswer "my params"."question variant C"."answer 3" has answer description "IT" "Non supportato"
-    And standardAnswer "my params"."question variant C"."answer 3" has answer description "RM" "Non supportato"
+    And standardAnswer "my params"."question variant C"."answer 3" has answer description "DE" "Leer"
+    And standardAnswer "my params"."question variant C"."answer 3" has answer description "FR" "Blanc"
+    And standardAnswer "my params"."question variant C"."answer 3" has answer description "IT" "Bianco"
+    And standardAnswer "my params"."question variant C"."answer 3" has answer description "RM" "Vid"
     And standardAnswer "my params"."question variant C"."answer 3" has answer standardAnswerType = "EMPTY"
     # PARAMETERS - specific answers for tiebreak questions
     And user parameters "my params" has question "tiebreak question 1"
@@ -130,8 +130,8 @@ Feature: Contest Phase
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 3" is hiddenAnswer true
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 3" has answer description "DE" "Leer"
     And tiebreakAnswer "my params"."tiebreak question 1"."answer 3" has answer description "FR" "Blanc"
-    And tiebreakAnswer "my params"."tiebreak question 1"."answer 3" has answer description "IT" "Blanco"
-    And tiebreakAnswer "my params"."tiebreak question 1"."answer 3" has answer description "RM" "Blanca"
+    And tiebreakAnswer "my params"."tiebreak question 1"."answer 3" has answer description "IT" "Bianco"
+    And tiebreakAnswer "my params"."tiebreak question 1"."answer 3" has answer description "RM" "Vid"
     And user parameters "my params" has question "tiebreak question 2"
     And parameter question "my params"."tiebreak question 2" has questionIdentification "V-B_B-1_TQ-2"
     And parameter question "my params"."tiebreak question 2" has tiebreakAnswer named "answer 1"
@@ -155,8 +155,8 @@ Feature: Contest Phase
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 3" is hiddenAnswer true
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 3" has answer description "DE" "Leer"
     And tiebreakAnswer "my params"."tiebreak question 2"."answer 3" has answer description "FR" "Blanc"
-    And tiebreakAnswer "my params"."tiebreak question 2"."answer 3" has answer description "IT" "Blanco"
-    And tiebreakAnswer "my params"."tiebreak question 2"."answer 3" has answer description "RM" "Blanca"
+    And tiebreakAnswer "my params"."tiebreak question 2"."answer 3" has answer description "IT" "Bianco"
+    And tiebreakAnswer "my params"."tiebreak question 2"."answer 3" has answer description "RM" "Vid"
     And user parameters "my params" has question "tiebreak question 3"
     And parameter question "my params"."tiebreak question 3" has questionIdentification "V-B_B-1_TQ-3"
     And parameter question "my params"."tiebreak question 3" has tiebreakAnswer named "answer 1"
@@ -180,8 +180,8 @@ Feature: Contest Phase
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 3" is hiddenAnswer true
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 3" has answer description "DE" "Leer"
     And tiebreakAnswer "my params"."tiebreak question 3"."answer 3" has answer description "FR" "Blanc"
-    And tiebreakAnswer "my params"."tiebreak question 3"."answer 3" has answer description "IT" "Blanco"
-    And tiebreakAnswer "my params"."tiebreak question 3"."answer 3" has answer description "RM" "Blanca"
+    And tiebreakAnswer "my params"."tiebreak question 3"."answer 3" has answer description "IT" "Bianco"
+    And tiebreakAnswer "my params"."tiebreak question 3"."answer 3" has answer description "RM" "Vid"
 
     # CONTEST
     Given a contest named "my contest"
