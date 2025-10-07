@@ -56,7 +56,7 @@
 		<maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
 		<maven-release-plugin.version>3.1.1</maven-release-plugin.version>
 		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
-		<maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
+		<maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
 		<reactive-plumber.version>0.26.0</reactive-plumber.version>
 		<reactor-core.version>3.7.11</reactor-core.version>
 		<reproducible-build-maven-plugin.version>0.17.0</reproducible-build-maven-plugin.version>
@@ -537,7 +537,7 @@
 				<executions>
 					<execution>
 						<id>copy-xsd-resources</id>
-						<phase>process-resources</phase>
+						<phase>generate-test-resources</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>

@@ -351,20 +351,6 @@ public class ContestService {
 		}
 
 		final Set<Integer> answerPositions = answers.stream().map(StandardAnswerType::getAnswerPosition).collect(Collectors.toSet());
-		answers.stream()
-				.filter(answer -> answer.getStandardAnswerType().equals(EMPTY_ANSWER))
-				.collect(MoreCollectors.toOptional())
-				.ifPresentOrElse(emptyAnswer -> checkState(emptyAnswer.getAnswerInfo().stream().allMatch(answerInfo -> {
-					final LanguageType language = answerInfo.getLanguage();
-					return switch (language) {
-						case LanguageType.DE -> answerInfo.getAnswer().equals("Leer");
-						case LanguageType.FR -> answerInfo.getAnswer().equals("Blanc");
-						case LanguageType.IT -> answerInfo.getAnswer().equals("Bianco");
-						case LanguageType.RM -> answerInfo.getAnswer().equals("Vid");
-					};
-				})), () -> {
-					throw new IllegalStateException(String.format("The question '%s' must have an empty answer.", questionIdentification));
-				});
 
 		final Integer minPosition = answerPositions.stream().min(Integer::compareTo).orElse(Integer.MAX_VALUE);
 		final Integer maxPosition = answerPositions.stream().max(Integer::compareTo).orElse(Integer.MIN_VALUE);
@@ -1812,16 +1798,23 @@ public class ContestService {
 	private void checkAnswerConsistency(final ContestType c) {
 		c.getVoteInformation().forEach(v -> v.getVote().getBallot().forEach(b -> {
 			if (b.getStandardBallot() != null) {
-				checkState(b.getStandardBallot().getAnswer().stream()
+				final List<StandardAnswerType> answers = b.getStandardBallot().getAnswer();
+				checkState(answers.stream()
 								.filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals(EMPTY_ANSWER)).count() <= 1,
 						"vote '%s' standard ballot question has more than one blank answer", v.getVote().getVoteIdentification());
+				checkEmptyAnswerTexts(answers, b.getStandardBallot().getQuestionIdentification());
 			}
 			if (b.getVariantBallot() != null) {
-				b.getVariantBallot().getStandardQuestion().forEach(q -> checkState(
-						q.getAnswer().stream().filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals(EMPTY_ANSWER))
-								.count()
-								<= 1, "vote '%s' variant ballot standard question %s has more than one blank answer",
-						v.getVote().getVoteIdentification(), q.getQuestionPosition()));
+				b.getVariantBallot().getStandardQuestion().forEach(q -> {
+					final List<StandardAnswerType> answers = q.getAnswer();
+					checkState(
+							answers.stream().filter(a -> a.getStandardAnswerType() != null && a.getStandardAnswerType().equals(EMPTY_ANSWER))
+									.count()
+									<= 1, "vote '%s' variant ballot standard question %s has more than one blank answer",
+							v.getVote().getVoteIdentification(), q.getQuestionPosition());
+					checkEmptyAnswerTexts(answers, q.getQuestionIdentification());
+				});
+
 				b.getVariantBallot().getTieBreakQuestion().forEach(
 						q -> checkState(q.getAnswer().stream().filter(TiebreakAnswerType::isHiddenAnswer).count() == 1,
 								"vote '%s' variant ballot tiebreak question %s has not exactly one hidden answer",
@@ -1829,6 +1822,24 @@ public class ContestService {
 								q.getQuestionPosition()));
 			}
 		}));
+	}
+
+	private static void checkEmptyAnswerTexts(final List<StandardAnswerType> answers, final String questionId) {
+		answers.stream()
+				.filter(answer -> EMPTY_ANSWER.equals(answer.getStandardAnswerType()))
+				.collect(MoreCollectors.toOptional())
+				.ifPresentOrElse(emptyAnswer -> checkState(emptyAnswer.getAnswerInfo().stream().allMatch(answerInfo -> {
+					final LanguageType language = answerInfo.getLanguage();
+					return switch (language) {
+						case LanguageType.DE -> answerInfo.getAnswer().equals("Leer");
+						case LanguageType.FR -> answerInfo.getAnswer().equals("Blanc");
+						case LanguageType.IT -> answerInfo.getAnswer().equals("Bianco");
+						case LanguageType.RM -> answerInfo.getAnswer().equals("Vid");
+					};
+				})), () -> {
+					throw new IllegalStateException(
+							String.format("The question '%s' must have an empty answer.", questionId));
+				});
 	}
 
 	public void checkConsistency(final ContestType c, final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
