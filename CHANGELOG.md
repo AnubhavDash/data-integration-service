@@ -1,5 +1,16 @@
 # Changelog
 
+Release 2.9.2 incorporates the following changes:
+
+* Improved the sanitization of the non-anonymized configuration file.
+* Added additional display candidate line styles.
+* Fixed a bug with overlapping vote and election group positions.
+* Ensured correct treatment of the country code "NO".
+* Added a default list order of precedence for the empty list.
+* Fixed a bug with logging signature exceptions.
+* Minor code improvements
+* Updated dependencies and third-party libraries.
+
 ## Release 2.9.1
 
 Release 2.9.1 incorporates the following changes:
