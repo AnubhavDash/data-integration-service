@@ -16,14 +16,12 @@ import java.nio.charset.StandardCharsets;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import ch.post.it.evoting.evotinglibraries.xml.XsdConstants;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ObjectFactory;
 
-@Disabled("Order of attributes get switched, potentially differences in whitespaces")
 class XmlTransformerTest {
 
 	private final XmlTransformer xmlTransformer = new XmlTransformer(true, false);
@@ -51,7 +49,11 @@ class XmlTransformerTest {
 
 		final String result = outputStream.toString(StandardCharsets.UTF_8);
 		assertNotNull(result);
-		assertEquals(should, result);
+
+		final String normalizedShould = normalizeString(should);
+		final String normalizedResult = normalizeString(result);
+
+		assertEquals(normalizedShould, normalizedResult);
 	}
 
 	protected Object unmarshall(final Class clazz, final String obj) {
@@ -61,4 +63,16 @@ class XmlTransformerTest {
 			throw new IllegalArgumentException(e);
 		}
 	}
+
+	private String normalizeString(String input) {
+		// Find the starting position of <config:header>
+		final int startIndex = input.indexOf("<config:header>");
+		if (startIndex != -1) {
+			// Extract substring starting from <config:header>
+			input = input.substring(startIndex);
+		}
+		// Remove all whitespace and occurrences of &#13;
+		return input.replaceAll("\\s+", "").replace("&#13;", "");
+	}
+
 }

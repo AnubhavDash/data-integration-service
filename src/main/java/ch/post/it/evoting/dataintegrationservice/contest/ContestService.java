@@ -512,6 +512,10 @@ public class ContestService {
 		case WITH_PARTY_AFFILIATION_EXTRA_LINE -> addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(candidateType);
 		case WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED ->
 				addWithPartyAffiliationExtraLineCommaSeparatedDisplayCandidateLinesStyle(candidateType);
+		case WITH_PARTY_AFFILIATION_BRACKETS_NONUMBER -> addWithPartyAffiliationBracketsNoNumberDisplayCandidateLinesStyle(candidateType);
+		case WITH_PARTY_AFFILIATION_BRACKETS -> addWithPartyAffiliationBracketsDisplayCandidateLinesStyle(candidateType);
+		case WITH_PARTY_AFFILIATION_BELOW_BRACKETS_NONUMBER -> addWithPartyAffiliationBelowBracketsNoNumberDisplayCandidateLinesStyle(candidateType);
+		case WITH_PARTY_AFFILIATION_BELOW_BRACKETS -> addWithPartyAffiliationBelowBracketsDisplayCandidateLinesStyle(candidateType);
 		default -> throw new IllegalStateException(String.format(
 				"Unknown displayCandidateLineStyle. [displayCandidateLineStyle: %s, electionId: %s, candidateId: %s]",
 				effectiveDisplayCandidateLineStyle, electionIdentification, candidateType.getCandidateIdentification()));
@@ -535,14 +539,48 @@ public class ContestService {
 		}
 	}
 
+	/**
+	 * Generates the default display candidate lines style:
+	 * <ul>
+	 *     <li>Line 1: "position familyName callName"</li>
+	 *     <li>Line 2: empty</li>
+	 *     <li>Line 3: empty</li>
+	 *     <li>Line 4: empty</li>
+	 *     <li>Line 5: empty</li>
+	 * </ul>
+	 *
+	 * @param candidate the candidate for which to generate the display lines
+	 */
 	private void addDefaultDisplayCandidateLinesStyle(final CandidateType candidate) {
 		generateCandidateDisplayLines1To3(candidate, "");
 	}
 
+	/**
+	 * Generates the default comma separated display candidate lines style:
+	 * <ul>
+	 *     <li>Line 1: "position familyName, callName"</li>
+	 *     <li>Line 2: "candidateText"</li>
+	 * 	   <li>Line 3: "incumbentText" if the candidate is an incumbent</li>
+	 *     <li>Line 4: empty</li>
+	 *     <li>Line 5: empty</li>
+	 * </ul>
+	 *
+	 * @param candidate the candidate for which to generate the display lines
+	 */
 	private void addDefaultCommaSeparatedDisplayCandidateLinesStyle(final CandidateType candidate) {
 		generateCandidateDisplayLines1To3(candidate, ",");
 	}
 
+	/**
+	 * Generates display lines 1 to 3 for a candidate, using the given delimiter between family name and call name.
+	 * <ul>
+	 * 		<li>Line 1: "position familyName&lt;delimiter&gt; callName"</li>
+	 * 		<li>Line 2: "candidateText"</li>
+	 * 	    <li>Line 3: "incumbentText" if the candidate is an incumbent</li>
+	 * </ul>
+	 * @param candidate the candidate for which to generate the display lines
+	 * @param delimiter the delimiter to use between family name and call name (e.g., space or comma)
+	 */
 	private void generateCandidateDisplayLines1To3(final CandidateType candidate, final String delimiter) {
 		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = Arrays.stream(LanguageType.values())
 				.map(languageType -> {
@@ -556,6 +594,18 @@ public class ContestService {
 		setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
 	}
 
+	/**
+	 * Generates the with party affiliation display candidate lines style:
+	 * <ul>
+	 *     <li>Line 1: "position familyName callName partyAffiliationLong"</li>
+	 *     <li>Line 2: "candidateText"</li>
+	 * 	   <li>Line 3: "incumbentText" if the candidate is an incumbent</li>
+	 *     <li>Line 4: empty</li>
+	 *     <li>Line 5: empty</li>
+	 * </ul>
+	 *
+	 * @param candidate the candidate for which to generate the display lines
+	 */
 	private void addWithPartyAffiliationDisplayCandidateLinesStyle(final CandidateType candidate) {
 		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = candidate.getPartyAffiliation()
 				.getPartyAffiliationInfo().stream()
@@ -576,17 +626,48 @@ public class ContestService {
 		setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
 	}
 
+	/**
+	 * Generates the with party affiliation extra line display candidate lines style:
+	 * <ul>
+	 *     <li>Line 1: "position familyName callName"</li>
+	 *     <li>Line 2: "candidateText"</li>
+	 * 	   <li>Line 3: "incumbentText" if the candidate is an incumbent</li>
+	 *     <li>Line 4: "partyAffiliationLong"</li>
+	 *     <li>Line 5: empty</li>
+	 * </ul>
+	 *
+	 * @param candidate the candidate for which to generate the display lines
+	 */
 	private void addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(final CandidateType candidate) {
 		generateCandidateDisplayLines1To3(candidate, "");
-		setDisplayCandidateLineWithAffilicationExtraLine(candidate);
+		setDisplayCandidateLineWithAffiliationExtraLine(candidate);
 	}
 
+	/**
+	 * Generates the with party affiliation extra line comma separated display candidate lines style:
+	 * <ul>
+	 *     <li>Line 1: "position familyName, callName"</li>
+	 *     <li>Line 2: "candidateText"</li>
+	 * 	   <li>Line 3: "incumbentText" if the candidate is an incumbent</li>
+	 *     <li>Line 4: "partyAffiliationLong"</li>
+	 *     <li>Line 5: empty</li>
+	 * </ul>
+	 *
+	 * @param candidate the candidate for which to generate the display lines
+	 */
 	private void addWithPartyAffiliationExtraLineCommaSeparatedDisplayCandidateLinesStyle(final CandidateType candidate) {
 		generateCandidateDisplayLines1To3(candidate, ",");
-		setDisplayCandidateLineWithAffilicationExtraLine(candidate);
+		setDisplayCandidateLineWithAffiliationExtraLine(candidate);
 	}
 
-	private void setDisplayCandidateLineWithAffilicationExtraLine(final CandidateType candidate) {
+	/**
+	 * Sets display line 4 for a candidate with the party affiliation.
+	 * <ul>
+	 *     <li>Line 4: "partyAffiliationLong"</li>
+	 * </ul>
+	 * @param candidate the candidate for which to generate the display lines
+	 */
+	private void setDisplayCandidateLineWithAffiliationExtraLine(final CandidateType candidate) {
 		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList4 = candidate.getPartyAffiliation()
 				.getPartyAffiliationInfo().stream()
 				.map(partyAffiliationInfo -> {
@@ -605,6 +686,163 @@ public class ContestService {
 		candidate.setDisplayCandidateLine4(new DisplayLineInformationType().withDisplayLineInfo(displayLineInfoList4));
 	}
 
+	private void setDisplayCandidateLineWithAffiliationBelowLineBrackets(final CandidateType candidate) {
+		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList5 = candidate.getPartyAffiliation()
+				.getPartyAffiliationInfo().stream()
+				.map(partyAffiliationInfo -> {
+					if (partyAffiliationInfo.getPartyAffiliationLong() == null) {
+						throw new IllegalStateException(
+								String.format("Party affiliation not provided. [displayCandidateLineStyle: %s, candidateId: %s]",
+										DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_BELOW_BRACKETS, candidate.getCandidateIdentification()));
+					}
+
+					final String displayLine5 = "(%s)".formatted(partyAffiliationInfo.getPartyAffiliationLong());
+					return new DisplayLineInformationType.DisplayLineInfo()
+							.withLanguage(partyAffiliationInfo.getLanguage())
+							.withDisplayLineText(displayLine5);
+				})
+				.toList();
+		candidate.setDisplayCandidateLine5(new DisplayLineInformationType().withDisplayLineInfo(displayLineInfoList5));
+	}
+
+	/**
+	 * Generates the with party affiliation brackets no number display candidate lines style:
+	 * <ul>
+	 *     <li>Line 1: "familyName callName (partyAffiliationLong)"</li>
+	 *     <li>Line 2: "candidateText"</li>
+	 * 	   <li>Line 3: "incumbentText" if the candidate is an incumbent</li>
+	 *     <li>Line 4: empty</li>
+	 *     <li>Line 5: empty</li>
+	 * </ul>
+	 *
+	 * @param candidate the candidate for which to generate the display lines
+	 */
+	private void addWithPartyAffiliationBracketsNoNumberDisplayCandidateLinesStyle(final CandidateType candidate) {
+
+		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = candidate.getPartyAffiliation()
+				.getPartyAffiliationInfo().stream()
+				.map(partyAffiliationInfo -> {
+					if (partyAffiliationInfo.getPartyAffiliationLong() == null) {
+						throw new IllegalStateException(
+								String.format("Party affiliation not provided. [displayCandidateLineStyle: %s, candidateId: %s]",
+										DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_BRACKETS_NONUMBER, candidate.getCandidateIdentification()));
+					}
+
+					final String displayLine1 = "%s %s (%s)".formatted(candidate.getFamilyName(),
+							candidate.getCallName(), partyAffiliationInfo.getPartyAffiliationLong());
+					return new DisplayLineInformationType.DisplayLineInfo()
+							.withLanguage(partyAffiliationInfo.getLanguage())
+							.withDisplayLineText(displayLine1);
+				})
+				.toList();
+		setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
+
+	}
+
+	/**
+	 * Generates the with party affiliation brackets display candidate lines style:
+	 * <ul>
+	 *     <li>Line 1: "position familyName callName (partyAffiliationLong)"</li>
+	 *     <li>Line 2: "candidateText"</li>
+	 * 	   <li>Line 3: "incumbentText" if the candidate is an incumbent</li>
+	 *     <li>Line 4: empty</li>
+	 *     <li>Line 5: empty</li>
+	 * </ul>
+	 *
+	 * @param candidate the candidate for which to generate the display lines
+	 */
+	private void addWithPartyAffiliationBracketsDisplayCandidateLinesStyle(final CandidateType candidate) {
+		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = candidate.getPartyAffiliation()
+				.getPartyAffiliationInfo().stream()
+				.map(partyAffiliationInfo -> {
+					if (partyAffiliationInfo.getPartyAffiliationLong() == null) {
+						throw new IllegalStateException(
+								String.format("Party affiliation not provided. [displayCandidateLineStyle: %s, candidateId: %s]",
+										DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION, candidate.getCandidateIdentification()));
+					}
+
+					final String displayLine1 = "%s %s %s (%s)".formatted(candidate.getReferenceOnPosition(), candidate.getFamilyName(),
+							candidate.getCallName(), partyAffiliationInfo.getPartyAffiliationLong());
+					return new DisplayLineInformationType.DisplayLineInfo()
+							.withLanguage(partyAffiliationInfo.getLanguage())
+							.withDisplayLineText(displayLine1);
+				})
+				.toList();
+		setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
+	}
+
+	/**
+	 * Generates the with party affiliation below brackets no numbers display candidate lines style:
+	 * <ul>
+	 *     <li>Line 1: "familyName callName"</li>
+	 *     <li>Line 2: "candidateText"</li>
+	 * 	   <li>Line 3: "incumbentText" if the candidate is an incumbent</li>
+	 *     <li>Line 4: empty</li>
+	 *     <li>Line 5: (partyAffiliationLong)</li>
+	 * </ul>
+	 *
+	 * @param candidate the candidate for which to generate the display lines
+	 */
+	private void addWithPartyAffiliationBelowBracketsNoNumberDisplayCandidateLinesStyle(final CandidateType candidate) {
+		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = Arrays.stream(LanguageType.values())
+				.map(languageType -> {
+					final String displayLine1 = String.join(" ", candidate.getFamilyName(), candidate.getCallName());
+					return new DisplayLineInformationType.DisplayLineInfo()
+							.withLanguage(languageType)
+							.withDisplayLineText(displayLine1);
+				})
+				.toList();
+		setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
+		setDisplayCandidateLineWithAffiliationBelowLineBrackets(candidate);
+	}
+
+	/**
+	 * Generates the with party affiliation below brackets display candidate lines style:
+	 * <ul>
+	 *     <li>Line 1: "position familyName callName"</li>
+	 *     <li>Line 2: "candidateText"</li>
+	 * 	   <li>Line 3: "incumbentText" if the candidate is an incumbent</li>
+	 *     <li>Line 4: empty</li>
+	 *     <li>Line 5: (partyAffiliationLong)</li>
+	 * </ul>
+	 *
+	 * @param candidate the candidate for which to generate the display lines
+	 */
+	private void addWithPartyAffiliationBelowBracketsDisplayCandidateLinesStyle(final CandidateType candidate) {
+
+		generateCandidateDisplayLines1To3(candidate, "");
+		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList5 = candidate.getPartyAffiliation()
+				.getPartyAffiliationInfo().stream()
+				.map(partyAffiliationInfo -> {
+					if (partyAffiliationInfo.getPartyAffiliationLong() == null) {
+						if (partyAffiliationInfo.getPartyAffiliationShort() != null) {
+							partyAffiliationInfo.setPartyAffiliationLong(partyAffiliationInfo.getPartyAffiliationShort());
+						} else {
+							throw new IllegalStateException(
+									String.format("Party affiliation not provided. [displayCandidateLineStyle: %s, candidateId: %s]",
+											DisplayCandidateLineStyle.WITH_PARTY_AFFILIATION_BRACKETS_NONUMBER,
+											candidate.getCandidateIdentification()));
+						}
+					}
+
+					return new DisplayLineInformationType.DisplayLineInfo()
+							.withLanguage(partyAffiliationInfo.getLanguage())
+							.withDisplayLineText("(" + partyAffiliationInfo.getPartyAffiliationLong() + ")");
+				})
+				.toList();
+		candidate.setDisplayCandidateLine5(new DisplayLineInformationType().withDisplayLineInfo(displayLineInfoList5));
+	}
+
+	/**
+	 * Sets display lines 1 to 3 for a candidate.
+	 * <ul>
+	 *     <li>Line 1: as provided in {@code displayLineInfoList1}</li>
+	 *     <li>Line 2: "candidateText"</li>
+	 *     <li>Line 3: "incumbentText" if the candidate is an incumbent</li>
+	 * </ul>
+	 * @param candidate the candidate for which to set the display lines
+	 * @param displayLineInfoList1 the display line info list for line 1 in all languages
+	 */
 	private void setCandidateDisplayLines1To3(final CandidateType candidate,
 			final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1) {
 		candidate.setDisplayCandidateLine1(new DisplayLineInformationType().withDisplayLineInfo(displayLineInfoList1));
