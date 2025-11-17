@@ -44,9 +44,9 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.Configuration
 @ActiveProfiles("test")
 abstract class ConfigurationAnonymizedReproducibleTestBase {
 	private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss");
-	private static final String configurationAnonymized = "configuration-anonymized.xml";
+	private static final String CONFIGURATION_ANONYMIZED = "configuration-anonymized.xml";
 	private static final XmlFileRepository<Configuration> xmlFileRepository = new XmlFileRepository<>();
-	protected static final String testData = "target/test-classes/testdata/election-events";
+	protected static final String TEST_DATA = "target/test-classes/testdata/election-events";
 	private static MockedStatic<LocalDateTimeUtils> localDateTimeUtilsMock;
 	private static DatatypeFactory datatypeFactory;
 
@@ -68,7 +68,7 @@ abstract class ConfigurationAnonymizedReproducibleTestBase {
 	}
 
 	protected static void registerPgProperties(final DynamicPropertyRegistry registry, final String datasetName) {
-		registry.add("directory.source", () -> String.format("%s/%s/D0", testData, datasetName));
+		registry.add("directory.source", () -> String.format("%s/%s/D0", TEST_DATA, datasetName));
 		registry.add("directory.target", temporaryDirectory::toString);
 	}
 
@@ -88,7 +88,7 @@ abstract class ConfigurationAnonymizedReproducibleTestBase {
 
 		assertDoesNotThrow(() -> dataIntegrationService.run());
 
-		final Configuration regenerated = xmlFileRepository.read(temporaryDirectory.resolve(configurationAnonymized), XsdConstants.CANTON_CONFIG_XSD,
+		final Configuration regenerated = xmlFileRepository.read(temporaryDirectory.resolve(CONFIGURATION_ANONYMIZED), XsdConstants.CANTON_CONFIG_XSD,
 				Configuration.class);
 
 		// Ignore fileDate field (use original fileDate in re-generated file).
@@ -110,7 +110,7 @@ abstract class ConfigurationAnonymizedReproducibleTestBase {
 	}
 
 	private static Configuration load(final String datasetName) {
-		return xmlFileRepository.read(Paths.get(testData, datasetName, "D1/data-integration-service", configurationAnonymized), XsdConstants.CANTON_CONFIG_XSD,
+		return xmlFileRepository.read(Paths.get(TEST_DATA, datasetName, "D1/data-integration-service", CONFIGURATION_ANONYMIZED), XsdConstants.CANTON_CONFIG_XSD,
 				Configuration.class);
 	}
 

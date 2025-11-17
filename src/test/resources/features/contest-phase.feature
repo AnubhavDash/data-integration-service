@@ -1045,3 +1045,10 @@ Feature: Contest Phase
     And the standard question "my votes"."vote B"."vote B ballot 1"."vote B ballot 1 question 1" has answer cleared out
     When executing the contest phase and catching exceptions
     Then it outputs an exception with text "There is no answerType and no answerOptionIdentification for the standard question identified by 'V-B_B-1_Q-proposal_A'. At least one of them must be set."
+
+  Scenario: Throw an exception when standard candidate accumulation is greater than number of mandates
+    Given the election "my elections"."election A" has numbers of mandates 4
+    # election 1 is mapped to election A (parameters which template the election)
+    And election "my elections"."election 1" has accumulation 6
+    When executing the contest phase and catching exceptions
+    Then it outputs an exception with text "The field candidateAccumulation cannot be greater than the field numberOfMandates: [candidateAccumulation: 6, numberOfMandates: 4]"

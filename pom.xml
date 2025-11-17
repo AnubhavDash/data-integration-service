@@ -8,7 +8,7 @@
 
 	<groupId>ch.post.it.evoting.dataintegrationservice</groupId>
 	<artifactId>data-integration-service</artifactId>
-	<version>2.10.0.0-b0</version>
+	<version>2.9.2.1-RC1</version>
 	<packaging>jar</packaging>
 
 	<name>Data Integration Service</name>
@@ -19,38 +19,38 @@
 		<maven.compiler.target>21</maven.compiler.target>
 		<maven.compiler.release>21</maven.compiler.release>
 
-		<maven-enforcer-plugin.version>3.6.1</maven-enforcer-plugin.version>
-		<maven-enforcer-plugin.requiredJavaVersion>[21.0.8]</maven-enforcer-plugin.requiredJavaVersion>
+		<maven-enforcer-plugin.version>3.6.2</maven-enforcer-plugin.version>
+		<maven-enforcer-plugin.requiredJavaVersion>[21.0.9]</maven-enforcer-plugin.requiredJavaVersion>
 		<maven-enforcer-plugin.requiredMavenVersion>[3.9.11]</maven-enforcer-plugin.requiredMavenVersion>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.build.outputTimestamp>2025-10-16T14:40:11+02:00</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2025-11-17T09:44:02+02:00</project.build.outputTimestamp>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<archunit.version>1.4.1</archunit.version>
 		<cloning.version>1.12.1</cloning.version>
 		<commons-lang3.version>3.19.0</commons-lang3.version>
-		<crypto-primitives.version>1.5.2.0</crypto-primitives.version>
-		<cucumber-bom.version>7.29.0</cucumber-bom.version>
+		<crypto-primitives.version>1.5.2.1-RC1</crypto-primitives.version>
+		<cucumber-bom.version>7.30.0</cucumber-bom.version>
 		<download-maven-plugin.version>1.13.0</download-maven-plugin.version>
-		<exec-maven-plugin.version>3.5.1</exec-maven-plugin.version>
-		<e-voting-libraries.version>1.5.2.0</e-voting-libraries.version>
+		<exec-maven-plugin.version>3.6.2</exec-maven-plugin.version>
+		<e-voting-libraries.version>1.5.2.1-RC1</e-voting-libraries.version>
 		<gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
 		<groovy.version>4.0.18</groovy.version>
-		<groovy-all.version>5.0.1</groovy-all.version>
+		<groovy-all.version>5.0.2</groovy-all.version>
 		<guava.version>33.5.0-jre</guava.version>
 		<hamcrest-core.version>3.0</hamcrest-core.version>
-		<jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+		<jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
 		<jaxb-runtime.version>4.0.6</jaxb-runtime.version>
 		<jaxb-maven-plugin.version>4.0.11</jaxb-maven-plugin.version>
-		<junit-bom.version>5.13.4</junit-bom.version>
-		<logback-classic.version>1.5.18</logback-classic.version>
+		<junit-bom.version>5.14.0</junit-bom.version>
+		<logback-classic.version>1.5.20</logback-classic.version>
 		<lombok.version>1.18.42</lombok.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
 		<maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
-		<maven-dependency-check.version>12.1.6</maven-dependency-check.version>
-		<maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
+		<maven-dependency-check.version>12.1.8</maven-dependency-check.version>
+		<maven-dependency-plugin.version>3.9.0</maven-dependency-plugin.version>
 		<maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
 		<maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
 		<maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
@@ -58,7 +58,7 @@
 		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
 		<maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
 		<reactive-plumber.version>0.26.0</reactive-plumber.version>
-		<reactor-core.version>3.7.11</reactor-core.version>
+		<reactor-core.version>3.7.12</reactor-core.version>
 		<reproducible-build-maven-plugin.version>0.17.0</reproducible-build-maven-plugin.version>
 		<sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
 		<spring-boot.version>3.5.6</spring-boot.version>
@@ -68,11 +68,11 @@
 		<woodstox-core.version>7.1.1</woodstox-core.version>
 
 		<!-- OpenJDK -->
-		<openjdk-jre.version>jdk-21.0.8+9-jre</openjdk-jre.version>
+		<openjdk-jre.version>jdk-21.0.9+10-jre</openjdk-jre.version>
 		<openjdk-jre.win64.url>
-			https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.8%2B9/OpenJDK21U-jre_x64_windows_hotspot_21.0.8_9.zip
+			https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.9_10.zip
 		</openjdk-jre.win64.url>
-		<openjdk-jre.win64.sha256>238d74ec4ec9422d416fa98805ba375eecd8bc8f971bd0c61a21051a4fe42db8</openjdk-jre.win64.sha256>
+		<openjdk-jre.win64.sha256>39c5e23f3ce4d420663afba8ffde28034b72e2b3e240943dc2321bc1f912eef9</openjdk-jre.win64.sha256>
 
 		<!-- Sonar -->
 		<sonar.scm.disabled>true</sonar.scm.disabled>

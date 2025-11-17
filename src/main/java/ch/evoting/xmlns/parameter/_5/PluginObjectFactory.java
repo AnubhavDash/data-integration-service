@@ -34,6 +34,11 @@ public class PluginObjectFactory extends ObjectFactory {
 	}
 
 	@Override
+	public TestAuthorizationSplitterType createTestAuthorizationSplitterType() {
+		return new TestAuthorizationSplitterTypeImpl();
+	}
+
+	@Override
 	public BirthDateAuthenticationKeyType createBirthDateAuthenticationKeyType() {
 		return new BirthDateAuthenticationKeyTypeImpl();
 	}

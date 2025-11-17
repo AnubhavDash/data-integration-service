@@ -97,10 +97,6 @@ public class AuthorizationPhaseSteps extends PhaseSteps {
 		}
 	}
 
-	@Given("^aaa$")
-	public void given() {
-	}
-
 	@Given("^a list of valid voters$")
 	public void givenAListOfValidVoters() {
 		voters = new ArrayList<>();

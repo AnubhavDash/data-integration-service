@@ -3,7 +3,11 @@
  */
 package ch.post.it.evoting.dataintegrationservice.pipes;
 
+import static ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterCategorizer.CONTEXT_AUTHORIZATIONS;
+import static ch.post.it.evoting.dataintegrationservice.parameter.plugin.VoterCategorizer.CONTEXT_PREVIOUS;
+
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -26,7 +30,6 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterType;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
 import reactor.util.function.Tuple3;
 
 @Component
@@ -69,11 +72,15 @@ public class OutputPrePhaseComponent {
 		return (voters, tuple) -> configService.build(tuple.getT1(), tuple.getT2(), voters, tuple.getT3());
 	}
 
-	public Function<Tuple2<VoterTypeWithRole, List<BiFunction<VoterTypeWithRole, String, String>>>, String> splitWithPlugins() {
+	public Function<Tuple3<VoterTypeWithRole, List<BiFunction<VoterTypeWithRole, Map<String, Object>, String>>, AuthorizationsType>, String> splitWithPlugins() {
 		return tuple -> tuple.getT2().stream().reduce((u, v) -> "", (f1, f2) -> (u, v) -> {
 			final String resf1 = f1.apply(u, v);
-			final String resf2 = f2.apply(u, resf1);
+			final Map<String, Object> map = Map.of(
+					CONTEXT_PREVIOUS, resf1,
+					CONTEXT_AUTHORIZATIONS, tuple.getT3()
+			);
+			final String resf2 = f2.apply(u, map);
 			return StringUtil.concat(resf1, resf2, "-");
-		}).apply(tuple.getT1(), "");
+		}).apply(tuple.getT1(), Map.of());
 	}
 }

@@ -2078,6 +2078,7 @@ public class ContestService {
 		checkProportionalElectionConsistency(c);
 		checkMajoralElectionConsistency(c);
 		checkWriteInsConsistency(c);
+		checkAccumulationsIsNotGreaterThanMandates(c);
 	}
 
 	private PrimarySecondaryTuple mapToPrimarySecondaryContainer(final ElectionGroupBallotType eg) {
@@ -2292,6 +2293,19 @@ public class ContestService {
 								"The election does not allow write-ins and must therefore not have any implicit write-in candidates. [electionId: %s]",
 								electionInformation.getElection().getElectionIdentification());
 					}
+				});
+	}
+
+	private void checkAccumulationsIsNotGreaterThanMandates(final ContestType c) {
+		c.getElectionGroupBallot().stream()
+				.flatMap(eg -> eg.getElectionInformation().stream())
+				.forEach(e -> {
+					final int numberOfMandates = e.getElection().getNumberOfMandates();
+					final int candidateAccumulation = e.getElection().getCandidateAccumulation().intValue();
+					checkState(candidateAccumulation <= numberOfMandates,
+							"The field candidateAccumulation cannot be greater than the field numberOfMandates: [candidateAccumulation: %s, numberOfMandates: %s]".formatted(
+									candidateAccumulation,
+									numberOfMandates));
 				});
 	}
 

@@ -26,6 +26,7 @@ public class BirthYearAuthenticationKeySteps {
 	private VoterType voter;
 
 	public BirthYearAuthenticationKeySteps() throws DatatypeConfigurationException {
+		// Empty constructor defined to throw DatatypeConfigurationException.
 	}
 
 	@Given("^The birth year authentication key plugin without parameters$")

@@ -71,7 +71,7 @@ class XmlTransformerTest {
 			// Extract substring starting from <config:header>
 			input = input.substring(startIndex);
 		}
-		// Remove all whitespace and occurrences of &#13;
+		// Remove all whitespace and occurrences of "&#13;"
 		return input.replaceAll("\\s+", "").replace("&#13;", "");
 	}
 

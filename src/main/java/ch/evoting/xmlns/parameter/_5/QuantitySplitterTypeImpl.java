@@ -4,6 +4,7 @@
 package ch.evoting.xmlns.parameter._5;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
@@ -17,7 +18,7 @@ public class QuantitySplitterTypeImpl extends QuantitySplitterType {
 	}
 
 	@Override
-	public String apply(final VoterTypeWithRole voterTypeWithRole, final String previousSplit) {
-		return String.format("%s", getCounterValue(previousSplit) / maxPerFile);
+	public String apply(final VoterTypeWithRole voterTypeWithRole, final Map<String, Object> context ) {
+		return String.format("%s", getCounterValue(context.get(CONTEXT_PREVIOUS).toString()) / maxPerFile);
 	}
 }

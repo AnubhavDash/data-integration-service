@@ -117,6 +117,12 @@
 			<xs:extension base="configSplitter"/>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="testAuthorizationSplitterType">
+		<xs:complexContent>
+			<xs:extension base="configSplitter">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="frankingAreaSplitterType">
 		<xs:complexContent>
 			<xs:extension base="configSplitter"/>
@@ -144,6 +150,7 @@
 			<xs:element name="frankingAreaSplitter" type="frankingAreaSplitterType" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="languageOfCorrespondanceSplitter" type="languageOfCorrespondanceSplitterType" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="testAndControlSplitter" type="testAndControlSplitterType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="testAuthorizationSplitter" type="testAuthorizationSplitterType" minOccurs="0" maxOccurs="1"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="authorizationPlugin" abstract="true">

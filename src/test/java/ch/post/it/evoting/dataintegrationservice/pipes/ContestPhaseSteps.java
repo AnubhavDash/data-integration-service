@@ -498,6 +498,14 @@ public class ContestPhaseSteps extends PhaseSteps {
 		electionMap.get(elections + "." + election).getElectionInformation().get(0).getElection().setElectionDescription(descInfo);
 	}
 
+	@And("^the election \"([^\"]*)\".\"([^\"]*)\" has numbers of mandates (\\d+)$")
+	public void andElectionHasNumberOfMandates(final String name, final String election, final Integer numberOfMandates) {
+		electionMap.get(name + "." + election).getElectionInformation().stream()
+				.map(ElectionInformationType::getElection)
+				.forEach(electionType -> electionType.setNumberOfMandates(numberOfMandates)
+				);
+	}
+
 	@Given("^a list of votes named \"([^\"]*)\"$")
 	public void givenAListOfVotesNamed(final String name) {
 		votesMap.put(name, new ArrayList<>());

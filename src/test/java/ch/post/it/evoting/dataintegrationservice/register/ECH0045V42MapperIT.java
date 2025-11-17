@@ -42,7 +42,7 @@ class ECH0045V42MapperIT {
 		final XMLGregorianCalendar gc = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());
 		gc.clear();
 		gc.setYear(1999);
-		final VotingPersonType voter = new VotingPersonType()
+		return new VotingPersonType()
 				.withPerson(new VotingPersonType.Person()
 						.withSwiss(new SwissDomesticType()
 								.withMunicipality(new SwissMunicipalityType()
@@ -77,14 +77,13 @@ class ECH0045V42MapperIT {
 								.withCountry(new ch.ech.xmlns.ech_0010._6.CountryType().withCountryIdISO2("ch"))
 						)
 				);
-		return voter;
 	}
 
 	private VotingPersonType createAbroadVoter() throws Exception {
 		final XMLGregorianCalendar gc = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());
 		gc.clear();
 		gc.setYear(1999);
-		final VotingPersonType voter = new VotingPersonType()
+		return new VotingPersonType()
 				.withPerson(new VotingPersonType.Person()
 						.withSwissAbroad(new SwissAbroadType()
 								.withResidenceCountry(new CountryType().withCountryIdISO2("FR"))
@@ -121,7 +120,6 @@ class ECH0045V42MapperIT {
 				.withEmail(new EmailType()
 						.withEmailAddress("fabienne.durand@provider.ch")
 				);
-		return voter;
 	}
 
 	private void setBirthDate(final VotingPersonType voter, final int year, final Integer month, final Integer day) throws Exception {
