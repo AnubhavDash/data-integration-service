@@ -424,5 +424,6 @@
 		</incumbentText>
 		<defaultDisplayCandidateLineStyle>DEFAULT</defaultDisplayCandidateLineStyle>
 		<defaultDisplayListLineStyle>DEFAULT</defaultDisplayListLineStyle>
+		<ignoreIncumbentText>false</ignoreIncumbentText>
 	</contest>
 </parameter>

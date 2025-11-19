@@ -7,6 +7,7 @@ import static com.google.common.base.Preconditions.checkState;
 import static li.chee.reactive.plumber.Plumbing.drain;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.swisspush.supermachine.BeanScanner.from;
@@ -22,10 +23,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.xml.namespace.QName;
 
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.MoreCollectors;
 
 import ch.evoting.xmlns.parameter._5.AnswerInformationType;
 import ch.evoting.xmlns.parameter._5.AnswerTranslationType;
@@ -52,6 +57,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateText
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.CandidateType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ContestType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.DisplayLineInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.DwellingAddressType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionDescriptionInformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectionGroupBallotType;
@@ -81,6 +87,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 
+import groovy.util.MapEntry;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -269,6 +276,11 @@ public class ContestPhaseSteps extends PhaseSteps {
 		paramsMap.get(name).setDefaultDisplayListLineStyle(DisplayListLineStyle.fromValue(defaultDisplayListLineStyleStr));
 	}
 
+	@And("^user parameters \"([^\"]*)\" has ignoreIncumbentText (true|false)$")
+	public void andUserParametersHasDefaultDisplayListLineStyle(final String name, final boolean ignoreIncumbentText) {
+		paramsMap.get(name).setIgnoreIncumbentText(ignoreIncumbentText);
+	}
+
 	@And("^user parameters \"([^\"]*)\" has contest default language \"([^\"]*)\"$")
 	public void andUserParametersHasContestDefaultLanguage(final String name, final String lang) {
 		paramsMap.get(name).setDefaultLanguage(ch.evoting.xmlns.parameter._5.LanguageType.valueOf(lang));
@@ -302,6 +314,11 @@ public class ContestPhaseSteps extends PhaseSteps {
 	@And("^election \"([^\"]*)\".\"([^\"]*)\" has minimalCandidateSelection (\\d+)$")
 	public void andElectionHasMinimalCandidateSelection(final String name, final String electionName, final BigInteger minimalCandidate) {
 		pElectionMap.get(electionName).setMinimalCandidateSelectionInList(minimalCandidate);
+	}
+
+	@And("^election \"([^\"]*)\".\"([^\"]*)\" has ignoreIncumbentText (true|false)$")
+	public void andElectionHasIgnoreIncumbentText(final String name, final String electionName, final boolean ignoreIncumbentText) {
+		pElectionMap.get(electionName).setIgnoreIncumbentText(ignoreIncumbentText);
 	}
 
 	@And("^user parameters \"([^\"]*)\" has default answer type named \"([^\"]*)\"$")
@@ -1059,6 +1076,76 @@ public class ContestPhaseSteps extends PhaseSteps {
 		assertEquals(contest.getContestIdentification(), id);
 	}
 
+	@Then("^it outputs a contest with incumbents having incumbent text displayed$")
+	public void thenItOutputsAContestWithIncumbentTextsDisplayed() {
+		contest.getElectionGroupBallot().stream()
+				.flatMap(egb -> egb.getElectionInformation().stream())
+				.flatMap(ei -> ei.getCandidate().stream())
+				.filter(c -> c.getIncumbent().isIncumbent())
+				.forEach(c -> {
+					final Map<LanguageType, String> incumbentTexts = c.getIncumbent().getIncumbentText().getIncumbentTextInfo()
+							.stream()
+							.collect(Collectors.toMap(
+									IncumbentTextInfoType::getLanguage,
+									IncumbentTextInfoType::getIncumbentText
+							));
+					final Map<LanguageType, String> displayLineTexts = c.getDisplayCandidateLine3().getDisplayLineInfo()
+							.stream()
+							.collect(Collectors.toMap(
+									DisplayLineInformationType.DisplayLineInfo::getLanguage,
+									DisplayLineInformationType.DisplayLineInfo::getDisplayLineText
+							));
+					assertEquals(incumbentTexts, displayLineTexts);
+				});
+	}
+
+	@Then("^it outputs a contest with incumbents having no incumbent text displayed$")
+	public void thenItOutputsAContestWithNoIncumbentTextsDisplayed() {
+		contest.getElectionGroupBallot().stream()
+				.flatMap(egb -> egb.getElectionInformation().stream())
+				.flatMap(ei -> ei.getCandidate().stream())
+				.filter(c -> c.getIncumbent().isIncumbent())
+				.forEach(c -> assertNull(c.getDisplayCandidateLine3()));
+	}
+
+	@Then("^it outputs a contest with incumbents in election \"([^\"]*)\" having incumbent text displayed$")
+	public void thenItOutputsAContestWithIncumbentTextsDisplayed(final String electionIdentification) {
+		final ElectionInformationType election = contest.getElectionGroupBallot().stream()
+				.flatMap(egb -> egb.getElectionInformation().stream())
+				.filter(ei -> ei.getElection().getElectionIdentification().equals(electionIdentification))
+				.collect(MoreCollectors.onlyElement());
+
+		election.getCandidate().stream()
+				.filter(c -> c.getIncumbent().isIncumbent())
+				.forEach(c -> {
+					final Map<LanguageType, String> incumbentTexts = c.getIncumbent().getIncumbentText().getIncumbentTextInfo()
+							.stream()
+							.collect(Collectors.toMap(
+									IncumbentTextInfoType::getLanguage,
+									IncumbentTextInfoType::getIncumbentText
+							));
+					final Map<LanguageType, String> displayLineTexts = c.getDisplayCandidateLine3().getDisplayLineInfo()
+							.stream()
+							.collect(Collectors.toMap(
+									DisplayLineInformationType.DisplayLineInfo::getLanguage,
+									DisplayLineInformationType.DisplayLineInfo::getDisplayLineText
+							));
+					assertEquals(incumbentTexts, displayLineTexts);
+				});
+	}
+
+	@Then("^it outputs a contest with incumbents in election \"([^\"]*)\" having no incumbent text displayed$")
+	public void thenItOutputsAContestWithNoIncumbentTextsDisplayed(final String electionIdentifier) {
+		final ElectionInformationType election = contest.getElectionGroupBallot().stream()
+				.flatMap(egb -> egb.getElectionInformation().stream())
+				.filter(ei -> ei.getElection().getElectionIdentification().equals(electionIdentifier))
+				.collect(MoreCollectors.onlyElement());
+
+		election.getCandidate().stream()
+				.filter(c -> c.getIncumbent().isIncumbent())
+				.forEach(c -> assertNull(c.getDisplayCandidateLine3()));
+	}
+
 	@Then("^it outputs an exception with text \"([^\"]*)\"$")
 	public void thenItOutputsAnExceptionWithText(final String message) {
 		assertEquals(message, processException.getMessage());
@@ -1133,7 +1220,8 @@ public class ContestPhaseSteps extends PhaseSteps {
 
 	@Then("^the list identified by \"([^\"]*)\" should contain (\\d+) occurrences of the candidateListIdentification \"([^\"]*)\"$")
 	public void thenListShouldContainsOccurencesOfCandidateListIdentification(final String listId, final Integer accum, final String id) {
-		assertEquals(accum.longValue(), from(contest).find(ListType.class).filter(list -> list.getListIdentification().equals(listId)).stream().findFirst().get()
+		assertEquals(accum.longValue(),
+				from(contest).find(ListType.class).filter(list -> list.getListIdentification().equals(listId)).stream().findFirst().get()
 						.getCandidatePosition().stream().filter(c -> c.getCandidateListIdentification().equals(id)).count());
 	}
 

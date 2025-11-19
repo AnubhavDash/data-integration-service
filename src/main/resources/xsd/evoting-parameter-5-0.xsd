@@ -278,6 +278,7 @@
 			</xs:element>
 			<xs:element name="defaultDisplayCandidateLineStyle" type="displayCandidateLineStyle" minOccurs="0"/>
 			<xs:element name="defaultDisplayListLineStyle" type="displayListLineStyle" minOccurs="0"/>
+			<xs:element name="ignoreIncumbentText" type="xs:boolean" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="defaultAnswerTranslationType">
@@ -461,6 +462,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="ignoreIncumbentText" type="xs:boolean" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="parameter">

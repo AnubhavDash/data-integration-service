@@ -1,5 +1,17 @@
 # Changelog
 
+## Release 2.9.2.1
+
+Release 2.9.2.1 incorporates the following changes:
+
+* Added a validation that candidate accumulation does not exceed the number of mandates.
+* Parametrized whether the incumbent text is displayed on the display candidate line.
+* Added a testAuthorizationSplitter to split the output files for test voter by authorization.
+* Minor code improvements.
+* Updated dependencies and third-party libraries.
+
+## Release 2.9.2
+
 Release 2.9.2 incorporates the following changes:
 
 * Improved the sanitization of the non-anonymized configuration file.

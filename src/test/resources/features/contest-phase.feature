@@ -787,6 +787,26 @@ Feature: Contest Phase
     Then it outputs an exception with text "answer '2a0f687a-83cb-3ceb-98eb-5a5c27d07361' : answer must contain exactly the defined languages [de, fr, it, rm]"
 
 
+  Scenario: IncumbentText is displayed when not ignored
+    Given user parameters "my params" has ignoreIncumbentText false
+    When executing the contest phase
+    Then it outputs a contest with incumbents having incumbent text displayed
+
+  Scenario: IncumbentText is not displayed when ignored
+    Given user parameters "my params" has ignoreIncumbentText true
+    When executing the contest phase
+    Then it outputs a contest with incumbents having no incumbent text displayed
+
+  Scenario: IncumbentText is displayed when not ignored in an election
+    Given election "my params"."election 1" has ignoreIncumbentText false
+    When executing the contest phase
+    Then it outputs a contest with incumbents in election "election-A-id" having incumbent text displayed
+
+  Scenario: IncumbentText is not displayed when ignored in an election
+    Given election "my params"."election 1" has ignoreIncumbentText true
+    When executing the contest phase
+    Then it outputs a contest with incumbents in election "election-A-id" having no incumbent text displayed
+
   Scenario: Throw an exception when some election descriptions languages are missing
     Given the descriptions of the election "my elections"."election A" are cleared out
     And the election "my elections"."election A" has description "DE" "Test election A (DE)"

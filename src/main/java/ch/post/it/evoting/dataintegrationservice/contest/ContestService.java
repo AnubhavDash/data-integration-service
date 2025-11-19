@@ -482,6 +482,19 @@ public class ContestService {
 
 		final DisplayCandidateLineStyle defaultDisplayCandidateLineStyle = contestParameters.getDefaultDisplayCandidateLineStyle();
 
+		final boolean ignoreIncumbentText = contestParameters.isIgnoreIncumbentText() != null ? contestParameters.isIgnoreIncumbentText() : false;
+		final Map<String, Boolean> ignoreIncumbentTextByElectionId;
+		if (contestParameters.getElections() != null) {
+			ignoreIncumbentTextByElectionId = contestParameters.getElections().getElection().stream()
+				.filter(e -> e.isIgnoreIncumbentText() != null)
+				.collect(Collectors.toMap(
+						ElectionType::getElectionIdentification,
+						ElectionType::isIgnoreIncumbentText
+				));
+		} else {
+			ignoreIncumbentTextByElectionId = new HashMap<>();
+		}
+
 		electionGroups.stream()
 				.flatMap(electionGroupBallotType -> electionGroupBallotType.getElectionInformation().stream())
 				.forEach(electionInformationType -> {
@@ -492,30 +505,34 @@ public class ContestService {
 
 					electionInformationType.getCandidate()
 							.forEach(candidateType ->
-									addDisplayCandidateLineStyle(candidateType, noSpecificDisplayCandidateLineStyle, defaultDisplayCandidateLineStyle,
-											specificDisplayCandidateLineStyle, electionIdentification)
+									{
+										final Boolean ignoreIncumbentTextForElection = ignoreIncumbentTextByElectionId.get(electionIdentification);
+										final boolean doIgnoreIncumbentText = ignoreIncumbentTextForElection != null ? ignoreIncumbentTextForElection : ignoreIncumbentText;
+										addDisplayCandidateLineStyle(candidateType, noSpecificDisplayCandidateLineStyle, defaultDisplayCandidateLineStyle,
+												specificDisplayCandidateLineStyle, electionIdentification, doIgnoreIncumbentText);
+									}
 							);
 				});
 	}
 
 	private void addDisplayCandidateLineStyle(final CandidateType candidateType, final boolean noSpecificDisplayCandidateLineStyle,
 			final DisplayCandidateLineStyle defaultDisplayCandidateLineStyle, final DisplayCandidateLineStyle specificDisplayCandidateLineStyle,
-			final String electionIdentification) {
+			final String electionIdentification, final boolean ignoreIncumbentText) {
 
 		final DisplayCandidateLineStyle effectiveDisplayCandidateLineStyle =
 				noSpecificDisplayCandidateLineStyle ? defaultDisplayCandidateLineStyle : specificDisplayCandidateLineStyle;
 
 		switch (effectiveDisplayCandidateLineStyle) {
-		case DEFAULT -> addDefaultDisplayCandidateLinesStyle(candidateType);
-		case DEFAULT_COMMA_SEPARATED -> addDefaultCommaSeparatedDisplayCandidateLinesStyle(candidateType);
-		case WITH_PARTY_AFFILIATION -> addWithPartyAffiliationDisplayCandidateLinesStyle(candidateType);
-		case WITH_PARTY_AFFILIATION_EXTRA_LINE -> addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(candidateType);
+		case DEFAULT -> addDefaultDisplayCandidateLinesStyle(candidateType, ignoreIncumbentText);
+		case DEFAULT_COMMA_SEPARATED -> addDefaultCommaSeparatedDisplayCandidateLinesStyle(candidateType, ignoreIncumbentText);
+		case WITH_PARTY_AFFILIATION -> addWithPartyAffiliationDisplayCandidateLinesStyle(candidateType, ignoreIncumbentText);
+		case WITH_PARTY_AFFILIATION_EXTRA_LINE -> addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(candidateType, ignoreIncumbentText);
 		case WITH_PARTY_AFFILIATION_EXTRA_LINE_COMMA_SEPARATED ->
-				addWithPartyAffiliationExtraLineCommaSeparatedDisplayCandidateLinesStyle(candidateType);
-		case WITH_PARTY_AFFILIATION_BRACKETS_NONUMBER -> addWithPartyAffiliationBracketsNoNumberDisplayCandidateLinesStyle(candidateType);
-		case WITH_PARTY_AFFILIATION_BRACKETS -> addWithPartyAffiliationBracketsDisplayCandidateLinesStyle(candidateType);
-		case WITH_PARTY_AFFILIATION_BELOW_BRACKETS_NONUMBER -> addWithPartyAffiliationBelowBracketsNoNumberDisplayCandidateLinesStyle(candidateType);
-		case WITH_PARTY_AFFILIATION_BELOW_BRACKETS -> addWithPartyAffiliationBelowBracketsDisplayCandidateLinesStyle(candidateType);
+				addWithPartyAffiliationExtraLineCommaSeparatedDisplayCandidateLinesStyle(candidateType, ignoreIncumbentText);
+		case WITH_PARTY_AFFILIATION_BRACKETS_NONUMBER -> addWithPartyAffiliationBracketsNoNumberDisplayCandidateLinesStyle(candidateType, ignoreIncumbentText);
+		case WITH_PARTY_AFFILIATION_BRACKETS -> addWithPartyAffiliationBracketsDisplayCandidateLinesStyle(candidateType, ignoreIncumbentText);
+		case WITH_PARTY_AFFILIATION_BELOW_BRACKETS_NONUMBER -> addWithPartyAffiliationBelowBracketsNoNumberDisplayCandidateLinesStyle(candidateType, ignoreIncumbentText);
+		case WITH_PARTY_AFFILIATION_BELOW_BRACKETS -> addWithPartyAffiliationBelowBracketsDisplayCandidateLinesStyle(candidateType, ignoreIncumbentText);
 		default -> throw new IllegalStateException(String.format(
 				"Unknown displayCandidateLineStyle. [displayCandidateLineStyle: %s, electionId: %s, candidateId: %s]",
 				effectiveDisplayCandidateLineStyle, electionIdentification, candidateType.getCandidateIdentification()));
@@ -551,8 +568,8 @@ public class ContestService {
 	 *
 	 * @param candidate the candidate for which to generate the display lines
 	 */
-	private void addDefaultDisplayCandidateLinesStyle(final CandidateType candidate) {
-		generateCandidateDisplayLines1To3(candidate, "");
+	private void addDefaultDisplayCandidateLinesStyle(final CandidateType candidate, final boolean ignoreIncumbentText) {
+		generateCandidateDisplayLines1To3(candidate, "", ignoreIncumbentText);
 	}
 
 	/**
@@ -567,8 +584,8 @@ public class ContestService {
 	 *
 	 * @param candidate the candidate for which to generate the display lines
 	 */
-	private void addDefaultCommaSeparatedDisplayCandidateLinesStyle(final CandidateType candidate) {
-		generateCandidateDisplayLines1To3(candidate, ",");
+	private void addDefaultCommaSeparatedDisplayCandidateLinesStyle(final CandidateType candidate, final boolean ignoreIncumbentText) {
+		generateCandidateDisplayLines1To3(candidate, ",", ignoreIncumbentText);
 	}
 
 	/**
@@ -581,7 +598,7 @@ public class ContestService {
 	 * @param candidate the candidate for which to generate the display lines
 	 * @param delimiter the delimiter to use between family name and call name (e.g., space or comma)
 	 */
-	private void generateCandidateDisplayLines1To3(final CandidateType candidate, final String delimiter) {
+	private void generateCandidateDisplayLines1To3(final CandidateType candidate, final String delimiter, final boolean ignoreIncumbentText) {
 		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = Arrays.stream(LanguageType.values())
 				.map(languageType -> {
 					final String displayLine1 = String.join(" ", candidate.getReferenceOnPosition(), candidate.getFamilyName() + delimiter,
@@ -591,7 +608,7 @@ public class ContestService {
 							.withDisplayLineText(displayLine1);
 				})
 				.toList();
-		setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
+		setCandidateDisplayLines1To3(candidate, displayLineInfoList1, ignoreIncumbentText);
 	}
 
 	/**
@@ -606,7 +623,7 @@ public class ContestService {
 	 *
 	 * @param candidate the candidate for which to generate the display lines
 	 */
-	private void addWithPartyAffiliationDisplayCandidateLinesStyle(final CandidateType candidate) {
+	private void addWithPartyAffiliationDisplayCandidateLinesStyle(final CandidateType candidate, final boolean ignoreIncumbentText) {
 		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = candidate.getPartyAffiliation()
 				.getPartyAffiliationInfo().stream()
 				.map(partyAffiliationInfo -> {
@@ -623,7 +640,7 @@ public class ContestService {
 							.withDisplayLineText(displayLine1);
 				})
 				.toList();
-		setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
+		setCandidateDisplayLines1To3(candidate, displayLineInfoList1, ignoreIncumbentText);
 	}
 
 	/**
@@ -638,8 +655,8 @@ public class ContestService {
 	 *
 	 * @param candidate the candidate for which to generate the display lines
 	 */
-	private void addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(final CandidateType candidate) {
-		generateCandidateDisplayLines1To3(candidate, "");
+	private void addWithPartyAffiliationExtraLineDisplayCandidateLinesStyle(final CandidateType candidate, final  boolean ignoreIncumbentText) {
+		generateCandidateDisplayLines1To3(candidate, "", ignoreIncumbentText);
 		setDisplayCandidateLineWithAffiliationExtraLine(candidate);
 	}
 
@@ -655,8 +672,8 @@ public class ContestService {
 	 *
 	 * @param candidate the candidate for which to generate the display lines
 	 */
-	private void addWithPartyAffiliationExtraLineCommaSeparatedDisplayCandidateLinesStyle(final CandidateType candidate) {
-		generateCandidateDisplayLines1To3(candidate, ",");
+	private void addWithPartyAffiliationExtraLineCommaSeparatedDisplayCandidateLinesStyle(final CandidateType candidate, final  boolean ignoreIncumbentText) {
+		generateCandidateDisplayLines1To3(candidate, ",", ignoreIncumbentText);
 		setDisplayCandidateLineWithAffiliationExtraLine(candidate);
 	}
 
@@ -717,7 +734,7 @@ public class ContestService {
 	 *
 	 * @param candidate the candidate for which to generate the display lines
 	 */
-	private void addWithPartyAffiliationBracketsNoNumberDisplayCandidateLinesStyle(final CandidateType candidate) {
+	private void addWithPartyAffiliationBracketsNoNumberDisplayCandidateLinesStyle(final CandidateType candidate, final boolean ignoreIncumbentText) {
 
 		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = candidate.getPartyAffiliation()
 				.getPartyAffiliationInfo().stream()
@@ -735,7 +752,7 @@ public class ContestService {
 							.withDisplayLineText(displayLine1);
 				})
 				.toList();
-		setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
+		setCandidateDisplayLines1To3(candidate, displayLineInfoList1, ignoreIncumbentText);
 
 	}
 
@@ -751,7 +768,7 @@ public class ContestService {
 	 *
 	 * @param candidate the candidate for which to generate the display lines
 	 */
-	private void addWithPartyAffiliationBracketsDisplayCandidateLinesStyle(final CandidateType candidate) {
+	private void addWithPartyAffiliationBracketsDisplayCandidateLinesStyle(final CandidateType candidate, final boolean ignoreIncumbentText) {
 		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = candidate.getPartyAffiliation()
 				.getPartyAffiliationInfo().stream()
 				.map(partyAffiliationInfo -> {
@@ -768,7 +785,7 @@ public class ContestService {
 							.withDisplayLineText(displayLine1);
 				})
 				.toList();
-		setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
+		setCandidateDisplayLines1To3(candidate, displayLineInfoList1, ignoreIncumbentText);
 	}
 
 	/**
@@ -783,7 +800,7 @@ public class ContestService {
 	 *
 	 * @param candidate the candidate for which to generate the display lines
 	 */
-	private void addWithPartyAffiliationBelowBracketsNoNumberDisplayCandidateLinesStyle(final CandidateType candidate) {
+	private void addWithPartyAffiliationBelowBracketsNoNumberDisplayCandidateLinesStyle(final CandidateType candidate, final boolean ignoreIncumbentText) {
 		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = Arrays.stream(LanguageType.values())
 				.map(languageType -> {
 					final String displayLine1 = String.join(" ", candidate.getFamilyName(), candidate.getCallName());
@@ -792,7 +809,7 @@ public class ContestService {
 							.withDisplayLineText(displayLine1);
 				})
 				.toList();
-		setCandidateDisplayLines1To3(candidate, displayLineInfoList1);
+		setCandidateDisplayLines1To3(candidate, displayLineInfoList1, ignoreIncumbentText);
 		setDisplayCandidateLineWithAffiliationBelowLineBrackets(candidate);
 	}
 
@@ -808,9 +825,9 @@ public class ContestService {
 	 *
 	 * @param candidate the candidate for which to generate the display lines
 	 */
-	private void addWithPartyAffiliationBelowBracketsDisplayCandidateLinesStyle(final CandidateType candidate) {
+	private void addWithPartyAffiliationBelowBracketsDisplayCandidateLinesStyle(final CandidateType candidate, final boolean ignoreIncumbentText) {
 
-		generateCandidateDisplayLines1To3(candidate, "");
+		generateCandidateDisplayLines1To3(candidate, "", ignoreIncumbentText);
 		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList5 = candidate.getPartyAffiliation()
 				.getPartyAffiliationInfo().stream()
 				.map(partyAffiliationInfo -> {
@@ -844,7 +861,7 @@ public class ContestService {
 	 * @param displayLineInfoList1 the display line info list for line 1 in all languages
 	 */
 	private void setCandidateDisplayLines1To3(final CandidateType candidate,
-			final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1) {
+			final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1, final boolean ignoreIncumbentText) {
 		candidate.setDisplayCandidateLine1(new DisplayLineInformationType().withDisplayLineInfo(displayLineInfoList1));
 
 		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList2 = candidate.getCandidateText()
@@ -855,7 +872,7 @@ public class ContestService {
 				.toList();
 		candidate.setDisplayCandidateLine2(new DisplayLineInformationType().withDisplayLineInfo(displayLineInfoList2));
 
-		if (candidate.getIncumbent().isIncumbent()) {
+		if (candidate.getIncumbent().isIncumbent() && !ignoreIncumbentText) {
 			final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList3 = candidate.getIncumbent().getIncumbentText()
 					.getIncumbentTextInfo().stream()
 					.map(incumbentTextInfoType -> new DisplayLineInformationType.DisplayLineInfo()
