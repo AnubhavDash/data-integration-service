@@ -371,7 +371,7 @@ public class ContestService {
 
 		addElectionGroupIdAndDescriptionIfNeeded(electionGroups);
 
-		fillPositionIfDefinedInParameters(votes, electionGroups, contestParameters);
+		addVotesAndElectionGroupPositions(votes, electionGroups, contestParameters.getSorting());
 
 		addVotesAnswers(votes, contestParameters);
 		checkVotesQuestionsPositionsConsistency(votes);
@@ -398,8 +398,6 @@ public class ContestService {
 		addElectionsAccumulation(electionGroups, contestParameters);
 		addElectionsMinimalCandidateSelectionInList(electionGroups, contestParameters);
 		addElectionRulesExplanation(electionGroups, contestParameters);
-
-		addVotesAndElectionGroupPositionIfNeeded(votes, electionGroups);
 		checkElectionsPositionsConsistency(electionGroups);
 
 		sortElectionsAndVotes(electionGroups, votes);
@@ -893,62 +891,59 @@ public class ContestService {
 		votes.sort(Comparator.comparingInt(vote -> vote.getVote().getVotePosition()));
 	}
 
-	private void fillPositionIfDefinedInParameters(final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups,
-			final ch.evoting.xmlns.parameter._5.ContestType contestParameters) {
+	private void addVotesAndElectionGroupPositionsFromParameters(final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups,
+			final SortingType sorting) {
 
-		final SortingType sorting = contestParameters.getSorting();
-		if (sorting != null) {
-			final List<SortingType.ElectionGroup> sortingElectionGroups = sorting.getElectionGroup();
-			final List<SortingType.Vote> sortingVotes = sorting.getVote();
-			final int totalNbrOfPositions = sortingElectionGroups.size() + sortingVotes.size();
+		final List<SortingType.ElectionGroup> sortingElectionGroups = sorting.getElectionGroup();
+		final List<SortingType.Vote> sortingVotes = sorting.getVote();
+		final int totalNbrOfPositions = sortingElectionGroups.size() + sortingVotes.size();
 
-			checkState(votes.size() == sortingVotes.size() && electionGroups.size() == sortingElectionGroups.size(),
-					"Partial sorting is not supported. The positions must be defined either for all votes and all election groups or for none.");
+		checkState(votes.size() == sortingVotes.size() && electionGroups.size() == sortingElectionGroups.size(),
+				"Partial sorting is not supported. The positions must be defined either for all votes and all election groups or for none.");
 
-			final TreeSet<Integer> sortedPositions = Stream.concat(
-							sortingElectionGroups.stream().map(electionGroup -> electionGroup.getPositionNumber().intValueExact()),
-							sortingVotes.stream().map(vote -> vote.getPositionNumber().intValueExact()))
-					.collect(Collectors.toCollection(TreeSet::new));
+		final TreeSet<Integer> sortedPositions = Stream.concat(
+						sortingElectionGroups.stream().map(electionGroup -> electionGroup.getPositionNumber().intValueExact()),
+						sortingVotes.stream().map(vote -> vote.getPositionNumber().intValueExact()))
+				.collect(Collectors.toCollection(TreeSet::new));
 
-			final Integer minPosition = sortedPositions.getFirst();
-			final Integer maxPosition = sortedPositions.getLast();
+		final Integer minPosition = sortedPositions.getFirst();
+		final Integer maxPosition = sortedPositions.getLast();
 
-			checkState(sortedPositions.size() == totalNbrOfPositions && (minPosition == 0 || minPosition == 1)
-							&& maxPosition - minPosition == totalNbrOfPositions - 1,
-					"The sorting positions must be a strictly increasing sequence from 0 to %s or from 1 to %s.", totalNbrOfPositions - 1,
-					totalNbrOfPositions);
+		checkState(sortedPositions.size() == totalNbrOfPositions && (minPosition == 0 || minPosition == 1)
+						&& maxPosition - minPosition == totalNbrOfPositions - 1,
+				"The sorting positions must be a strictly increasing sequence from 0 to %s or from 1 to %s.", totalNbrOfPositions - 1,
+				totalNbrOfPositions);
 
-			if (minPosition == 0) {
-				sortingElectionGroups.forEach(
-						electionGroup -> electionGroup.setPositionNumber(electionGroup.getPositionNumber().add(BigInteger.ONE)));
-				sortingVotes.forEach(vote -> vote.setPositionNumber(vote.getPositionNumber().add(BigInteger.ONE)));
-				LOGGER.warn("The sorting positions start from 0. They have been changed to start from 1.");
-			}
-
-			sortingElectionGroups.forEach(positionParameter -> {
-				final String electionGroupIdentification = positionParameter.getElectionGroupIdentification();
-				final int position = positionParameter.getPositionNumber().intValueExact();
-				electionGroups.stream()
-						.filter(eg -> eg.getElectionGroupIdentification().equals(electionGroupIdentification))
-						.findFirst()
-						.orElseThrow(() -> new IllegalStateException(String.format(
-								"Unknown electionGroupIdentification defined in sorting definition of parameters file. [electionGroupIdentification: %s",
-								electionGroupIdentification)))
-						.setElectionGroupPosition(position);
-			});
-
-			sortingVotes.forEach(positionParameter -> {
-				final String voteIdentification = positionParameter.getVoteIdentification();
-				final int position = positionParameter.getPositionNumber().intValueExact();
-				votes.stream()
-						.filter(vote -> vote.getVote().getVoteIdentification().equals(voteIdentification))
-						.findFirst()
-						.orElseThrow(() -> new IllegalStateException(String.format(
-								"Unknown voteIdentification defined in sorting definition of parameters file. [voteIdentification: %s",
-								voteIdentification)))
-						.getVote().setVotePosition(position);
-			});
+		if (minPosition == 0) {
+			sortingElectionGroups.forEach(
+					electionGroup -> electionGroup.setPositionNumber(electionGroup.getPositionNumber().add(BigInteger.ONE)));
+			sortingVotes.forEach(vote -> vote.setPositionNumber(vote.getPositionNumber().add(BigInteger.ONE)));
+			LOGGER.warn("The sorting positions start from 0. They have been changed to start from 1.");
 		}
+
+		sortingElectionGroups.forEach(positionParameter -> {
+			final String electionGroupIdentification = positionParameter.getElectionGroupIdentification();
+			final int position = positionParameter.getPositionNumber().intValueExact();
+			electionGroups.stream()
+					.filter(eg -> eg.getElectionGroupIdentification().equals(electionGroupIdentification))
+					.findFirst()
+					.orElseThrow(() -> new IllegalStateException(String.format(
+							"Unknown electionGroupIdentification defined in sorting definition of parameters file. [electionGroupIdentification: %s",
+							electionGroupIdentification)))
+					.setElectionGroupPosition(position);
+		});
+
+		sortingVotes.forEach(positionParameter -> {
+			final String voteIdentification = positionParameter.getVoteIdentification();
+			final int position = positionParameter.getPositionNumber().intValueExact();
+			votes.stream()
+					.filter(vote -> vote.getVote().getVoteIdentification().equals(voteIdentification))
+					.findFirst()
+					.orElseThrow(() -> new IllegalStateException(String.format(
+							"Unknown voteIdentification defined in sorting definition of parameters file. [voteIdentification: %s",
+							voteIdentification)))
+					.getVote().setVotePosition(position);
+		});
 	}
 
 	private void addVotesQuestionNumberIfNeeded(final List<VoteInformationType> votes) {
@@ -980,18 +975,15 @@ public class ContestService {
 		return (char) ('a' + value);
 	}
 
-	private void addVotesAndElectionGroupPositionIfNeeded(final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups) {
-		final AtomicInteger counter = new AtomicInteger(1);
-		votes.forEach(vote -> {
-			if (vote.getVote().getVotePosition() == DEFAULT_VALUE) {
-				vote.getVote().setVotePosition(counter.getAndIncrement());
-			}
-		});
-		electionGroups.forEach(electionGroup -> {
-			if (electionGroup.getElectionGroupPosition() == DEFAULT_VALUE) {
-				electionGroup.setElectionGroupPosition(counter.getAndIncrement());
-			}
-		});
+	private void addVotesAndElectionGroupPositions(final List<VoteInformationType> votes, final List<ElectionGroupBallotType> electionGroups,
+			final SortingType sorting) {
+		if (sorting != null) {
+			addVotesAndElectionGroupPositionsFromParameters(votes, electionGroups, sorting);
+		} else {
+			final AtomicInteger counter = new AtomicInteger(1);
+			votes.forEach(vote -> vote.getVote().setVotePosition(counter.getAndIncrement()));
+			electionGroups.forEach(electionGroup -> electionGroup.setElectionGroupPosition(counter.getAndIncrement()));
+		}
 	}
 
 	private void checkElectionsPositionsConsistency(final List<ElectionGroupBallotType> electionGroups) {

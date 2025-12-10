@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 2.9.2.2
+
+Release 2.9.2.2 is a minor maintenance patch correcting the following issue:
+
+* Fixes a problem with inconsistent numberings in election groups and popular votes.
+
 ## Release 2.9.2.1
 
 Release 2.9.2.1 incorporates the following changes:
