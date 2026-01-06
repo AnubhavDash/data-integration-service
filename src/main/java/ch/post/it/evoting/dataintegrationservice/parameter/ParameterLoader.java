@@ -47,10 +47,10 @@ public class ParameterLoader {
 		// Default XML
 		try (final InputStream defaultFile = ParameterLoader.class.getClassLoader().getResourceAsStream(defaultParameterLocation)) {
 
-			final Parameter defaultParameterValue = new Stax2Wrapper(defaultFile, null, ObjectFactory.class, new PluginObjectFactory())
+			final Parameter defaultParameterValue = new Stax2Wrapper(defaultFile, null, new Class<?>[]{ObjectFactory.class}, new PluginObjectFactory())
 					.processByIteration("/parameter", Parameter.class)
 					.iterator().next();
-			final Parameter inputParameterValue = new Stax2Wrapper(fileLocation, schemaPath, ObjectFactory.class, new PluginObjectFactory())
+			final Parameter inputParameterValue = new Stax2Wrapper(fileLocation, schemaPath, new Class<?>[]{ObjectFactory.class}, new PluginObjectFactory())
 					.processByIteration("/parameter", Parameter.class)
 					.iterator().next();
 

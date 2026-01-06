@@ -38,7 +38,7 @@ class ParameterLoaderTest {
 
 		final Parameter expected = new Stax2Wrapper("src/test/resources/ParameterLoaderTest/mergeTest/ParameterLoaderTest_merge.xml",
 				null,
-				ObjectFactory.class,
+				new Class<?>[]{ObjectFactory.class},
 				new PluginObjectFactory())
 				.processByIteration("/parameter", Parameter.class).iterator().next();
 

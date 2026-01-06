@@ -3,15 +3,15 @@
  */
 package ch.evoting.xmlns.parameter._5;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 
 public class QuantitySplitterTypeImpl extends QuantitySplitterType {
 
-	private final HashMap<String, AtomicInteger> counter = new HashMap<>();
+	private final Map<String, AtomicInteger> counter = new ConcurrentHashMap<>();
 
 	private int getCounterValue(final String key) {
 		return counter.computeIfAbsent(key, k -> new AtomicInteger()).getAndIncrement();

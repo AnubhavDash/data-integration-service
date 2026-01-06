@@ -194,19 +194,19 @@ class ECH0045V40MapperIT {
 		assertEquals("CH", voter.getPerson().getResidenceCountryId());
 		assertEquals(1, voter.getPerson().getMunicipality().getMunicipalityId());
 		assertEquals("Fribourg", voter.getPerson().getMunicipality().getMunicipalityName());
-		assertNull(voter.getPerson().getPhysicalAddress().getTitle());
-		assertEquals("Pierre-Henri", voter.getPerson().getPhysicalAddress().getFirstName());
-		assertEquals("Dupont-Duchêne", voter.getPerson().getPhysicalAddress().getLastName());
-		assertEquals("Rue des lilas", voter.getPerson().getPhysicalAddress().getStreet());
-		assertEquals("12a", voter.getPerson().getPhysicalAddress().getHouseNumber());
-		assertEquals("222", voter.getPerson().getPhysicalAddress().getDwellingNumber());
-		assertEquals("Case postale", voter.getPerson().getPhysicalAddress().getPostOfficeBoxText());
-		assertEquals(Long.valueOf(1002L), voter.getPerson().getPhysicalAddress().getPostOfficeBoxNumber());
-		assertEquals("2072", voter.getPerson().getPhysicalAddress().getZipCode());
-		assertEquals("St-Blaise", voter.getPerson().getPhysicalAddress().getTown());
-		assertEquals("ch", voter.getPerson().getPhysicalAddress().getCountry());
+		assertNull(voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getTitle());
+		assertEquals("Pierre-Henri", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getFirstName());
+		assertEquals("Dupont-Duchêne", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getLastName());
+		assertEquals("Rue des lilas", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getStreet());
+		assertEquals("12a", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getHouseNumber());
+		assertEquals("222", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getDwellingNumber());
+		assertEquals("Case postale", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getPostOfficeBoxText());
+		assertEquals(Long.valueOf(1002L), voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getPostOfficeBoxNumber());
+		assertEquals("2072", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getZipCode());
+		assertEquals("St-Blaise", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getTown());
+		assertEquals("ch", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getCountryIdISO2());
 		assertEquals(0, voter.getPerson().getElectronicAddress().size());
-		assertNull(voter.getPerson().getPhysicalAddress().getFrankingArea());
+		assertNull(voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getFrankingArea());
 	}
 
 	@Test
@@ -222,20 +222,20 @@ class ECH0045V40MapperIT {
 		assertEquals(LanguageType.IT, voter.getPerson().getLanguageOfCorrespondance());
 		assertEquals(2, voter.getPerson().getMunicipality().getMunicipalityId());
 		assertEquals("Genève", voter.getPerson().getMunicipality().getMunicipalityName());
-		assertEquals("Sa Sainteté", voter.getPerson().getPhysicalAddress().getTitle());
-		assertEquals("Fabienne Linda", voter.getPerson().getPhysicalAddress().getFirstName());
-		assertEquals("Durand-Duparis", voter.getPerson().getPhysicalAddress().getLastName());
-		assertEquals("Rue des rosiers", voter.getPerson().getPhysicalAddress().getStreet());
-		assertNull(voter.getPerson().getPhysicalAddress().getHouseNumber());
-		assertNull(voter.getPerson().getPhysicalAddress().getDwellingNumber());
-		assertNull(voter.getPerson().getPhysicalAddress().getPostOfficeBoxText());
-		assertNull(voter.getPerson().getPhysicalAddress().getPostOfficeBoxNumber());
-		assertEquals("4123ZX", voter.getPerson().getPhysicalAddress().getZipCode());
-		assertEquals("Whalala", voter.getPerson().getPhysicalAddress().getTown());
-		assertEquals("IN", voter.getPerson().getPhysicalAddress().getCountry());
+		assertEquals("Sa Sainteté", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getTitle());
+		assertEquals("Fabienne Linda", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getFirstName());
+		assertEquals("Durand-Duparis", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getLastName());
+		assertEquals("Rue des rosiers", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getStreet());
+		assertNull(voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getHouseNumber());
+		assertNull(voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getDwellingNumber());
+		assertNull(voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getPostOfficeBoxText());
+		assertNull(voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getPostOfficeBoxNumber());
+		assertEquals("4123ZX", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getZipCode());
+		assertEquals("Whalala", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getTown());
+		assertEquals("IN", voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getCountryIdISO2());
 		assertEquals(1, voter.getPerson().getElectronicAddress().getFirst().getElectronicAddressType());
 		assertEquals("fabienne.durand@provider.ch", voter.getPerson().getElectronicAddress().getFirst().getElectronicAddressValue());
-		assertNull(voter.getPerson().getPhysicalAddress().getFrankingArea());
+		assertNull(voter.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getFrankingArea());
 	}
 
 	@Test

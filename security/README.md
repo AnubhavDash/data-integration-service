@@ -6,4 +6,4 @@ their [report on the Swiss Post E-Voting System](https://www.bk.admin.ch/dam/bk/
 
 The Swiss Post Voting System relies on the operating system to select a high-quality PRNG when performing cryptographic operations.
 For increased auditability and to ensure that an appropriate PRNG is selected in practice, this folder contains the Java security configuration
-for the Linux and Windows operating systems used in the deployed system.
+for the Windows operating system used in the deployed system.

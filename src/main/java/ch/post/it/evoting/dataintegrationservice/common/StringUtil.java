@@ -41,7 +41,7 @@ public class StringUtil {
 		try {
 			Integer.parseInt(input);
 			return true;
-		} catch (final Exception e) {
+		} catch (final Exception _) {
 			return false;
 		}
 	}

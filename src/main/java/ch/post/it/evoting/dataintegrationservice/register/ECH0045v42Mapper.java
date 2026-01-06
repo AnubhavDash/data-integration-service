@@ -7,7 +7,6 @@ import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvid
 import static ch.post.it.evoting.dataintegrationservice.common.StringUtil.isNullOrEmpty;
 import static com.google.common.base.Preconditions.checkState;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,8 +33,9 @@ import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.evotinglibraries.domain.LocalDateUtils;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectronicAddressType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PersonType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PhysicalAddressType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.SexType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StructuredPhysicalAddressType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.UnstructuredPhysicalAddressType;
 
 @Mapper(uses = XsTokenMapper.class)
 public interface ECH0045v42Mapper {
@@ -60,12 +60,20 @@ public interface ECH0045v42Mapper {
 			throw new IllegalArgumentException("Unimplemented personType");
 		}
 
-		if (voter.getDeliveryAddress() != null) {
-			voterType.getPerson().setPhysicalAddress(convert(voter.getDeliveryAddress()));
-		} else if (voter.getElectoralAddress() != null) {
-			voterType.getPerson().setPhysicalAddress(convert(voter.getElectoralAddress()));
+		voterType.getPerson().setPhysicalAddress(new PersonType.PhysicalAddress());
+		final Object extension = getVoterExtension(voter);
+		if (extension instanceof final ch.post.it.evoting.evotinglibraries.xml.xmlns.ech045voterextension.VoterExtensionType voterExtension
+				&& voterExtension.getUnstructuredPhysicalAddress() != null) {
+			voterType.getPerson().getPhysicalAddress().setUnstructuredPhysicalAddress(convert(voterExtension.getUnstructuredPhysicalAddress()));
 		} else {
-			throw new IllegalArgumentException(String.format("Unable to retrieve an address for the voter (%s)", voterType.getVoterIdentification()));
+			if (voter.getDeliveryAddress() != null) {
+				voterType.getPerson().getPhysicalAddress().setStructuredPhysicalAddress(convert(voter.getDeliveryAddress()));
+			} else if (voter.getElectoralAddress() != null) {
+				voterType.getPerson().getPhysicalAddress().setStructuredPhysicalAddress(convert(voter.getElectoralAddress()));
+			} else {
+				throw new IllegalArgumentException(
+						String.format("Unable to retrieve an address for the voter (%s)", voterType.getVoterIdentification()));
+			}
 		}
 
 		voterType.setDomainOfInfluenceInfos(new LinkedList<>(voter.getDomainOfInfluenceInfo().stream().map(domainOfInfluenceInfo ->
@@ -91,6 +99,22 @@ public interface ECH0045v42Mapper {
 		}).toList()));
 
 		return voterType;
+	}
+
+	@Mapping(target = "countryIdISO2", source = "countryIso2")
+	UnstructuredPhysicalAddressType convert(
+			final ch.post.it.evoting.evotinglibraries.xml.xmlns.ech045voterextension.UnstructuredPhysicalAddressType unstructuredAddress);
+
+	@SuppressWarnings("Duplicates")
+	private Object getVoterExtension(final VotingPersonType voter) {
+		if (voter.getPerson().getSwiss() != null) {
+			return voter.getPerson().getSwiss().getSwissDomesticPerson().getExtension();
+		} else if (voter.getPerson().getSwissAbroad() != null) {
+			return voter.getPerson().getSwissAbroad().getSwissAbroadPerson().getExtension();
+		} else if (voter.getPerson().getForeigner() != null) {
+			return voter.getPerson().getForeigner().getForeignerPerson().getExtension();
+		}
+		throw new IllegalArgumentException("Unimplemented personType");
 	}
 
 	private void calculateResidenceCountry(final VotingPersonType voter, final VoterTypeWithRole voterType) {
@@ -174,9 +198,9 @@ public interface ECH0045v42Mapper {
 			VoterTypeWithRole voter, VotingPersonType v, ForeignerPersonType foreignerPerson);
 
 	@SuppressWarnings("Duplicates")
-	default PhysicalAddressType convert(final ch.ech.xmlns.ech_0010._6.PersonMailAddressType echAddress) {
+	default StructuredPhysicalAddressType convert(final ch.ech.xmlns.ech_0010._6.PersonMailAddressType echAddress) {
 		//choice swissZip or foreignZip or nothing
-		final PhysicalAddressType address = new PhysicalAddressType();
+		final StructuredPhysicalAddressType address = new StructuredPhysicalAddressType();
 		appendPhysicalAddress(address, echAddress);
 		if (echAddress.getAddressInformation().getSwissZipCode() != null) {
 			address.setZipCode(echAddress.getAddressInformation().getSwissZipCode().toString());
@@ -184,29 +208,11 @@ public interface ECH0045v42Mapper {
 			address.setZipCode(echAddress.getAddressInformation().getForeignZipCode());
 		}
 
-		//manage address line 1 and 2
-		final String line1 = echAddress.getAddressInformation().getAddressLine1();
-		final String line2 = echAddress.getAddressInformation().getAddressLine2();
-		if (!isNullOrEmpty(line1) || !isNullOrEmpty(line2)) {
-			address.setBelowNameLine(new ArrayList<>());
-			if (!isNullOrEmpty(line1)) {
-				address.getBelowNameLine().add(line1);
-			}
-			if (!isNullOrEmpty(line2)) {
-				address.getBelowNameLine().add(line2);
-			}
+		if (address.getCountryIdISO2().equalsIgnoreCase("XZ")) {
+			address.setCountryIdISO2("XK");
 		}
 
-		//manage locality to belowTown
-		if (!isNullOrEmpty(echAddress.getAddressInformation().getLocality())) {
-			address.setBelowTownLine(Collections.singletonList(echAddress.getAddressInformation().getLocality()));
-		}
-
-		if (address.getCountry().equalsIgnoreCase("XZ")) {
-			address.setCountry("XK");
-		}
-
-		if ((address.getCountry().equalsIgnoreCase("US") || address.getCountry().equalsIgnoreCase("CA")) && !isNullOrEmpty(
+		if ((address.getCountryIdISO2().equalsIgnoreCase("US") || address.getCountryIdISO2().equalsIgnoreCase("CA")) && !isNullOrEmpty(
 				echAddress.getAddressInformation().getLocality())) {
 			address.setTown(address.getTown() + " " + echAddress.getAddressInformation().getLocality());
 		}
@@ -214,9 +220,9 @@ public interface ECH0045v42Mapper {
 		return address;
 	}
 
-	default PhysicalAddressType convert(final ElectoralAddressType electoralAddress) {
+	default StructuredPhysicalAddressType convert(final ElectoralAddressType electoralAddress) {
 		//choice swissZip or foreignZip or nothing
-		final PhysicalAddressType address = new PhysicalAddressType();
+		final StructuredPhysicalAddressType address = new StructuredPhysicalAddressType();
 		appendPhysicalAddress(address, electoralAddress);
 		if (electoralAddress.getAddressInformation().getSwissZipCode() != null) {
 			address.setZipCode(electoralAddress.getAddressInformation().getSwissZipCode().toString());
@@ -224,29 +230,16 @@ public interface ECH0045v42Mapper {
 			address.setZipCode(electoralAddress.getAddressInformation().getForeignZipCode());
 		}
 
-		//manage address line 1 and 2
-		final String line1 = electoralAddress.getAddressInformation().getAddressLine1();
-		final String line2 = electoralAddress.getAddressInformation().getAddressLine2();
-		if (!isNullOrEmpty(line1) || !isNullOrEmpty(line2)) {
-			address.setBelowNameLine(new ArrayList<>());
-			if (!isNullOrEmpty(line1)) {
-				address.getBelowNameLine().add(line1);
-			}
-			if (!isNullOrEmpty(line2)) {
-				address.getBelowNameLine().add(line2);
-			}
-		}
-
 		//manage locality to belowTown
 		if (!isNullOrEmpty(electoralAddress.getAddressInformation().getLocality())) {
-			address.setBelowTownLine(List.of(electoralAddress.getAddressInformation().getLocality()));
+			address.setLocality(electoralAddress.getAddressInformation().getLocality());
 		}
 
-		if ("XZ".equalsIgnoreCase(address.getCountry())) {
-			address.setCountry("XK");
+		if ("XZ".equalsIgnoreCase(address.getCountryIdISO2())) {
+			address.setCountryIdISO2("XK");
 		}
 
-		if (("US".equalsIgnoreCase(address.getCountry()) || "CA".equalsIgnoreCase(address.getCountry())) && !isNullOrEmpty(
+		if (("US".equalsIgnoreCase(address.getCountryIdISO2()) || "CA".equalsIgnoreCase(address.getCountryIdISO2())) && !isNullOrEmpty(
 				electoralAddress.getAddressInformation().getLocality())) {
 			address.setTown(address.getTown() + " " + electoralAddress.getAddressInformation().getLocality());
 		}
@@ -264,19 +257,16 @@ public interface ECH0045v42Mapper {
 	@Mapping(target = "postOfficeBoxText", source = "addressInformation.postOfficeBoxText")
 	@Mapping(target = "postOfficeBoxNumber", source = "addressInformation.postOfficeBoxNumber")
 	@Mapping(target = "zipCode", ignore = true)
+	@Mapping(target = "locality", source = "addressInformation.locality")
 	@Mapping(target = "town", source = "addressInformation.town")
-	@Mapping(target = "country", source = "addressInformation.country.countryIdISO2")
+	@Mapping(target = "countryIdISO2", source = "addressInformation.country.countryIdISO2")
 	@Mapping(target = "countryNameShort", source = "addressInformation.country.countryNameShort")
-	@Mapping(target = "belowTitleLine", ignore = true)
-	@Mapping(target = "belowNameLine", ignore = true)
-	@Mapping(target = "belowStreetLine", ignore = true)
-	@Mapping(target = "belowPostOfficeBoxLine", ignore = true)
-	@Mapping(target = "belowTownLine", ignore = true)
-	@Mapping(target = "belowCountryLine", ignore = true)
 	@Mapping(target = "frankingArea", ignore = true)
+	@Mapping(target = "addressLine1", source = "addressInformation.addressLine1")
+	@Mapping(target = "addressLine2", source = "addressInformation.addressLine2")
 	void appendPhysicalAddress(
 			@MappingTarget
-			PhysicalAddressType address, ch.ech.xmlns.ech_0010._6.PersonMailAddressType echAddress);
+			StructuredPhysicalAddressType address, ch.ech.xmlns.ech_0010._6.PersonMailAddressType echAddress);
 
 	@Mapping(target = "mrMrs", source = "person.mrMrs")
 	@Mapping(target = "title", source = "person.title")
@@ -288,19 +278,16 @@ public interface ECH0045v42Mapper {
 	@Mapping(target = "postOfficeBoxText", source = "addressInformation.postOfficeBoxText")
 	@Mapping(target = "postOfficeBoxNumber", source = "addressInformation.postOfficeBoxNumber")
 	@Mapping(target = "zipCode", ignore = true)
+	@Mapping(target = "locality", source = "addressInformation.locality")
 	@Mapping(target = "town", source = "addressInformation.town")
-	@Mapping(target = "country", source = "addressInformation.country.countryIdISO2")
+	@Mapping(target = "countryIdISO2", source = "addressInformation.country.countryIdISO2")
 	@Mapping(target = "countryNameShort", source = "addressInformation.country.countryNameShort")
-	@Mapping(target = "belowTitleLine", ignore = true)
-	@Mapping(target = "belowNameLine", ignore = true)
-	@Mapping(target = "belowStreetLine", ignore = true)
-	@Mapping(target = "belowPostOfficeBoxLine", ignore = true)
-	@Mapping(target = "belowTownLine", ignore = true)
-	@Mapping(target = "belowCountryLine", ignore = true)
 	@Mapping(target = "frankingArea", ignore = true)
+	@Mapping(target = "addressLine1", source = "addressInformation.addressLine1")
+	@Mapping(target = "addressLine2", source = "addressInformation.addressLine2")
 	void appendPhysicalAddress(
 			@MappingTarget
-			PhysicalAddressType address, ch.ech.xmlns.ech_0045._6.ElectoralAddressType echAddress);
+			StructuredPhysicalAddressType address, ch.ech.xmlns.ech_0045._6.ElectoralAddressType echAddress);
 
 	@Mapping(target = "electronicAddressType", constant = "1")
 	@Mapping(target = "electronicAddressValue", source = "emailAddress")

@@ -43,27 +43,29 @@ public class Stax2Wrapper {
 	private String iteratorPath;
 	private Object iteratorObject;
 
-	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class<?> jaxbFactoryClass)
+	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class<?>... jaxbFactoryClass)
 			throws XMLStreamException, JAXBException {
 		this(xmlFileLocation, xsdLocation, jaxbFactoryClass, null);
 	}
 
-	public Stax2Wrapper(final InputStream inputStream, final URL xsdLocation, final Class<?> jaxbFactoryClass)
+	public Stax2Wrapper(final InputStream inputStream, final URL xsdLocation, final Class<?>... jaxbFactoryClass)
 			throws XMLStreamException, JAXBException {
 		this(inputStream, xsdLocation, jaxbFactoryClass, null);
 	}
 
-	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class<?> jaxbFactoryClass, final Object specificUnmarshallerFactoryInstance)
+	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class<?>[] jaxbFactoryClass,
+			final Object specificUnmarshallerFactoryInstance)
 			throws XMLStreamException, JAXBException {
 		this((Object) xmlFileLocation, xsdLocation, jaxbFactoryClass, specificUnmarshallerFactoryInstance);
 	}
 
-	public Stax2Wrapper(final InputStream inputStream, final URL xsdLocation, final Class<?> jaxbFactoryClass, final Object specificUnmarshallerFactoryInstance)
+	public Stax2Wrapper(final InputStream inputStream, final URL xsdLocation, final Class<?>[] jaxbFactoryClass,
+			final Object specificUnmarshallerFactoryInstance)
 			throws XMLStreamException, JAXBException {
 		this((Object) inputStream, xsdLocation, jaxbFactoryClass, specificUnmarshallerFactoryInstance);
 	}
 
-	private Stax2Wrapper(final Object input, final URL xsdLocation, final Class<?> jaxbFactoryClass,
+	private Stax2Wrapper(final Object input, final URL xsdLocation, final Class<?>[] jaxbFactoryClass,
 			final Object specificUnmarshallerFactoryInstance)
 			throws XMLStreamException, JAXBException {
 		unmarshaller = JAXBContext.newInstance(jaxbFactoryClass).createUnmarshaller();
