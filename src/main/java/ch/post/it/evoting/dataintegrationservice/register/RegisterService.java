@@ -18,8 +18,7 @@ import org.springframework.stereotype.Service;
 import ch.post.it.evoting.dataintegrationservice.common.StringUtil;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.FrankingAreaType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StructuredPhysicalAddressType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.UnstructuredPhysicalAddressType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PhysicalAddressType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.VoterTypeType;
 
 @Service
@@ -48,63 +47,27 @@ public class RegisterService {
 	}
 
 	public VoterTypeWithRole assignFrankingArea(final VoterTypeWithRole voterTypeWithRole) {
-		if (voterTypeWithRole.getPerson().getPhysicalAddress() != null) {
-			if (voterTypeWithRole.getPerson().getPhysicalAddress().getStructuredPhysicalAddress() != null &&
-					voterTypeWithRole.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getFrankingArea() == null) {
-				assignFrankingAreaStructuredAddress(voterTypeWithRole);
+		if (voterTypeWithRole.getPerson().getPhysicalAddress() != null
+				&& voterTypeWithRole.getPerson().getPhysicalAddress().getFrankingArea() == null) {
+			FrankingAreaType frankingArea = FrankingAreaType.SWITZERLAND;
+			if (voterTypeWithRole.getVoterType() == VoterTypeType.SWISSABROAD) {
+				frankingArea = getFrankingAreaByCountryIso2(voterTypeWithRole.getPerson().getPhysicalAddress().getCountry());
 
-			} else if (voterTypeWithRole.getPerson().getPhysicalAddress().getUnstructuredPhysicalAddress() != null &&
-					voterTypeWithRole.getPerson().getPhysicalAddress().getUnstructuredPhysicalAddress().getFrankingArea() == null) {
-
-				assignFrankingAreaUnstructuredAddress(voterTypeWithRole);
+				if (isContaining(voterTypeWithRole.getPerson().getPhysicalAddress(), "DFAE", "EDA", "CICR", "SWISSCOY")) {
+					frankingArea = FrankingAreaType.SWITZERLAND;
+				}
 			}
+			voterTypeWithRole.getPerson().getPhysicalAddress().setFrankingArea(frankingArea);
+
+			voterTypeWithRole.setDiplomaticBag(getDiplomaticBagByCountryIso2(voterTypeWithRole.getPerson().getPhysicalAddress().getCountry()));
 		}
 		return voterTypeWithRole;
 	}
 
-	private void assignFrankingAreaUnstructuredAddress(final VoterTypeWithRole voterTypeWithRole) {
-		FrankingAreaType frankingArea = FrankingAreaType.SWITZERLAND;
-		if (voterTypeWithRole.getVoterType() == VoterTypeType.SWISSABROAD) {
-			frankingArea = getFrankingAreaByCountryIso2(
-					voterTypeWithRole.getPerson().getPhysicalAddress().getUnstructuredPhysicalAddress().getCountryIdISO2());
-
-			if (isContaining(voterTypeWithRole.getPerson().getPhysicalAddress().getUnstructuredPhysicalAddress(), "DFAE", "EDA", "CICR",
-					"SWISSCOY")) {
-				frankingArea = FrankingAreaType.SWITZERLAND;
-			}
-		}
-		voterTypeWithRole.getPerson().getPhysicalAddress().getUnstructuredPhysicalAddress().setFrankingArea(frankingArea);
-		voterTypeWithRole.setDiplomaticBag(getDiplomaticBagByCountryIso2(
-				voterTypeWithRole.getPerson().getPhysicalAddress().getUnstructuredPhysicalAddress().getCountryIdISO2()));
-	}
-
-	private void assignFrankingAreaStructuredAddress(final VoterTypeWithRole voterTypeWithRole) {
-		FrankingAreaType frankingArea = FrankingAreaType.SWITZERLAND;
-		if (voterTypeWithRole.getVoterType() == VoterTypeType.SWISSABROAD) {
-			frankingArea = getFrankingAreaByCountryIso2(
-					voterTypeWithRole.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getCountryIdISO2());
-
-			if (isContaining(voterTypeWithRole.getPerson().getPhysicalAddress().getStructuredPhysicalAddress(), "DFAE", "EDA", "CICR",
-					"SWISSCOY")) {
-				frankingArea = FrankingAreaType.SWITZERLAND;
-			}
-		}
-		voterTypeWithRole.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().setFrankingArea(frankingArea);
-		voterTypeWithRole.setDiplomaticBag(getDiplomaticBagByCountryIso2(
-				voterTypeWithRole.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getCountryIdISO2()));
-	}
-
-	private boolean isContaining(final StructuredPhysicalAddressType physicalAddress, final String... label) {
-		final String addressLines = String.join(" ", physicalAddress.getStreet(), physicalAddress.getAddressLine1(),
-				physicalAddress.getAddressLine2()).toUpperCase(Locale.ENGLISH);
-		return Arrays.stream(label).map(l -> String.format(" %s", l)).anyMatch(addressLines::contains);
-	}
-
-	private boolean isContaining(final UnstructuredPhysicalAddressType physicalAddress, final String... label) {
-		final String addressLines = String.join(" ", physicalAddress.getAddressLine1(), physicalAddress.getAddressLine2(),
-				physicalAddress.getAddressLine3(), physicalAddress.getAddressLine4(), physicalAddress.getAddressLine5(),
-				physicalAddress.getAddressLine6(), physicalAddress.getAddressLine7()).toUpperCase(Locale.ENGLISH);
-		return Arrays.stream(label).map(l -> String.format(" %s", l)).anyMatch(addressLines::contains);
+	private boolean isContaining(final PhysicalAddressType physicalAddress, final String... label) {
+		final String belowStreets = String.join(" ", physicalAddress.getBelowStreetLine());
+		final String val = StringUtil.concat(physicalAddress.getStreet(), belowStreets, " ").toUpperCase(Locale.ENGLISH);
+		return Arrays.stream(label).map(l -> String.format(" %s", l)).anyMatch(val::contains);
 	}
 
 	private FrankingAreaType getFrankingAreaByCountryIso2(final String countryIso2) {

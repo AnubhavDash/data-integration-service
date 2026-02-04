@@ -387,6 +387,7 @@
 			<xs:enumeration value="WITH_PARTY_AFFILIATION_BRACKETS"/>
 			<xs:enumeration value="WITH_PARTY_AFFILIATION_BELOW_BRACKETS_NONUMBER"/>
 			<xs:enumeration value="WITH_PARTY_AFFILIATION_BELOW_BRACKETS"/>
+			<xs:enumeration value="WITH_PARTY_AFFILIATION_BELOW_INCUMBENT_WITH_NAME"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="displayListLineStyle">

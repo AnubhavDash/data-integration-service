@@ -4,6 +4,7 @@
 package ch.post.it.evoting.dataintegrationservice.pipes;
 
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.collect.MoreCollectors.onlyElement;
 import static li.chee.reactive.plumber.Plumbing.drain;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -75,6 +76,7 @@ import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionDesc
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ListUnionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ObjectFactory;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.OccupationalTitleInformationType;
+import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PartyAffiliationformationType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardBallotType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.StandardQuestionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.TieBreakQuestionType;
@@ -261,7 +263,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._5.LanguageType.DE).withText("Bisher"),
 				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._5.LanguageType.FR).withText("sortant/e"),
 				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._5.LanguageType.IT).withText("uscente"),
-				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._5.LanguageType.RM).withText("uscant")));
+				new IncumbentTextInfo().withLanguage(ch.evoting.xmlns.parameter._5.LanguageType.RM).withText("fin ussa")));
 	}
 
 	@And("^user parameters \"([^\"]*)\" has defaultDisplayCandidateLineStyle \"([^\"]*)\"$")
@@ -815,14 +817,24 @@ public class ContestPhaseSteps extends PhaseSteps {
 						new DwellingAddressType().withStreet("Rue de la gare").withHouseNumber("4").withSwissZipCode(1700L).withTown("Fribourg"))
 				.withIncumbent(new IncumbentType().withIncumbent(true)
 						.withIncumbentText(new IncumbentTextType().withIncumbentTextInfo(
-								new IncumbentTextInfoType().withLanguage(LanguageType.DE).withIncumbentText("blabla"),
-								new IncumbentTextInfoType().withLanguage(LanguageType.FR).withIncumbentText("blabla"),
-								new IncumbentTextInfoType().withLanguage(LanguageType.IT).withIncumbentText("blabla"),
-								new IncumbentTextInfoType().withLanguage(LanguageType.RM).withIncumbentText("blabla")
+								new IncumbentTextInfoType().withLanguage(LanguageType.DE).withIncumbentText("DE_incumbentText"),
+								new IncumbentTextInfoType().withLanguage(LanguageType.FR).withIncumbentText("FR_incumbentText"),
+								new IncumbentTextInfoType().withLanguage(LanguageType.IT).withIncumbentText("IT_incumbentText"),
+								new IncumbentTextInfoType().withLanguage(LanguageType.RM).withIncumbentText("RM_incumbentText")
 						))).withSwiss(new CandidateType.Swiss()).withSex("1")
 				.withDateOfBirth(LocalDateUtils.toXMLGregorianCalendar(LocalDate.parse("1965-04-29")))
 				.withCandidateText(new CandidateTextInformationType())
-				.withOccupationalTitle(new OccupationalTitleInformationType());
+				.withOccupationalTitle(new OccupationalTitleInformationType())
+				.withPartyAffiliation(new PartyAffiliationformationType().withPartyAffiliationInfo(
+						new PartyAffiliationformationType.PartyAffiliationInfo().withLanguage(LanguageType.DE)
+								.withPartyAffiliationLong("DE_partyAffiliationLong").withPartyAffiliationShort("DE_pAShort"),
+						new PartyAffiliationformationType.PartyAffiliationInfo().withLanguage(LanguageType.FR)
+								.withPartyAffiliationLong("FR_partyAffiliationLong").withPartyAffiliationShort("FR_pAShort"),
+						new PartyAffiliationformationType.PartyAffiliationInfo().withLanguage(LanguageType.IT)
+								.withPartyAffiliationLong("IT_partyAffiliationLong").withPartyAffiliationShort("IT_pAShort"),
+						new PartyAffiliationformationType.PartyAffiliationInfo().withLanguage(LanguageType.RM)
+								.withPartyAffiliationLong("RM_partyAffiliationLong").withPartyAffiliationShort("RM_pAShort")
+				));
 		electionMap.get(elections + "." + election).getElectionInformation().get(0).getCandidate().add(candidate);
 		candidateMap.put(elections + "." + election + "." + name, candidate);
 	}
@@ -831,6 +843,22 @@ public class ContestPhaseSteps extends PhaseSteps {
 	public void andCandidateHasText(final String elections, final String election, final String name, final String lang, final String text) {
 		candidateMap.get(elections + "." + election + "." + name).getCandidateText().getCandidateTextInfo()
 				.add(new CandidateTextInformationType.CandidateTextInfo().withLanguage(LanguageType.valueOf(lang)).withCandidateText(text));
+	}
+
+	@And("^candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has no party affiliation long \"([^\"]*)\"$")
+	public void andCandidateHasNoPartyAffiliationLong(final String elections, final String election, final String name, final String lang) {
+		candidateMap.get(elections + "." + election + "." + name).getPartyAffiliation().getPartyAffiliationInfo()
+				.stream().filter(info -> info.getLanguage() == LanguageType.valueOf(lang))
+				.collect(onlyElement())
+				.setPartyAffiliationLong(null);
+	}
+
+	@And("^candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has incumbent text \"([^\"]*)\" \"([^\"]*)\"$")
+	public void andCandidateHasIncumberText(final String elections, final String election, final String name, final String lang, final String incumbentText) {
+		candidateMap.get(elections + "." + election + "." + name).getIncumbent().getIncumbentText().getIncumbentTextInfo()
+				.stream().filter(info -> info.getLanguage() == LanguageType.valueOf(lang))
+				.collect(onlyElement())
+				.setIncumbentText(incumbentText);
 	}
 
 	@And("^candidate \"([^\"]*)\".\"([^\"]*)\".\"([^\"]*)\" has occupational title \"([^\"]*)\" \"([^\"]*)\"$")
@@ -1111,7 +1139,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 		final ElectionInformationType election = contest.getElectionGroupBallot().stream()
 				.flatMap(egb -> egb.getElectionInformation().stream())
 				.filter(ei -> ei.getElection().getElectionIdentification().equals(electionIdentification))
-				.collect(MoreCollectors.onlyElement());
+				.collect(onlyElement());
 
 		election.getCandidate().stream()
 				.filter(c -> c.getIncumbent().isIncumbent())
@@ -1137,7 +1165,7 @@ public class ContestPhaseSteps extends PhaseSteps {
 		final ElectionInformationType election = contest.getElectionGroupBallot().stream()
 				.flatMap(egb -> egb.getElectionInformation().stream())
 				.filter(ei -> ei.getElection().getElectionIdentification().equals(electionIdentifier))
-				.collect(MoreCollectors.onlyElement());
+				.collect(onlyElement());
 
 		election.getCandidate().stream()
 				.filter(c -> c.getIncumbent().isIncumbent())
@@ -1166,6 +1194,32 @@ public class ContestPhaseSteps extends PhaseSteps {
 		} catch (final Exception e) {
 			throw new IllegalStateException(e);
 		}
+	}
+
+	@Then("^the candidate with candidate identification \"([^\"]*)\" should have a display line 1 with text \"([^\"]*)\" \"([^\"]*)\"$")
+	public void thenCandidateShouldHaveDisplayLine1WithText(final String candidateIdentification, final String lang, final String text) {
+		final boolean contains = from(contest).find(CandidateType.class).stream()
+				.filter(candidate -> candidate.getCandidateIdentification().equals(candidateIdentification))
+				.collect(onlyElement())
+				.getDisplayCandidateLine1().getDisplayLineInfo()
+				.stream().filter(info -> info.getLanguage() == LanguageType.valueOf(lang))
+				.collect(onlyElement())
+				.getDisplayLineText().contains(text);
+
+		assertTrue(contains);
+	}
+
+	@Then("^the candidate with candidate identification \"([^\"]*)\" should not have a display line 1 with text \"([^\"]*)\" \"([^\"]*)\"$")
+	public void thenCandidateShouldNotHaveDisplayLine1WithText(final String candidateIdentification, final String lang, final String text) {
+		final boolean contains = from(contest).find(CandidateType.class).stream()
+				.filter(candidate -> candidate.getCandidateIdentification().equals(candidateIdentification))
+				.collect(onlyElement())
+				.getDisplayCandidateLine1().getDisplayLineInfo()
+				.stream().filter(info -> info.getLanguage() == LanguageType.valueOf(lang))
+				.collect(onlyElement())
+				.getDisplayLineText().contains(text);
+
+		assertFalse(contains);
 	}
 
 	@Then("^the variant ballot standard question \"([^\"]*)\" should have position (\\d+)$")

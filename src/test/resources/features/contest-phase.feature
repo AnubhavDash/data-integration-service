@@ -561,6 +561,26 @@ Feature: Contest Phase
     When executing the contest phase and catching exceptions
     Then it outputs an exception with text "answerType '4' not unique within the parameters"
 
+  Scenario: Throw an exception when a candidate is missing party affiliation long but the display style requires it
+    Given user parameters "my params" has defaultDisplayCandidateLineStyle "WITH_PARTY_AFFILIATION_BELOW_INCUMBENT_WITH_NAME"
+    And candidate "my elections"."election A"."candidate 1 for A" has no party affiliation long "FR"
+    When executing the contest phase and catching exceptions
+    Then it outputs an exception with text "Party affiliation long not provided but required for the selected display candidate line style. [displayCandidateLineStyle: WITH_PARTY_AFFILIATION_BELOW_INCUMBENT_WITH_NAME, candidateId: candidate-1-for-A-id, language: FR]"
+
+  Scenario: Verify candidate display line with incumbent text when the display style requires it
+    Given user parameters "my params" has defaultDisplayCandidateLineStyle "WITH_PARTY_AFFILIATION_BELOW_INCUMBENT_WITH_NAME"
+    And user parameters "my params" has ignoreIncumbentText false
+    And candidate "my elections"."election A"."candidate 2 for A" has incumbent text "FR" "Sortant"
+    When executing the contest phase
+    Then the candidate with candidate identification "candidate-2-for-A-id" should have a display line 1 with text "FR" "(Sortant)"
+
+  Scenario: Verify candidate display line without incumbent text when the display style requires it but the ignoreIncumbentText boolean is set
+    Given user parameters "my params" has defaultDisplayCandidateLineStyle "WITH_PARTY_AFFILIATION_BELOW_INCUMBENT_WITH_NAME"
+    And user parameters "my params" has ignoreIncumbentText true
+    And candidate "my elections"."election A"."candidate 2 for A" has incumbent text "FR" "Sortant"
+    When executing the contest phase
+    Then the candidate with candidate identification "candidate-2-for-A-id" should not have a display line 1 with text "FR" "(Sortant)"
+
   Scenario: Throw an exception when parameters contains duplicate question ids
     Given parameter question "my params"."tiebreak question 2" has questionIdentification "V-B_B-1_TQ-1"
     When executing the contest phase and catching exceptions

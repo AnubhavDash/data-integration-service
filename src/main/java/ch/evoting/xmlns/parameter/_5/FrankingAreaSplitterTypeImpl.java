@@ -20,11 +20,9 @@ public class FrankingAreaSplitterTypeImpl extends FrankingAreaSplitterType {
 			if (diplomaticBagEnabled && !Strings.isNullOrEmpty(voterTypeWithRole.getDiplomaticBag())) {
 				return voterTypeWithRole.getDiplomaticBag();
 			} else {
-				return voterTypeWithRole.getPerson().getPhysicalAddress().getStructuredPhysicalAddress()!=null ?
-						voterTypeWithRole.getPerson().getPhysicalAddress().getStructuredPhysicalAddress().getFrankingArea().toString() :
-						voterTypeWithRole.getPerson().getPhysicalAddress().getUnstructuredPhysicalAddress().getFrankingArea().toString();
+				return voterTypeWithRole.getPerson().getPhysicalAddress().getFrankingArea().toString();
 			}
-		} catch (final Exception _) {
+		} catch (final Exception e) {
 			return FrankingAreaType.OTHER.toString();
 		}
 	}
