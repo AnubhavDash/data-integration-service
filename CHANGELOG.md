@@ -1,5 +1,13 @@
 # Changelog
 
+## Release 2.9.3
+
+Release 2.9.3 incorporates the following changes:
+
+* Added additional display candidate line style.
+* Improved the Rumantsch translation for incumbent candidates.
+* Moved certain test data resources into test / resources
+
 ## Release 2.9.2.2
 
 Release 2.9.2.2 is a minor maintenance patch correcting the following issue:
