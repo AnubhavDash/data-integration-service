@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2026 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice;
 
@@ -8,7 +8,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import ch.post.it.evoting.cryptoprimitives.hashing.Argon2Factory;
+import ch.post.it.evoting.cryptoprimitives.hashing.Argon2Profile;
+import ch.post.it.evoting.cryptoprimitives.math.RandomFactory;
 import ch.post.it.evoting.dataintegrationservice.keystore.KeystoreRepository;
+import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.StreamableSymmetricEncryptionDecryptionService;
 import ch.post.it.evoting.evotinglibraries.protocol.algorithms.channelsecurity.XMLSignatureService;
 
 @Configuration
@@ -28,5 +32,10 @@ public class SpringConfiguration {
 	@Bean
 	public XMLSignatureService xmlSignatureService() {
 		return new XMLSignatureService();
+	}
+
+	@Bean
+	public StreamableSymmetricEncryptionDecryptionService streamableSymmetricEncryptionDecryptionService() {
+		return new StreamableSymmetricEncryptionDecryptionService(RandomFactory.createRandom(), Argon2Factory.createArgon2(Argon2Profile.STANDARD));
 	}
 }

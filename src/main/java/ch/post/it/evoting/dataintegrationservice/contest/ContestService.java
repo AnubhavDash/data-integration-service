@@ -875,7 +875,7 @@ public class ContestService {
 	private void addWithPartyAffiliationBelowIncumbentWithNameDisplayCandidateLinesStyle(final CandidateType candidate,
 			final boolean ignoreIncumbentText) {
 
-		// Line 1 with incumbent text in brackets
+		// Line 1 with incumbent text in parenthesis
 		final List<DisplayLineInformationType.DisplayLineInfo> displayLineInfoList1 = Arrays.stream(LanguageType.values())
 				.map(languageType -> {
 					final String referenceOnPosition = candidate.getReferenceOnPosition();

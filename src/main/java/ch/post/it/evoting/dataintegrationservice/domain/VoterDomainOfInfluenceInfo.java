@@ -3,12 +3,23 @@
  */
 package ch.post.it.evoting.dataintegrationservice.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class VoterDomainOfInfluenceInfo {
 	private VoterDomainOfInfluence domainOfInfluence;
 	private VoterCountingCircle countingCircle;
+
+	public VoterDomainOfInfluence getDomainOfInfluence() {
+		return domainOfInfluence;
+	}
+
+	public void setDomainOfInfluence(final VoterDomainOfInfluence domainOfInfluence) {
+		this.domainOfInfluence = domainOfInfluence;
+	}
+
+	public VoterCountingCircle getCountingCircle() {
+		return countingCircle;
+	}
+
+	public void setCountingCircle(final VoterCountingCircle countingCircle) {
+		this.countingCircle = countingCircle;
+	}
 }

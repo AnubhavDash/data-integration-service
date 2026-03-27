@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2026 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice;
 
@@ -18,8 +18,12 @@ public class ApplicationContextProvider implements ApplicationContextAware {
 		context = applicationContext;
 	}
 
-	public static<T> T getProperty(final String key, final Class<T> targetType) {
+	public static <T> T getProperty(final String key, final Class<T> targetType) {
 		return context.getEnvironment().getProperty(key, targetType);
+	}
+
+	public static <T> T getProperty(final String key, final Class<T> targetType, final T defaultValue) {
+		return context.getEnvironment().getProperty(key, targetType, defaultValue);
 	}
 
 	public static <T> T getBean(final Class<T> requiredType) {

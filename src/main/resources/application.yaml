@@ -78,6 +78,15 @@ diplomaticBag:
   TH: THAILAND
   BR: BRAZIL
 
+# Enable the feature to set a default dummy eGovToken if none are provided from eCH0045. Default false.
+eGovToken:
+  addDummyTokenIfNotProvided: false
+
+# The encryption password to decrypt input file (typically eCH0045) and its file extension.
+input:
+  file-extension: .aes
+  encryption-password:
+
 # Grouping by OFS country code. These should not be modified.
 groupOFS:
   "8100": SWITZERLAND
