@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2026 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.register;
 
@@ -31,8 +31,6 @@ import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluence;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterDomainOfInfluenceInfo;
 import ch.post.it.evoting.dataintegrationservice.domain.VoterTypeWithRole;
 import ch.post.it.evoting.evotinglibraries.domain.LocalDateUtils;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.ech045voterextension.UnstructuredPhysicalAddressType;
-import ch.post.it.evoting.evotinglibraries.xml.xmlns.ech045voterextension.VoterExtensionType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.ElectronicAddressType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PersonType;
 import ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.PhysicalAddressType;
@@ -61,13 +59,7 @@ public interface ECH0045v40Mapper {
 			throw new IllegalArgumentException("Unimplemented personType");
 		}
 
-		if (getVoterExtension(voter) instanceof final VoterExtensionType voterExtension) {
-			voterType.setVoterExtension(voterExtension);
-		}
-
-		if (voterType.getVoterExtension() != null && voterType.getVoterExtension().getUnstructuredPhysicalAddress() != null) {
-			voterType.getPerson().setPhysicalAddress(convert(voterType.getVoterExtension().getUnstructuredPhysicalAddress()));
-		} else if (voter.getDeliveryAddress() != null) {
+		if (voter.getDeliveryAddress() != null) {
 			voterType.getPerson().setPhysicalAddress(convert(voter.getDeliveryAddress()));
 		} else if (voter.getElectoralAddress() != null) {
 			voterType.getPerson().setPhysicalAddress(convert(voter.getElectoralAddress()));
@@ -98,50 +90,6 @@ public interface ECH0045v40Mapper {
 		}).toList()));
 
 		return voterType;
-	}
-
-	@SuppressWarnings("Duplicates")
-	private PhysicalAddressType convert(final UnstructuredPhysicalAddressType unstructuredPhysicalAddress) {
-		final PhysicalAddressType result = new PhysicalAddressType();
-
-		final List<String> belowNameLines = new ArrayList<>();
-		belowNameLines.add(unstructuredPhysicalAddress.getAddressLine1());
-		belowNameLines.add(unstructuredPhysicalAddress.getAddressLine2());
-
-		if (!isNullOrEmpty(unstructuredPhysicalAddress.getAddressLine3())) {
-			belowNameLines.add(unstructuredPhysicalAddress.getAddressLine3());
-		}
-		if (!isNullOrEmpty(unstructuredPhysicalAddress.getAddressLine4())) {
-			belowNameLines.add(unstructuredPhysicalAddress.getAddressLine4());
-		}
-		if (!isNullOrEmpty(unstructuredPhysicalAddress.getAddressLine5())) {
-			belowNameLines.add(unstructuredPhysicalAddress.getAddressLine5());
-		}
-		if (!isNullOrEmpty(unstructuredPhysicalAddress.getAddressLine6())) {
-			belowNameLines.add(unstructuredPhysicalAddress.getAddressLine6());
-		}
-		if (!isNullOrEmpty(unstructuredPhysicalAddress.getAddressLine7())) {
-			belowNameLines.add(unstructuredPhysicalAddress.getAddressLine7());
-		}
-
-		result.setCountry(unstructuredPhysicalAddress.getCountry().getCountryIdISO2());
-		result.setCountryNameShort(unstructuredPhysicalAddress.getCountry().getCountryNameShort());
-
-		result.setBelowNameLine(belowNameLines);
-
-		return result;
-	}
-
-	@SuppressWarnings("Duplicates")
-	private Object getVoterExtension(final VotingPersonType voter) {
-		if (voter.getPerson().getSwiss() != null) {
-			return voter.getPerson().getSwiss().getSwissDomesticPerson().getExtension();
-		} else if (voter.getPerson().getSwissAbroad() != null) {
-			return voter.getPerson().getSwissAbroad().getSwissAbroadPerson().getExtension();
-		} else if (voter.getPerson().getForeigner() != null) {
-			return voter.getPerson().getForeigner().getForeignerPerson().getExtension();
-		}
-		throw new IllegalArgumentException("Unimplemented personType");
 	}
 
 	private void calculateResidenceCountry(final VotingPersonType voter, final VoterTypeWithRole voterType) {

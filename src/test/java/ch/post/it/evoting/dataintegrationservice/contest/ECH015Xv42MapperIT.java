@@ -23,7 +23,6 @@ import org.springframework.test.context.ActiveProfiles;
 import com.google.common.collect.MoreCollectors;
 
 import ch.ech.xmlns.ech_0010._6.AddressInformationType;
-import ch.ech.xmlns.ech_0155._5.RoleInformationType;
 import ch.ech.xmlns.ech_0155._5.CandidatePositionInformationType;
 import ch.ech.xmlns.ech_0155._5.CandidateTextInformationType;
 import ch.ech.xmlns.ech_0155._5.CandidateType;
@@ -42,6 +41,7 @@ import ch.ech.xmlns.ech_0155._5.ListUnionType;
 import ch.ech.xmlns.ech_0155._5.OccupationalTitleInformationType;
 import ch.ech.xmlns.ech_0155._5.PartyAffiliationInformationType;
 import ch.ech.xmlns.ech_0155._5.ReferencedElectionInformationType;
+import ch.ech.xmlns.ech_0155._5.RoleInformationType;
 import ch.ech.xmlns.ech_0155._5.TieBreakQuestionType;
 import ch.ech.xmlns.ech_0155._5.VoteDescriptionInformationType;
 import ch.ech.xmlns.ech_0155._5.VoteType;
@@ -552,6 +552,56 @@ class ECH015Xv42MapperIT {
 		final IllegalStateException exception = assertThrows(IllegalStateException.class,
 				() -> mapper.convert(source, echBallotWithMissingQuestionInfo));
 		assertEquals("Ballot question info is not available in expected language. [language: rm]", exception.getMessage());
+	}
+
+	@Test
+	void testElectronicBallotDescriptionInfoTruncatesOversizedValues() {
+		final String oversizedLong = "L".repeat(700);
+		final String oversizedShort = "S".repeat(255);
+		final ElectronicBallotDescriptionInformationType source = new ElectronicBallotDescriptionInformationType()
+				.withElectronicBallotDescriptionInfo(new ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo()
+						.withLanguage("de")
+						.withElectronicBallotDescriptionLong(oversizedLong)
+						.withElectronicBallotDescriptionShort(oversizedShort)
+				);
+
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType destination = mapper.convert(source,
+				createEchElectronicBallot());
+
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotDescriptionInformationType.BallotDescriptionInfo info = destination.getBallotDescriptionInfo()
+				.stream()
+				.collect(MoreCollectors.onlyElement());
+		assertEquals(255, info.getBallotDescriptionLong().length());
+		assertEquals("L".repeat(255), info.getBallotDescriptionLong());
+		assertEquals(100, info.getBallotDescriptionShort().length());
+		assertEquals("S".repeat(100), info.getBallotDescriptionShort());
+	}
+
+	@Test
+	void testGetDescriptionTruncatesOversizedShortDescription() {
+		final String oversizedShort = "S".repeat(255);
+		final ElectronicBallotType ballotType = new ElectronicBallotType()
+				.withElectronicBallotIdentification("BAL-000-TEST")
+				.withElectronicBallotPosition(BigInteger.ONE)
+				.withElectronicBallotDescription(new ElectronicBallotDescriptionInformationType()
+						.withElectronicBallotDescriptionInfo(new ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo()
+								.withLanguage("de")
+								.withElectronicBallotDescriptionShort(oversizedShort)
+						));
+
+		final ElectronicBallotQuestionType questionType = new ElectronicBallotQuestionType()
+				.withElectronicBallotQuestionInfo(new ElectronicBallotQuestionType.ElectronicBallotQuestionInfo()
+						.withLanguage("de")
+						.withElectronicBallotQuestion("Test question")
+				);
+
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType destination = mapper.convert(questionType, ballotType);
+
+		final ch.post.it.evoting.evotinglibraries.xml.xmlns.evotingconfig.BallotQuestionType.BallotQuestionInfo info = destination.getBallotQuestionInfo()
+				.stream()
+				.collect(MoreCollectors.onlyElement());
+		assertEquals(100, info.getBallotQuestionTitle().length());
+		assertEquals("S".repeat(100), info.getBallotQuestionTitle());
 	}
 
 	@Test

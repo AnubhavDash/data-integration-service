@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<parameter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.evoting.ch/xmlns/parameter/5" xsi:schemaLocation="http://www.evoting.ch/xmlns/parameter/5">
+	<contest>
+		<defaultLanguage>de</defaultLanguage>
+		<evotingFromDate>2023-12-06T07:00:00</evotingFromDate>
+		<evotingToDate>2027-11-25T23:00:00</evotingToDate>
+		<evotingTestBallotBoxesFromDate>2023-12-06T07:00:00</evotingTestBallotBoxesFromDate>
+		<electoralBoard>
+			<electoralBoardIdentification>Post_Primary_Secondary</electoralBoardIdentification>
+			<electoralBoardName>Post_Primary_Secondary</electoralBoardName>
+			<electoralBoardDescription>Post_Primary_Secondary</electoralBoardDescription>
+			<electoralBoardMembers>
+				<electoralBoardMemberName>EA1</electoralBoardMemberName>
+				<electoralBoardMemberName>EA2</electoralBoardMemberName>
+			</electoralBoardMembers>
+		</electoralBoard>
+		<elections>
+			<election>
+				<electionIdentification>833341d6-26cb-46e7-9367-2c8353762cc0</electionIdentification>
+				<writeInsAllowed>true</writeInsAllowed>
+				<candidateAccumulation>1</candidateAccumulation>
+				<displayCandidateLineStyle>WITH_PARTY_AFFILIATION_EXTRA_LINE</displayCandidateLineStyle>
+				<displayListLineStyle>DEFAULT</displayListLineStyle>
+			</election>
+			<election>
+				<electionIdentification>833341d6-26cb-46e7-9367-2c8353762cc1</electionIdentification>
+				<writeInsAllowed>true</writeInsAllowed>
+				<implicitWriteInCandidate>Baptist II</implicitWriteInCandidate>
+				<implicitWriteInCandidate>Valentin X</implicitWriteInCandidate>
+				<candidateAccumulation>1</candidateAccumulation>
+				<candidatesEligibility>
+					<candidateEligibility>
+						<candidateIdentification>e4be5aac-c058-4b45-a248-09a8d3945c72</candidateIdentification>
+						<eligibility>implicit</eligibility>
+					</candidateEligibility>
+				</candidatesEligibility>
+				<displayCandidateLineStyle>WITH_PARTY_AFFILIATION_EXTRA_LINE</displayCandidateLineStyle>
+				<displayListLineStyle>DEFAULT</displayListLineStyle>
+				<electionRulesExplanation>
+					<displayLineInfo>
+						<language>de</language>
+						<displayLineText>Wählen Sie eine(n) der Kandidat(inn)en aus der Hauptwahl</displayLineText>
+					</displayLineInfo>
+					<displayLineInfo>
+						<language>fr</language>
+						<displayLineText>Choisissez un(e) des candidat(e)s de l'élection principale</displayLineText>
+					</displayLineInfo>
+					<displayLineInfo>
+						<language>it</language>
+						<displayLineText>Scegliere uno dei candidati delle elezioni principali</displayLineText>
+					</displayLineInfo>
+					<displayLineInfo>
+						<language>rm</language>
+						<displayLineText>Elegiai ina persuna u in candidat da l'elecziun principala</displayLineText>
+					</displayLineInfo>
+				</electionRulesExplanation>
+			</election>
+		</elections>
+		<sorting>
+			<electionGroup>
+				<electionGroupIdentification>1d75a359-70ec-4487-ba93-e52d31ce1b25</electionGroupIdentification>
+				<positionNumber>1</positionNumber>
+			</electionGroup>
+		</sorting>
+	</contest>
+	<plugins>
+		<afterReadVoter>
+			<birthDateAuthenticationKey/>
+		</afterReadVoter>
+	</plugins>
+</parameter>

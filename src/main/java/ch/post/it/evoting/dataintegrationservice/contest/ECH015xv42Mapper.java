@@ -400,6 +400,7 @@ public interface ECH015xv42Mapper {
 							description));
 					return ballotDescriptionShort;
 				})
+				.map(description -> StringUtils.left(description, 255))
 				.orElseGet(() -> getBallotQuestionTitle(bdi.getLanguage(), ballotType)));
 
 		return result;
@@ -587,7 +588,7 @@ public interface ECH015xv42Mapper {
 	private static String getDescription(
 			final ch.ech.xmlns.ech_0155._5.ElectronicBallotDescriptionInformationType.ElectronicBallotDescriptionInfo ballotDescriptionInfo) {
 		if (ballotDescriptionInfo.getElectronicBallotDescriptionShort() != null) {
-			return ballotDescriptionInfo.getElectronicBallotDescriptionShort();
+			return StringUtils.left(ballotDescriptionInfo.getElectronicBallotDescriptionShort(), 100);
 		} else if (ballotDescriptionInfo.getElectronicBallotDescriptionLong() != null) {
 			return StringUtils.left(ballotDescriptionInfo.getElectronicBallotDescriptionLong(), 100);
 		} else {

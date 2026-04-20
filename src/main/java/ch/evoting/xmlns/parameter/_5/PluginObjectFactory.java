@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2026 Swiss Post Ltd.
+ * (c) Copyright 2025 Swiss Post Ltd.
  */
 package ch.evoting.xmlns.parameter._5;
 
@@ -51,10 +51,5 @@ public class PluginObjectFactory extends ObjectFactory {
 	@Override
 	public VotePositionSetterType createVotePositionSetterType() {
 		return new VotePositionSetterTypeImpl();
-	}
-
-	@Override
-	public EGovTokenAuthenticationKeyType createEGovTokenAuthenticationKeyType() {
-		return new EGovTokenAuthenticationKeyTypeImpl();
 	}
 }

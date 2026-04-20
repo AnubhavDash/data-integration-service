@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ (c) Copyright 2026 Swiss Post Ltd.
-  -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.evoting.ch/xmlns/parameter/5" xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb" targetNamespace="http://www.evoting.ch/xmlns/parameter/5" elementFormDefault="qualified" version="5.0" jaxb:version="3.0">
 	<xs:simpleType name="languageType">
 		<xs:restriction base="xs:string">
@@ -76,11 +73,6 @@
 			<xs:extension base="voterMapper"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="eGovTokenAuthenticationKeyType">
-		<xs:complexContent>
-			<xs:extension base="voterMapper"/>
-		</xs:complexContent>
-	</xs:complexType>
 	<xs:complexType name="voterMapper" abstract="true">
 		<xs:annotation>
 			<xs:appinfo>
@@ -97,7 +89,6 @@
 			</xs:annotation>
 			<xs:element name="birthYearAuthenticationKey" type="birthYearAuthenticationKeyType"/>
 			<xs:element name="birthDateAuthenticationKey" type="birthDateAuthenticationKeyType"/>
-			<xs:element name="eGovTokenAuthenticationKey" type="eGovTokenAuthenticationKeyType"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="configSplitter" abstract="true">
@@ -419,9 +410,9 @@
 			<xs:element name="implicitWriteInCandidate" minOccurs="0" maxOccurs="unbounded">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
+						<xs:pattern value="[# '(),-\./0-9A-Za-z¢ŠšŽžŒœŸÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ]+"/>
 						<xs:minLength value="1"/>
 						<xs:maxLength value="400"/>
-						<xs:pattern value="[# '(),-\./0-9A-Za-z¢ŠšŽžŒœŸÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ]+"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
