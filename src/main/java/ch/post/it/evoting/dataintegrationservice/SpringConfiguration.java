@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2026 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice;
 
@@ -17,6 +17,7 @@ public class SpringConfiguration {
 
 	@Value("${direct-trust.keystore.location}")
 	private String keystoreLocationCanton;
+
 	@Value("${direct-trust.password.location}")
 	private String keystorePasswordLocationCanton;
 
@@ -29,4 +30,5 @@ public class SpringConfiguration {
 	public XMLSignatureService xmlSignatureService() {
 		return new XMLSignatureService();
 	}
+
 }

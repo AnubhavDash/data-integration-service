@@ -1,5 +1,16 @@
 # Changelog
 
+## Release 2.9.4
+
+Release 2.9.4 incorporates the following changes:
+
+* Added support for the eGovernment token extended authentication factor.
+* Added handling of unstructured addresses by mapping them to the `belowNameLine` field.
+* Improved validation of the election event's start and end dates.
+* Adapted field length limits: `ballotDescriptionLong` to 700 characters and `ballotDescriptionShort` to 255 characters.
+* Minor code and translation improvements.
+* Updated dependencies and third-party libraries.
+
 ## Release 2.9.3
 
 Release 2.9.3 incorporates the following changes:

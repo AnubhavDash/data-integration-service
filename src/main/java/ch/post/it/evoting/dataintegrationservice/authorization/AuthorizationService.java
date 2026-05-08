@@ -129,10 +129,15 @@ public class AuthorizationService {
 						.map(tuple -> StringUtil.concat(tuple.getT1(), tuple.getT2(), "|"))
 						.reduce("", (s1, s2) -> StringUtil.concat(s1, s2, "+"))));
 
-		if (contestParameters.getEvotingTestBallotBoxesFromDate() != null
-				&& contestParameters.getEvotingTestBallotBoxesFromDate().compare(contest.getEvotingFromDate()) > 0) {
-			LOGGER.warn(
-					"The test ballot boxes (evotingTestBallotBoxesFromDate ) open after the productive ballot boxes (evotingFromDate). Are you sure that this is the intended configuration?");
+		if (contestParameters.getEvotingTestBallotBoxesFromDate() != null) {
+			checkState(contestParameters.getEvotingTestBallotBoxesFromDate().compare(contest.getEvotingToDate()) < 0,
+					"The test ballot boxes must open before the productive ballot boxes close (evotingToDate). [evotingTestBallotBoxesFromDate: %s, evotingToDate: %s]",
+					contestParameters.getEvotingTestBallotBoxesFromDate(), contest.getEvotingToDate());
+
+			if (contestParameters.getEvotingTestBallotBoxesFromDate().compare(contest.getEvotingFromDate()) > 0) {
+				LOGGER.warn(
+						"The test ballot boxes open (evotingTestBallotBoxesFromDate) after the productive ballot boxes (evotingFromDate). Are you sure that this is the intended configuration?");
+			}
 		}
 
 		result.setAuthorizationTest(

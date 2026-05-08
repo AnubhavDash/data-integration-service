@@ -1,8 +1,7 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2026 Swiss Post Ltd.
  */
 package pipes
-
 
 import ch.post.it.evoting.dataintegrationservice.pipes.RegisterPhase
 import ch.post.it.evoting.dataintegrationservice.pipes.RegisterPhaseComponent
@@ -11,6 +10,7 @@ import static ch.post.it.evoting.dataintegrationservice.ApplicationContextProvid
 import static ch.post.it.evoting.dataintegrationservice.pipes.Tools.apply
 import static ch.post.it.evoting.dataintegrationservice.pipes.Tools.logAsInfo
 import static li.chee.reactive.plumber.Plumbing.*
+import static reactor.core.publisher.Flux.merge
 
 def registerPhaseComponent = getBean(RegisterPhaseComponent.class)
 

@@ -78,6 +78,10 @@ diplomaticBag:
   TH: THAILAND
   BR: BRAZIL
 
+# Enable the feature to set a default dummy eGovToken if none are provided from eCH0045. Default false.
+eGovToken:
+  addDummyTokenIfNotProvided: false
+
 # Grouping by OFS country code. These should not be modified.
 groupOFS:
   "8100": SWITZERLAND

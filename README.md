@@ -30,7 +30,7 @@ The configuration file “param.xml” contains the following definitions for th
 * voting period
 * electoral board
 * specific election definitions (candidate-accumulation, write-ins)
-* extended authentication mode (birthyear / birthdate)
+* extended authentication mode (birthyear / birthdate / eGovToken)
 
 The properties file “application.properties” contains the following definitions:
 

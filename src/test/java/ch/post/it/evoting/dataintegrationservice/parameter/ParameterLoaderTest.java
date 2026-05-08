@@ -1,9 +1,9 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2026 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.parameter;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.StringWriter;
@@ -38,7 +38,7 @@ class ParameterLoaderTest {
 
 		final Parameter expected = new Stax2Wrapper("src/test/resources/ParameterLoaderTest/mergeTest/ParameterLoaderTest_merge.xml",
 				null,
-				ObjectFactory.class,
+				new Class<?>[] { ObjectFactory.class },
 				new PluginObjectFactory())
 				.processByIteration("/parameter", Parameter.class).iterator().next();
 

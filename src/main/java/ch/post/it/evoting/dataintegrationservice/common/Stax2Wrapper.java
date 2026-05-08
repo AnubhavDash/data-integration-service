@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2025 Swiss Post Ltd.
+ * (c) Copyright 2026 Swiss Post Ltd.
  */
 package ch.post.it.evoting.dataintegrationservice.common;
 
@@ -43,29 +43,28 @@ public class Stax2Wrapper {
 	private String iteratorPath;
 	private Object iteratorObject;
 
-	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class<?> jaxbFactoryClass)
+	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class<?>... jaxbFactoryClass)
 			throws XMLStreamException, JAXBException {
 		this(xmlFileLocation, xsdLocation, jaxbFactoryClass, null);
 	}
 
-	public Stax2Wrapper(final InputStream inputStream, final URL xsdLocation, final Class<?> jaxbFactoryClass)
+	public Stax2Wrapper(final InputStream inputStream, final URL xsdLocation, final Class<?>... jaxbFactoryClass)
 			throws XMLStreamException, JAXBException {
 		this(inputStream, xsdLocation, jaxbFactoryClass, null);
 	}
 
-	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class<?> jaxbFactoryClass, final Object specificUnmarshallerFactoryInstance)
-			throws XMLStreamException, JAXBException {
+	public Stax2Wrapper(final String xmlFileLocation, final URL xsdLocation, final Class<?>[] jaxbFactoryClass,
+			final Object specificUnmarshallerFactoryInstance) throws XMLStreamException, JAXBException {
 		this((Object) xmlFileLocation, xsdLocation, jaxbFactoryClass, specificUnmarshallerFactoryInstance);
 	}
 
-	public Stax2Wrapper(final InputStream inputStream, final URL xsdLocation, final Class<?> jaxbFactoryClass, final Object specificUnmarshallerFactoryInstance)
-			throws XMLStreamException, JAXBException {
+	public Stax2Wrapper(final InputStream inputStream, final URL xsdLocation, final Class<?>[] jaxbFactoryClass,
+			final Object specificUnmarshallerFactoryInstance) throws XMLStreamException, JAXBException {
 		this((Object) inputStream, xsdLocation, jaxbFactoryClass, specificUnmarshallerFactoryInstance);
 	}
 
-	private Stax2Wrapper(final Object input, final URL xsdLocation, final Class<?> jaxbFactoryClass,
-			final Object specificUnmarshallerFactoryInstance)
-			throws XMLStreamException, JAXBException {
+	private Stax2Wrapper(final Object input, final URL xsdLocation, final Class<?>[] jaxbFactoryClass,
+			final Object specificUnmarshallerFactoryInstance) throws XMLStreamException, JAXBException {
 		unmarshaller = JAXBContext.newInstance(jaxbFactoryClass).createUnmarshaller();
 		unmarshaller.setEventHandler(new CustomValidationEventHandler());
 
@@ -148,6 +147,7 @@ public class Stax2Wrapper {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("{} finished {}", reader.toString().split("@")[1], name);
 			}
+			reader.closeCompletely();
 			return false;
 		} catch (final XMLStreamException | JAXBException e) {
 			throw new IllegalArgumentException(e);

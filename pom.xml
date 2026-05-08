@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ (c) Copyright 2025 Swiss Post Ltd.
+  ~ (c) Copyright 2026 Swiss Post Ltd.
   -->
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
@@ -8,71 +8,73 @@
 
 	<groupId>ch.post.it.evoting.dataintegrationservice</groupId>
 	<artifactId>data-integration-service</artifactId>
-	<version>2.9.3.1</version>
+	<version>2.9.4.0-RC2</version>
 	<packaging>jar</packaging>
 
 	<name>Data Integration Service</name>
 	<description>Data Integration Service application</description>
 
 	<properties>
-		<maven.compiler.source>21</maven.compiler.source>
-		<maven.compiler.target>21</maven.compiler.target>
-		<maven.compiler.release>21</maven.compiler.release>
+
+		<java.version>25</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<maven.compiler.release>${java.version}</maven.compiler.release>
 
 		<maven-enforcer-plugin.version>3.6.2</maven-enforcer-plugin.version>
-		<maven-enforcer-plugin.requiredJavaVersion>[21.0.9]</maven-enforcer-plugin.requiredJavaVersion>
+		<maven-enforcer-plugin.requiredJavaVersion>[25.0.3]</maven-enforcer-plugin.requiredJavaVersion>
 		<maven-enforcer-plugin.requiredMavenVersion>[3.9.11]</maven-enforcer-plugin.requiredMavenVersion>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.build.outputTimestamp>2026-04-20T16:59:54+02:00</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2026-05-08T15:59:11+02:00</project.build.outputTimestamp>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<archunit.version>1.4.1</archunit.version>
+		<archunit.version>1.4.2</archunit.version>
 		<cloning.version>1.12.1</cloning.version>
-		<commons-lang3.version>3.19.0</commons-lang3.version>
-		<crypto-primitives.version>1.5.2.1</crypto-primitives.version>
-		<cucumber-bom.version>7.30.0</cucumber-bom.version>
+		<commons-lang3.version>3.20.0</commons-lang3.version>
+		<crypto-primitives.version>1.5.3.0-RC1</crypto-primitives.version>
+		<cucumber-bom.version>7.34.3</cucumber-bom.version>
 		<download-maven-plugin.version>1.13.0</download-maven-plugin.version>
-		<exec-maven-plugin.version>3.6.2</exec-maven-plugin.version>
-		<e-voting-libraries.version>1.5.2.1</e-voting-libraries.version>
-		<gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
+		<exec-maven-plugin.version>3.6.3</exec-maven-plugin.version>
+		<e-voting-libraries.version>1.5.3.0-RC1</e-voting-libraries.version>
+		<gmavenplus-plugin.version>4.3.1</gmavenplus-plugin.version>
 		<groovy.version>4.0.18</groovy.version>
-		<groovy-all.version>5.0.2</groovy-all.version>
-		<guava.version>33.5.0-jre</guava.version>
+		<groovy-all.version>5.0.5</groovy-all.version>
+		<guava.version>33.6.0-jre</guava.version>
 		<hamcrest-core.version>3.0</hamcrest-core.version>
+		<hash-generator-maven-plugin.version>1.0.0.0-b2</hash-generator-maven-plugin.version>
 		<jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
-		<jaxb-runtime.version>4.0.6</jaxb-runtime.version>
-		<jaxb-maven-plugin.version>4.0.11</jaxb-maven-plugin.version>
-		<junit-bom.version>5.14.0</junit-bom.version>
-		<logback-classic.version>1.5.20</logback-classic.version>
-		<lombok.version>1.18.42</lombok.version>
+		<jaxb-runtime.version>4.0.7</jaxb-runtime.version>
+		<jaxb-maven-plugin.version>4.0.12</jaxb-maven-plugin.version>
+		<junit-bom.version>5.14.3</junit-bom.version>
+		<logback-classic.version>1.5.32</logback-classic.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
-		<maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
-		<maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
-		<maven-dependency-check.version>12.1.8</maven-dependency-check.version>
-		<maven-dependency-plugin.version>3.9.0</maven-dependency-plugin.version>
+		<maven-assembly-plugin.version>3.8.0</maven-assembly-plugin.version>
+		<maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
+		<maven-dependency-check.version>12.2.1</maven-dependency-check.version>
+		<maven-dependency-plugin.version>3.10.0</maven-dependency-plugin.version>
 		<maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
-		<maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
+		<maven-failsafe-plugin.version>3.5.5</maven-failsafe-plugin.version>
 		<maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
-		<maven-release-plugin.version>3.1.1</maven-release-plugin.version>
-		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
-		<maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
+		<maven-release-plugin.version>3.3.1</maven-release-plugin.version>
+		<maven-resources-plugin.version>3.5.0</maven-resources-plugin.version>
+		<maven-surefire-plugin.version>3.5.5</maven-surefire-plugin.version>
 		<reactive-plumber.version>0.26.0</reactive-plumber.version>
-		<reactor-core.version>3.7.12</reactor-core.version>
+		<reactor-core.version>3.8.4</reactor-core.version>
 		<reproducible-build-maven-plugin.version>0.17.0</reproducible-build-maven-plugin.version>
-		<sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
-		<spring-boot.version>3.5.6</spring-boot.version>
-		<stax2-api.version>4.2.2</stax2-api.version>
+		<sonar-maven-plugin.version>5.6.0.6792</sonar-maven-plugin.version>
+		<spring-boot.version>3.5.14</spring-boot.version>
+		<stax2-api.version>4.3.0</stax2-api.version>
 		<super-machine.version>0.1.0</super-machine.version>
-		<testdata.version>1.5.2.0</testdata.version>
+		<testdata.version>1.5.3.0-RC2</testdata.version>
 		<woodstox-core.version>7.1.1</woodstox-core.version>
 
 		<!-- OpenJDK -->
-		<openjdk-jre.version>jdk-21.0.9+10-jre</openjdk-jre.version>
+		<openjdk-jre.version>jdk-25.0.3+9-jre</openjdk-jre.version>
 		<openjdk-jre.win64.url>
-			https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jre_x64_windows_hotspot_21.0.9_10.zip
+			https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.3%2B9/OpenJDK25U-jre_x64_windows_hotspot_25.0.3_9.zip
 		</openjdk-jre.win64.url>
-		<openjdk-jre.win64.sha256>39c5e23f3ce4d420663afba8ffde28034b72e2b3e240943dc2321bc1f912eef9</openjdk-jre.win64.sha256>
+		<openjdk-jre.win64.sha256>a183e7280220ad5f6fe94ecbf025a5f10fc5797a0b18c600ed8f813c8158c530</openjdk-jre.win64.sha256>
 
 		<!-- Sonar -->
 		<sonar.scm.disabled>true</sonar.scm.disabled>
@@ -82,6 +84,9 @@
 		<sonar.junit.reportPaths>${project.basedir}/target/surefire-reports/,${project.basedir}/target/failsafe-reports/</sonar.junit.reportPaths>
 		<sonar.java.source>${maven.compiler.release}</sonar.java.source>
 		<sonar.java.target>${maven.compiler.release}</sonar.java.target>
+		<sonar.cpd.exclusions>
+			src/main/java/ch/post/it/evoting/dataintegrationservice/register/ECH0045v42Mapper.java.java,src/main/java/ch/post/it/evoting/dataintegrationservice/register/ECH0045v40Mapper.java
+		</sonar.cpd.exclusions>
 	</properties>
 
 	<dependencyManagement>
@@ -194,11 +199,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>${lombok.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>org.mapstruct</groupId>
 				<artifactId>mapstruct</artifactId>
 				<version>${mapstruct.version}</version>
@@ -303,17 +303,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct-processor</artifactId>
 		</dependency>
 
 		<dependency>
@@ -408,7 +399,14 @@
 					<configuration>
 						<source>${maven.compiler.source}</source>
 						<target>${maven.compiler.target}</target>
+						<release>${maven.compiler.release}</release>
 						<encoding>UTF-8</encoding>
+						<annotationProcessorPaths>
+							<path>
+								<groupId>org.mapstruct</groupId>
+								<artifactId>mapstruct-processor</artifactId>
+							</path>
+						</annotationProcessorPaths>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -728,26 +726,17 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>${exec-maven-plugin.version}</version>
-				<inherited>false</inherited>
+				<groupId>ch.post.it.evoting.hashgenerator</groupId>
+				<artifactId>hash-generator-maven-plugin</artifactId>
+				<version>${hash-generator-maven-plugin.version}</version>
+				<configuration>
+					<excludeFileTypes>jar</excludeFileTypes>
+				</configuration>
 				<executions>
 					<execution>
-						<id>run-custom-script</id>
-						<phase>install</phase>
 						<goals>
-							<goal>exec</goal>
+							<goal>hash-generator</goal>
 						</goals>
-						<configuration>
-							<executable>bash</executable>
-							<arguments>
-								<argument>./reproducible-build/generateChecksum.sh</argument>
-								<argument>${project.artifactId}</argument>
-								<argument>${project.version}</argument>
-								<argument>./target</argument>
-							</arguments>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
