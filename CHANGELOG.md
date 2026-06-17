@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 2.9.4.1
+
+Release 2.9.4.1 is a minor patch containing the following:
+
+* Bump the e-voting-libraries version to 1.5.3.1.
+
 ## Release 2.9.4
 
 Release 2.9.4 incorporates the following changes:
